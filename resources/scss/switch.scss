@@ -1,0 +1,157 @@
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: $sm-spacing;
+
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 4rem;
+
+    transition: all $fast-animation;
+
+    button.close-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background-color: $block-btn-bg;
+        border: none;
+        border-radius: 50%;
+        color: $block-btn-color;
+        cursor: pointer;
+        padding: 0.7rem;
+
+        transition: all $slow-animation;
+
+        border: 1px solid $block-border;
+    }
+    
+    span.link-group {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        background-color: $body-bg;
+        border-radius: 10px;
+        border: 1px solid $block-border;
+
+        height: 40px;
+        width: 100%;
+        
+        transition: all $fast-animation;
+        overflow: hidden;
+        position: relative;
+
+        
+        a {
+            color: $body-color-light;
+            font-size: 16px;
+            text-decoration: none;
+            
+            padding: $xs-spacing $sm-spacing;
+            white-space: nowrap;
+            transition: all $fast-animation;
+
+            position: relative;
+            z-index: 1;
+            
+            width: 100%;
+
+            &.active {
+                font-weight: 500;
+            }
+        }
+
+        .link__hover {
+            position: absolute;
+            top: 50%;
+            left: 0;
+
+            z-index: 0;
+
+            transform: translateY(-50%);
+
+            transition: all $fast-animation;
+
+            background: $block-bg;
+            height: 32px;
+            border-radius: 10px;
+        }
+    }
+
+    a.back-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $sm-spacing;
+
+        background-color: $block-bg;
+        border-radius: 10px;
+        border: 1px solid $block-border;
+
+        white-space: nowrap;
+
+        height: 40px;
+        width: 100%;
+        padding: $xs-spacing $sm-spacing;
+        
+        transition: all $fast-animation;
+        overflow: hidden;
+        position: relative;
+        
+        color: $body-color-light;
+        font-size: 16px;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    &.open {
+        span.link-group {
+            opacity: 1;
+            pointer-events: all;
+            width: 100%;
+            padding: $xs-spacing;
+        }
+
+        .link__hover {
+            opacity: 1;
+        }
+
+        a.back-button {
+            opacity: 1;
+            pointer-events: all;
+            width: 100%;
+        }
+    }
+
+    &.closed {
+        span.link-group {
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+        }
+
+        .link__hover {
+            opacity: 0;
+        }
+
+        button.close-button {
+            transform: rotate(-135deg) scale(1.2);
+        }
+
+        a.back-button {
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            padding: 0;
+        }
+
+        gap: 0;
+    }   
+
+
+    
+}

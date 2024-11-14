@@ -1,0 +1,33 @@
+.badge-container {
+
+    display: flex;
+    flex-direction: column;
+    gap: $xxs-spacing;
+
+    h6.badge-title {
+        font-size: 14px;
+        font-weight: 400;
+        color: $body-color-light;
+    }
+
+    .badge-wrapper {
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: $xs-spacing;
+        row-gap: $xxs-spacing;
+
+        .badge {
+
+            padding: $xxs-spacing $x-spacing;
+            border-radius: $border-radius;
+            border: 1px solid $block-border;
+
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 18px;
+    
+        }
+
+    }
+}

@@ -1,0 +1,17 @@
+.big-button {
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+
+    width: 100%;
+    padding: $sm-spacing;
+    border-radius: $border-radius;
+    border: 1px solid $block-border;
+    background-color: $block-bg;
+
+    color: $body-color-light;
+    text-decoration: none;
+    gap: $x-spacing;
+
+    transition: $fast-animation;
+}

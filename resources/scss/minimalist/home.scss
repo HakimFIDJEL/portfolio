@@ -1,0 +1,129 @@
+main#home{
+
+    section#hero{
+
+        border: 1px solid $block-border;
+        padding: $re-spacing;
+
+        display: flex;
+        align-items: center;
+        gap: $sm-spacing;
+
+        margin-bottom: $md-spacing;
+
+        img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+
+            background-color: $block-bg;
+            object-fit: cover;
+            
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: $xxs-spacing;
+
+
+            h1 {
+                font-size: 20px;
+                font-weight: 550;
+            }
+            p {
+                font-size: 16px;
+                font-weight: 300;
+                color: $body-color-dark;
+            }
+        }
+    }
+
+
+    section.section {
+
+        margin: $md-spacing 0;
+
+        
+
+        &#about .content{
+
+            display: flex;
+            flex-direction: column;
+            gap: $md-spacing;
+
+            // Common
+            .description {
+
+                display: flex;
+                flex-direction: column;
+                gap: $sm-spacing;
+
+                p {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: $body-color-light;
+                }
+            }
+
+            h6.title {
+                font-size: 14px;
+                font-weight: 400;
+                color: $body-color-light;
+
+                padding-left: $xs-spacing;
+            }
+
+            // Specific
+            .tech-skills {
+                span.quote {
+                    text-align: right;
+                    font-size: 16px;
+                    font-weight: 300;
+                    line-height: 24px;
+
+
+                    .highlight {
+                        color: $highlight;
+                    }
+                }
+            }
+
+            
+        }
+
+
+
+
+
+        .title {
+
+            display: flex;
+            flex-direction: column;
+            gap: $xxs-spacing;
+            
+            margin-bottom: $xs-spacing;
+
+            h2 {
+                font-size: 20px;
+                font-weight: 600;
+            }
+            p {
+                font-size: 14px;
+                font-weight: 300;
+                color: $body-color-dark;
+            }
+
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid $block-border;
+        }
+
+        .content {
+            margin-top: $re-spacing;
+        }
+    }
+}
+
+
