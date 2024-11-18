@@ -20,11 +20,10 @@ $border-radius: 5px;
 
 // TODO : breakpoints
 $lg-spacing: 4rem;
+$l-spacing: 3rem;
 $md-spacing: 2rem;
-// 1.5
 $re-spacing: 1.5rem;
 $sm-spacing: 1rem;
-// 0.75
 $x-spacing: 0.75rem;
 $xs-spacing: 0.5rem;
 $xxs-spacing: 0.25rem;
@@ -73,7 +72,8 @@ main {
 
     &:hover {
         cursor: pointer;
-        border-color: $body-color-light !important;
+        // border-color: $highlight !important;
+        border-color: $body-color-dark !important;
     }
 }
 
@@ -110,6 +110,7 @@ main {
 .align-items-end {align-items: flex-end;}
 
 .justify-content-start {justify-content: flex-start;}
+.justify-content-end {justify-content: flex-end;}
 .justify-content-center {justify-content: center;}
 .justify-content-between {justify-content: space-between;}
 
@@ -119,14 +120,20 @@ main {
 .gap-md {gap: $md-spacing;}
 .gap-lg {gap: $lg-spacing;}
 
-
+.text-center {text-align: center;}
+.text-right {text-align: right;}
+.text-left {text-align: left;}
 
 
 
 @import "switch";
+
 @import "minimalist/home";
+@import "minimalist/project";
 
 @import "minimalist/components/accordeon";
 @import "minimalist/components/badge";
 @import "minimalist/components/project";
 @import "minimalist/components/big-button";
+@import "minimalist/components/block";
+@import "minimalist/components/timeline";

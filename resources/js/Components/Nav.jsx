@@ -1,12 +1,12 @@
 import { Link } from "@inertiajs/react";
 import { useState, useEffect, useRef } from "react";
 
-export default function Nav() {
+export default function Nav({ isOnHome }) {
   const [navOpen, setNavOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("minimalist");
   const [hoverStyle, setHoverStyle] = useState({});
 
-  const[isOnHome, setIsOnHome] = useState(true);
+  
 
   // Définition des refs pour les liens
   const linkGraphic = useRef(null);

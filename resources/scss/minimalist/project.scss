@@ -1,0 +1,104 @@
+main#project {
+
+
+    display: flex;
+    flex-direction: column;
+
+    gap: $xs-spacing;
+
+    section#hero {
+        width: 100%;
+        background-color: $block-bg;
+        border: 1px solid $block-border;
+
+        padding: $md-spacing $l-spacing;
+
+        // margin-bottom: $xs-spacing;
+
+        .container {
+
+            margin-bottom: $l-spacing;
+
+            .title {
+                h1 {
+                    font-size: 32px;
+                    font-weight: 600;
+                    line-height: 1;
+                }
+    
+                p {
+                    font-size: 16px;
+                    font-weight: 300;
+                }
+            }
+    
+            .links {
+                a {
+                    background-color: $block-btn-bg;
+                    // padding: $xxs-spacing;
+                    // aspect-ratio: 1;
+    
+                    width: 34px;
+                    height: 34px;
+    
+                    transition: $fast-animation;
+    
+                    border-radius: $border-radius;
+                    border: 1px solid $block-border;
+    
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+    
+                    &.disabled {
+                        cursor: auto;
+                        opacity: 0.8;
+                        pointer-events: none;
+                    }
+                }
+            }
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid $block-border;
+        }
+
+        .footer {
+            padding-top: $sm-spacing;
+
+            .badge-container:last-of-type .badge-title {
+                text-align: right;
+            }
+        }
+
+    }
+
+    section#infos {
+        #see-full-timeline {
+
+            background-color: $block-btn-bg;
+            border-radius: $border-radius;
+            border: 1px solid $block-border;
+            color : $body-color-light;
+            
+            padding: $xs-spacing $sm-spacing;
+            transition: $fast-animation;
+
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 14px;
+
+            text-align: center;
+
+            &:hover {
+                // background-color: $block-btn-bg-hover;
+            }
+            
+        }
+    }
+
+    section#actions {
+        margin-top: $xs-spacing;
+    }
+}

@@ -13,7 +13,7 @@ class MinimalistController extends Controller
     }
 
     public function project(/* Project $project */) {
-        //
+        return Inertia::render('minimalist/Project');
     }
     
 }

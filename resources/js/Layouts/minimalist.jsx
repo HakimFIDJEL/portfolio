@@ -3,7 +3,7 @@ import '../../scss/minimalist.scss';
 
 import Nav from "@/Components/Nav";
 
-export default function Layout({children, page}) {
+export default function Layout({children, page, isOnHome}) {
     return (
         <>
             <main id={page}>
@@ -15,7 +15,9 @@ export default function Layout({children, page}) {
             </footer>
 
 
-            <Nav />
+            <Nav 
+                isOnHome={isOnHome}
+            />
         </>
     )
 }

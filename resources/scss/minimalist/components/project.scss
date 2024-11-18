@@ -43,7 +43,7 @@
         position: absolute;
         top: 50%;
         left: 0;
-        transform: translateY(-50%)  translateX(-100%);
+        transform: translateY(-50%)  translateX(-200%);
 
         transition: $fast-animation;
 
@@ -62,15 +62,15 @@
         background-color: $block-bg;
 
         .project-content {
-            margin-left: $md-spacing;
+            margin-left: $l-spacing;
         }
 
         .arrow-right {
-            transform: translateY(-50%) translateX(100%);
+            transform: translateY(-50%) translateX(200%);
         }
 
         .arrow-left {
-            transform: translateY(-50%) translateX(50%);
+            transform: translateY(-50%) translateX(100%);
         }
     }
 }

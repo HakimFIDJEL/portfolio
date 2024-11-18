@@ -254,7 +254,7 @@ function Home({}) {
             <Project
                 title="Project 1"
                 subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, odio nec vehicula."
-                link="#"
+                link="/project"
             />
             <Project
                 title="Project 2"
@@ -334,6 +334,6 @@ function Home({}) {
     </>
 }
 
-Home.layout = page => <Layout children={page} page="home"/>
+Home.layout = page => <Layout children={page} page="home" isOnHome={true}/>
 
 export default Home
