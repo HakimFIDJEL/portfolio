@@ -15,6 +15,10 @@ import {
     TimelineItem
 } from "@/Components/minimalist/Timeline"
 
+import {
+    Carrousel,
+} from "@/Components/minimalist/Carrousel"
+
 
 function Project({}) {
     return <>
@@ -41,7 +45,7 @@ function Project({}) {
                         className="hover__effect disabled"
                     >
                         <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0.75 0.5H10.75M10.75 0.5V10.5M10.75 0.5L0.75 10.5" stroke="#C9D1D9" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M0.75 0.5H10.75M10.75 0.5V10.5M10.75 0.5L0.75 10.5" stroke="#C9D1D9" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                     </Link>
                 </span>
@@ -132,9 +136,14 @@ function Project({}) {
             </div>
         </section>
 
-        {/* <section id="images">
-
-        </section> */}
+        <section id="images">
+            <Carrousel navigation={true} pagination={true}>
+                <img src="https://via.placeholder.com/800x600" alt="Project image" />
+                <img src="https://via.placeholder.com/800x600" alt="Project image" />
+                <img src="https://via.placeholder.com/800x600" alt="Project image" />
+                <img src="https://via.placeholder.com/800x600" alt="Project image" />
+            </Carrousel>
+        </section>
 
         <section id="feedback">
             <Block
