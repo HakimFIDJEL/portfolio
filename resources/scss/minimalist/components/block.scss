@@ -41,9 +41,12 @@
     }
 
     .block-content {
-        max-height: 1000px;
+        display: grid;
+        grid-template-rows: 1fr;
+
+        // max-height: 1000px;
         overflow: hidden;
-        transition: $slow-animation;
+        transition: $fast-animation;
 
         font-size: 14px;
         line-height: 16px;
@@ -51,19 +54,25 @@
 
         letter-spacing: 0.5px;
 
+        > :first-child {
+            overflow: hidden;
+        }
+
 
     }
 
     &.collapsed {
 
+        
         gap: 0;
-
+        
         .block-toggle svg {
             transform: rotate(0deg);
         }
-
+        
         .block-content {
-            max-height: 0;
+            grid-template-rows: 0fr;
+            // max-height: 0;
         }
     }
 

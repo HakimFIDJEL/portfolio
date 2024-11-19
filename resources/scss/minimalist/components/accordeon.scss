@@ -61,19 +61,23 @@
             
             border-bottom-right-radius: $border-radius;
             border-bottom-left-radius: $border-radius;
-            
-            overflow: hidden;
-            max-height: 0;
+
+            > :first-child {
+                overflow: hidden;
+            }
+
+            // max-height: 0;
+            display: grid;
+            grid-template-rows: 0fr;
             padding: 0 $re-spacing;
             
             opacity: 0;
             transition: $fast-animation;
-            // transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
             
             &.open {
-                // height: auto;
                 padding: $re-spacing;
-                max-height: 500px;
+                // max-height: 500px;
+                grid-template-rows: 1fr;
                 opacity: 1;
             }
         }

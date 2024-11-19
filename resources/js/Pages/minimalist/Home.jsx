@@ -89,97 +89,99 @@ function Home({}) {
                                 Tech stacks
                             </AccordeonLabel>
                             <AccordeonContent>
+                                <p>
+                                    <BadgeContainer 
+                                        title="Frontend"
+                                    >
+                                        <BadgeWrapper>
+                                            <Badge>
+                                                HTML
+                                            </Badge>
+                                            <Badge>
+                                                CSS
+                                            </Badge>
+                                            <Badge>
+                                                JavaScript
+                                            </Badge>
+                                            <Badge>
+                                                React
+                                            </Badge>
+                                            <Badge>
+                                                jQuery
+                                            </Badge>
+                                            <Badge>
+                                                SCSS
+                                            </Badge>
+                                            <Badge>
+                                                TypeScript
+                                            </Badge>
+                                            <Badge>
+                                                Next JS
+                                            </Badge>
+                                        </BadgeWrapper>
+                                    </BadgeContainer>
+                                    <br />
+                                    <BadgeContainer 
+                                        title="Backend"
+                                    >
+                                        <BadgeWrapper>
+                                            <Badge>
+                                                PHP
+                                            </Badge>
+                                            <Badge>
+                                                Laravel
+                                            </Badge>
+                                            <Badge>
+                                                Node JS
+                                            </Badge>
+                                            <Badge>
+                                                Express JS
+                                            </Badge>
+                                            <Badge>
+                                                Nest JS
+                                            </Badge>
+                                            <Badge>
+                                                October CMS
+                                            </Badge>
+                                        </BadgeWrapper>
+                                    </BadgeContainer>
+                                    <br />
+                                    <BadgeContainer 
+                                        title="Database"
+                                    >
+                                        <BadgeWrapper>
+                                            <Badge>
+                                                MySQL
+                                            </Badge>
+                                            <Badge>
+                                                PostgreSQL
+                                            </Badge>
+                                            <Badge>
+                                                SQLite
+                                            </Badge>
+                                        </BadgeWrapper>
+                                    </BadgeContainer>
+                                    <br />
+                                    <BadgeContainer 
+                                        title="Others"
+                                    >
+                                        <BadgeWrapper>
+                                            <Badge>
+                                                C
+                                            </Badge>
+                                            <Badge>
+                                                Java
+                                            </Badge>
+                                            <Badge>
+                                                Python
+                                            </Badge>
+                                            <Badge>
+                                                Inertia JS
+                                            </Badge>
+                                        </BadgeWrapper>
+                                    </BadgeContainer>
+                                </p>
                                 
-                                <BadgeContainer 
-                                    title="Frontend"
-                                >
-                                    <BadgeWrapper>
-                                        <Badge>
-                                            HTML
-                                        </Badge>
-                                        <Badge>
-                                            CSS
-                                        </Badge>
-                                        <Badge>
-                                            JavaScript
-                                        </Badge>
-                                        <Badge>
-                                            React
-                                        </Badge>
-                                        <Badge>
-                                            jQuery
-                                        </Badge>
-                                        <Badge>
-                                            SCSS
-                                        </Badge>
-                                        <Badge>
-                                            TypeScript
-                                        </Badge>
-                                        <Badge>
-                                            Next JS
-                                        </Badge>
-                                    </BadgeWrapper>
-                                </BadgeContainer>
-                                <br />
-                                <BadgeContainer 
-                                    title="Backend"
-                                >
-                                    <BadgeWrapper>
-                                        <Badge>
-                                            PHP
-                                        </Badge>
-                                        <Badge>
-                                            Laravel
-                                        </Badge>
-                                        <Badge>
-                                            Node JS
-                                        </Badge>
-                                        <Badge>
-                                            Express JS
-                                        </Badge>
-                                        <Badge>
-                                            Nest JS
-                                        </Badge>
-                                        <Badge>
-                                            October CMS
-                                        </Badge>
-                                    </BadgeWrapper>
-                                </BadgeContainer>
-                                <br />
-                                <BadgeContainer 
-                                    title="Database"
-                                >
-                                    <BadgeWrapper>
-                                        <Badge>
-                                            MySQL
-                                        </Badge>
-                                        <Badge>
-                                            PostgreSQL
-                                        </Badge>
-                                        <Badge>
-                                            SQLite
-                                        </Badge>
-                                    </BadgeWrapper>
-                                </BadgeContainer>
-                                <br />
-                                <BadgeContainer 
-                                    title="Others"
-                                >
-                                    <BadgeWrapper>
-                                        <Badge>
-                                            C
-                                        </Badge>
-                                        <Badge>
-                                            Java
-                                        </Badge>
-                                        <Badge>
-                                            Python
-                                        </Badge>
-                                        <Badge>
-                                            Inertia JS
-                                        </Badge>
-                                    </BadgeWrapper>
-                                </BadgeContainer>
 
                             </AccordeonContent>
                         </AccordeonChildren>
