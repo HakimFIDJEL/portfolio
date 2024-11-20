@@ -13,11 +13,19 @@ main#project {
 
         padding: $md-spacing $l-spacing;
 
+        @include respond('breakpoint') {
+            padding: $md-spacing;
+        }
+
         // margin-bottom: $xs-spacing;
 
         .container {
 
             margin-bottom: $l-spacing;
+
+            @include respond('breakpoint') {
+                margin-bottom: $md-spacing;
+            }
 
             .title {
                 h1 {
@@ -69,6 +77,12 @@ main#project {
 
             .badge-container:last-of-type .badge-title {
                 text-align: right;
+            }
+            
+            @include respond('breakpoint') {
+                .badge-container:last-of-type .badge-title {
+                    text-align: left;
+                }
             }
         }
 

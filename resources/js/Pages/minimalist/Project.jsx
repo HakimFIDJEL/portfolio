@@ -24,7 +24,7 @@ function Project({}) {
     return <>
 
         <section id="hero" className="row flex-column">
-            <div className="container row justify-content-between gap-md">
+            <div className="container row justify-content-between gap-md resp-flex-column">
                 <span className="title row flex-column gap-xs">
                     <h1>Project</h1>
                     <p>Project description</p>
@@ -51,7 +51,7 @@ function Project({}) {
                 </span>
             </div>
             <hr />
-            <div className="footer row justify-content-between gap-xs">
+            <div className="footer row justify-content-between gap-xs  resp-flex-column">
                 <BadgeContainer title="Tech stack">
                     <BadgeWrapper>
                         <Badge>React</Badge>
@@ -69,25 +69,27 @@ function Project({}) {
 
         <section id="infos">
 
-            <div className="row gap-xs align-items-start justify-content-between">
+            <div className="row gap-xs align-items-start justify-content-between resp-flex-column">
                 <Block
                     title="📝 Description"
                     collapsable={true}
-                    className="col-7"
+                    className="col-7 resp-col-12"
                 >
-                    Chaque rêve commence par une vision, un idéal que l’on souhaite atteindre, que l’on entrevoit parfois vaguement, comme un phare lointain dans la brume. Au départ, l’enthousiasme est puissant, presque inébranlable. Les premières étapes semblent légères, portées par une énergie nouvelle, celle de l’excitation et de l’envie. C’est souvent à ce moment-là que tout paraît possible, que chaque obstacle semble surmontable. Le cœur bat vite, les idées fusent, et l’envie de réussir brûle comme une flamme vive.
-                    Mais alors que l’on avance, la route se fait sinueuse. L’enthousiasme initial s’essouffle, et la réalité s’impose avec sa part de difficultés. 
+                    <p>
+                        Chaque rêve commence par une vision, un idéal que l’on souhaite atteindre, que l’on entrevoit parfois vaguement, comme un phare lointain dans la brume. Au départ, l’enthousiasme est puissant, presque inébranlable. Les premières étapes semblent légères, portées par une énergie nouvelle, celle de l’excitation et de l’envie. C’est souvent à ce moment-là que tout paraît possible, que chaque obstacle semble surmontable. Le cœur bat vite, les idées fusent, et l’envie de réussir brûle comme une flamme vive.
+                        Mais alors que l’on avance, la route se fait sinueuse. L’enthousiasme initial s’essouffle, et la réalité s’impose avec sa part de difficultés. 
 
-                    L’obstacle inattendu surgit, l’échec fait surface, et l’incertitude s’immisce. C’est ici que le véritable voyage commence, car la persévérance naît rarement dans le confort. Elle se forge dans la résistance, dans l’acte de se relever après chaque chute, même lorsque les forces semblent manquer.
+                        L’obstacle inattendu surgit, l’échec fait surface, et l’incertitude s’immisce. C’est ici que le véritable voyage commence, car la persévérance naît rarement dans le confort. Elle se forge dans la résistance, dans l’acte de se relever après chaque chute, même lorsque les forces semblent manquer.
 
-                    La persévérance, c’est cette capacité à continuer malgré les doutes, à avancer malgré les échecs et à croire en soi lorsque tout paraît flou. Elle nous pousse à affronter nos peurs, à regarder l’inconnu en face et à avancer malgré tout. Elle nous rappelle que chaque difficulté surmontée est une victoire, que chaque échec est une leçon, et que la somme de ces expériences finit par nous renforcer. C’est ce chemin pavé d’erreurs, de succès et d’épreuves qui forge le caractère, qui révèle les vraies forces, celles que l’on ignore souvent posséder.
+                        La persévérance, c’est cette capacité à continuer malgré les doutes, à avancer malgré les échecs et à croire en soi lorsque tout paraît flou. Elle nous pousse à affronter nos peurs, à regarder l’inconnu en face et à avancer malgré tout. Elle nous rappelle que chaque difficulté surmontée est une victoire, que chaque échec est une leçon, et que la somme de ces expériences finit par nous renforcer. C’est ce chemin pavé d’erreurs, de succès et d’épreuves qui forge le caractère, qui révèle les vraies forces, celles que l’on ignore souvent posséder.
+                    </p>
                 </Block>
 
 
                 <Block
                     title="⏳ Timeline"
                     collapsable={true}
-                    className="col-5"
+                    className="col-5 resp-col-12"
                 >
 
                     <div className="row flex-column gap-md">
@@ -151,12 +153,14 @@ function Project({}) {
                 collapsable={true}
                 className="col-12"
             >
-                Chaque rêve commence par une vision, un idéal que l’on souhaite atteindre, que l’on entrevoit parfois vaguement, comme un phare lointain dans la brume. Au départ, l’enthousiasme est puissant, presque inébranlable. Les premières étapes semblent légères, portées par une énergie nouvelle, celle de l’excitation et de l’envie. C’est souvent à ce moment-là que tout paraît possible, que chaque obstacle semble surmontable. Le cœur bat vite, les idées fusent, et l’envie de réussir brûle comme une flamme vive.
-                Mais alors que l’on avance, la route se fait sinueuse. L’enthousiasme initial s’essouffle, et la réalité s’impose avec sa part de difficultés. 
+                <p>
+                    Chaque rêve commence par une vision, un idéal que l’on souhaite atteindre, que l’on entrevoit parfois vaguement, comme un phare lointain dans la brume. Au départ, l’enthousiasme est puissant, presque inébranlable. Les premières étapes semblent légères, portées par une énergie nouvelle, celle de l’excitation et de l’envie. C’est souvent à ce moment-là que tout paraît possible, que chaque obstacle semble surmontable. Le cœur bat vite, les idées fusent, et l’envie de réussir brûle comme une flamme vive.
+                    Mais alors que l’on avance, la route se fait sinueuse. L’enthousiasme initial s’essouffle, et la réalité s’impose avec sa part de difficultés. 
 
-                L’obstacle inattendu surgit, l’échec fait surface, et l’incertitude s’immisce. C’est ici que le véritable voyage commence, car la persévérance naît rarement dans le confort. Elle se forge dans la résistance, dans l’acte de se relever après chaque chute, même lorsque les forces semblent manquer.
+                    L’obstacle inattendu surgit, l’échec fait surface, et l’incertitude s’immisce. C’est ici que le véritable voyage commence, car la persévérance naît rarement dans le confort. Elle se forge dans la résistance, dans l’acte de se relever après chaque chute, même lorsque les forces semblent manquer.
 
-                La persévérance, c’est cette capacité à continuer malgré les doutes, à avancer malgré les échecs et à croire en soi lorsque tout paraît flou. Elle nous pousse à affronter nos peurs, à regarder l’inconnu en face et à avancer malgré tout. Elle nous rappelle que chaque difficulté surmontée est une victoire, que chaque échec est une leçon, et que la somme de ces expériences finit par nous renforcer. C’est ce chemin pavé d’erreurs, de succès et d’épreuves qui forge le caractère, qui révèle les vraies forces, celles que l’on ignore souvent posséder.
+                    La persévérance, c’est cette capacité à continuer malgré les doutes, à avancer malgré les échecs et à croire en soi lorsque tout paraît flou. Elle nous pousse à affronter nos peurs, à regarder l’inconnu en face et à avancer malgré tout. Elle nous rappelle que chaque difficulté surmontée est une victoire, que chaque échec est une leçon, et que la somme de ces expériences finit par nous renforcer. C’est ce chemin pavé d’erreurs, de succès et d’épreuves qui forge le caractère, qui révèle les vraies forces, celles que l’on ignore souvent posséder.
+                </p>
             </Block>
         </section>
 

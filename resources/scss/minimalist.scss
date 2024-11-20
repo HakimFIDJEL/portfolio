@@ -18,7 +18,7 @@ $slow-animation: 0.8s $animation-name;
 $border-radius: 5px;
 
 
-// TODO : breakpoints
+// breakpoints
 $lg-spacing: 4rem;
 $l-spacing: 3rem;
 $md-spacing: 2rem;
@@ -27,6 +27,17 @@ $sm-spacing: 1rem;
 $x-spacing: 0.75rem;
 $xs-spacing: 0.5rem;
 $xxs-spacing: 0.25rem;
+
+$breakpoints: (
+    breakpoint: 850px,
+);
+
+@mixin respond($breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+        @content;
+    }
+}
+
 
 
 * {
@@ -48,6 +59,8 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+
 }
 
 
@@ -59,7 +72,12 @@ body {
     padding: $lg-spacing 0;
     margin: $lg-spacing 0;
 
-    width: min(90%, 735px);
+    width: 735px;
+
+    @include respond('breakpoint') {
+        width: 100%;
+        padding: 0 $sm-spacing;
+    }
 }
 
 main {
@@ -113,6 +131,15 @@ main {
 .justify-content-end {justify-content: flex-end;}
 .justify-content-center {justify-content: center;}
 .justify-content-between {justify-content: space-between;}
+
+// responsive 
+@include respond('breakpoint') {
+    .resp-flex-column {
+        flex-direction: column;
+    }
+
+    .resp-col-12 { width: 100% !important; }
+}
 
 .gap-xxs {gap: $xxs-spacing;}
 .gap-xs {gap: $xs-spacing;}

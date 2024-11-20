@@ -18,6 +18,7 @@
         row-gap: $xxs-spacing;
 
         .badge {
+            white-space: nowrap;
 
             padding: $xxs-spacing $x-spacing;
             border-radius: $border-radius;

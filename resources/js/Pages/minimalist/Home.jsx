@@ -79,10 +79,10 @@ function Home({}) {
                     Tech Skills
                 </h6>
 
-                <div className="row gap-sm">
+                <div className="row gap-sm resp-flex-column">
 
                     <Accordeon
-                        className="col-8"
+                        className="col-8 resp-col-12"
                     >
                         <AccordeonChildren>
                             <AccordeonLabel>
@@ -197,7 +197,7 @@ function Home({}) {
                         </AccordeonChildren>
                     </Accordeon>
 
-                    <span className="col-4 quote">
+                    <span className="col-4 quote resp-col-12">
                         My favorite saying is that the best programming language is <span className="highlight">the one you master</span> but I also enjoy learning new things.
                     </span>
                 </div>

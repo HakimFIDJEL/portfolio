@@ -23,9 +23,9 @@ export const Block = ({ children, collapsable, title, className }) => {
                 )}
             </div>
             <div className={`block-content`}>
-                <p>
-                    {children}
-                </p>
+                
+                {children}
+                
             </div>
         </div>
     );

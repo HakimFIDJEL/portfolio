@@ -11,6 +11,10 @@
 
     transition: $slow-animation;
 
+    @include respond('breakpoint') {
+        padding: $md-spacing;
+    }
+
     .block-header {
 
 

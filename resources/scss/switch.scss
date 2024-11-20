@@ -12,6 +12,11 @@ nav {
 
     transition: all $fast-animation;
 
+    @include respond('breakpoint') {
+        bottom: 2rem;
+        gap: $xs-spacing;
+    }
+
     button.close-button {
         display: flex;
         align-items: center;

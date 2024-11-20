@@ -24,6 +24,8 @@
         gap: $xs-spacing;
         
         transition: $fast-animation;
+
+        margin-right: $l-spacing;
         
         .project-title {
             font-size: 16px;
@@ -53,7 +55,7 @@
         position: absolute;
         top: 50%;
         right: 0;
-        transform: translateY(-50%);
+        transform: translateY(-50%) translateX(-100%);
 
         transition: $fast-animation;
     }
@@ -63,6 +65,7 @@
 
         .project-content {
             margin-left: $l-spacing;
+            margin-right: 0;
         }
 
         .arrow-right {

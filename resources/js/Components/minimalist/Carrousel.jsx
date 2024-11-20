@@ -35,7 +35,7 @@ export const Carrousel = ({ children, navigation, pagination }) => {
                 )}
 
                 <div className="carrousel-wrapper">
-                    <div className="carrousel" ref={carrouselRef}>
+                    <div className="carrousel" ref={carrouselRef} onDrag={onDrag}>
                         {children.map((child, index) => (
                             <CarrouselItem key={index} active={currentSlide === index}>
                                 {child}
@@ -57,6 +57,20 @@ export const Carrousel = ({ children, navigation, pagination }) => {
             {/* Footer avec pagination et navigation */}
             {(navigation || pagination) && (
                 <div className="carrousel-footer">
+                    {navigation && (
+                        <div className="row carrousel-arrows justify-content-between gap-xs">
+                            <CarrouselArrow
+                                direction="left"
+                                onClick={() => goToSlide(currentSlide - 1)}
+                                disabled={currentSlide === 0}
+                            />
+                            <CarrouselArrow
+                                direction="right"
+                                onClick={() => goToSlide(currentSlide + 1)}
+                                disabled={currentSlide === children.length - 1}
+                            />
+                        </div>
+                    )}
                     {pagination && (
                         <CarrouselButtons
                             items={children}
@@ -72,8 +86,13 @@ export const Carrousel = ({ children, navigation, pagination }) => {
 
 const CarrouselItem = ({ children, active }) => {
     return (
-        <div className={`carrousel-item ${active ? 'active' : ''}`}>
-            {children}
+        <div className={`carrousel-item ${active ? 'active' : ''}`} >
+            <a href={children.props.src} target='_blank' className='carrousel-item-image'>
+                {children}
+            </a>
+            <div className='carrousel-item-caption'>
+                {children.props.alt}
+            </div>
         </div>
     );
 };

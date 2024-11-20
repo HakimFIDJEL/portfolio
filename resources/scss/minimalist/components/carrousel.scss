@@ -21,19 +21,18 @@
             overflow : hidden;
 
             .carrousel {
-    
-                // background-color: lightgreen;
                 
                 width: 100%;
                 display: flex;
                 flex: 1;
-                // overflow: hidden;
                 
                 transform: translateX(0%);
                 transition: $slow-animation;
                 transition-delay: 0.3s;
                 
                 .carrousel-item {
+
+                    position: relative;
 
                     aspect-ratio: 16 / 9;
                     
@@ -48,18 +47,45 @@
                         transition: $fast-animation;
                         transition-delay: 0.9s;
                         transform: scale(1);
+                        .carrousel-item-caption {
+                            transition-delay: 1.2s;
+                            opacity: 1;
+                        }
                     }
+
     
-                    
-                    img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
+                    a.carrousel-item-image { 
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                    }
+
+                    div.carrousel-item-caption {
+
+                        color: $body-color-light;
+                        position: absolute;
+
+                        bottom: $xxs-spacing;
+                        left: 50%;
+                        transform: translateX(-50%);
+
+                        background-color: $block-bg;
+                        border: 1px solid $block-border;
+                        border-radius: $border-radius;
+                        padding: $xxs-spacing $sm-spacing;
+
+                        opacity: 0;
+                        transition: $fast-animation;
+
                     }
                 }
             }
     
         }
+
         .carrousel-arrow {
 
             display: flex;
@@ -81,6 +107,10 @@
             border: 1px solid $block-border;
 
             aspect-ratio: 1 / 1;
+
+            @include respond('breakpoint') {
+                display: none;
+            }
 
             &.carrousel-arrow-left {
                 svg {
@@ -123,6 +153,9 @@
             align-items: center;
             justify-content: center;
 
+            @include respond('breakpoint') {
+                display: none;
+            }
 
             button.carrousel-button {
 
@@ -154,6 +187,7 @@
                     outline: 1px solid $body-color-light;
 
                     opacity: 0;
+
                 }
 
                 &:hover {
@@ -172,15 +206,46 @@
             }
         }
 
-        .carrousel-arrow {
+        .carrousel-arrows {
 
             display: none;
 
-            &.carrousel-arrow-left {
-
+            @include respond('breakpoint') {
+                display: flex;
+                margin-bottom: $xs-spacing;
             }
-            &.carrousel-arrow-right {
 
+            .carrousel-arrow {
+
+                width: 100%;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                padding: $xs-spacing;
+
+                background-color: $block-btn-bg;
+                border: 1px solid $block-border;
+                border-radius: $border-radius;
+
+                cursor: pointer;
+                transition: $fast-animation;
+
+                &:disabled {
+                    cursor: auto;
+                    opacity: 0.8;
+                    pointer-events: none;
+                }
+    
+                &.carrousel-arrow-left {
+                    transform: rotate(0deg);
+    
+                }
+                &.carrousel-arrow-right {
+                    transform: rotate(180deg);
+    
+                }
             }
         }
     }
