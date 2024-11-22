@@ -1,4 +1,4 @@
-export default function Section({title, subtitle, id, children}) {
+export const Section = ({title, subtitle, id, children}) => {
     return <>
         <section 
             className="section"

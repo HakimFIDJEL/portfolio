@@ -22,6 +22,8 @@ nav {
         align-items: center;
         justify-content: center;
 
+        aspect-ratio: 1 / 1;
+
         background-color: $block-btn-bg;
         border: none;
         border-radius: 50%;
@@ -33,8 +35,10 @@ nav {
 
         border: 1px solid $block-border;
     }
+
+      
     
-    span.link-group {
+    .link-group {
         display: flex;
         align-items: center;
         gap: 1rem;
@@ -43,7 +47,6 @@ nav {
         border-radius: 10px;
         border: 1px solid $block-border;
 
-        height: 40px;
         width: 100%;
         
         transition: all $fast-animation;
@@ -67,27 +70,14 @@ nav {
 
             &.active {
                 font-weight: 500;
+                background-color: $block-bg;
+                border-radius: $border-radius;
             }
         }
 
-        .link__hover {
-            position: absolute;
-            top: 50%;
-            left: 0;
-
-            z-index: 0;
-
-            transform: translateY(-50%);
-
-            transition: all $fast-animation;
-
-            background: $block-bg;
-            height: 32px;
-            border-radius: 10px;
-        }
     }
 
-    a.back-button {
+    .back-button {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -114,17 +104,12 @@ nav {
     }
 
     &.open {
-        span.link-group {
+        .link-group {
             opacity: 1;
             pointer-events: all;
             width: 100%;
-            padding: $xs-spacing;
+            padding: $xxs-spacing $xs-spacing;
         }
-
-        .link__hover {
-            opacity: 1;
-        }
-
         a.back-button {
             opacity: 1;
             pointer-events: all;
@@ -133,14 +118,11 @@ nav {
     }
 
     &.closed {
-        span.link-group {
+        .link-group {
             opacity: 0;
+            padding: $xxs-spacing 0;
             pointer-events: none;
             width: 0;
-        }
-
-        .link__hover {
-            opacity: 0;
         }
 
         button.close-button {

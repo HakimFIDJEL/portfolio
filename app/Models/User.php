@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+// Storage
+use Illuminate\Support\Facades\Storage;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -18,9 +21,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'lastname',
         'email',
         'password',
+        'password_expires_at',
     ];
 
     /**
@@ -30,7 +35,12 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'password_expires_at',
         'remember_token',
+        'user_token',
+        'user_token_expires_at',
+        'password_token',
+        'password_token_expires_at',
     ];
 
     /**
@@ -43,6 +53,16 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'password_expires_at' => 'datetime',
+            'user_token_expires_at' => 'datetime',
+            'password_token_expires_at' => 'datetime',
+            'remember_token' => 'string',
+            'user_token' => 'string',
+            'password_token' => 'string',
         ];
+    }
+
+    public function getImageUrl() {
+        return Storage::url($this->pfp_url);
     }
 }

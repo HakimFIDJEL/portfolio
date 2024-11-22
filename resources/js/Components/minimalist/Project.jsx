@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 
-export default function Project({title, subtitle, link}) {
+export const Project = ({title, subtitle, link}) => {
     return (
         <Link 
             className="project-item"

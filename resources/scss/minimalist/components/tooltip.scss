@@ -1,0 +1,29 @@
+.tooltip {
+    position: fixed;
+    z-index: 100;
+    background-color: $body-bg;
+    color: $body-color-light;
+    border-radius: $border-radius;
+    padding: $xs-spacing $x-spacing;
+    border: 1px solid $block-border;
+    pointer-events: none;
+    white-space: nowrap;
+    opacity: 0;
+
+    transition: top 0s ease 0s, left 0s ease 0s, transform $very-fast-animation, opacity $very-fast-animation;
+    
+    transform: translate(-50%, -75%) scale(0.6);
+    
+    
+    &.active {
+        transform: translate(-50%, -120%) scale(1);
+        transition-delay: 0.8s;
+        opacity: 1;
+    }
+
+}
+
+  
+
+
+

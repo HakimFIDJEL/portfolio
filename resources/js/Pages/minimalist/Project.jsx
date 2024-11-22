@@ -1,8 +1,13 @@
 import Layout from "@/Layouts/minimalist"
-import { Link } from "@inertiajs/react"
 
-import BigButton from "@/Components/minimalist/BigButton"
+import { Link } from "@inertiajs/react"
+import { usePage } from "@inertiajs/react"
+
+
+import { Tooltip } from "@/Components/minimalist/Tooltip"
+import { BigButton }  from "@/Components/minimalist/BigButton"
 import { Block } from "@/Components/minimalist/Block"
+import { Carrousel } from "@/Components/minimalist/Carrousel"
 
 import { 
     Badge,
@@ -15,12 +20,14 @@ import {
     TimelineItem
 } from "@/Components/minimalist/Timeline"
 
-import {
-    Carrousel,
-} from "@/Components/minimalist/Carrousel"
 
 
 function Project({}) {
+
+    const props = usePage().props;
+    console.log(props)
+
+
     return <>
 
         <section id="hero" className="row flex-column">
@@ -30,24 +37,26 @@ function Project({}) {
                     <p>Project description</p>
                 </span>
                 <span className="links d-flex align-items-center gap-xs">
-                    <Link
-                        title="Source code"
-                        href="#"
-                        className="hover__effect"
-                    >
-                        <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M23.25 8L18 13.25L16.9425 12.1925L21.1275 8L16.9425 3.8075L18 2.75L23.25 8ZM0.75 8L6 2.75L7.0575 3.8075L2.8725 8L7.0575 12.1925L6 13.25L0.75 8ZM9.315 15.113L13.23 0.5L14.679 0.88775L10.764 15.5L9.315 15.113Z" fill="#C9D1D9"/>
-                        </svg>
-                    </Link>
-                    <Link
-                        title="See project"
-                        href="#"
-                        className="hover__effect disabled"
-                    >
-                        <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0.75 0.5H10.75M10.75 0.5V10.5M10.75 0.5L0.75 10.5" stroke="#C9D1D9" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                    </Link>
+                    <Tooltip label="Source code">
+                        <Link
+                            href="#"
+                            className="hover__effect"
+                        >
+                            <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M23.25 8L18 13.25L16.9425 12.1925L21.1275 8L16.9425 3.8075L18 2.75L23.25 8ZM0.75 8L6 2.75L7.0575 3.8075L2.8725 8L7.0575 12.1925L6 13.25L0.75 8ZM9.315 15.113L13.23 0.5L14.679 0.88775L10.764 15.5L9.315 15.113Z" fill="#C9D1D9"/>
+                            </svg>
+                        </Link>
+                    </Tooltip>
+                    <Tooltip label="Live demo">
+                        <Link
+                            href="#"
+                            className="hover__effect disabled"
+                        >
+                            <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.75 0.5H10.75M10.75 0.5V10.5M10.75 0.5L0.75 10.5" stroke="#C9D1D9" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </Link>
+                    </Tooltip>
                 </span>
             </div>
             <hr />
@@ -185,10 +194,9 @@ function Project({}) {
 }
 
 
-Project.layout = page => <Layout 
-                            children={page} 
-                            page="project" 
-                            isOnHome={false}
-                        />
+Project.layout = page => {
+    const props = page.props;
+    return <Layout children={page} page="project" isOnHome={false} version={props.version}/>
+} 
 
 export default Project
