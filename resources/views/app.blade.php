@@ -20,7 +20,7 @@
         @vite('resources/scss/minimalist.scss')
     @endif
 
-
+    @routes
 
     @inertiaHead
 </head>

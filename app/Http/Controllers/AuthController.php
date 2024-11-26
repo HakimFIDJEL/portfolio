@@ -36,13 +36,7 @@ class AuthController extends Controller
         // If user is already logged in, redirect to home
         if(Auth::check()) {
 
-            // If the password expired
-            $user = Auth::user();
-            if($user->password_expires_at < now()) {
-                return redirect()->route('auth.password.change')->with(['error' => 'Votre mot de passe a expiré']);
-            }
-
-            return redirect()->route('admin.home')->with(['success' => 'Vous êtes connecté']);
+            return redirect()->route('admin.home')->with(['success' => 'You are logged in']);
             
         }
 
@@ -57,9 +51,9 @@ class AuthController extends Controller
         $user = Auth::user();
         if($user) {
             Auth::logout();
-            return redirect()->route('auth.login')->with(['success' => 'Vous êtes maintenant déconnecté']);
+            return redirect()->route('auth.login')->with(['success' => 'You are now logged out']);
         } else {
-            return redirect()->route('auth.login')->with(['error' => 'Vous n\'êtes pas connecté']);
+            return redirect()->route('auth.login')->with(['error' => 'You are not logged in']);
         }
     }
 
@@ -69,87 +63,48 @@ class AuthController extends Controller
     {
         $data = $request->all();
 
+
         $remember = $request->has('remember');
+
 
         if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $remember)) {
 
             $user = Auth::user();
 
-            if(!$user->email_verified_at) {
-                $user->user_token = Str::random(30);
-                $user->user_token_expires_at = now()->addHours(24);
-
-                $this->sendEmailVerification();
-                return redirect()->route('auth.email-verification', ['user_token' => $user->user_token]);
-            }
-
-            return redirect()->route('auth.login')->with(['success' => 'Vous êtes maintenant connecté']);
+            return redirect()->route('auth.login');
         } else{
-            return redirect()->route('auth.login')->with(['error' => 'Email ou mot de passe incorrect']);
+            return redirect()->route('auth.login')->with(['error' => 'Email or password incorrect']);
         }
 
     }
-
-   
-
-    // Post Logout
-    public function logoutPost()
-    {
-        $user = Auth::user();
-        if($user) {
-            Auth::logout();
-            return redirect()->route('main.index')->with(['success' => 'Vous êtes maintenant déconnecté']);
-        } else {
-            return redirect()->route('auth.login')->with(['error' => 'Vous n\'êtes pas connecté']);
-        }
-    }
-
-   
-
-   
 
 
     // Get Forgot Password
     public function forget()
     {
-        return view('auth.password.forget');
+        return Inertia::render('auth/password/Forget');
     }
 
     // Get Reset Password
     public function reset(String $password_token = null)
     {
         if(!$password_token) {
-            return redirect()->route('auth.password.forget')->with(['error' => 'Token invalide']);
+            return redirect()->route('auth.password.forget')->with(['error' => 'Token invalid']);
         }
 
         $user = User::where('password_token', $password_token)->first();
 
         if(!$user) {
-            return redirect()->route('auth.password.forget')->with(['error' => 'Token invalide']);
+            return redirect()->route('auth.password.forget')->with(['error' => 'Token invalid']);
         }
 
         if($user->password_token_expires_at < now()) {
-            return redirect()->route('auth.password.forget')->with(['error' => 'Token expiré']);
+            return redirect()->route('auth.password.forget')->with(['error' => 'Token expired']);
         }
 
-        return view('auth.password.reset')->with(['password_token' => $password_token]);
+        return Inertia::render('auth/password/Reset', ['password_token' => $password_token]);
     }
 
-    // Get Change Password
-    public function change()
-    {
-        $user = Auth::user();
-
-        if(!$user) {
-            return redirect()->route('auth.login')->with(['error' => 'Vous n\'êtes pas connecté']);
-        }
-
-        if($user->password_expires_at > now()) {
-            return redirect()->route('auth.login')->with(['error' => 'Votre mot de passe n\'a pas expiré']);
-        }
-
-        return view('auth.password.change');
-    }
 
     // Post Forgot Password
     public function forgetPost(PasswordForgetRequest $request)
@@ -161,6 +116,7 @@ class AuthController extends Controller
 
         if($user) {
 
+
             $user->generatePasswordToken();
 
             // Send email with token
@@ -169,7 +125,7 @@ class AuthController extends Controller
 
         }
         
-        return redirect()->route('auth.password.forget')->with(['success' => 'Si un compte existe avec cet email, un email de réinitialisation de mot de passe vous a été envoyé']);
+        return redirect()->route('auth.password.forget')->with(['success' => 'If the email exists, a password reset link will be sent']);
     }
 
     // Post Reset Password
@@ -182,11 +138,11 @@ class AuthController extends Controller
         $user = User::where('password_token', $password_token)->first();
 
         if(!$user) {
-            return redirect()->route('auth.password.forget')->with(['error' => 'Token invalide']);
+            return redirect()->route('auth.password.forget')->with(['error' => 'Token invalid']);
         }
 
         if($user->password_token_expires_at < now()) {
-            return redirect()->route('auth.password.forget')->with(['error' => 'Token expiré']);
+            return redirect()->route('auth.password.forget')->with(['error' => 'Token expired']);
         }
 
         $user->password = Hash::make($password);
@@ -194,34 +150,7 @@ class AuthController extends Controller
 
         $user->removePasswordToken();
 
-        return redirect()->route('auth.login')->with(['success' => 'Mot de passe réinitialisé']);
+        return redirect()->route('auth.login')->with(['success' => 'Password reset successfully']);
     }
 
-    // Post Change Password
-    public function changePost(PasswordChangeRequest $request)
-    {
-        $data = $request->all();
-        $password = $data['password'];
-
-        $user = Auth::user();
-
-        if(!$user) {
-            return redirect()->route('auth.login')->with(['error' => 'Vous n\'êtes pas connecté']);
-        }
-
-        if($user->password_expires_at > now()) {
-            return redirect()->route('auth.login')->with(['error' => 'Votre mot de passe n\'a pas expiré']);
-        }
-
-        if(Hash::check($password, $user->password)) {
-            return redirect()->route('auth.password.change')->with(['error' => 'Le nouveau mot de passe doit être différent de l\'ancien']);
-        }
-
-        $user->password = Hash::make($password);
-        $user->password_expires_at = now()->addYear();
-
-        $user->save();
-
-        return redirect()->route('auth.login')->with(['success' => 'Mot de passe changé']);
-    }
 }

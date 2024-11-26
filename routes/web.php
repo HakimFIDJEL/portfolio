@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MinimalistController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\admin\MainController as MainAdminController;
 
 use App\Http\Middleware\AuthMiddleware;
 
@@ -24,16 +25,14 @@ Route::prefix('/auth')->name('auth.')->controller(AuthController::class)->group(
     {
         Route::get('/forget', 'forget')->name('forget');
         Route::get('/reset/{password_token?}', 'reset')->name('reset');
-        Route::get('/change', 'change')->name('change');
 
         Route::post('/forget', 'forgetPost')->name('toForget');
         Route::post('/reset', 'resetPost')->name('toReset');
-        Route::post('/change', 'changePost')->name('toChange');
     });
 });
 
-// AUTH ROUTES
-Route::prefix('/admin')->name('admin.')->controller(AdminController::class)->middleware(AuthMiddleware::class)->group(function()
+// ADMIN ROUTES
+Route::prefix('/admin')->name('admin.')->controller(MainAdminController::class)->middleware(AuthMiddleware::class)->group(function()
 {
     Route::get('/', 'home')->name('home');
 });

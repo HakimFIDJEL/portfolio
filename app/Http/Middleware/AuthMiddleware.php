@@ -17,7 +17,7 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
-            return redirect()->route('auth.login')->with(['error' => 'Vous devez être connecté pour accéder à cette page']);
+            return redirect()->route('auth.login')->with(['error' => 'You must be logged in to access this page']);
         }
 
 

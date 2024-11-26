@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 // Storage
 use Illuminate\Support\Facades\Storage;
@@ -64,5 +65,17 @@ class User extends Authenticatable
 
     public function getImageUrl() {
         return Storage::url($this->pfp_url);
+    }
+
+    public function generatePasswordToken() {
+        $this->password_token = Str::random(30);
+        $this->password_token_expires_at = now()->addDay();
+        $this->save();
+    }
+
+    public function removePasswordToken() {
+        $this->password_token = null;
+        $this->password_token_expires_at = null;
+        $this->save();
     }
 }

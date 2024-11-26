@@ -24,6 +24,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => 'required|string|email|max:100',
             'password' => 'required|string|min:8|max:60',
+            'remember' => 'boolean',
         ];
     }
 
@@ -44,6 +45,8 @@ class LoginRequest extends FormRequest
             'password.string' => 'Le mot de passe doit être une chaîne de caractères',
             'password.min' => 'Le mot de passe doit faire au moins 8 caractères',
             'password.max' => 'Le mot de passe ne doit pas dépasser 60 caractères',
+
+            'remember.boolean' => 'La case à cocher doit être un booléen',
         ];
     }
 }

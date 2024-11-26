@@ -1,4 +1,3 @@
-
 import { usePage } from '@inertiajs/react';
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/hooks/use-toast"
@@ -9,11 +8,8 @@ import { useEffect } from 'react';
 
 export default function Layout({children}) {
 
-
     const props = usePage().props;
     const { toast } = useToast();
-
-    console.log('flash', props.flash);
 
     useEffect(() => {
         if(props.flash.error) {
@@ -30,7 +26,6 @@ export default function Layout({children}) {
             });
         }
     }, [props.flash]);
-
 
     return (
         <>
