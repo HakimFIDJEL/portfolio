@@ -20,7 +20,7 @@ import { useRoute } from "ziggy"
 
 function Home({ }) {
 
-  
+    const route = useRoute()
 
     return (
         <>
@@ -30,7 +30,13 @@ function Home({ }) {
 }
 
 Home.layout = page => {
-    return <Layout children={page} />
+    const breadcrumbs = [
+        {
+            title: "Home",
+            href: route("admin.home"),
+        },
+    ];
+    return <Layout children={page} breadcrumbs={breadcrumbs} />;
 }
 
 export default Home
