@@ -6,7 +6,14 @@ import { useRoute } from "ziggy";
 import { useState } from "react";
 
 // Icons
-import { Loader2, ArrowLeft, Folder, Plus } from "lucide-react";
+import { 
+    Loader2, 
+    ArrowLeft, 
+    Folder, 
+    Plus,
+    Archive,
+    TestTubeDiagonal  
+} from "lucide-react";
 
 // Components
 import { Button } from "@/Components/ui/button";
@@ -27,6 +34,17 @@ import {
     TabsList,
     TabsTrigger
 } from "@/components/ui/tabs"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+
+import {
+    Datepicker
+} from "@/components/ui/datepicker"
 
 
 function Projects() {
@@ -110,39 +128,186 @@ function Projects() {
                                         Timeline
                                     </TabsTrigger>
                                 </TabsList>
-                                <TabsContent value="project" className="w-full mt-4">
-                                    <div className="flex flex-row gap-4">
-                                        <div className="grid gap-2 w-full">
-                                            <Label htmlFor="title">Title</Label>
-                                            <Input
-                                                id="title"
+                                <TabsContent value="project" className="my-4">
+                                    <h4 className="text-lg font-semibold">Informations</h4>
+                                    <Separator className="mt-1" />
+                                    <div className="grid gap-4 my-4">
+                                        <div className="grid grid-cols-12 gap-2">
+                                            <div className="grid gap-2 col-span-6">
+                                                <Label htmlFor="title">Title</Label>
+                                                <Input
+                                                    id="title"
+                                                    type="text"
+                                                    placeholder="e.g. My awesome project"
+                                                    required
+                                                    onChange={(e) => {
+                                                        setData("title", e.target.value);
+                                                        generateSlug(e.target.value);
+                                                    }}
+                                                    className={
+                                                        errors.title ? "border-red-500" : ""
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="grid gap-2 col-span-6">
+                                                <Label htmlFor="slug">Slug</Label>
+                                                <Input
+                                                    id="slug"
+                                                    type="text"
+                                                    placeholder="e.g. my-awesome-project"
+                                                    required
+                                                    disabled
+                                                    value={slug}
+                                                    className={
+                                                        errors.slug ? "border-red-500" : ""
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-12 gap-2">
+                                            <div className="grid gap-2 col-span-8">
+                                                <Label htmlFor="subtitle">
+                                                    Subtitle
+                                                </Label>
+                                                <Input
+                                                    id="subtitle"
+                                                    type="text"
+                                                    placeholder="e.g. A project that does something"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData("subtitle", e.target.value)
+                                                    }
+                                                    className={
+                                                        errors.subtitle ? "border-red-500" : ""
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="grid gap-2 col-span-4">
+                                                <Label htmlFor="type">
+                                                    Type
+                                                </Label>
+                                                <Select 
+                                                    onValueChange={(value) => setData("type", value)}
+                                                    required
+                                                    className={
+                                                        errors.type ? "border-red-500" : ""
+                                                    }
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select a type" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="project">
+                                                            
+                                                            Project
+                                                        </SelectItem>
+                                                        <SelectItem value="lab" className="flex">
+                                                            Lab
+                                                        </SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-12 gap-2">
+                                            <div className="grid gap-2 col-span-6">
+                                                <Label htmlFor="end_date">
+                                                    End date
+                                                </Label>
+                                                <Datepicker onDateChange={(date) => setData("end_date", date)} required/>
+                                            </div>
+                                            <div className="grid gap-2 col-span-6">
+                                                <Label htmlFor="work_in_progress">
+                                                    Status
+                                                </Label>
+                                                <Select onValueChange={(value) => setData("work_in_progress", value)}>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select the status" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="true">Work in progress</SelectItem>
+                                                        <SelectItem value="false">Project done</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                        </div>
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="description">
+                                                Description
+                                            </Label>
+                                            <Textarea
+                                                id="description"
                                                 type="text"
-                                                placeholder="e.g. My awesome project"
+                                                placeholder="e.g. This project does something"
                                                 required
-                                                onChange={(e) => {
-                                                    setData("title", e.target.value);
-                                                    generateSlug(e.target.value);
-                                                }}
+                                                onChange={(e) =>
+                                                    setData("description", e.target.value)
+                                                }
                                                 className={
-                                                    errors.title ? "border-red-500" : ""
+                                                    errors.description ? "border-red-500" : ""
                                                 }
                                             />
                                         </div>
-                                        <div className="grid gap-2 w-full">
-                                            <Label htmlFor="slug">Slug</Label>
-                                            <Input
-                                                id="slug"
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="feedback">
+                                                Feedback
+                                            </Label>
+                                            <Textarea
+                                                id="feedback"
                                                 type="text"
-                                                placeholder="e.g. my-awesome-project"
+                                                placeholder="e.g. I learned a lot from this project"
                                                 required
-                                                disabled
-                                                value={slug}
+                                                onChange={(e) =>
+                                                    setData("feedback", e.target.value)
+                                                }
                                                 className={
-                                                    errors.slug ? "border-red-500" : ""
+                                                    errors.feedback ? "border-red-500" : ""
                                                 }
                                             />
                                         </div>
                                     </div>
+
+                                    <h4 className="text-lg font-semibold">Links</h4>
+                                    <Separator className="mt-1" />
+                                    <div className="grid gap-4 my-4">
+                                        <div className="grid grid-cols-12 gap-2">
+                                            <div className="grid gap-2 col-span-6">
+                                                <Label htmlFor="source_code_url">
+                                                    Source code URL
+                                                </Label>
+                                                <Input
+                                                    id="source_code_url"
+                                                    type="text"
+                                                    placeholder="e.g. https://github.com/HakimFIDJEL/my-project.git"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData("source_code_url", e.target.value)
+                                                    }
+                                                    className={
+                                                        errors.source_code_url ? "border-red-500" : ""
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="grid gap-2 col-span-6">
+                                                <Label htmlFor="live_demo_url">
+                                                    Live demo URL
+                                                </Label>
+                                                <Input
+                                                    id="live_demo_url"
+                                                    type="text"
+                                                    placeholder="e.g. https://my-project.fr"
+                                                    required
+                                                    onChange={(e) =>
+                                                        setData("live_demo_url", e.target.value)
+                                                    }
+                                                    className={
+                                                        errors.live_demo_url ? "border-red-500" : ""
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
                                 </TabsContent>
                                 <TabsContent value="stacks">
                                     Here you can fill the stacks
