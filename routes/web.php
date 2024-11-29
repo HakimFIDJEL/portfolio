@@ -50,7 +50,12 @@ Route::prefix('/admin')->name('admin.')->middleware(AuthMiddleware::class)->grou
     Route::prefix('/projects')->name('projects.')->controller(AdminProjectController::class)->group(function()
     {
         Route::get('/', 'index')->name('index');
-        //
+        Route::get('/create', 'create')->name('create');
+        Route::get('/edit/{project}', 'edit')->name('edit');
+
+        Route::post('/store', 'store')->name('store');
+        Route::post('/update/{project}', 'update')->name('update');
+        Route::delete('/delete/{project}', 'delete')->name('delete');
     });
 
     // Stacks

@@ -15,10 +15,12 @@ class Project extends Model
 
     protected $fillable = [
         'slug',
+        'type',
         'title',
         'subtitle',
         'end_date',
         'description',
+        'work_in_progress',
         'feedback',
         'source_code_url',
         'live_demo_url',

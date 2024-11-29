@@ -26,13 +26,13 @@ class SocialController extends Controller
         return Inertia::render('admin/socials/Create');
     }
 
-    public function edit(social $social) {
+    public function edit(Social $social) {
         return Inertia::render('admin/socials/Edit', [
             'social' => $social
         ]);
     }
 
-    public function store(socialRequest $request) {
+    public function store(SocialRequest $request) {
         $validated = $request->validated();
 
         Social::create($validated);
@@ -40,7 +40,7 @@ class SocialController extends Controller
         return redirect()->route('admin.socials.index')->with(['success' => 'Social created successfully']);
     }
 
-    public function update(social $social, socialRequest $request) {
+    public function update(Social $social, SocialRequest $request) {
         $validated = $request->validated();
 
         $social->update($validated);
@@ -48,7 +48,7 @@ class SocialController extends Controller
         return redirect()->route('admin.socials.index')->with(['success' => 'Social updated successfully']);
     }
 
-    public function delete(social $social) {
+    public function delete(Social $social) {
         $social->delete();
         return redirect()->route('admin.socials.index')->with(['success' => 'Social deleted successfully']);
     }
