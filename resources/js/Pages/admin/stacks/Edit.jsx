@@ -5,7 +5,7 @@ import { useRoute } from "ziggy";
 import { useState } from "react";
 
 // Icons
-import { Loader2, ArrowLeft, Blocks, Plus } from "lucide-react";
+import { Loader2, ArrowLeft, Blocks, Settings2 } from "lucide-react";
 
 // Components
 import { Button } from "@/Components/ui/button";
@@ -137,7 +137,7 @@ function Stacks({ stack, categories }) {
                                     hidden={!processing}
                                 />
                                 Update stack
-                                <Plus size={18} hidden={processing} />
+                                <Settings2 size={18} hidden={processing} />
                             </Button>
                         </div>
                     </form>

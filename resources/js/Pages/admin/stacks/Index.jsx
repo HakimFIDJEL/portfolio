@@ -40,11 +40,14 @@ import { Label } from "@/Components/ui/label";
 
 function Stacks({ stacks }) {
 
+    console.log(stacks);
 
     const route = useRoute();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [stackToDelete, setStackToDelete] = useState(null);
+
+
 
     function handleDeleteClick(e, stack) {
         e.preventDefault();
@@ -72,7 +75,11 @@ function Stacks({ stacks }) {
 
     function onSubmit(e) {
         e.preventDefault();
-        post(route("admin.stacks.categories.store"));
+        post(route("admin.stacks.categories.store"), {
+            onSuccess: () => {
+                setData({ label: "" });
+            }
+        })
     }
 
     return (
@@ -92,7 +99,7 @@ function Stacks({ stacks }) {
 
                     <span className="flex gap-4">
                         <Dialog>
-                            <DialogTrigger asChild>
+                            <DialogTrigger>
                                 <Button variant="secondary">
                                     <Plus size={18} />
                                     Create a category
@@ -116,7 +123,8 @@ function Stacks({ stacks }) {
                                                         type="text"
                                                         placeholder="e.g. Frontend"
                                                         required
-                                                        onChange={(e) => setData("label",e.target.value)}
+                                                        value={data.label}
+                                                        onChange={(e) => setData("label", e.target.value)}
                                                         className={ errors.label ? "border-red-500" : "" }
                                                     />
                                                 </div>

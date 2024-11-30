@@ -46,8 +46,13 @@ import {
     Datepicker
 } from "@/components/ui/datepicker"
 
+import {
+    ToggleGroup,
+    ToggleGroupItem,
+} from "@/components/ui/toggle-group"
 
-function Projects({ stacks }) {
+
+function Projects({ stackCategories }) {
     const route = useRoute();
 
     // Slug
@@ -57,7 +62,7 @@ function Projects({ stacks }) {
     }
 
     // Stacks
-    console.log(stacks);
+    const [selectedStacks, setSelectedStacks] = useState([]);
 
     const { data, setData, post, processing, errors } = useForm({
         // Projet data
@@ -80,12 +85,16 @@ function Projects({ stacks }) {
         timeline: [],
 
         // Project stacks
-        stacks: stacks,
+        stacks: selectedStacks,
     });
 
     function onSubmit(e) {
         e.preventDefault();
         post(route("admin.projects.store"));
+    }
+
+    function handleToggleChange(e) {
+        setSelectedStacks(e);
     }
 
     return (
@@ -131,6 +140,7 @@ function Projects({ stacks }) {
                                         Timeline
                                     </TabsTrigger>
                                 </TabsList>
+                                
                                 <TabsContent value="project" className="my-4">
                                     <h4 className="text-lg font-semibold">Informations</h4>
                                     <Separator className="mt-1" />
@@ -309,12 +319,55 @@ function Projects({ stacks }) {
                                             </div>
                                         </div>
                                     </div>
-
-                                    
                                 </TabsContent>
                                 <TabsContent value="stacks" className="my-4">
-                                    Here you can fill the stacks
+
+                                    <div className="grid gap-4 my-4">
+                                        {(stackCategories && stackCategories.length > 0) ? (
+                                            stackCategories.map((category) => (
+                                                <div key={category.id} >
+                                                    <h4 className="text-lg font-semibold">
+                                                        {category.label}
+                                                    </h4>
+                                                    <Separator className="mt-1" />
+
+                                                    <div className="grid gap-4 my-2">
+                                                        {( category.stacks && category.stacks.length > 0 ) ? (
+                                                            <ToggleGroup 
+                                                                variant="outline" 
+                                                                type="multiple" 
+                                                                className = "flex gap-2 items-start justify-start"
+                                                                onValueChange={handleToggleChange}
+                                                                value={selectedStacks}
+                                                            >
+                                                                {category.stacks.map((stack) => (
+                                                                    <ToggleGroupItem 
+                                                                        value={stack.id.toString()} 
+                                                                        aria-label={stack.label}
+                                                                        className="px-6 py-2"
+                                                                        key={stack.id}
+                                                                    >
+                                                                        {stack.label}
+                                                                    </ToggleGroupItem>
+                                                                ))}
+                                                            </ToggleGroup>
+                                                        ) : (
+                                                            <div>
+                                                                No stacks available
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div>No categories available</div>
+                                        )}
+                                    </div>
+
+
                                 </TabsContent>
+
                                 <TabsContent value="images" className="my-4">
                                     Here you can add images
                                 </TabsContent>

@@ -18,31 +18,16 @@ import { useForm } from "@inertiajs/react"
 import { useRoute } from "ziggy"
 
 
-// Toaster
-import { useEffect } from "react";
-import { useToast } from "@/hooks/use-toast"
  
 
 function Forget({ }) {
 
     const route = useRoute();
-    const { toast } = useToast();
 
     const { data, setData, post, processing, errors } = useForm({
         email: "",
     });
 
-    useEffect(() => {
-        if(errors) {
-            if(errors.email) {
-                toast({
-                    variant: "destructive",
-                    title: "Uh oh! Something went wrong.",
-                    description: errors.email,
-                });
-            }
-        }
-    }, [errors]);
 
     function submit(e) {
         e.preventDefault();
@@ -61,7 +46,7 @@ function Forget({ }) {
                 <CardContent>
                     <form onSubmit={submit}>
 
-                        <div className="grid gap-4">
+                        <div className="grid gap-2">
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
@@ -73,7 +58,7 @@ function Forget({ }) {
                                     className={errors.email ? "border-red-500" : ""}
                                 />
                             </div>
-                            <Button type="submit" className="w-full" disabled={processing}>
+                            <Button type="submit" className="w-full mt-2" disabled={processing}>
                                 <Loader2 className="animate-spin" hidden={!processing} />
                                 Send password reset link
                             </Button>

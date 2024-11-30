@@ -22,9 +22,11 @@ import {
 
 
 
-export default function Layout({ children, breadcrumbs }) {
+export default function Layout({ children, breadcrumbs, errors }) {
     const props = usePage().props;
     const { toast } = useToast();
+
+    console.log('props: ',props.errors);
 
     useEffect(() => {
         if (props.flash.error) {
@@ -41,6 +43,19 @@ export default function Layout({ children, breadcrumbs }) {
             });
         }
     }, [props.flash]);
+
+    useEffect(() => {
+        Object.entries(props.errors).forEach(([field, messages]) => {
+            messages.forEach((message) => {
+                toast({
+                    variant: "destructive",
+                    title: `Uh oh! Something went wrong.`,
+                    description: message,
+                });
+            });
+        });
+    }, [props.errors]);
+    
 
     return (
         <SidebarProvider>

@@ -17,15 +17,11 @@ import { Label } from "@/components/ui/label"
 import { useForm } from "@inertiajs/react"
 import { useRoute } from "ziggy"
 
-// Toaster
-import { useEffect } from "react";
-import { useToast } from "@/hooks/use-toast"
  
 
 function Reset({ password_token }) {
 
     const route = useRoute();
-    const { toast } = useToast();
 
     const { data, setData, post, processing, errors } = useForm({
         password: "",
@@ -33,24 +29,6 @@ function Reset({ password_token }) {
         password_token : password_token
     });
 
-    useEffect(() => {
-        if(errors) {
-            if(errors.password) {
-                toast({
-                    variant: "destructive",
-                    title: "Uh oh! Something went wrong.",
-                    description: errors.password,
-                });
-            }
-            if(errors.password_confirmation) {
-                toast({
-                    variant: "destructive",
-                    title: "Uh oh! Something went wrong.",
-                    description: errors.password_confirmation,
-                });
-            }
-        }
-    }, [errors]);
 
     function submit(e) {
         e.preventDefault();

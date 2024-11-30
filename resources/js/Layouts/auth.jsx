@@ -32,6 +32,19 @@ export default function Layout({children}) {
     }, [props.flash]);
 
 
+    useEffect(() => {
+        Object.entries(props.errors).forEach(([field, messages]) => {
+            messages.forEach((message) => {
+                toast({
+                    variant: "destructive",
+                    title: `Uh oh! Something went wrong.`,
+                    description: message,
+                });
+            });
+        });
+    }, [props.errors]);
+
+
     return (
         <>
             <main>

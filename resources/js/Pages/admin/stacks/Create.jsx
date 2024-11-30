@@ -110,6 +110,7 @@ function Stacks({ categories }) {
 
                                         onValueChange={onSelectChange}
 
+                                        value={data.category_id ? data.category_id.toString() : ""}
                                         required
                                         className={ errors.category_id ? "border-red-500" : "" }
                                         disabled={categories.length === 0}
@@ -134,6 +135,7 @@ function Stacks({ categories }) {
                                             )}
                                         </SelectContent>
                                     </Select>
+
                                 </div>
                                 { categories && categories.length > 0 && data.category_id && 
                                     (

@@ -5,7 +5,7 @@ import { useForm } from "@inertiajs/react";
 import { useRoute } from "ziggy";
 
 // Icons
-import { Loader2, ArrowLeft, Activity, Plus } from "lucide-react";
+import { Loader2, ArrowLeft, Activity, Settings2 } from "lucide-react";
 
 // Components
 import { Button } from "@/Components/ui/button";
@@ -133,7 +133,7 @@ function Socials({ social }) {
                                     hidden={!processing}
                                 />
                                 Update social link
-                                <Plus size={18} hidden={processing} />
+                                <Settings2 size={18} hidden={processing} />
                             </Button>
                         </div>
                     </form>

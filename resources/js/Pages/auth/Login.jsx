@@ -18,16 +18,12 @@ import { Label } from "@/components/ui/label"
 import { useForm } from "@inertiajs/react"
 import { useRoute } from "ziggy"
 
-// Toaster
-import { useEffect } from "react";
-import { useToast } from "@/hooks/use-toast"
 
 
 function Login({ }) {
 
     const route = useRoute();
 
-    const { toast } = useToast();
 
     const { data, setData, post, processing, errors } = useForm({
         email: "",
@@ -35,31 +31,6 @@ function Login({ }) {
         remember: false,
     });
 
-    useEffect(() => {
-        if (errors) {
-            if (errors.email) {
-                toast({
-                    variant: "destructive",
-                    title: "Uh oh! Something went wrong.",
-                    description: errors.email,
-                });
-            }
-            if (errors.password) {
-                toast({
-                    variant: "destructive",
-                    title: "Uh oh! Something went wrong.",
-                    description: errors.password,
-                });
-            }
-            if (errors.remember) {
-                toast({
-                    variant: "destructive",
-                    title: "Uh oh! Something went wrong.",
-                    description: errors.remember,
-                });
-            }
-        }
-    }, [errors]);
 
     function submit(e) {
         e.preventDefault();

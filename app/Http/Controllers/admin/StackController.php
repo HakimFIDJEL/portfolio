@@ -69,6 +69,11 @@ class StackController extends Controller
     }
 
     public function deleteCategory(StackCategory $category) {
+
+        if($category->stacks()->count() > 0) {
+            return redirect()->back()->with(['error' => 'The category has stacks associated with it']);
+        }
+
         $category->delete();
         return redirect()->back()->with(['success' => 'Category deleted successfully']);
     }

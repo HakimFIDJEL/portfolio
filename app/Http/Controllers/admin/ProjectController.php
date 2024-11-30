@@ -12,6 +12,7 @@ use App\Models\Project;
 use App\Models\ProjectImage;
 use App\Models\ProjectTimeline;
 use App\Models\Stack;
+use App\Models\StackCategory;
 
 // Request
 use App\Http\Requests\projects\ProjectRequest;
@@ -26,7 +27,7 @@ class ProjectController extends Controller
 
     public function create() {
         return Inertia::render('admin/projects/Create', [
-            'stacks' => Stack::all()
+            'stackCategories' => StackCategory::with('stacks')->get()
         ]);
     }
 
