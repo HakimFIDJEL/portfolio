@@ -26,7 +26,6 @@ export default function Layout({ children, breadcrumbs, errors }) {
     const props = usePage().props;
     const { toast } = useToast();
 
-    console.log('props: ',props.errors);
 
     useEffect(() => {
         if (props.flash.error) {

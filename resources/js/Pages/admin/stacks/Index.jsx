@@ -163,7 +163,6 @@ function Stacks({ stacks }) {
                 <Separator />
 
                 <CardContent>
-                    {/* Content of the page ( table of all the badges with a button) */}
 
                     <Table>
                         <TableHeader>

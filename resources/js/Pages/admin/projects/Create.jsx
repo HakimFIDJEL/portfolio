@@ -6,13 +6,14 @@ import { useRoute } from "ziggy";
 import { useState } from "react";
 
 // Icons
-import { 
-    Loader2, 
-    ArrowLeft, 
-    Folder, 
+import {
+    Loader2,
+    ArrowLeft,
+    Folder,
     Plus,
     Archive,
-    TestTubeDiagonal  
+    TestTubeDiagonal,
+    Trash,
 } from "lucide-react";
 
 // Components
@@ -28,29 +29,29 @@ import { Separator } from "@/Components/ui/separator";
 import { Input } from "@/Components/ui/input";
 import { Textarea } from "@/Components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger
-} from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
+
+import { Datepicker } from "@/components/ui/datepicker";
+
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ImageUploader } from "@/Components/admin/image-uploader";
 
 import {
-    Datepicker
-} from "@/components/ui/datepicker"
-
-import {
-    ToggleGroup,
-    ToggleGroupItem,
-} from "@/components/ui/toggle-group"
-
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+    TableFooter,
+} from "@/components/ui/table";
 
 function Projects({ stackCategories }) {
     const route = useRoute();
@@ -63,6 +64,9 @@ function Projects({ stackCategories }) {
 
     // Stacks
     const [selectedStacks, setSelectedStacks] = useState([]);
+
+    // Images
+    const [images, setImages] = useState([]);
 
     const { data, setData, post, processing, errors } = useForm({
         // Projet data
@@ -97,6 +101,15 @@ function Projects({ stackCategories }) {
         setSelectedStacks(e);
     }
 
+    function onSubmitImage(image) {
+        // an image object is passed to this function, it has a file and a label
+        setImages([...images, image]);
+    }
+
+    function handleRemoveImage(index) {
+        setImages(images.filter((image, i) => i !== index));
+    }
+
     return (
         <>
             <Card>
@@ -124,46 +137,70 @@ function Projects({ stackCategories }) {
                 <CardContent>
                     <form onSubmit={onSubmit} className="mt-4">
                         <div className="grid gap-4">
-
                             <Tabs defaultValue="project" className="w-full">
                                 <TabsList className="flex gap-4 w-full">
-                                    <TabsTrigger value="project" className="w-full">
+                                    <TabsTrigger
+                                        value="project"
+                                        className="w-full"
+                                    >
                                         Project
                                     </TabsTrigger>
-                                    <TabsTrigger value="stacks" className="w-full">
+                                    <TabsTrigger
+                                        value="stacks"
+                                        className="w-full"
+                                    >
                                         Stacks
                                     </TabsTrigger>
-                                    <TabsTrigger value="images" className="w-full">
+                                    <TabsTrigger
+                                        value="images"
+                                        className="w-full"
+                                    >
                                         Images
                                     </TabsTrigger>
-                                    <TabsTrigger value="timeline" className="w-full">
+                                    <TabsTrigger
+                                        value="timeline"
+                                        className="w-full"
+                                    >
                                         Timeline
                                     </TabsTrigger>
                                 </TabsList>
-                                
+
                                 <TabsContent value="project" className="my-4">
-                                    <h4 className="text-lg font-semibold">Informations</h4>
+                                    <h4 className="text-lg font-semibold">
+                                        Informations
+                                    </h4>
                                     <Separator className="mt-1" />
                                     <div className="grid gap-4 my-4">
                                         <div className="grid grid-cols-12 gap-2">
                                             <div className="grid gap-2 col-span-6">
-                                                <Label htmlFor="title">Title</Label>
+                                                <Label htmlFor="title">
+                                                    Title
+                                                </Label>
                                                 <Input
                                                     id="title"
                                                     type="text"
                                                     placeholder="e.g. My awesome project"
                                                     required
                                                     onChange={(e) => {
-                                                        setData("title", e.target.value);
-                                                        generateSlug(e.target.value);
+                                                        setData(
+                                                            "title",
+                                                            e.target.value
+                                                        );
+                                                        generateSlug(
+                                                            e.target.value
+                                                        );
                                                     }}
                                                     className={
-                                                        errors.title ? "border-red-500" : ""
+                                                        errors.title
+                                                            ? "border-red-500"
+                                                            : ""
                                                     }
                                                 />
                                             </div>
                                             <div className="grid gap-2 col-span-6">
-                                                <Label htmlFor="slug">Slug</Label>
+                                                <Label htmlFor="slug">
+                                                    Slug
+                                                </Label>
                                                 <Input
                                                     id="slug"
                                                     type="text"
@@ -172,7 +209,9 @@ function Projects({ stackCategories }) {
                                                     disabled
                                                     value={slug}
                                                     className={
-                                                        errors.slug ? "border-red-500" : ""
+                                                        errors.slug
+                                                            ? "border-red-500"
+                                                            : ""
                                                     }
                                                 />
                                             </div>
@@ -188,10 +227,15 @@ function Projects({ stackCategories }) {
                                                     placeholder="e.g. A project that does something"
                                                     required
                                                     onChange={(e) =>
-                                                        setData("subtitle", e.target.value)
+                                                        setData(
+                                                            "subtitle",
+                                                            e.target.value
+                                                        )
                                                     }
                                                     className={
-                                                        errors.subtitle ? "border-red-500" : ""
+                                                        errors.subtitle
+                                                            ? "border-red-500"
+                                                            : ""
                                                     }
                                                 />
                                             </div>
@@ -199,11 +243,15 @@ function Projects({ stackCategories }) {
                                                 <Label htmlFor="type">
                                                     Type
                                                 </Label>
-                                                <Select 
-                                                    onValueChange={(value) => setData("type", value)}
+                                                <Select
+                                                    onValueChange={(value) =>
+                                                        setData("type", value)
+                                                    }
                                                     required
                                                     className={
-                                                        errors.type ? "border-red-500" : ""
+                                                        errors.type
+                                                            ? "border-red-500"
+                                                            : ""
                                                     }
                                                 >
                                                     <SelectTrigger>
@@ -211,10 +259,12 @@ function Projects({ stackCategories }) {
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="project">
-                                                            
                                                             Project
                                                         </SelectItem>
-                                                        <SelectItem value="lab" className="flex">
+                                                        <SelectItem
+                                                            value="lab"
+                                                            className="flex"
+                                                        >
                                                             Lab
                                                         </SelectItem>
                                                     </SelectContent>
@@ -226,19 +276,38 @@ function Projects({ stackCategories }) {
                                                 <Label htmlFor="end_date">
                                                     End date
                                                 </Label>
-                                                <Datepicker onDateChange={(date) => setData("end_date", date)} required/>
+                                                <Datepicker
+                                                    onDateChange={(date) =>
+                                                        setData(
+                                                            "end_date",
+                                                            date
+                                                        )
+                                                    }
+                                                    required
+                                                />
                                             </div>
                                             <div className="grid gap-2 col-span-6">
                                                 <Label htmlFor="work_in_progress">
                                                     Status
                                                 </Label>
-                                                <Select onValueChange={(value) => setData("work_in_progress", value)}>
+                                                <Select
+                                                    onValueChange={(value) =>
+                                                        setData(
+                                                            "work_in_progress",
+                                                            value
+                                                        )
+                                                    }
+                                                >
                                                     <SelectTrigger>
                                                         <SelectValue placeholder="Select the status" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem value="true">Work in progress</SelectItem>
-                                                        <SelectItem value="false">Project done</SelectItem>
+                                                        <SelectItem value="true">
+                                                            Work in progress
+                                                        </SelectItem>
+                                                        <SelectItem value="false">
+                                                            Project done
+                                                        </SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                             </div>
@@ -253,10 +322,15 @@ function Projects({ stackCategories }) {
                                                 placeholder="e.g. This project does something"
                                                 required
                                                 onChange={(e) =>
-                                                    setData("description", e.target.value)
+                                                    setData(
+                                                        "description",
+                                                        e.target.value
+                                                    )
                                                 }
                                                 className={
-                                                    errors.description ? "border-red-500" : ""
+                                                    errors.description
+                                                        ? "border-red-500"
+                                                        : ""
                                                 }
                                             />
                                         </div>
@@ -270,16 +344,23 @@ function Projects({ stackCategories }) {
                                                 placeholder="e.g. I learned a lot from this project"
                                                 required
                                                 onChange={(e) =>
-                                                    setData("feedback", e.target.value)
+                                                    setData(
+                                                        "feedback",
+                                                        e.target.value
+                                                    )
                                                 }
                                                 className={
-                                                    errors.feedback ? "border-red-500" : ""
+                                                    errors.feedback
+                                                        ? "border-red-500"
+                                                        : ""
                                                 }
                                             />
                                         </div>
                                     </div>
 
-                                    <h4 className="text-lg font-semibold">Links</h4>
+                                    <h4 className="text-lg font-semibold">
+                                        Links
+                                    </h4>
                                     <Separator className="mt-1" />
                                     <div className="grid gap-4 my-4">
                                         <div className="grid grid-cols-12 gap-2">
@@ -293,10 +374,15 @@ function Projects({ stackCategories }) {
                                                     placeholder="e.g. https://github.com/HakimFIDJEL/my-project.git"
                                                     required
                                                     onChange={(e) =>
-                                                        setData("source_code_url", e.target.value)
+                                                        setData(
+                                                            "source_code_url",
+                                                            e.target.value
+                                                        )
                                                     }
                                                     className={
-                                                        errors.source_code_url ? "border-red-500" : ""
+                                                        errors.source_code_url
+                                                            ? "border-red-500"
+                                                            : ""
                                                     }
                                                 />
                                             </div>
@@ -310,10 +396,15 @@ function Projects({ stackCategories }) {
                                                     placeholder="e.g. https://my-project.fr"
                                                     required
                                                     onChange={(e) =>
-                                                        setData("live_demo_url", e.target.value)
+                                                        setData(
+                                                            "live_demo_url",
+                                                            e.target.value
+                                                        )
                                                     }
                                                     className={
-                                                        errors.live_demo_url ? "border-red-500" : ""
+                                                        errors.live_demo_url
+                                                            ? "border-red-500"
+                                                            : ""
                                                     }
                                                 />
                                             </div>
@@ -321,62 +412,139 @@ function Projects({ stackCategories }) {
                                     </div>
                                 </TabsContent>
                                 <TabsContent value="stacks" className="my-4">
-
                                     <div className="grid gap-4 my-4">
-                                        {(stackCategories && stackCategories.length > 0) ? (
+                                        {stackCategories &&
+                                        stackCategories.length > 0 ? (
                                             stackCategories.map((category) => (
-                                                <div key={category.id} >
+                                                <div key={category.id}>
                                                     <h4 className="text-lg font-semibold">
                                                         {category.label}
                                                     </h4>
                                                     <Separator className="mt-1" />
 
                                                     <div className="grid gap-4 my-2">
-                                                        {( category.stacks && category.stacks.length > 0 ) ? (
-                                                            <ToggleGroup 
-                                                                variant="outline" 
-                                                                type="multiple" 
-                                                                className = "flex gap-2 items-start justify-start"
-                                                                onValueChange={handleToggleChange}
-                                                                value={selectedStacks}
+                                                        {category.stacks &&
+                                                        category.stacks.length >
+                                                            0 ? (
+                                                            <ToggleGroup
+                                                                variant="outline"
+                                                                type="multiple"
+                                                                className="flex gap-2 items-start justify-start"
+                                                                onValueChange={
+                                                                    handleToggleChange
+                                                                }
+                                                                value={
+                                                                    selectedStacks
+                                                                }
                                                             >
-                                                                {category.stacks.map((stack) => (
-                                                                    <ToggleGroupItem 
-                                                                        value={stack.id.toString()} 
-                                                                        aria-label={stack.label}
-                                                                        className="px-6 py-2"
-                                                                        key={stack.id}
-                                                                    >
-                                                                        {stack.label}
-                                                                    </ToggleGroupItem>
-                                                                ))}
+                                                                {category.stacks.map(
+                                                                    (stack) => (
+                                                                        <ToggleGroupItem
+                                                                            value={stack.id.toString()}
+                                                                            aria-label={
+                                                                                stack.label
+                                                                            }
+                                                                            className="px-6 py-2"
+                                                                            key={
+                                                                                stack.id
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                stack.label
+                                                                            }
+                                                                        </ToggleGroupItem>
+                                                                    )
+                                                                )}
                                                             </ToggleGroup>
                                                         ) : (
                                                             <div>
-                                                                No stacks available
+                                                                No stacks
+                                                                available
                                                             </div>
                                                         )}
                                                     </div>
-
                                                 </div>
                                             ))
                                         ) : (
                                             <div>No categories available</div>
                                         )}
                                     </div>
-
-
                                 </TabsContent>
 
                                 <TabsContent value="images" className="my-4">
-                                    Here you can add images
+                                    <h4 className="text-lg font-semibold">
+                                        File drop
+                                    </h4>
+                                    <Separator className="mt-1" />
+
+                                    <ImageUploader
+                                        onSubmitImage={onSubmitImage}
+                                        className="my-4"
+                                    />
+
+                                    <h4 className="text-lg font-semibold pt-2">
+                                        Uploaded images {images.length > 0 ? `( ${images.length} )` : ""}
+                                    </h4>
+                                    <Separator className="mt-1" />
+
+                                    <div className="grid gap-4 my-2">
+                                        {images.length > 0 ? (
+                                            <Table>
+                                                <TableHeader>
+                                                    <TableRow>
+                                                        <TableHead>
+                                                            Preview
+                                                        </TableHead>
+                                                        <TableHead>
+                                                            Label
+                                                        </TableHead>
+                                                        <TableHead className="text-right">
+                                                            Remove
+                                                        </TableHead>
+                                                    </TableRow>
+                                                </TableHeader>
+
+                                                <TableBody>
+                                                    {images.map((image, index) => (
+                                                        <TableRow key={index} >
+                                                            <TableCell>
+
+                                                                <img
+                                                                    src={URL.createObjectURL(
+                                                                        image.file
+                                                                    )}
+                                                                    alt={image.label}
+                                                                    className="w-16 h-16"
+                                                                />
+
+
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                { image.label }
+                                                            </TableCell>
+                                                            <TableCell className="text-right">
+                                                                <Button
+                                                                    variant="destructive"
+                                                                    size="icon"
+                                                                    onClick={() => handleRemoveImage(index)}
+                                                                >
+                                                                    <Trash />
+                                                                </Button>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        ) : (
+                                            <div>No images uploaded</div>
+                                        )}
+                                    </div>
                                 </TabsContent>
+
                                 <TabsContent value="timeline" className="my-4">
                                     Here you can add a timeline
                                 </TabsContent>
                             </Tabs>
-
-
 
                             <Button
                                 type="submit"
