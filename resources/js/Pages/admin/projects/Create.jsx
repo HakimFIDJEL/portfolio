@@ -47,14 +47,17 @@ import {
 } from "@/components/ui/datepicker"
 
 
-function Projects() {
+function Projects({ stacks }) {
     const route = useRoute();
 
+    // Slug
     const [slug, setSlug] = useState("");
-
     function generateSlug(title) {
         setSlug(title.toLowerCase().replace(/ /g, "-"));
     }
+
+    // Stacks
+    console.log(stacks);
 
     const { data, setData, post, processing, errors } = useForm({
         // Projet data
@@ -77,7 +80,7 @@ function Projects() {
         timeline: [],
 
         // Project stacks
-        stacks: [],
+        stacks: stacks,
     });
 
     function onSubmit(e) {
@@ -309,13 +312,13 @@ function Projects() {
 
                                     
                                 </TabsContent>
-                                <TabsContent value="stacks">
+                                <TabsContent value="stacks" className="my-4">
                                     Here you can fill the stacks
                                 </TabsContent>
-                                <TabsContent value="images">
+                                <TabsContent value="images" className="my-4">
                                     Here you can add images
                                 </TabsContent>
-                                <TabsContent value="timeline">
+                                <TabsContent value="timeline" className="my-4">
                                     Here you can add a timeline
                                 </TabsContent>
                             </Tabs>

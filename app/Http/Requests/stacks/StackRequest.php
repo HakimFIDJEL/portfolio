@@ -25,7 +25,7 @@ class StackRequest extends FormRequest
     {
         return [
             'label' => ['required', 'string', 'max:255'],
-            'category' => ['required', 'string', 'max:255'],
+            'category_id' => ['required', 'exists:stack_categories,id'],
         ];
     }
 
@@ -41,9 +41,8 @@ class StackRequest extends FormRequest
             'label.string' => 'The label must be a string',
             'label.max' => 'The label must be less than 255 characters',
             
-            'category.required' => 'The category is required',
-            'category.string' => 'The category must be a string',
-            'category.max' => 'The category must be less than 255 characters',
+            'category_id.required' => 'The category is required',
+            'category_id.exists' => 'The category must exist' 
         ];
     }
 }

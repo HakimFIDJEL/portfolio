@@ -11,10 +11,14 @@ class Stack extends Model
 
     protected $fillable = [
         'label',
-        'category',
+        'category_id'
     ];
 
     public function projects() {
         return $this->belongsToMany(Project::class, 'project_stacks') ?? null;
+    }
+
+    public function category() {
+        return $this->belongsTo(StackCategory::class);
     }
 }

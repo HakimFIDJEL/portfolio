@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\projects;
+namespace App\Http\Requests\stacks;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 use Illuminate\Support\Facades\Auth;
 
-class ProjectRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class ProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'label' => ['required', 'string', 'max:255'],
         ];
     }
 
@@ -36,7 +36,9 @@ class ProjectRequest extends FormRequest
     public function messages(): array
     {
         return [
-            //
+            'label.required' => 'The label is required',
+            'label.string' => 'The label must be a string',
+            'label.max' => 'The label must be less than 255 characters',
         ];
     }
 }

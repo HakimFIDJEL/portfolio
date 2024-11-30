@@ -68,6 +68,12 @@ Route::prefix('/admin')->name('admin.')->middleware(AuthMiddleware::class)->grou
         Route::post('/store', 'store')->name('store');
         Route::post('/update/{stack}', 'update')->name('update');
         Route::delete('/delete/{stack}', 'delete')->name('delete');
+
+        Route::prefix("/categories")->name('categories.')->group(function()
+        {
+            Route::post('/store', 'storeCategory')->name('store');
+            Route::delete('/delete/{category}', 'deleteCategory')->name('delete');
+        });
     });
 
     // Socials

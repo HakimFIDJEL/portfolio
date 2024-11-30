@@ -1,11 +1,11 @@
 // Needed imports
 import Layout from "@/Layouts/admin";
-import { Link } from "@inertiajs/react";
-import { useForm } from "@inertiajs/react";
+import { Link, useForm, router } from "@inertiajs/react";
 import { useRoute } from "ziggy";
+import { useState, useEffect } from "react";
 
 // Icons
-import { Loader2, ArrowLeft, Blocks, Plus } from "lucide-react";
+import { Loader2, ArrowLeft, Blocks, Plus, Trash } from "lucide-react";
 
 // Components
 import { Button } from "@/Components/ui/button";
@@ -27,16 +27,31 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-function Stacks() {
+function Stacks({ categories }) {
+    
     const route = useRoute();
+
+
     const { data, setData, post, processing, errors } = useForm({
         label: "",
-        category: "",
+        category_id: null,
     });
+
+    function onSelectChange(id) {
+        setData("category_id", id);
+    }
 
     function onSubmit(e) {
         e.preventDefault();
         post(route("admin.stacks.store"));
+    }
+
+    function onDeleteCategory(e) {
+        e.preventDefault();
+        if(data.category_id) {
+            router.delete(route("admin.stacks.categories.delete", data.category_id ));
+            setData("category_id", null);
+        }
     }
 
     return (
@@ -66,8 +81,8 @@ function Stacks() {
                 <CardContent>
                     <form onSubmit={onSubmit} className="mt-4">
                         <div className="grid gap-4">
-                            <div className="flex flex-row gap-4">
-                                <div className="grid gap-2 w-full">
+                            <div className="grid grid-cols-12 gap-4 items-end">
+                                <div className="grid gap-2 col-span-6">
                                     <Label htmlFor="label">Label</Label>
                                     <Input
                                         id="label"
@@ -82,42 +97,61 @@ function Stacks() {
                                         }
                                     />
                                 </div>
-                                <div className="grid gap-2 w-full">
+
+                                <div className={`grid gap-2 ${ categories && categories.length > 0 && data.category_id ? "col-span-4" : "col-span-6" }`} >
                                     <div className="flex items-center">
                                         <Label htmlFor="category">
                                             Category
                                         </Label>
                                     </div>
+
                                     <Select
-                                        id="category"
-                                        onValueChange={(e) =>
-                                            setData("category", e)
-                                        }
-                                        className={
-                                            errors.category
-                                                ? "border-red-500"
-                                                : ""
-                                        }
+                                        id="category_id"
+
+                                        onValueChange={onSelectChange}
+
+                                        required
+                                        className={ errors.category_id ? "border-red-500" : "" }
+                                        disabled={categories.length === 0}
                                     >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a category" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="Frontend">
-                                                Frontend
-                                            </SelectItem>
-                                            <SelectItem value="Backend">
-                                                Backend
-                                            </SelectItem>
-                                            <SelectItem value="Database">
-                                                Database
-                                            </SelectItem>
-                                            <SelectItem value="Others">
-                                                Others
-                                            </SelectItem>
+                                            {categories.map((category) => (
+                                                <SelectItem
+                                                    key={category.id}
+                                                    value={category.id.toString()}
+                                                >
+                                                    {category.label}
+                                                </SelectItem>
+                                            ))}
+
+                                            {categories.length === 0 && (
+                                                <SelectItem value="0">
+                                                    No categories found
+                                                </SelectItem>
+                                            )}
                                         </SelectContent>
                                     </Select>
                                 </div>
+                                { categories && categories.length > 0 && data.category_id && 
+                                    (
+                                        <div className="grid gap-2 col-span-2">
+                                            <Link
+                                                onClick={onDeleteCategory}
+                                            >
+                                                <Button
+                                                    variant="outline"
+                                                    className="w-full"
+                                                >
+                                                    <Trash />
+                                                    Delete the category
+                                                </Button>
+                                            </Link>
+                                        </div>
+                                    )
+                                }
                             </div>
 
                             <Button

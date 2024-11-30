@@ -25,7 +25,9 @@ class ProjectController extends Controller
     }
 
     public function create() {
-        return Inertia::render('admin/projects/Create');
+        return Inertia::render('admin/projects/Create', [
+            'stacks' => Stack::all()
+        ]);
     }
 
     public function edit(Project $project) {

@@ -1,8 +1,8 @@
 // Needed imports
 import Layout from "@/Layouts/admin";
-import { Link } from "@inertiajs/react";
-import { useForm } from "@inertiajs/react";
+import { Link, useForm, router } from "@inertiajs/react";
 import { useRoute } from "ziggy";
+import { useState } from "react";
 
 // Icons
 import { Loader2, ArrowLeft, Blocks, Plus } from "lucide-react";
@@ -27,13 +27,18 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-function Stacks({ stack }) {
+function Stacks({ stack, categories }) {
 
     const route = useRoute();
+
     const { data, setData, post, processing, errors } = useForm({
         label: stack.label,
-        category: stack.category,
+        category_id : stack.category_id,
     });
+
+    function onSelectChange(id) {
+        setData("category_id", id);
+    }
 
     function onSubmit(e) {
         e.preventDefault();
@@ -91,33 +96,32 @@ function Stacks({ stack }) {
                                         </Label>
                                     </div>
                                     <Select
-                                        id="category"
-                                        onValueChange={(e) =>
-                                            setData("category", e)
-                                        }
-                                        value={data.category}
-                                        className={
-                                            errors.category
-                                                ? "border-red-500"
-                                                : ""
-                                        }
+                                        id="category_id"
+
+                                        onValueChange={onSelectChange}
+                                        defaultValue={stack.category_id.toString()}
+                                        required
+                                        className={ errors.category_id ? "border-red-500" : "" }
+                                        disabled={categories.length === 0}
                                     >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a category" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="Frontend">
-                                                Frontend
-                                            </SelectItem>
-                                            <SelectItem value="Backend">
-                                                Backend
-                                            </SelectItem>
-                                            <SelectItem value="Database">
-                                                Database
-                                            </SelectItem>
-                                            <SelectItem value="Others">
-                                                Others
-                                            </SelectItem>
+                                            {categories.map((category) => (
+                                                <SelectItem
+                                                    key={category.id}
+                                                    value={category.id.toString()}
+                                                >
+                                                    {category.label}
+                                                </SelectItem>
+                                            ))}
+
+                                            {categories.length === 0 && (
+                                                <SelectItem value="0">
+                                                    No categories found
+                                                </SelectItem>
+                                            )}
                                         </SelectContent>
                                     </Select>
                                 </div>
