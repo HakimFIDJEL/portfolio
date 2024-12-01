@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Stack;
-use App\Models\Timeline;
+use App\Models\ProjectTimeline;
 use App\Models\ProjectImage;
 
 class Project extends Model
@@ -33,7 +33,7 @@ class Project extends Model
     }
 
     public function timeline() {
-        return $this->hasMany(Timeline::class) ?? null;
+        return $this->hasMany(ProjectTimeline::class) ?? null;
     }
 
     public function images() {

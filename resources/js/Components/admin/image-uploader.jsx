@@ -1,39 +1,26 @@
 // Needed imports
-import React, { useState, useRef } from 'react';
-import { useToast } from "@/hooks/use-toast";
+import React, { useState, useRef } from "react";
 
 // Components
-import { 
-    Upload,
-    SendHorizonal,
-    Loader2,
-    Trash,
-} from 'lucide-react';
-import { Input } from '@/Components/ui/input';
-import { Label } from '@/Components/ui/label';
-import { Button } from '@/Components/ui/button';
+import { Upload, SendHorizonal, Loader2, Trash } from "lucide-react";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
+import { Button } from "@/Components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-    DialogClose,
-    DialogFooter,
-} from "@/components/ui/dialog";
-
-
-
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export function ImageUploader({ onSubmitImage, ...props }) {
-
     const labelInput = useRef(null);
     const fileInput = useRef(null);
-    const { toast } = useToast();
-
-    // An image has a file and a label
-    const [image, setImage] = useState(null);
 
     const [file, setFile] = useState(null);
     const [label, setLabel] = useState("");
@@ -62,12 +49,12 @@ export function ImageUploader({ onSubmitImage, ...props }) {
     function handleSubmit(e) {
         e.preventDefault();
 
-        if(!file) {
+        if (!file) {
             fileInput.current.focus();
             return;
         }
-        
-        if(!label) {
+
+        if (!label) {
             labelInput.current.focus();
             return;
         }
@@ -85,50 +72,46 @@ export function ImageUploader({ onSubmitImage, ...props }) {
 
         // Reset the form
         setSubmiting(false);
+        setUploading(false);
         setUploaded(false);
         setFile(null);
         setLabel("");
         fileInput.current.value = "";
-
-        // Show a success toast
-        toast({
-            title: "Success!",
-            description: "The image has been uploaded.",
-        });
-
     }
-    
 
     return (
         <div {...props}>
             <div className="flex w-full  items-center gap-2">
-                <Input 
-                    id="picture" 
-                    type="file" 
+                <Input
+                    id="picture"
+                    type="file"
                     ref={fileInput}
                     accept="image/*"
                     onChange={handleUpload}
                 />
 
-                <Dialog onOpenChange={handleOpenCloseDialog} >
-                    <DialogTrigger asChild>
-                        <Button 
+                <AlertDialog onOpenChange={handleOpenCloseDialog} open={uploading}>
+                    <AlertDialogTrigger asChild>
+                        <Button
                             type="button"
                             size="sm"
                             disabled={!uploaded || uploading}
                             className="px-6"
                         >
                             Upload
-                            <Loader2 hidden={!uploading} className="animate-spin"/>
+                            <Loader2
+                                hidden={!uploading}
+                                className="animate-spin"
+                            />
                             <Upload hidden={uploading} />
                         </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>
                                 Choose a label for the image
-                            </DialogTitle>
-                            <DialogDescription asChild>
+                            </AlertDialogTitle>
+                            <AlertDialogDescription asChild>
                                 <div className="grid gap-4 pt-4">
                                     <div className="grid gap-2">
                                         <Label htmlFor="label">Label</Label>
@@ -138,29 +121,48 @@ export function ImageUploader({ onSubmitImage, ...props }) {
                                             ref={labelInput}
                                             required
                                             value={label}
-                                            onChange={(e) => setLabel(e.target.value)}
+                                            onChange={(e) =>
+                                                setLabel(e.target.value)
+                                            }
                                             placeholder="e.g. My awesome image"
                                         />
                                     </div>
-                                    <Button 
-                                        type="button"
-                                        size="sm"
-                                        className="px-6"
-                                        onClick={handleSubmit}
-                                        disabled={submiting}
-                                    >
-                                        Submit
-                                        <Loader2 hidden={!submiting} className="animate-spin"/>
-                                        <SendHorizonal hidden={submiting} />
-                                    </Button>
                                 </div>
-                            </DialogDescription>
-                        </DialogHeader>
-                    </DialogContent>
-                </Dialog>
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel asChild>
+                                <Button
+                                    type="button"
+                                    size="sm"
+                                    variant="secondary"
+                                    onClick={() => setUploading(false)}
+                                >
+                                    Cancel
+                                </Button>
+                            </AlertDialogCancel>
+                            <AlertDialogAction asChild>
+                                <Button
+                                    type="button"
+                                    size="sm"
+                                    className="px-6"
+                                    onClick={handleSubmit}
+                                    disabled={submiting}
+                                >
+                                    Submit
+                                    <Loader2
+                                        hidden={!submiting}
+                                        className="animate-spin"
+                                    />
+                                    <SendHorizonal hidden={submiting} />
+                                </Button>
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
 
                 {uploaded && (
-                    <Button 
+                    <Button
                         type="button"
                         size="sm"
                         variant="destructive"
@@ -169,9 +171,7 @@ export function ImageUploader({ onSubmitImage, ...props }) {
                         <Trash />
                     </Button>
                 )}
-
             </div>
         </div>
     );
-
 }

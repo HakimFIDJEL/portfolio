@@ -3,7 +3,8 @@ import Layout from "@/Layouts/admin";
 import { Link } from "@inertiajs/react";
 import { useForm } from "@inertiajs/react";
 import { useRoute } from "ziggy";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 // Icons
 import {
@@ -14,6 +15,8 @@ import {
     Archive,
     TestTubeDiagonal,
     Trash,
+    ArrowUp,
+    ArrowDown,
 } from "lucide-react";
 
 // Components
@@ -53,25 +56,39 @@ import {
     TableFooter,
 } from "@/components/ui/table";
 
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 function Projects({ stackCategories }) {
     const route = useRoute();
+    const { toast } = useToast();
 
-    // Slug
-    const [slug, setSlug] = useState("");
-    function generateSlug(title) {
-        setSlug(title.toLowerCase().replace(/ /g, "-"));
-    }
-
-    // Stacks
     const [selectedStacks, setSelectedStacks] = useState([]);
-
-    // Images
     const [images, setImages] = useState([]);
+    const [timeline, setTimeline] = useState([]);
+    const [slug, setSlug] = useState("");
 
     const { data, setData, post, processing, errors } = useForm({
         // Projet data
         type: "",
-        slug: slug,
         title: "",
         subtitle: "",
         description: "",
@@ -83,31 +100,130 @@ function Projects({ stackCategories }) {
         timeline_url: "",
 
         // Project images
-        images: [],
+        images: images,
 
         // Project timeline
-        timeline: [],
+        timeline: timeline,
 
         // Project stacks
         stacks: selectedStacks,
     });
 
+
+
+    // Fonction pour générer le slug
+    const generateSlug = (title) => {
+        return title.toLowerCase().replace(/ /g, "-");
+    };
+    
+    // Timeline
+    
+    const [timelineDialogOpen, setTimelineDialogOpen] = useState(false);
+    const [timelineDuration, setTimelineDuration] = useState("");
+    const [timelineTitle, setTimelineTitle] = useState("");
+    const [timelineDate, setTimelineDate] = useState("");
+    const timelineTitleRef = useRef(null);
+    const timelineDurationRef = useRef(null);
+
+    
     function onSubmit(e) {
         e.preventDefault();
         post(route("admin.projects.store"));
     }
 
     function handleToggleChange(e) {
-        setSelectedStacks(e);
+        const updatedStacks = e;
+        setSelectedStacks(updatedStacks);
+        setStacksData(updatedStacks);
     }
 
     function onSubmitImage(image) {
-        // an image object is passed to this function, it has a file and a label
-        setImages([...images, image]);
+        const updatedImages = [...images, image]; 
+        setImages(updatedImages); 
+        setImagesData(updatedImages); 
     }
+    
 
     function handleRemoveImage(index) {
-        setImages(images.filter((image, i) => i !== index));
+        const updatedImages = images.filter((image, i) => i !== index);
+        setImages(updatedImages); 
+        setImagesData(updatedImages);
+    }
+    
+
+    function onSubmitTimeline(e) {
+        e.preventDefault();
+
+        if (!timelineTitle) {
+            timelineTitleRef.current.focus();
+            return;
+        }
+
+        if (!timelineDate) {
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: "The starting date is required",
+            });
+            return;
+        }
+
+        if (!timelineDuration) {
+            timelineDurationRef.current.focus();
+            return;
+        }
+
+        const updatedTimeline = [
+            ...timeline,
+            {
+                title: timelineTitle,
+                date: timelineDate,
+                duration: timelineDuration,
+            },
+        ];
+
+        setTimeline(updatedTimeline);
+        setTimelineData(updatedTimeline);
+        
+        setTimelineDialogOpen(false);
+        clearTimelineInfo();
+    }
+
+    function handleRemoveTimeline(index) {
+        const updatedTimeline = timeline.filter((event, i) => i !== index);
+
+        setTimeline(updatedTimeline);
+        setTimelineData(updatedTimeline);
+
+        clearTimelineInfo();
+    }
+
+
+    function clearTimelineInfo() {
+        setTimelineDuration("");
+        setTimelineTitle("");
+        setTimelineDate("");
+    }
+
+    function formatDate(date) {
+        const options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        };
+        return new Date(date).toLocaleDateString("en-US", options);
+    }
+
+    function setImagesData(images) {
+        setData("images", images);
+    }
+
+    function setTimelineData(timeline) {
+        setData("timeline", timeline);
+    }
+
+    function setStacksData(stacks) {
+        setData("stacks", stacks);
     }
 
     return (
@@ -172,7 +288,7 @@ function Projects({ stackCategories }) {
                                     <Separator className="mt-1" />
                                     <div className="grid gap-4 my-4">
                                         <div className="grid grid-cols-12 gap-2">
-                                            <div className="grid gap-2 col-span-6">
+                                            {/* <div className="grid gap-2 col-span-6">
                                                 <Label htmlFor="title">
                                                     Title
                                                 </Label>
@@ -181,14 +297,10 @@ function Projects({ stackCategories }) {
                                                     type="text"
                                                     placeholder="e.g. My awesome project"
                                                     required
+                                                    value={data.title}
                                                     onChange={(e) => {
-                                                        setData(
-                                                            "title",
-                                                            e.target.value
-                                                        );
-                                                        generateSlug(
-                                                            e.target.value
-                                                        );
+                                                        setData("title", e.target.value); // Mets à jour le titre
+                                                        setData("slug", generateSlug(e.target.value)); // Génère le slug
                                                     }}
                                                     className={
                                                         errors.title
@@ -207,12 +319,43 @@ function Projects({ stackCategories }) {
                                                     placeholder="e.g. my-awesome-project"
                                                     required
                                                     disabled
-                                                    value={slug}
+                                                    value={generateSlug(data.title)}
                                                     className={
                                                         errors.slug
                                                             ? "border-red-500"
                                                             : ""
                                                     }
+                                                />
+                                            </div> */}
+                                            {/* Title */}
+                                            <div className="grid gap-2 col-span-6">
+                                                <Label htmlFor="title">Title</Label>
+                                                <Input
+                                                    id="title"
+                                                    type="text"
+                                                    placeholder="e.g. My awesome project"
+                                                    required
+                                                    value={data.title} // Utilisation de data.title
+                                                    onChange={(e) => {
+                                                        const title = e.target.value;
+                                                        setData("title", title); // Met à jour dans le formulaire
+                                                        setSlug(generateSlug(title)); // Génère le slug localement
+                                                    }}
+                                                    className={errors.title ? "border-red-500" : ""}
+                                                />
+                                            </div>
+
+                                            {/* Slug */}
+                                            <div className="grid gap-2 col-span-6">
+                                                <Label htmlFor="slug">Slug</Label>
+                                                <Input
+                                                    id="slug"
+                                                    type="text"
+                                                    placeholder="e.g. my-awesome-project"
+                                                    required
+                                                    disabled
+                                                    value={slug} // Utilise l'état local pour le slug
+                                                    className={errors.slug ? "border-red-500" : ""}
                                                 />
                                             </div>
                                         </div>
@@ -226,6 +369,7 @@ function Projects({ stackCategories }) {
                                                     type="text"
                                                     placeholder="e.g. A project that does something"
                                                     required
+                                                    value={data.subtitle}
                                                     onChange={(e) =>
                                                         setData(
                                                             "subtitle",
@@ -248,6 +392,7 @@ function Projects({ stackCategories }) {
                                                         setData("type", value)
                                                     }
                                                     required
+                                                    value={data.type ? data.type.toString() : ""}
                                                     className={
                                                         errors.type
                                                             ? "border-red-500"
@@ -274,16 +419,16 @@ function Projects({ stackCategories }) {
                                         <div className="grid grid-cols-12 gap-2">
                                             <div className="grid gap-2 col-span-6">
                                                 <Label htmlFor="end_date">
-                                                    End date
+                                                    End date 
+                                                    <span className="ml-1 text-gray-500">
+                                                        (optional)
+                                                    </span>
                                                 </Label>
                                                 <Datepicker
                                                     onDateChange={(date) =>
-                                                        setData(
-                                                            "end_date",
-                                                            date
-                                                        )
+                                                        setData("end_date",date)
                                                     }
-                                                    required
+                                                    newDate={data.end_date}
                                                 />
                                             </div>
                                             <div className="grid gap-2 col-span-6">
@@ -297,15 +442,17 @@ function Projects({ stackCategories }) {
                                                             value
                                                         )
                                                     }
+                                                    value={data.work_in_progress ? data.work_in_progress.toString() : ""}
+                                                    required
                                                 >
                                                     <SelectTrigger>
                                                         <SelectValue placeholder="Select the status" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem value="true">
+                                                        <SelectItem value="1">
                                                             Work in progress
                                                         </SelectItem>
-                                                        <SelectItem value="false">
+                                                        <SelectItem value="0">
                                                             Project done
                                                         </SelectItem>
                                                     </SelectContent>
@@ -321,6 +468,7 @@ function Projects({ stackCategories }) {
                                                 type="text"
                                                 placeholder="e.g. This project does something"
                                                 required
+                                                value={data.description}
                                                 onChange={(e) =>
                                                     setData(
                                                         "description",
@@ -337,12 +485,16 @@ function Projects({ stackCategories }) {
                                         <div className="grid gap-2">
                                             <Label htmlFor="feedback">
                                                 Feedback
+                                                <span className="ml-1 text-gray-500">
+                                                    (optional)
+                                                </span>
                                             </Label>
                                             <Textarea
                                                 id="feedback"
                                                 type="text"
                                                 placeholder="e.g. I learned a lot from this project"
-                                                required
+                                                
+                                                value={data.feedback}
                                                 onChange={(e) =>
                                                     setData(
                                                         "feedback",
@@ -364,21 +516,24 @@ function Projects({ stackCategories }) {
                                     <Separator className="mt-1" />
                                     <div className="grid gap-4 my-4">
                                         <div className="grid grid-cols-12 gap-2">
-                                            <div className="grid gap-2 col-span-6">
+                                            <div className="grid gap-2 col-span-4">
                                                 <Label htmlFor="source_code_url">
                                                     Source code URL
+                                                    <span className="ml-1 text-gray-500">
+                                                        (optional)
+                                                    </span>
                                                 </Label>
                                                 <Input
                                                     id="source_code_url"
                                                     type="text"
                                                     placeholder="e.g. https://github.com/HakimFIDJEL/my-project.git"
-                                                    required
                                                     onChange={(e) =>
                                                         setData(
                                                             "source_code_url",
                                                             e.target.value
                                                         )
                                                     }
+                                                    value={data.source_code_url}
                                                     className={
                                                         errors.source_code_url
                                                             ? "border-red-500"
@@ -386,15 +541,18 @@ function Projects({ stackCategories }) {
                                                     }
                                                 />
                                             </div>
-                                            <div className="grid gap-2 col-span-6">
+                                            <div className="grid gap-2 col-span-4">
                                                 <Label htmlFor="live_demo_url">
                                                     Live demo URL
+                                                    <span className="ml-1 text-gray-500">
+                                                        (optional)
+                                                    </span>
                                                 </Label>
                                                 <Input
                                                     id="live_demo_url"
                                                     type="text"
+                                                    value={data.live_demo_url}
                                                     placeholder="e.g. https://my-project.fr"
-                                                    required
                                                     onChange={(e) =>
                                                         setData(
                                                             "live_demo_url",
@@ -408,9 +566,35 @@ function Projects({ stackCategories }) {
                                                     }
                                                 />
                                             </div>
+                                            <div className="grid gap-2 col-span-4">
+                                                <Label htmlFor="timeline_url">
+                                                    Timeline URL
+                                                    <span className="ml-1 text-gray-500">
+                                                        (optional)
+                                                    </span>
+                                                </Label>
+                                                <Input
+                                                    id="timeline_url"
+                                                    type="text"
+                                                    value={data.timeline_url}
+                                                    placeholder="e.g. https://github.com/commits/HakimFIDJEL/my-project.git"
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "timeline_url",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className={
+                                                        errors.timeline_url
+                                                            ? "border-red-500"
+                                                            : ""
+                                                    }
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </TabsContent>
+
                                 <TabsContent value="stacks" className="my-4">
                                     <div className="grid gap-4 my-4">
                                         {stackCategories &&
@@ -472,77 +656,319 @@ function Projects({ stackCategories }) {
                                 </TabsContent>
 
                                 <TabsContent value="images" className="my-4">
-                                    <h4 className="text-lg font-semibold">
-                                        File drop
-                                    </h4>
-                                    <Separator className="mt-1" />
+                                    <div className="grid grid-cols-12 gap-8 items-start">
+                                        <div className="grid col-span-6">
+                                            <p className="text-lg font-semibold">
+                                                File drop
+                                            </p>
+                                            <Separator className="mt-1" />
 
-                                    <ImageUploader
-                                        onSubmitImage={onSubmitImage}
-                                        className="my-4"
-                                    />
+                                            <ImageUploader
+                                                onSubmitImage={onSubmitImage}
+                                                className="my-4"
+                                            />
+                                        </div>
 
-                                    <h4 className="text-lg font-semibold pt-2">
-                                        Uploaded images {images.length > 0 ? `( ${images.length} )` : ""}
-                                    </h4>
-                                    <Separator className="mt-1" />
+                                        <div className="grid col-span-6">
+                                            <p className="text-lg font-semibold">
+                                                Uploaded images{" "}
+                                                {images.length > 0
+                                                    ? `( ${images.length} )`
+                                                    : ""}
+                                            </p>
 
-                                    <div className="grid gap-4 my-2">
-                                        {images.length > 0 ? (
-                                            <Table>
-                                                <TableHeader>
-                                                    <TableRow>
-                                                        <TableHead>
-                                                            Preview
-                                                        </TableHead>
-                                                        <TableHead>
-                                                            Label
-                                                        </TableHead>
-                                                        <TableHead className="text-right">
-                                                            Remove
-                                                        </TableHead>
-                                                    </TableRow>
-                                                </TableHeader>
+                                            <Separator className="mt-1" />
 
-                                                <TableBody>
-                                                    {images.map((image, index) => (
-                                                        <TableRow key={index} >
-                                                            <TableCell>
+                                            <div className="grid gap-4 my-4">
+                                                {images.length > 0 ? (
+                                                    <Table>
+                                                        <TableHeader>
+                                                            <TableRow>
+                                                                <TableHead>
+                                                                    Preview
+                                                                </TableHead>
+                                                                <TableHead>
+                                                                    Label
+                                                                </TableHead>
+                                                                <TableHead className="text-right">
+                                                                    Remove
+                                                                </TableHead>
+                                                            </TableRow>
+                                                        </TableHeader>
 
-                                                                <img
-                                                                    src={URL.createObjectURL(
-                                                                        image.file
-                                                                    )}
-                                                                    alt={image.label}
-                                                                    className="w-16 h-16"
-                                                                />
-
-
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                { image.label }
-                                                            </TableCell>
-                                                            <TableCell className="text-right">
-                                                                <Button
-                                                                    variant="destructive"
-                                                                    size="icon"
-                                                                    onClick={() => handleRemoveImage(index)}
-                                                                >
-                                                                    <Trash />
-                                                                </Button>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        ) : (
-                                            <div>No images uploaded</div>
-                                        )}
+                                                        <TableBody>
+                                                            {images.map(
+                                                                (
+                                                                    image,
+                                                                    index
+                                                                ) => (
+                                                                    <TableRow
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                    >
+                                                                        <TableCell>
+                                                                            <Dialog>
+                                                                                <DialogTrigger
+                                                                                    asChild
+                                                                                >
+                                                                                    <img
+                                                                                        src={URL.createObjectURL(
+                                                                                            image.file
+                                                                                        )}
+                                                                                        alt={
+                                                                                            image.label
+                                                                                        }
+                                                                                        className="w-16 h-16 cursor-pointer object-cover rounded-lg"
+                                                                                    />
+                                                                                </DialogTrigger>
+                                                                                <DialogContent className="sm:max-w-[425px]">
+                                                                                    <DialogHeader>
+                                                                                        <DialogTitle>
+                                                                                            {
+                                                                                                image.label
+                                                                                            }
+                                                                                        </DialogTitle>
+                                                                                        <DialogDescription>
+                                                                                            <img
+                                                                                                src={URL.createObjectURL(
+                                                                                                    image.file
+                                                                                                )}
+                                                                                                alt={
+                                                                                                    image.label
+                                                                                                }
+                                                                                                className="w-full h-64 pt-4"
+                                                                                            />
+                                                                                        </DialogDescription>
+                                                                                    </DialogHeader>
+                                                                                </DialogContent>
+                                                                            </Dialog>
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            {
+                                                                                image.label
+                                                                            }
+                                                                        </TableCell>
+                                                                        <TableCell className="text-right">
+                                                                            <Button
+                                                                                variant="destructive"
+                                                                                size="icon"
+                                                                                onClick={() =>
+                                                                                    handleRemoveImage(
+                                                                                        index
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <Trash />
+                                                                            </Button>
+                                                                        </TableCell>
+                                                                    </TableRow>
+                                                                )
+                                                            )}
+                                                        </TableBody>
+                                                    </Table>
+                                                ) : (
+                                                    <div>
+                                                        No images uploaded
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                 </TabsContent>
 
                                 <TabsContent value="timeline" className="my-4">
-                                    Here you can add a timeline
+                                    <div className="grid gap-4 my-4">
+                                        <div className="flex justify-end">
+                                            <AlertDialog
+                                                onOpenChange={
+                                                    setTimelineDialogOpen
+                                                }
+                                                open={timelineDialogOpen}
+                                            >
+                                                <AlertDialogTrigger asChild>
+                                                    <Button
+                                                        type="button"
+                                                        variant="secondary"
+                                                    >
+                                                        Add a new timeline event
+                                                        <Plus />
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent className="sm:max-w-[425px]">
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle>
+                                                            Add a new timeline
+                                                            event
+                                                        </AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            Fill the form to add
+                                                            a new timeline event
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <div className="grid gap-4 py-4">
+                                                        <div className="grid grid-cols-4 items-center gap-4">
+                                                            <Label
+                                                                htmlFor="title"
+                                                                className="text-right"
+                                                            >
+                                                                Title
+                                                            </Label>
+                                                            <Input
+                                                                id="title"
+                                                                type="text"
+                                                                required
+                                                                className="col-span-3"
+                                                                onChange={(e) =>
+                                                                    setTimelineTitle(
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                placeholder="e.g. Started the project"
+                                                                ref={
+                                                                    timelineTitleRef
+                                                                }
+                                                            />
+                                                        </div>
+                                                        <div className="grid grid-cols-4 items-center gap-4">
+                                                            <Label
+                                                                htmlFor="username"
+                                                                className="text-right"
+                                                            >
+                                                                Start Date
+                                                            </Label>
+                                                            <Datepicker
+                                                                className="col-span-3"
+                                                                onDateChange={(
+                                                                    date
+                                                                ) =>
+                                                                    setTimelineDate(
+                                                                        date
+                                                                    )
+                                                                }
+                                                            />
+                                                        </div>
+                                                        <div className="grid grid-cols-4 items-center gap-4">
+                                                            <Label
+                                                                htmlFor="username"
+                                                                className="text-right"
+                                                            >
+                                                                Duration
+                                                            </Label>
+                                                            <Input
+                                                                id="duration"
+                                                                type="text"
+                                                                required
+                                                                className="col-span-3"
+                                                                onChange={(e) =>
+                                                                    setTimelineDuration(
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                placeholder="e.g. 1 month"
+                                                                ref={
+                                                                    timelineDurationRef
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel
+                                                            asChild
+                                                        >
+                                                            <Button
+                                                                type="button"
+                                                                size="sm"
+                                                                variant="secondary"
+                                                                onClick={() =>
+                                                                    setTimelineDialogOpen(
+                                                                        false
+                                                                    )
+                                                                }
+                                                            >
+                                                                Cancel
+                                                            </Button>
+                                                        </AlertDialogCancel>
+
+                                                        <AlertDialogAction
+                                                            asChild
+                                                        >
+                                                            <Button
+                                                                size="sm"
+                                                                className="px-6"
+                                                                onClick={
+                                                                    onSubmitTimeline
+                                                                }
+                                                            >
+                                                                Add
+                                                                <Plus />
+                                                            </Button>
+                                                        </AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        </div>
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHead>Title</TableHead>
+                                                    <TableHead>Date</TableHead>
+                                                    <TableHead>
+                                                        Duration
+                                                    </TableHead>
+                                                    <TableHead className="text-right">
+                                                        Remove
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+
+                                            {timeline.length > 0 ? (
+                                                <TableBody>
+                                                    {/* Timeline Events */}
+
+                                                    {timeline.map(
+                                                        (event, index) => (
+                                                            <TableRow key={index}>
+                                                                
+                                                                <TableCell>
+                                                                    {event.title}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {formatDate(event.date)}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {event.duration}
+                                                                </TableCell>
+                                                                <TableCell className="text-right">
+                                                                    <Button
+                                                                        variant="destructive"
+                                                                        size="icon"
+                                                                        onClick={() => handleRemoveTimeline(index)}
+                                                                    >
+                                                                        <Trash />
+                                                                    </Button>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        )
+                                                    )}
+                                                </TableBody>
+                                            ) : (
+                                                <TableFooter>
+                                                    <TableRow>
+                                                        <TableCell colSpan={4}>
+                                                            Error
+                                                        </TableCell>
+                                                        <TableCell className="text-right">
+                                                            There is no timeline
+                                                            to display
+                                                        </TableCell>
+                                                    </TableRow>
+                                                </TableFooter>
+                                            )}
+                                        </Table>
+                                    </div>
                                 </TabsContent>
                             </Tabs>
 

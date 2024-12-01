@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
@@ -11,8 +11,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function Datepicker({ onDateChange }) {
-    const [date, setDate] = useState(null);
+
+
+export function Datepicker({ newDate, onDateChange, className }) {
+    const [date, setDate] = useState(newDate ? new Date(newDate) : null);
 
     const handleDateChange = (selectedDate) => {
         setDate(selectedDate);
@@ -21,6 +23,7 @@ export function Datepicker({ onDateChange }) {
             onDateChange(formatDate(selectedDate));
         }
     };
+
 
     // Format date to yyyy-mm-dd
     const formatDate = (date) => {
@@ -34,7 +37,8 @@ export function Datepicker({ onDateChange }) {
                     variant={"outline"}
                     className={cn(
                         "justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
+                        !date && "text-muted-foreground",
+                        className ? className : ""
                     )}
                 >
                     <CalendarIcon className="mr-2 h-4 w-4" />
