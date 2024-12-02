@@ -9,6 +9,7 @@ import { Plus, Folder, Settings2, Trash } from "lucide-react";
 
 // Components
 import { Button } from "@/Components/ui/button";
+import { Badge } from "@/Components/ui/badge";
 import {
     Card,
     CardContent,
@@ -85,9 +86,9 @@ function Projects({ projects }) {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>ID</TableHead>
-                                {/* <TableHead></TableHead> */}
-                                {/* <TableHead></TableHead> */}
-                                {/* <TableHead></TableHead> */}
+                                <TableHead>Status</TableHead>
+                                <TableHead>Type</TableHead>
+                                <TableHead>Title</TableHead>
                                 <TableHead className="text-right">
                                     Actions
                                 </TableHead>
@@ -101,9 +102,22 @@ function Projects({ projects }) {
                                             # {project.id}
                                         </TableCell>
 
-                                        {/* <TableCell></TableCell> */}
-                                        {/* <TableCell></TableCell> */}
-                                        {/* <TableCell></TableCell> */}
+                                        <TableCell>
+                                            <Badge
+                                                variant={project.work_in_progress ? "secondary" : "primary"}
+                                            >
+                                                {project.work_in_progress ? "In progress" : "Completed"}
+                                            </Badge>
+                                        </TableCell>
+
+                                        <TableCell>
+                                            <Badge variant={project.type === "project" ? "primary" : "secondary"}>
+                                                {project.type === "project" ? "Project" : "Laboratory"}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell>
+                                            {project.title}
+                                        </TableCell>
 
                                         <TableCell className="text-right">
                                             <Link
@@ -145,7 +159,7 @@ function Projects({ projects }) {
                         ) : (
                             <TableFooter>
                                 <TableRow>
-                                    <TableCell colSpan={4}>Error</TableCell>
+                                    <TableCell colSpan={5}>Error</TableCell>
                                     <TableCell className="text-right">
                                         There is no project to display
                                     </TableCell>

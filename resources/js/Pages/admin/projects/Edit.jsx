@@ -87,32 +87,33 @@ function Projects({ project, stackCategories }) {
 
 
 
-    const [selectedStacks, setSelectedStacks] = useState(project.stacks);
+    const [selectedStacks, setSelectedStacks] = useState(project.stacks.map((stack) => stack.id.toString()));
     const [images, setImages] = useState([]);
     const [timeline, setTimeline] = useState(project.timeline);
 
     useEffect(() => {
         const fetchAndFormatImages = async () => {
-            // Mappe les images et télécharge les blobs
             const formatedImages = await Promise.all(
                 project.images.map(async (image) => {
-                    const blob = await generateImageBlob(image.full_url); // Attend le Blob
-                    const file = new File([blob], image.caption || "default.png", {
-                        type: image.type || "image/png",
+                    const blob = await generateImageBlob(image.full_url);
+                    const extension = image.extension || "png";
+                    const file = new File([blob], `${image.caption || "default"}.${extension}`, {
+                        type: image.mime_type || "image/png",
                     });
-    
+        
                     return {
                         file: file,
                         label: image.caption || "No label",
                     };
                 })
             );
-    
+        
             setImages(formatedImages);
-            setImagesData(formatedImages); 
+            setImagesData(formatedImages);
         };
+        
     
-        fetchAndFormatImages(); // Appelle la fonction asynchrone
+        fetchAndFormatImages();
     }, [project.images]);
     
     // Fonction asynchrone pour générer un Blob à partir de l'URL

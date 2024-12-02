@@ -89,11 +89,7 @@ class ProjectController extends Controller
         return redirect()->route('admin.projects.index')->with(['success' => 'Project created successfully']);
     }
 
-    public function update(Project $project, ProjectRequest $request)
-    {
-
-        dd($request->all());
-
+    public function update(Project $project, ProjectRequest $request) {
         $validated = $request->validated();
 
         // Slug
@@ -128,7 +124,13 @@ class ProjectController extends Controller
         }
 
         $images = $request->images;
+
+        // dd($images);
+        
+
         foreach ($images as $image) {
+
+
             $file = $image['file'];
             $path = Str::random(20) . '.' . $file->getClientOriginalExtension();
 
@@ -142,6 +144,7 @@ class ProjectController extends Controller
                 'extension' => $file->getClientOriginalExtension(),
                 'mime_type' => $file->getMimeType(),
             ]);
+
         }
 
         return redirect()->route('admin.projects.index')->with(['success' => 'Project updated successfully']);
