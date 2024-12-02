@@ -36,21 +36,8 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
-        $projectImages = $project->images->map(function ($image) {
-            $fileUrl = Storage::url($image->url);
-    
-            return [
-                'label' => $image->caption,
-                'file' => $fileUrl,
-            ];
-        });
-
-        // A continuer
-
-
         return Inertia::render('admin/projects/Edit', [
-            'project' => $project::with('timeline', 'stacks')->find($project->id),
-            'projectImages' => $projectImages,
+            'project' => $project::with('timeline', 'stacks', 'images')->find($project->id),
             'stackCategories' => StackCategory::with('stacks')->get(),
         ]);
     }
@@ -59,6 +46,8 @@ class ProjectController extends Controller
     {
 
         $validated = $request->validated();
+
+        // Slug
         $validated['slug'] = Str::slug($validated['title']);
 
         if (Project::where('slug', $validated['slug'])->exists()) {
@@ -67,22 +56,25 @@ class ProjectController extends Controller
 
         $project = Project::create($validated);
 
+        // Timeline
         $timeline = $request->timeline;
         if (!empty($timeline)) {
             $project->timeline()->createMany($timeline);
         }
 
+        // Stacks
         $stacks = $request->stacks;
         if (!empty($stacks)) {
             $project->stacks()->attach($stacks);
         }
 
+        // Images
         $images = $request->images;
         foreach ($images as $image) {
             $file = $image['file'];
             $path = Str::random(20) . '.' . $file->getClientOriginalExtension();
 
-            $path = Storage::putFileAs('public/projects', $file, $path);
+            $path = Storage::disk('public')->putFileAs('projects', $file, $path);
 
             $project->images()->create([
                 'url' => $path,
@@ -99,15 +91,60 @@ class ProjectController extends Controller
 
     public function update(Project $project, ProjectRequest $request)
     {
-        dd('update', $request->all());
+
+        dd($request->all());
 
         $validated = $request->validated();
 
+        // Slug
+        $validated['slug'] = Str::slug($validated['title']);
+
+
+        if (Project::where('slug', $validated['slug'])->where('id', '!=', $project->id)->exists()) {
+            return redirect()->back()->withErrors(['title' => 'The title already exists']);
+        }
+
         $project->update($validated);
 
-        return redirect()
-            ->route('admin.project.index')
-            ->with(['success' => 'Project updated successfully']);
+        // Timeline
+        $timeline = $request->timeline;
+        if (!empty($timeline)) {
+            $project->timeline()->delete();
+            $project->timeline()->createMany($timeline);
+        }
+
+        // Stacks
+        $stacks = $request->stacks;
+        if (!empty($stacks)) {
+            $project->stacks()->detach();
+            $project->stacks()->attach($stacks);
+        }
+
+
+        // Images
+        foreach($project->images as $image) {
+            Storage::delete($image->url);
+            $image->delete();
+        }
+
+        $images = $request->images;
+        foreach ($images as $image) {
+            $file = $image['file'];
+            $path = Str::random(20) . '.' . $file->getClientOriginalExtension();
+
+            $path = Storage::disk('public')->putFileAs('projects', $file, $path);
+
+            $project->images()->create([
+                'url' => $path,
+                'caption' => $image['label'] ?? null,
+                'size' => $file->getSize(),
+                'type' => $file->getMimeType(),
+                'extension' => $file->getClientOriginalExtension(),
+                'mime_type' => $file->getMimeType(),
+            ]);
+        }
+
+        return redirect()->route('admin.projects.index')->with(['success' => 'Project updated successfully']);
     }
 
     public function delete(Project $project)

@@ -84,8 +84,6 @@ function Projects({ stackCategories }) {
     const [selectedStacks, setSelectedStacks] = useState([]);
     const [images, setImages] = useState([]);
     const [timeline, setTimeline] = useState([]);
-    const [slug, setSlug] = useState("");
-
     const { data, setData, post, processing, errors } = useForm({
         // Projet data
         type: "",
@@ -110,12 +108,6 @@ function Projects({ stackCategories }) {
     });
 
 
-
-    // Fonction pour générer le slug
-    const generateSlug = (title) => {
-        return title.toLowerCase().replace(/ /g, "-");
-    };
-    
     // Timeline
     
     const [timelineDialogOpen, setTimelineDialogOpen] = useState(false);
@@ -288,45 +280,7 @@ function Projects({ stackCategories }) {
                                     <Separator className="mt-1" />
                                     <div className="grid gap-4 my-4">
                                         <div className="grid grid-cols-12 gap-2">
-                                            {/* <div className="grid gap-2 col-span-6">
-                                                <Label htmlFor="title">
-                                                    Title
-                                                </Label>
-                                                <Input
-                                                    id="title"
-                                                    type="text"
-                                                    placeholder="e.g. My awesome project"
-                                                    required
-                                                    value={data.title}
-                                                    onChange={(e) => {
-                                                        setData("title", e.target.value); // Mets à jour le titre
-                                                        setData("slug", generateSlug(e.target.value)); // Génère le slug
-                                                    }}
-                                                    className={
-                                                        errors.title
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }
-                                                />
-                                            </div>
-                                            <div className="grid gap-2 col-span-6">
-                                                <Label htmlFor="slug">
-                                                    Slug
-                                                </Label>
-                                                <Input
-                                                    id="slug"
-                                                    type="text"
-                                                    placeholder="e.g. my-awesome-project"
-                                                    required
-                                                    disabled
-                                                    value={generateSlug(data.title)}
-                                                    className={
-                                                        errors.slug
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }
-                                                />
-                                            </div> */}
+                                            
                                             {/* Title */}
                                             <div className="grid gap-2 col-span-6">
                                                 <Label htmlFor="title">Title</Label>
@@ -339,28 +293,12 @@ function Projects({ stackCategories }) {
                                                     onChange={(e) => {
                                                         const title = e.target.value;
                                                         setData("title", title); // Met à jour dans le formulaire
-                                                        setSlug(generateSlug(title)); // Génère le slug localement
                                                     }}
                                                     className={errors.title ? "border-red-500" : ""}
                                                 />
                                             </div>
 
-                                            {/* Slug */}
                                             <div className="grid gap-2 col-span-6">
-                                                <Label htmlFor="slug">Slug</Label>
-                                                <Input
-                                                    id="slug"
-                                                    type="text"
-                                                    placeholder="e.g. my-awesome-project"
-                                                    required
-                                                    disabled
-                                                    value={slug} // Utilise l'état local pour le slug
-                                                    className={errors.slug ? "border-red-500" : ""}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="grid grid-cols-12 gap-2">
-                                            <div className="grid gap-2 col-span-8">
                                                 <Label htmlFor="subtitle">
                                                     Subtitle
                                                 </Label>
@@ -383,6 +321,9 @@ function Projects({ stackCategories }) {
                                                     }
                                                 />
                                             </div>
+
+                                        </div>
+                                        <div className="grid grid-cols-12 gap-2">
                                             <div className="grid gap-2 col-span-4">
                                                 <Label htmlFor="type">
                                                     Type
@@ -415,9 +356,7 @@ function Projects({ stackCategories }) {
                                                     </SelectContent>
                                                 </Select>
                                             </div>
-                                        </div>
-                                        <div className="grid grid-cols-12 gap-2">
-                                            <div className="grid gap-2 col-span-6">
+                                            <div className="grid gap-2 col-span-4">
                                                 <Label htmlFor="end_date">
                                                     End date 
                                                     <span className="ml-1 text-gray-500">
@@ -431,7 +370,7 @@ function Projects({ stackCategories }) {
                                                     newDate={data.end_date}
                                                 />
                                             </div>
-                                            <div className="grid gap-2 col-span-6">
+                                            <div className="grid gap-2 col-span-4">
                                                 <Label htmlFor="work_in_progress">
                                                     Status
                                                 </Label>

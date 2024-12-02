@@ -3,7 +3,7 @@ import Layout from "@/Layouts/admin";
 import { Link } from "@inertiajs/react";
 import { useForm } from "@inertiajs/react";
 import { useRoute } from "ziggy";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 // Icons
@@ -12,8 +12,12 @@ import {
     ArrowLeft,
     Folder,
     Plus,
-    Settings2,
+    Archive,
+    TestTubeDiagonal,
     Trash,
+    ArrowUp,
+    ArrowDown,
+    Settings2,
 } from "lucide-react";
 
 // Components
@@ -74,27 +78,66 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-function Projects({ project, projectImages, stackCategories }) {
+function Projects({ project, stackCategories }) {
     const route = useRoute();
     const { toast } = useToast();
 
+
+    // Project.images are different from the images state, we have to use the full_url and label fields to display the images by creating File objects
+
+
+
     const [selectedStacks, setSelectedStacks] = useState(project.stacks);
-    const [images, setImages] = useState(projectImages); // TODO
+    const [images, setImages] = useState([]);
     const [timeline, setTimeline] = useState(project.timeline);
-    const [slug, setSlug] = useState("");
+
+    useEffect(() => {
+        const fetchAndFormatImages = async () => {
+            // Mappe les images et télécharge les blobs
+            const formatedImages = await Promise.all(
+                project.images.map(async (image) => {
+                    const blob = await generateImageBlob(image.full_url); // Attend le Blob
+                    const file = new File([blob], image.caption || "default.png", {
+                        type: image.type || "image/png",
+                    });
+    
+                    return {
+                        file: file,
+                        label: image.caption || "No label",
+                    };
+                })
+            );
+    
+            setImages(formatedImages);
+            setImagesData(formatedImages); 
+        };
+    
+        fetchAndFormatImages(); // Appelle la fonction asynchrone
+    }, [project.images]);
+    
+    // Fonction asynchrone pour générer un Blob à partir de l'URL
+    async function generateImageBlob(url) {
+        const response = await fetch(url); // Récupère l'image
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.blob(); // Retourne le Blob
+    }
+    
+
 
     const { data, setData, post, processing, errors } = useForm({
         // Projet data
-        type: "",
-        title: "",
-        subtitle: "",
-        description: "",
-        feedback: "",
-        end_date: "",
-        work_in_progress: false,
-        source_code_url: "",
-        live_demo_url: "",
-        timeline_url: "",
+        type: project.type ?? "",
+        title: project.title ?? "",
+        subtitle: project.subtitle ?? "",
+        description: project.description ?? "",
+        feedback: project.feedback ?? "",
+        end_date: project.end_date ?? "",
+        work_in_progress: project.work_in_progress.toString() ?? "",
+        source_code_url: project.source_code_url ?? "",
+        live_demo_url: project.live_demo_url ?? "",
+        timeline_url: project.timeline_url ?? "",
 
         // Project images
         images: images,
@@ -106,13 +149,9 @@ function Projects({ project, projectImages, stackCategories }) {
         stacks: selectedStacks,
     });
 
+  
 
 
-    // Fonction pour générer le slug
-    const generateSlug = (title) => {
-        return title.toLowerCase().replace(/ /g, "-");
-    };
-    
     // Timeline
     
     const [timelineDialogOpen, setTimelineDialogOpen] = useState(false);
@@ -125,7 +164,7 @@ function Projects({ project, projectImages, stackCategories }) {
     
     function onSubmit(e) {
         e.preventDefault();
-        post(route("admin.projects.store"));
+        post(route("admin.projects.update", project.id));
     }
 
     function handleToggleChange(e) {
@@ -231,10 +270,10 @@ function Projects({ project, projectImages, stackCategories }) {
                     <span>
                         <CardTitle className="flex items-center gap-2">
                             <Folder />
-                            Create a project
+                            Edit a project
                         </CardTitle>
                         <CardDescription>
-                            Here you can create a new project
+                            Here you can edit a project
                         </CardDescription>
                     </span>
                     <Link href={route("admin.projects.index")}>
@@ -285,45 +324,7 @@ function Projects({ project, projectImages, stackCategories }) {
                                     <Separator className="mt-1" />
                                     <div className="grid gap-4 my-4">
                                         <div className="grid grid-cols-12 gap-2">
-                                            {/* <div className="grid gap-2 col-span-6">
-                                                <Label htmlFor="title">
-                                                    Title
-                                                </Label>
-                                                <Input
-                                                    id="title"
-                                                    type="text"
-                                                    placeholder="e.g. My awesome project"
-                                                    required
-                                                    value={data.title}
-                                                    onChange={(e) => {
-                                                        setData("title", e.target.value); // Mets à jour le titre
-                                                        setData("slug", generateSlug(e.target.value)); // Génère le slug
-                                                    }}
-                                                    className={
-                                                        errors.title
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }
-                                                />
-                                            </div>
-                                            <div className="grid gap-2 col-span-6">
-                                                <Label htmlFor="slug">
-                                                    Slug
-                                                </Label>
-                                                <Input
-                                                    id="slug"
-                                                    type="text"
-                                                    placeholder="e.g. my-awesome-project"
-                                                    required
-                                                    disabled
-                                                    value={generateSlug(data.title)}
-                                                    className={
-                                                        errors.slug
-                                                            ? "border-red-500"
-                                                            : ""
-                                                    }
-                                                />
-                                            </div> */}
+                                            
                                             {/* Title */}
                                             <div className="grid gap-2 col-span-6">
                                                 <Label htmlFor="title">Title</Label>
@@ -332,32 +333,16 @@ function Projects({ project, projectImages, stackCategories }) {
                                                     type="text"
                                                     placeholder="e.g. My awesome project"
                                                     required
-                                                    value={data.title} // Utilisation de data.title
+                                                    value={data.title}
                                                     onChange={(e) => {
                                                         const title = e.target.value;
                                                         setData("title", title); // Met à jour dans le formulaire
-                                                        setSlug(generateSlug(title)); // Génère le slug localement
                                                     }}
                                                     className={errors.title ? "border-red-500" : ""}
                                                 />
                                             </div>
 
-                                            {/* Slug */}
                                             <div className="grid gap-2 col-span-6">
-                                                <Label htmlFor="slug">Slug</Label>
-                                                <Input
-                                                    id="slug"
-                                                    type="text"
-                                                    placeholder="e.g. my-awesome-project"
-                                                    required
-                                                    disabled
-                                                    value={slug} // Utilise l'état local pour le slug
-                                                    className={errors.slug ? "border-red-500" : ""}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="grid grid-cols-12 gap-2">
-                                            <div className="grid gap-2 col-span-8">
                                                 <Label htmlFor="subtitle">
                                                     Subtitle
                                                 </Label>
@@ -380,6 +365,9 @@ function Projects({ project, projectImages, stackCategories }) {
                                                     }
                                                 />
                                             </div>
+
+                                        </div>
+                                        <div className="grid grid-cols-12 gap-2">
                                             <div className="grid gap-2 col-span-4">
                                                 <Label htmlFor="type">
                                                     Type
@@ -412,9 +400,7 @@ function Projects({ project, projectImages, stackCategories }) {
                                                     </SelectContent>
                                                 </Select>
                                             </div>
-                                        </div>
-                                        <div className="grid grid-cols-12 gap-2">
-                                            <div className="grid gap-2 col-span-6">
+                                            <div className="grid gap-2 col-span-4">
                                                 <Label htmlFor="end_date">
                                                     End date 
                                                     <span className="ml-1 text-gray-500">
@@ -428,7 +414,7 @@ function Projects({ project, projectImages, stackCategories }) {
                                                     newDate={data.end_date}
                                                 />
                                             </div>
-                                            <div className="grid gap-2 col-span-6">
+                                            <div className="grid gap-2 col-span-4">
                                                 <Label htmlFor="work_in_progress">
                                                     Status
                                                 </Label>
@@ -694,28 +680,14 @@ function Projects({ project, projectImages, stackCategories }) {
                                                         </TableHeader>
 
                                                         <TableBody>
-                                                            {images.map(
-                                                                (
-                                                                    image,
-                                                                    index
-                                                                ) => (
-                                                                    <TableRow
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                    >
+                                                            {images.map((image, index) => (
+                                                                    <TableRow key={index}>
                                                                         <TableCell>
                                                                             <Dialog>
-                                                                                <DialogTrigger
-                                                                                    asChild
-                                                                                >
+                                                                                <DialogTrigger asChild>
                                                                                     <img
-                                                                                        src={URL.createObjectURL(
-                                                                                            image.file
-                                                                                        )}
-                                                                                        alt={
-                                                                                            image.label
-                                                                                        }
+                                                                                        src={URL.createObjectURL(image.file)}
+                                                                                        alt={image.label}
                                                                                         className="w-16 h-16 cursor-pointer object-cover rounded-lg"
                                                                                     />
                                                                                 </DialogTrigger>
@@ -734,7 +706,7 @@ function Projects({ project, projectImages, stackCategories }) {
                                                                                                 alt={
                                                                                                     image.label
                                                                                                 }
-                                                                                                className="w-full h-64 pt-4"
+                                                                                                className="w-full h-full pt-4"
                                                                                             />
                                                                                         </DialogDescription>
                                                                                     </DialogHeader>

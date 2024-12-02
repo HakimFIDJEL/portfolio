@@ -22,9 +22,9 @@ class ProjectImage extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function getImageUrl() {
+    protected function getFullUrlAttribute() {
         return Storage::url($this->url);
     }
 
-
+    protected $appends = ['full_url'];
 }
