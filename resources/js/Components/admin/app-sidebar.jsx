@@ -153,8 +153,10 @@ export function AppSidebar() {
               >
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
-                    <BadgeCheck />
-                    Account
+                    <Link href={route('admin.account.index')} className="flex items-center gap-2 w-full">
+                      <BadgeCheck />
+                      Account
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem >
                     <a href={route('auth.logout')} className="flex items-center gap-2 w-full">
