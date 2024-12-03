@@ -7,7 +7,7 @@ import { Trash } from "lucide-react";
 // Components
 import { Button } from "@/Components/ui/button";
 import { Separator } from "@/Components/ui/separator";
-import { ImageUploader } from "@/Components/admin/image-uploader";
+import { FileUploader } from "@/Components/admin/file-uploader";
 
 import {
     Table,
@@ -93,9 +93,10 @@ export function TabImages({ images, existingImages, setImages, setData }) {
                     <p className="text-lg font-semibold">File drop</p>
                     <Separator className="mt-1" />
 
-                    <ImageUploader
-                        onSubmitImage={onSubmitImage}
+                    <FileUploader
+                        onSubmitFile={onSubmitImage}
                         className="my-4"
+                        accept="image/*"
                     />
                 </div>
 

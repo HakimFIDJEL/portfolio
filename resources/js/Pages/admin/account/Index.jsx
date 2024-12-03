@@ -1,11 +1,20 @@
 // Needed imports
 import Layout from "@/Layouts/admin";
 import { Link, router } from "@inertiajs/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRoute } from "ziggy";
+import { useForm } from "@inertiajs/react";
 
 // Icons
-import { Plus, Folder, Settings2, Trash } from "lucide-react";
+import {
+    Plus,
+    Folder,
+    Settings2,
+    Trash,
+    Download,
+    Upload,
+    Loader2,
+} from "lucide-react";
 
 // Components
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,7 +22,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Table, TableBody, TableCell, TableHead, TableRow } from "@/components/ui/table";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from "@/components/ui/table";
+import { FileUploader } from "@/Components/admin/file-uploader";
 import {
     Card,
     CardContent,
@@ -22,54 +38,62 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { AppAlert } from "@/Components/admin/app-alert";
+
+// Custom components
+import { TabResume } from "@/Components/admin/account/tab-resume";
+import { TabPassword } from "@/Components/admin/account/tab-password";
 
 function Account({ user }) {
-    const route = useRoute();
-
-    return <>
     
-        {/* Hero */}
-        <div className="mb-6 p-4">
-            <h1 className="text-2xl font-semibold">
-                Account
-            </h1>
-            <p className="text-gray-400">
-                Here you can view and update your account details.
-            </p>
-        </div>
-        <Separator />
 
-        {/* Horizontal tab */}
-        <Tabs defaultValue="resume" className="my-6 gap-4 flex ">
-            <TabsList className="col-span-1 flex flex-col gap-4 h-full">
-                <TabsTrigger value="informations" className="w-full justify-start">
-                    Informations {/* TODO */}
-                </TabsTrigger>
-                <TabsTrigger value="resume" className="w-full justify-start">
-                    Resume
-                </TabsTrigger>
-                <TabsTrigger value="password" className="w-full justify-start">
-                    Password
-                </TabsTrigger>
-            </TabsList>
-            <TabsContent value="informations">
-                {/* TODO */}
-                My informations
-            </TabsContent>
-            <TabsContent value="resume">
-                {/* TODO */}
-                My resume
-
-                
-
-            </TabsContent>
-            <TabsContent value="password">
-                {/* TODO */}
-                My password
-            </TabsContent>
-        </Tabs>
     
-    </>;
+
+    return (
+        <>
+            {/* Hero */}
+            <div className="mb-6 p-4">
+                <h1 className="text-2xl font-semibold">Account</h1>
+                <p className="text-gray-400">
+                    Here you can view and update your account details.
+                </p>
+            </div>
+            <Separator />
+
+            {/* Horizontal tab */}
+            <Tabs defaultValue="password" className="my-6">
+                <TabsList className="w-full flex justify-between mb-4">
+                    <TabsTrigger value="informations" className="w-full">
+                        Informations {/* TODO */}
+                    </TabsTrigger>
+                    <TabsTrigger value="resume" className="w-full">
+                        Resume
+                    </TabsTrigger>
+                    <TabsTrigger value="password" className="w-full">
+                        Password
+                    </TabsTrigger>
+                </TabsList>
+                <TabsContent value="informations">
+                    {/* TODO */}
+                    My informations
+                </TabsContent>
+                <TabsContent value="resume">
+
+                    <TabResume
+                        user={user}
+                    />
+
+                </TabsContent>
+                <TabsContent value="password">
+                    
+                    <TabPassword
+                        user={user}
+                    />
+
+                </TabsContent>
+            </Tabs>
+        </>
+    );
 }
 
 Account.layout = (page) => {

@@ -2,7 +2,7 @@
 import React, { useState, useRef } from "react";
 
 // Components
-import { Upload, SendHorizonal, Loader2, Trash } from "lucide-react";
+import { Upload, SendHorizonal, Loader2, Trash, RefreshCcw  } from "lucide-react";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import { Button } from "@/Components/ui/button";
@@ -18,7 +18,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-export function ImageUploader({ onSubmitImage, ...props }) {
+export function FileUploader({ onSubmitFile, accept, ...props }) {
     const labelInput = useRef(null);
     const fileInput = useRef(null);
 
@@ -61,14 +61,12 @@ export function ImageUploader({ onSubmitImage, ...props }) {
 
         setSubmiting(true);
 
-        // Create the image object, return the file with the label inside
-        const image = {
+        const my_file = {
             file,
             label,
         };
 
-        // Call the onSubmitImage function with the image object
-        onSubmitImage(image);
+        onSubmitFile(my_file);
 
         // Reset the form
         setSubmiting(false);
@@ -86,7 +84,7 @@ export function ImageUploader({ onSubmitImage, ...props }) {
                     id="picture"
                     type="file"
                     ref={fileInput}
-                    accept="image/*"
+                    accept={accept}
                     onChange={handleUpload}
                 />
 
@@ -98,18 +96,18 @@ export function ImageUploader({ onSubmitImage, ...props }) {
                             disabled={!uploaded || uploading}
                             className="px-6"
                         >
-                            Upload
+                            Load
                             <Loader2
                                 hidden={!uploading}
                                 className="animate-spin"
                             />
-                            <Upload hidden={uploading} />
+                            <RefreshCcw  hidden={uploading} />
                         </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>
-                                Choose a label for the image
+                                Choose a label for the file
                             </AlertDialogTitle>
                             <AlertDialogDescription asChild>
                                 <div className="grid gap-4 pt-4">
@@ -124,7 +122,7 @@ export function ImageUploader({ onSubmitImage, ...props }) {
                                             onChange={(e) =>
                                                 setLabel(e.target.value)
                                             }
-                                            placeholder="e.g. My awesome image"
+                                            placeholder="e.g. My awesome file"
                                         />
                                     </div>
                                 </div>

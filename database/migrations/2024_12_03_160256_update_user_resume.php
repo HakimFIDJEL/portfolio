@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->text('resume_label')->nullable();
             $table->text('resume_path')->nullable();
             $table->text('resume_ext')->nullable();
             $table->text('resume_size')->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('resume_label');
             $table->dropColumn('resume_path');
             $table->dropColumn('resume_ext');
             $table->dropColumn('resume_size');

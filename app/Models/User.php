@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
-
-// Storage
 use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
@@ -27,6 +25,10 @@ class User extends Authenticatable
         'email',
         'password',
         'password_expires_at',
+        'resume_path',
+        'resume_ext',
+        'resume_size',
+        'resume_type',
     ];
 
     /**
@@ -62,6 +64,12 @@ class User extends Authenticatable
             'password_token' => 'string',
         ];
     }
+
+    public function getFullResumePathAttribute() {
+        return Storage::url($this->resume_path);
+    }
+
+    protected $appends = ['full_resume_path'];
 
     public function getImageUrl() {
         return Storage::url($this->pfp_url);

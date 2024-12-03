@@ -93,6 +93,12 @@ Route::prefix('/admin')->name('admin.')->middleware(AuthMiddleware::class)->grou
     Route::prefix('/account')->name('account.')->controller(AdminAccountController::class)->group(function()
     {
         Route::get('/', 'index')->name('index');
-        //
+
+        // Upload and delete resume 
+        Route::post('/resume', 'updateResume')->name('updateResume');
+        Route::delete('/resume', 'deleteResume')->name('deleteResume');
+
+        // Update password
+        Route::post('/password', 'updatePassword')->name('updatePassword');
     });
 });
