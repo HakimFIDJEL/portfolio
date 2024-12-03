@@ -11,12 +11,6 @@ import {
     Loader2,
     ArrowLeft,
     Folder,
-    Plus,
-    Archive,
-    TestTubeDiagonal,
-    Trash,
-    ArrowUp,
-    ArrowDown,
     Settings2,
 } from "lucide-react";
 
@@ -30,101 +24,25 @@ import {
     CardTitle,
 } from "@/Components/ui/card";
 import { Separator } from "@/Components/ui/separator";
-import { Input } from "@/Components/ui/input";
-import { Textarea } from "@/Components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 
-import { Datepicker } from "@/components/ui/datepicker";
 
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { ImageUploader } from "@/Components/admin/image-uploader";
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-    TableFooter,
-} from "@/components/ui/table";
-
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+// Custom components
+import { TabProject } from "@/Components/admin/projects/tab-project";
+import { TabStacks } from "@/Components/admin/projects/tab-stacks";
+import { TabTimeline } from "@/Components/admin/projects/tab-timeline";
+import { TabImages } from "@/Components/admin/projects/tab-images";
 
 function Projects({ project, stackCategories }) {
     const route = useRoute();
-    const { toast } = useToast();
 
 
-    // Project.images are different from the images state, we have to use the full_url and label fields to display the images by creating File objects
-
-
-
-    const [selectedStacks, setSelectedStacks] = useState(project.stacks.map((stack) => stack.id.toString()));
+    const [selectedStacks, setSelectedStacks] = useState(
+        project.stacks.map((stack) => stack.id.toString())
+    );
     const [images, setImages] = useState([]);
     const [timeline, setTimeline] = useState(project.timeline);
-
-    useEffect(() => {
-        const fetchAndFormatImages = async () => {
-            const formatedImages = await Promise.all(
-                project.images.map(async (image) => {
-                    const blob = await generateImageBlob(image.full_url);
-                    const extension = image.extension || "png";
-                    const file = new File([blob], `${image.caption || "default"}.${extension}`, {
-                        type: image.mime_type || "image/png",
-                    });
-        
-                    return {
-                        file: file,
-                        label: image.caption || "No label",
-                    };
-                })
-            );
-        
-            setImages(formatedImages);
-            setImagesData(formatedImages);
-        };
-        
-    
-        fetchAndFormatImages();
-    }, [project.images]);
-    
-    // Fonction asynchrone pour générer un Blob à partir de l'URL
-    async function generateImageBlob(url) {
-        const response = await fetch(url); // Récupère l'image
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return await response.blob(); // Retourne le Blob
-    }
-    
 
 
     const { data, setData, post, processing, errors } = useForm({
@@ -150,118 +68,14 @@ function Projects({ project, stackCategories }) {
         stacks: selectedStacks,
     });
 
-  
 
-
-    // Timeline
-    
-    const [timelineDialogOpen, setTimelineDialogOpen] = useState(false);
-    const [timelineDuration, setTimelineDuration] = useState("");
-    const [timelineTitle, setTimelineTitle] = useState("");
-    const [timelineDate, setTimelineDate] = useState("");
-    const timelineTitleRef = useRef(null);
-    const timelineDurationRef = useRef(null);
-
-    
     function onSubmit(e) {
         e.preventDefault();
         post(route("admin.projects.update", project.id));
     }
 
-    function handleToggleChange(e) {
-        const updatedStacks = e;
-        setSelectedStacks(updatedStacks);
-        setStacksData(updatedStacks);
-    }
+   
 
-    function onSubmitImage(image) {
-        const updatedImages = [...images, image]; 
-        setImages(updatedImages); 
-        setImagesData(updatedImages); 
-    }
-    
-
-    function handleRemoveImage(index) {
-        const updatedImages = images.filter((image, i) => i !== index);
-        setImages(updatedImages); 
-        setImagesData(updatedImages);
-    }
-    
-
-    function onSubmitTimeline(e) {
-        e.preventDefault();
-
-        if (!timelineTitle) {
-            timelineTitleRef.current.focus();
-            return;
-        }
-
-        if (!timelineDate) {
-            toast({
-                variant: "destructive",
-                title: "Uh oh! Something went wrong.",
-                description: "The starting date is required",
-            });
-            return;
-        }
-
-        if (!timelineDuration) {
-            timelineDurationRef.current.focus();
-            return;
-        }
-
-        const updatedTimeline = [
-            ...timeline,
-            {
-                title: timelineTitle,
-                date: timelineDate,
-                duration: timelineDuration,
-            },
-        ];
-
-        setTimeline(updatedTimeline);
-        setTimelineData(updatedTimeline);
-        
-        setTimelineDialogOpen(false);
-        clearTimelineInfo();
-    }
-
-    function handleRemoveTimeline(index) {
-        const updatedTimeline = timeline.filter((event, i) => i !== index);
-
-        setTimeline(updatedTimeline);
-        setTimelineData(updatedTimeline);
-
-        clearTimelineInfo();
-    }
-
-
-    function clearTimelineInfo() {
-        setTimelineDuration("");
-        setTimelineTitle("");
-        setTimelineDate("");
-    }
-
-    function formatDate(date) {
-        const options = {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        };
-        return new Date(date).toLocaleDateString("en-US", options);
-    }
-
-    function setImagesData(images) {
-        setData("images", images);
-    }
-
-    function setTimelineData(timeline) {
-        setData("timeline", timeline);
-    }
-
-    function setStacksData(stacks) {
-        setData("stacks", stacks);
-    }
 
     return (
         <>
@@ -287,7 +101,7 @@ function Projects({ project, stackCategories }) {
 
                 <Separator />
 
-                <CardContent>
+                {/* <CardContent>
                     <form onSubmit={onSubmit} className="mt-4">
                         <div className="grid gap-4">
                             <Tabs defaultValue="project" className="w-full">
@@ -325,10 +139,10 @@ function Projects({ project, stackCategories }) {
                                     <Separator className="mt-1" />
                                     <div className="grid gap-4 my-4">
                                         <div className="grid grid-cols-12 gap-2">
-                                            
-                                            {/* Title */}
                                             <div className="grid gap-2 col-span-6">
-                                                <Label htmlFor="title">Title</Label>
+                                                <Label htmlFor="title">
+                                                    Title
+                                                </Label>
                                                 <Input
                                                     id="title"
                                                     type="text"
@@ -336,10 +150,15 @@ function Projects({ project, stackCategories }) {
                                                     required
                                                     value={data.title}
                                                     onChange={(e) => {
-                                                        const title = e.target.value;
+                                                        const title =
+                                                            e.target.value;
                                                         setData("title", title); // Met à jour dans le formulaire
                                                     }}
-                                                    className={errors.title ? "border-red-500" : ""}
+                                                    className={
+                                                        errors.title
+                                                            ? "border-red-500"
+                                                            : ""
+                                                    }
                                                 />
                                             </div>
 
@@ -366,7 +185,6 @@ function Projects({ project, stackCategories }) {
                                                     }
                                                 />
                                             </div>
-
                                         </div>
                                         <div className="grid grid-cols-12 gap-2">
                                             <div className="grid gap-2 col-span-4">
@@ -378,7 +196,11 @@ function Projects({ project, stackCategories }) {
                                                         setData("type", value)
                                                     }
                                                     required
-                                                    value={data.type ? data.type.toString() : ""}
+                                                    value={
+                                                        data.type
+                                                            ? data.type.toString()
+                                                            : ""
+                                                    }
                                                     className={
                                                         errors.type
                                                             ? "border-red-500"
@@ -403,14 +225,17 @@ function Projects({ project, stackCategories }) {
                                             </div>
                                             <div className="grid gap-2 col-span-4">
                                                 <Label htmlFor="end_date">
-                                                    End date 
+                                                    End date
                                                     <span className="ml-1 text-gray-500">
                                                         (optional)
                                                     </span>
                                                 </Label>
                                                 <Datepicker
                                                     onDateChange={(date) =>
-                                                        setData("end_date",date)
+                                                        setData(
+                                                            "end_date",
+                                                            date
+                                                        )
                                                     }
                                                     newDate={data.end_date}
                                                 />
@@ -426,7 +251,11 @@ function Projects({ project, stackCategories }) {
                                                             value
                                                         )
                                                     }
-                                                    value={data.work_in_progress ? data.work_in_progress.toString() : ""}
+                                                    value={
+                                                        data.work_in_progress
+                                                            ? data.work_in_progress.toString()
+                                                            : ""
+                                                    }
                                                     required
                                                 >
                                                     <SelectTrigger>
@@ -477,7 +306,6 @@ function Projects({ project, stackCategories }) {
                                                 id="feedback"
                                                 type="text"
                                                 placeholder="e.g. I learned a lot from this project"
-                                                
                                                 value={data.feedback}
                                                 onChange={(e) =>
                                                     setData(
@@ -681,14 +509,28 @@ function Projects({ project, stackCategories }) {
                                                         </TableHeader>
 
                                                         <TableBody>
-                                                            {images.map((image, index) => (
-                                                                    <TableRow key={index}>
+                                                            {images.map(
+                                                                (
+                                                                    image,
+                                                                    index
+                                                                ) => (
+                                                                    <TableRow
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                    >
                                                                         <TableCell>
                                                                             <Dialog>
-                                                                                <DialogTrigger asChild>
+                                                                                <DialogTrigger
+                                                                                    asChild
+                                                                                >
                                                                                     <img
-                                                                                        src={URL.createObjectURL(image.file)}
-                                                                                        alt={image.label}
+                                                                                        src={URL.createObjectURL(
+                                                                                            image.file
+                                                                                        )}
+                                                                                        alt={
+                                                                                            image.label
+                                                                                        }
                                                                                         className="w-16 h-16 cursor-pointer object-cover rounded-lg"
                                                                                     />
                                                                                 </DialogTrigger>
@@ -896,26 +738,35 @@ function Projects({ project, stackCategories }) {
 
                                             {timeline.length > 0 ? (
                                                 <TableBody>
-                                                    {/* Timeline Events */}
-
                                                     {timeline.map(
                                                         (event, index) => (
-                                                            <TableRow key={index}>
-                                                                
+                                                            <TableRow
+                                                                key={index}
+                                                            >
                                                                 <TableCell>
-                                                                    {event.title}
+                                                                    {
+                                                                        event.title
+                                                                    }
                                                                 </TableCell>
                                                                 <TableCell>
-                                                                    {formatDate(event.date)}
+                                                                    {formatDate(
+                                                                        event.date
+                                                                    )}
                                                                 </TableCell>
                                                                 <TableCell>
-                                                                    {event.duration}
+                                                                    {
+                                                                        event.duration
+                                                                    }
                                                                 </TableCell>
                                                                 <TableCell className="text-right">
                                                                     <Button
                                                                         variant="destructive"
                                                                         size="icon"
-                                                                        onClick={() => handleRemoveTimeline(index)}
+                                                                        onClick={() =>
+                                                                            handleRemoveTimeline(
+                                                                                index
+                                                                            )
+                                                                        }
                                                                     >
                                                                         <Trash />
                                                                     </Button>
@@ -939,6 +790,88 @@ function Projects({ project, stackCategories }) {
                                             )}
                                         </Table>
                                     </div>
+                                </TabsContent>
+                            </Tabs>
+
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                disabled={processing}
+                            >
+                                <Loader2
+                                    className="animate-spin"
+                                    hidden={!processing}
+                                />
+                                Update project
+                                <Settings2 size={18} hidden={processing} />
+                            </Button>
+                        </div>
+                    </form>
+                </CardContent> */}
+
+                <CardContent>
+                    <form onSubmit={onSubmit} className="mt-4">
+                        <div className="grid gap-4">
+                            <Tabs defaultValue="project" className="w-full">
+                                <TabsList className="flex gap-4 w-full">
+                                    <TabsTrigger
+                                        value="project"
+                                        className="w-full"
+                                    >
+                                        Project
+                                    </TabsTrigger>
+                                    <TabsTrigger
+                                        value="stacks"
+                                        className="w-full"
+                                    >
+                                        Stacks
+                                    </TabsTrigger>
+                                    <TabsTrigger
+                                        value="images"
+                                        className="w-full"
+                                    >
+                                        Images
+                                    </TabsTrigger>
+                                    <TabsTrigger
+                                        value="timeline"
+                                        className="w-full"
+                                    >
+                                        Timeline
+                                    </TabsTrigger>
+                                </TabsList>
+
+                                <TabsContent value="project" className="my-4">
+                                    <TabProject
+                                        data={data}
+                                        setData={setData}
+                                        errors={errors}
+                                    />
+                                </TabsContent>
+
+                                <TabsContent value="stacks" className="my-4">
+                                    <TabStacks
+                                        selectedStacks={selectedStacks}
+                                        stackCategories={stackCategories}
+                                        setData={setData}
+                                        setSelectedStacks={setSelectedStacks}
+                                    />
+                                </TabsContent>
+
+                                <TabsContent value="images" className="my-4">
+                                    <TabImages
+                                        images={images}
+                                        existingImages={project.images}
+                                        setImages={setImages}
+                                        setData={setData}
+                                    />
+                                </TabsContent>
+
+                                <TabsContent value="timeline" className="my-4">
+                                    <TabTimeline
+                                        timeline={timeline}
+                                        setTimeline={setTimeline}
+                                        setData={setData}
+                                    />
                                 </TabsContent>
                             </Tabs>
 

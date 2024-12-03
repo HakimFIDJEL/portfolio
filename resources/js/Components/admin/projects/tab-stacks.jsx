@@ -1,9 +1,13 @@
+// Components
 import { Separator } from "@/Components/ui/separator";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-export function TabStacks({ setData, stackCategories, selectedStacks, setSelectedStacks }) {
-
-    
+export function TabStacks({
+    setData,
+    stackCategories,
+    selectedStacks,
+    setSelectedStacks,
+}) {
     function handleToggleChange(e) {
         const updatedStacks = e;
         setSelectedStacks(updatedStacks);

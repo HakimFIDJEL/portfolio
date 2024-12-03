@@ -1,12 +1,9 @@
 // Needed imports
-
 import { useState, useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 // Icons
-import {
-    Plus,
-    Trash,
-} from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 
 // Components
 import { Button } from "@/Components/ui/button";
@@ -34,9 +31,10 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export function TabTimeline({ timeline }) {
-
+export function TabTimeline({ timeline, setTimeline, setData }) {
     // Timeline
+
+    const { toast } = useToast();
 
     const [timelineDialogOpen, setTimelineDialogOpen] = useState(false);
     const [timelineDuration, setTimelineDuration] = useState("");
@@ -77,7 +75,7 @@ export function TabTimeline({ timeline }) {
         ];
 
         setTimeline(updatedTimeline);
-        setTimelineData(updatedTimeline);
+        setData("timeline", updatedTimeline);
 
         setTimelineDialogOpen(false);
         clearTimelineInfo();
@@ -87,7 +85,7 @@ export function TabTimeline({ timeline }) {
         const updatedTimeline = timeline.filter((event, i) => i !== index);
 
         setTimeline(updatedTimeline);
-        setTimelineData(updatedTimeline);
+        setData("timeline", updatedTimeline);
 
         clearTimelineInfo();
     }
@@ -106,7 +104,6 @@ export function TabTimeline({ timeline }) {
         };
         return new Date(date).toLocaleDateString("en-US", options);
     }
-
 
     return (
         <>
@@ -236,6 +233,7 @@ export function TabTimeline({ timeline }) {
                                     <TableCell>{event.duration}</TableCell>
                                     <TableCell className="text-right">
                                         <Button
+                                            type="button"
                                             variant="destructive"
                                             size="icon"
                                             onClick={() =>

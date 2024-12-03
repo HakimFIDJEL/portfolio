@@ -1,4 +1,3 @@
-
 // Components
 import { Separator } from "@/Components/ui/separator";
 import { Input } from "@/Components/ui/input";
@@ -14,8 +13,6 @@ import {
 
 import { Datepicker } from "@/components/ui/datepicker";
 
-
-
 export function TabProject({ data, setData, errors }) {
     return (
         <>
@@ -30,10 +27,10 @@ export function TabProject({ data, setData, errors }) {
                             type="text"
                             placeholder="e.g. My awesome project"
                             required
-                            value={data.title} 
+                            value={data.title}
                             onChange={(e) => {
                                 const title = e.target.value;
-                                setData("title", title); 
+                                setData("title", title);
                             }}
                             className={errors.title ? "border-red-500" : ""}
                         />
