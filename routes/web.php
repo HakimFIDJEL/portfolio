@@ -20,7 +20,7 @@ use App\Http\Middleware\AuthMiddleware;
 
 
 Route::get('/', [MinimalistController::class, 'home'])->name('home');
-Route::get('/project', [MinimalistController::class, 'project'])->name('project');
+Route::get('/project/{slug}/{project}', [MinimalistController::class, 'project'])->name('project');
 
 // AUTH ROUTES
 Route::prefix('/auth')->name('auth.')->controller(AuthController::class)->group(function()

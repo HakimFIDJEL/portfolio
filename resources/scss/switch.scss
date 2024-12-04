@@ -68,6 +68,13 @@ nav {
             
             width: 100%;
 
+            &.disabled {
+                color: $body-color-light;
+                opacity: 0.2;
+                cursor:default;
+
+            }
+
             &.active {
                 font-weight: 500;
                 background-color: $block-bg;

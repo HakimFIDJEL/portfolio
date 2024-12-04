@@ -29,6 +29,7 @@ main#home{
         .content {
             display: flex;
             flex-direction: column;
+            gap: $xxs-spacing;
 
 
             h1 {
@@ -65,7 +66,9 @@ main#home{
 
                 p {
                     font-size: 14px;
+                    line-height: 18px;
                     font-weight: 400;
+                    letter-spacing: 0.1px;
                     color: $body-color-light;
                 }
             }

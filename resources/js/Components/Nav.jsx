@@ -1,14 +1,21 @@
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
 
-
 export default function Nav({ isOnHome, version }) {
   const [navOpen, setNavOpen] = useState(true);
   const [activeLink, setActiveLink] = useState(version);
 
   const toggleNav = () => setNavOpen(!navOpen);
 
-  const handleLinkClick = (link) => setActiveLink(link);
+  function handleLinkClick(event, link) {
+
+    if(event.target.classList.contains("disabled")) {
+      event.preventDefault();
+      return;
+    }
+
+    setActiveLink(link);
+  } 
 
 
 
@@ -20,17 +27,19 @@ export default function Nav({ isOnHome, version }) {
         {isOnHome ? (
           
           <div className="link-group">
+
             <a
               href="javascript:void(0);"
-              className={`link ${activeLink === "graphic-design" ? "active" : ""}`}
-              onClick={() => handleLinkClick("graphic-design")}
+              className={`link disabled ${activeLink === "graphic-design" ? "active" : ""}`}
+              onClick={(e) => handleLinkClick(e, "graphic-design")}
+              title="Coming soon"
             >
               Graphic Design
             </a>
             <a
               href="javascript:void(0);"
               className={`link ${activeLink === "minimalist" ? "active" : ""}`}
-              onClick={() => handleLinkClick("minimalist")}
+              onClick={(e) => handleLinkClick(e, "minimalist")}
             >
               Minimalist
             </a>

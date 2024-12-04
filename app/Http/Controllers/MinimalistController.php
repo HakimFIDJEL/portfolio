@@ -26,7 +26,7 @@ class MinimalistController extends Controller
         ]);
     }
 
-    public function project(Project $project) {
+    public function project(string $slug, Project $project) {
         return Inertia::render('minimalist/Project', ['version' => 'minimalist', 'project' => $project]);
     }
     

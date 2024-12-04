@@ -2,8 +2,9 @@ import Layout from "@/Layouts/minimalist";
 
 import { Link } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
+import { useRoute } from "ziggy";
 
-import { Tooltip } from "@/Components/minimalist/Tooltip"
+import { Tooltip } from "@/Components/minimalist/Tooltip";
 import { Section } from "@/Components/minimalist/Section";
 import { Project } from "@/Components/minimalist/Project";
 import { BigButton } from "@/Components/minimalist/BigButton";
@@ -23,30 +24,25 @@ import {
 
 function Home({ stackCategories, projects, toolCategories, user, socials }) {
     const props = usePage().props;
-    console.log(props);
+    const route = useRoute();
 
     return (
         <>
             {/* Hero */}
             <section id="hero">
-                <Tooltip
-                    label={user.pfp_label}
-                >
-                    <a
-                        href={user.full_pfp_url}
-                        target="_blank"
-                    >
-                        <img 
+                <Tooltip label="Click to view full size">
+                    <a href={user.full_pfp_url} target="_blank">
+                        <img
                             src={user.full_pfp_url}
-                            alt="" 
-                            className="photo" 
+                            alt={user.pfp_label}
+                            className="photo"
                         />
                     </a>
                 </Tooltip>
                 <div className="content">
                     <h1>Hakim Fidjel</h1>
                     <p>
-                        French apprentice engineer, fullstack engineer want to be
+                        Aiming to build the Future, one line of code at a time
                     </p>
                 </div>
             </section>
@@ -59,15 +55,17 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
             >
                 <div className="description">
                     <p>
-                        There is no scale for the upscaling node for model based
-                        upscaling. This means most the good models will be
-                        forcing a user to do 4x
+                        Driven by a love for technology, I find joy in
+                        everything computer science has to offer—web
+                        development, programming, and tackling challenges
+                        head-on. For me, every line of code is a step closer to
+                        building something impactful.
                     </p>
                     <p>
-                        when they may not even be able to do it under their GPU
-                        (especially if using it as part of HR-Fix like I do.
-                        Occasionally I even OOM on 4090 (weirdly by just 2mb
-                        lol).
+                        As an engineering student at IG2I Centrale Lille, I’m
+                        constantly exploring new technologies and refining
+                        workflows to bridge the gap between innovation and
+                        real-world solutions.
                     </p>
                 </div>
 
@@ -116,42 +114,49 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                 <AccordeonContent>
                                     <div>
                                         {/* Stacks */}
-                                        {stackCategories.map(
-                                            (category, index) => (
-                                                <>
-                                                    <BadgeContainer
-                                                        key={
-                                                            `stackcategory-` +
-                                                            index
-                                                        }
-                                                        title={category.label}
-                                                    >
-                                                        <BadgeWrapper>
-                                                            {category.stacks.map(
-                                                                (
-                                                                    stack,
-                                                                    index
-                                                                ) => (
-                                                                    <Badge
-                                                                        key={
-                                                                            `stack-` +
-                                                                            index
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            stack.label
-                                                                        }
-                                                                    </Badge>
-                                                                )
-                                                            )}
-                                                        </BadgeWrapper>
-                                                    </BadgeContainer>
 
-                                                    {index <
-                                                        stackCategories.length -
-                                                            1 && <br />}
-                                                </>
+                                        {stackCategories.length > 0 ? (
+                                            stackCategories.map(
+                                                (category, index) => (
+                                                    <>
+                                                        <BadgeContainer
+                                                            key={
+                                                                `stackcategory-` +
+                                                                index
+                                                            }
+                                                            title={
+                                                                category.label
+                                                            }
+                                                        >
+                                                            <BadgeWrapper>
+                                                                {category.stacks.map(
+                                                                    (
+                                                                        stack,
+                                                                        index
+                                                                    ) => (
+                                                                        <Badge
+                                                                            key={
+                                                                                `stack-` +
+                                                                                index
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                stack.label
+                                                                            }
+                                                                        </Badge>
+                                                                    )
+                                                                )}
+                                                            </BadgeWrapper>
+                                                        </BadgeContainer>
+
+                                                        {index <
+                                                            stackCategories.length -
+                                                                1 && <br />}
+                                                    </>
+                                                )
                                             )
+                                        ) : (
+                                            <div>No stacks available</div>
                                         )}
                                     </div>
                                 </AccordeonContent>
@@ -161,42 +166,49 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                 <AccordeonContent>
                                     <div>
                                         {/* Tools */}
-                                        {toolCategories.map(
-                                            (category, index) => (
-                                                <>
-                                                    <BadgeContainer
-                                                        key={
-                                                            `toolcategory-` +
-                                                            index
-                                                        }
-                                                        title={category.label}
-                                                    >
-                                                        <BadgeWrapper>
-                                                            {category.tools.map(
-                                                                (
-                                                                    tool,
-                                                                    index
-                                                                ) => (
-                                                                    <Badge
-                                                                        key={
-                                                                            `tool-` +
-                                                                            index
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            tool.label
-                                                                        }
-                                                                    </Badge>
-                                                                )
-                                                            )}
-                                                        </BadgeWrapper>
-                                                    </BadgeContainer>
 
-                                                    {index <
-                                                        toolCategories.length -
-                                                            1 && <br />}
-                                                </>
+                                        {!toolCategories.length > 0 ? (
+                                            toolCategories.map(
+                                                (category, index) => (
+                                                    <>
+                                                        <BadgeContainer
+                                                            key={
+                                                                `toolcategory-` +
+                                                                index
+                                                            }
+                                                            title={
+                                                                category.label
+                                                            }
+                                                        >
+                                                            <BadgeWrapper>
+                                                                {category.tools.map(
+                                                                    (
+                                                                        tool,
+                                                                        index
+                                                                    ) => (
+                                                                        <Badge
+                                                                            key={
+                                                                                `tool-` +
+                                                                                index
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                tool.label
+                                                                            }
+                                                                        </Badge>
+                                                                    )
+                                                                )}
+                                                            </BadgeWrapper>
+                                                        </BadgeContainer>
+
+                                                        {index <
+                                                            toolCategories.length -
+                                                                1 && <br />}
+                                                    </>
+                                                )
                                             )
+                                        ) : (
+                                            <div>No tools available</div>
                                         )}
                                     </div>
                                 </AccordeonContent>
@@ -204,12 +216,8 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                         </Accordeon>
 
                         <span className="col-4 quote resp-col-12">
-                            My favorite saying is that the best programming
-                            language is{" "}
-                            <span className="highlight">
-                                the one you master
-                            </span>{" "}
-                            but I also enjoy learning new things.
+                            My journey balances <span className="highlight">expertise</span> in tools I know and
+                            excitement for those I’ve yet to <span className="highlight">explore.</span>
                         </span>
                     </div>
                 </div>
@@ -242,148 +250,105 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
             {/* Projects */}
             <Section
                 title="📚 Projects"
-                subtitle="Some of my projects"
+                subtitle="Take a look at my projects"
                 id="projects"
             >
-                <Project
-                    title="Project 1"
-                    subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, odio nec vehicula."
-                    link="#"
-                />
-                <Project
-                    title="Project 2"
-                    subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, odio nec vehicula."
-                    link="#"
-                />
-                <Project
-                    title="Project 3"
-                    subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, odio nec vehicula."
-                    link="#"
-                />
+                {projects.length > 0 ? (
+                    projects
+                        .filter((project) => project.type === "project")
+                        .map((project, index) => (
+                            <Project
+                                key={`project-` + index}
+                                title={project.title}
+                                subtitle={project.subtitle}
+                                link={route("project", [
+                                    project.slug,
+                                    project.id,
+                                ])}
+                            />
+                        ))
+                ) : (
+                    <div className="empty">
+                        <p>
+                            I haven't added any projects yet. Please check back
+                            later.
+                        </p>
+                    </div>
+                )}
             </Section>
 
             {/* Sandbox */}
             <Section
                 title="🧪 Sandbox"
-                subtitle="Some of my less impactful projects"
+                subtitle="My less impactful but still taughtful works"
                 id="sandbox"
             >
-                <Project
-                    title="Project 1"
-                    subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, odio nec vehicula."
-                    link="/project"
-                />
-                <Project
-                    title="Project 2"
-                    subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, odio nec vehicula."
-                    link="#"
-                />
-                <Project
-                    title="Project 3"
-                    subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, odio nec vehicula."
-                    link="#"
-                />
+                {projects.length > 0 ? (
+                    projects
+                        .filter((project) => project.type === "lab")
+                        .map((project, index) => (
+                            <Project
+                                key={`project-` + index}
+                                title={project.title}
+                                subtitle={project.subtitle}
+                                link={route("project", [
+                                    project.slug,
+                                    project.id,
+                                ])}
+                            />
+                        ))
+                ) : (
+                    <div className="empty">
+                        <p>
+                            I haven't added any minor works yet. Please check
+                            back later.
+                        </p>
+                    </div>
+                )}
             </Section>
 
             {/* Contact */}
             <Section title="📬 Contact" subtitle="Get in touch" id="contact">
                 <div className="row flex-column gap-xs">
-                    <BigButton
-                        link="#"
-                        className="d-flex align-items-center justify-content-between"
-                    >
-                        <div className="row align-items-center gap-sm">
-                            <svg
-                                width="15"
-                                height="12"
-                                viewBox="0 0 15 12"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
+                    {socials.length > 0 ? (
+                        socials.map((social, index) => (
+                            <BigButton
+                                key={`social-` + index}
+                                link={social.url}
+                                className="d-flex align-items-center justify-content-between"
+                                target="_blank"
                             >
-                                <path
-                                    d="M13.5674 0.75H2.36738C1.59738 0.75 0.974377 1.37344 0.974377 2.13542L0.967377 10.4479C0.967377 11.2099 1.59738 11.8333 2.36738 11.8333H13.5674C14.3374 11.8333 14.9674 11.2099 14.9674 10.4479V2.13542C14.9674 1.37344 14.3374 0.75 13.5674 0.75ZM13.5674 3.52083L7.96738 6.98438L2.36738 3.52083V2.13542L7.96738 5.59896L13.5674 2.13542V3.52083Z"
-                                    fill="white"
-                                />
-                            </svg>
-                            <span>Contact me via Email</span>
+                                <div className="row align-items-center gap-sm">
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: social.svg,
+                                        }}
+                                    />
+
+                                    <span>Contact me via {social.label}</span>
+                                </div>
+                                <svg
+                                    width="15"
+                                    height="13"
+                                    viewBox="0 0 15 13"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M0.062477 6L12.2958 6L7.05297 0.75L7.71207 0L14.2032 6.5L7.71207 13L7.05297 12.25L12.2958 7L0.062477 7V6Z"
+                                        fill="#CECECE"
+                                    />
+                                </svg>
+                            </BigButton>
+                        ))
+                    ) : (
+                        <div className="empty">
+                            <p>
+                                I haven't added any social links yet. Please
+                                check back later.
+                            </p>
                         </div>
-                        <svg
-                            width="15"
-                            height="13"
-                            viewBox="0 0 15 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M0.062477 6L12.2958 6L7.05297 0.75L7.71207 0L14.2032 6.5L7.71207 13L7.05297 12.25L12.2958 7L0.062477 7V6Z"
-                                fill="#CECECE"
-                            />
-                        </svg>
-                    </BigButton>
-                    <BigButton
-                        link="#"
-                        className="d-flex align-items-center justify-content-between"
-                    >
-                        <div className="row align-items-center gap-sm">
-                            <svg
-                                width="15"
-                                height="12"
-                                viewBox="0 0 15 12"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M13.5674 0.75H2.36738C1.59738 0.75 0.974377 1.37344 0.974377 2.13542L0.967377 10.4479C0.967377 11.2099 1.59738 11.8333 2.36738 11.8333H13.5674C14.3374 11.8333 14.9674 11.2099 14.9674 10.4479V2.13542C14.9674 1.37344 14.3374 0.75 13.5674 0.75ZM13.5674 3.52083L7.96738 6.98438L2.36738 3.52083V2.13542L7.96738 5.59896L13.5674 2.13542V3.52083Z"
-                                    fill="white"
-                                />
-                            </svg>
-                            <span>Contact me via Email</span>
-                        </div>
-                        <svg
-                            width="15"
-                            height="13"
-                            viewBox="0 0 15 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M0.062477 6L12.2958 6L7.05297 0.75L7.71207 0L14.2032 6.5L7.71207 13L7.05297 12.25L12.2958 7L0.062477 7V6Z"
-                                fill="#CECECE"
-                            />
-                        </svg>
-                    </BigButton>
-                    <BigButton
-                        link="#"
-                        className="d-flex align-items-center justify-content-between"
-                    >
-                        <div className="row align-items-center gap-sm">
-                            <svg
-                                width="15"
-                                height="12"
-                                viewBox="0 0 15 12"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M13.5674 0.75H2.36738C1.59738 0.75 0.974377 1.37344 0.974377 2.13542L0.967377 10.4479C0.967377 11.2099 1.59738 11.8333 2.36738 11.8333H13.5674C14.3374 11.8333 14.9674 11.2099 14.9674 10.4479V2.13542C14.9674 1.37344 14.3374 0.75 13.5674 0.75ZM13.5674 3.52083L7.96738 6.98438L2.36738 3.52083V2.13542L7.96738 5.59896L13.5674 2.13542V3.52083Z"
-                                    fill="white"
-                                />
-                            </svg>
-                            <span>Contact me via Email</span>
-                        </div>
-                        <svg
-                            width="15"
-                            height="13"
-                            viewBox="0 0 15 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M0.062477 6L12.2958 6L7.05297 0.75L7.71207 0L14.2032 6.5L7.71207 13L7.05297 12.25L12.2958 7L0.062477 7V6Z"
-                                fill="#CECECE"
-                            />
-                        </svg>
-                    </BigButton>
+                    )}
                 </div>
             </Section>
         </>
