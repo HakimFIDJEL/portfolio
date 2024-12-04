@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\BadgeController as AdminBadgeController;
 use App\Http\Controllers\admin\SocialController as AdminSocialController;
 use App\Http\Controllers\admin\StackController as AdminStackController;
 use App\Http\Controllers\admin\AccountController as AdminAccountController;
+use App\Http\Controllers\admin\ToolController as AdminToolController;
 
 // Middlewares
 use App\Http\Middleware\AuthMiddleware;
@@ -76,6 +77,24 @@ Route::prefix('/admin')->name('admin.')->middleware(AuthMiddleware::class)->grou
         });
     });
 
+    // Tools
+    Route::prefix('/tools')->name('tools.')->controller(AdminToolController::class)->group(function()
+    {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::get('/edit/{tool}', 'edit')->name('edit');
+
+        Route::post('/store', 'store')->name('store');
+        Route::post('/update/{tool}', 'update')->name('update');
+        Route::delete('/delete/{tool}', 'delete')->name('delete');
+
+        Route::prefix("/categories")->name('categories.')->group(function()
+        {
+            Route::post('/store', 'storeCategory')->name('store');
+            Route::delete('/delete/{category}', 'deleteCategory')->name('delete');
+        });
+    });
+
     // Socials
     Route::prefix('/socials')->name('socials.')->controller(AdminSocialController::class)->group(function()
     {
@@ -97,6 +116,10 @@ Route::prefix('/admin')->name('admin.')->middleware(AuthMiddleware::class)->grou
         // Upload and delete resume 
         Route::post('/resume', 'updateResume')->name('updateResume');
         Route::delete('/resume', 'deleteResume')->name('deleteResume');
+
+        // Upload and delete pfp 
+        Route::post('/pfp', 'updatePfp')->name('updatePfp');
+        Route::delete('/pfp', 'deletePfp')->name('deletePfp');
 
         // Update password
         Route::post('/password', 'updatePassword')->name('updatePassword');

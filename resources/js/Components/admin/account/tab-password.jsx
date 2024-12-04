@@ -56,9 +56,11 @@ export function TabPassword({ user }) {
 
         post(route("admin.account.updatePassword"), {
             onSuccess: () => {
-                setData("password", "");
-                setData("password_confirmation", "");
-                setData("current_password", "");
+                setData({
+                    password: "",
+                    password_confirmation: "",
+                    current_password: "",
+                });
             },
         });
     }

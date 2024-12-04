@@ -25,10 +25,18 @@ class User extends Authenticatable
         'email',
         'password',
         'password_expires_at',
+        
+        'resume_label',
         'resume_path',
         'resume_ext',
         'resume_size',
         'resume_type',
+
+        'pfp_label',
+        'pfp_url',
+        'pfp_extension',
+        'pfp_mime',
+        'pfp_size',
     ];
 
     /**
@@ -69,7 +77,14 @@ class User extends Authenticatable
         return Storage::url($this->resume_path);
     }
 
-    protected $appends = ['full_resume_path'];
+    public function getFullPfpUrlAttribute() {
+        return Storage::url($this->pfp_url);
+    }
+
+    protected $appends = [
+        'full_resume_path',
+        'full_pfp_url',
+    ];
 
     public function getImageUrl() {
         return Storage::url($this->pfp_url);

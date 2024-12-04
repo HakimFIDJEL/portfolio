@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRoute } from "ziggy";
 
 // Icons
-import { Plus, Blocks, Settings2, Trash, Loader2 } from "lucide-react";
+import { Plus, Blocks, Settings2, Trash, Loader2, Hammer } from "lucide-react";
 
 // Components
 import { Button } from "@/Components/ui/button";
@@ -38,32 +38,29 @@ import {
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 
-function Stacks({ stacks }) {
-
+function Tools({ tools }) {
     const route = useRoute();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [stackToDelete, setStackToDelete] = useState(null);
+    const [toolToDelete, setToolToDelete] = useState(null);
 
-
-
-    function handleDeleteClick(e, stack) {
+    function handleDeleteClick(e, tool) {
         e.preventDefault();
-        setStackToDelete(stack);
+        setToolToDelete(tool);
         setIsDialogOpen(true);
     }
 
     function dismissDelete() {
         setIsDialogOpen(false);
-        setStackToDelete(null);
+        setToolToDelete(null);
     }
 
     function confirmDelete(e) {
         e.preventDefault();
         setIsDialogOpen(false);
-        if (stackToDelete) {
-            router.delete(route("admin.stacks.delete", stackToDelete));
-            setStackToDelete(null);
+        if (toolToDelete) {
+            router.delete(route("admin.tools.delete", toolToDelete));
+            setToolToDelete(null);
         }
     }
 
@@ -73,11 +70,11 @@ function Stacks({ stacks }) {
 
     function onSubmit(e) {
         e.preventDefault();
-        post(route("admin.stacks.categories.store"), {
+        post(route("admin.tools.categories.store"), {
             onSuccess: () => {
                 setData({ label: "" });
-            }
-        })
+            },
+        });
     }
 
     return (
@@ -87,11 +84,11 @@ function Stacks({ stacks }) {
                 <CardHeader className="flex items-center justify-between flex-row gap-2">
                     <span>
                         <CardTitle className="flex items-center gap-2">
-                            <Blocks />
-                            Stacks
+                            <Hammer />
+                            Tools
                         </CardTitle>
                         <CardDescription>
-                            Here you can manage all the stacks that you master
+                            Here you can manage all the tools that you master
                         </CardDescription>
                     </span>
 
@@ -109,7 +106,10 @@ function Stacks({ stacks }) {
                                         Create a new category
                                     </DialogTitle>
                                     <DialogDescription asChild>
-                                        <form onSubmit={onSubmit} className="pt-2">
+                                        <form
+                                            onSubmit={onSubmit}
+                                            className="pt-2"
+                                        >
                                             <Separator />
                                             <div className="grid gap-4 my-4">
                                                 <div className="grid gap-2 w-full">
@@ -119,11 +119,20 @@ function Stacks({ stacks }) {
                                                     <Input
                                                         id="label"
                                                         type="text"
-                                                        placeholder="e.g. Frontend"
+                                                        placeholder="e.g. CI / CD"
                                                         required
                                                         value={data.label}
-                                                        onChange={(e) => setData("label", e.target.value)}
-                                                        className={ errors.label ? "border-red-500" : "" }
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                "label",
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className={
+                                                            errors.label
+                                                                ? "border-red-500"
+                                                                : ""
+                                                        }
                                                     />
                                                 </div>
 
@@ -149,10 +158,10 @@ function Stacks({ stacks }) {
                             </DialogContent>
                         </Dialog>
 
-                        <Link href={route("admin.stacks.create")}>
+                        <Link href={route("admin.tools.create")}>
                             <Button>
                                 <Plus size={18} />
-                                Create a stack
+                                Create a tool
                             </Button>
                         </Link>
                     </span>
@@ -161,7 +170,6 @@ function Stacks({ stacks }) {
                 <Separator />
 
                 <CardContent>
-
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -173,21 +181,23 @@ function Stacks({ stacks }) {
                                 </TableHead>
                             </TableRow>
                         </TableHeader>
-                        {stacks && stacks.length > 0 ? (
+                        {tools && tools.length > 0 ? (
                             <TableBody>
-                                {stacks.map((stack) => (
-                                    <TableRow key={stack.id}>
+                                {tools.map((tool) => (
+                                    <TableRow key={tool.id}>
                                         <TableCell className="font-semibold">
-                                            # {stack.id}
+                                            # {tool.id}
                                         </TableCell>
-                                        <TableCell>{stack.label}</TableCell>
-                                        <TableCell>{stack.category.label}</TableCell>
+                                        <TableCell>{tool.label}</TableCell>
+                                        <TableCell>
+                                            {tool.category.label}
+                                        </TableCell>
                                         <TableCell className="text-right">
                                             <Link
                                                 className="mr-2"
                                                 href={route(
-                                                    "admin.stacks.edit",
-                                                    stack
+                                                    "admin.tools.edit",
+                                                    tool.id
                                                 )}
                                             >
                                                 <Button
@@ -200,11 +210,11 @@ function Stacks({ stacks }) {
                                             </Link>
                                             <Link
                                                 href={route(
-                                                    "admin.stacks.delete",
-                                                    stack.id
+                                                    "admin.tools.delete",
+                                                    tool.id
                                                 )}
                                                 onClick={(e) => {
-                                                    handleDeleteClick(e, stack);
+                                                    handleDeleteClick(e, tool);
                                                 }}
                                             >
                                                 <Button
@@ -224,7 +234,7 @@ function Stacks({ stacks }) {
                                 <TableRow>
                                     <TableCell colSpan={3}>Error</TableCell>
                                     <TableCell className="text-right">
-                                        There is no stack to display
+                                        There is no tool to display
                                     </TableCell>
                                 </TableRow>
                             </TableFooter>
@@ -242,15 +252,15 @@ function Stacks({ stacks }) {
     );
 }
 
-Stacks.layout = (page) => {
+Tools.layout = (page) => {
     const route = useRoute();
     const breadcrumbs = [
         {
-            title: "Stacks",
-            href: route("admin.stacks.index"),
+            title: "Tools",
+            href: route("admin.tools.index"),
         },
     ];
     return <Layout children={page} breadcrumbs={breadcrumbs} />;
 };
 
-export default Stacks;
+export default Tools;

@@ -43,6 +43,7 @@ import { AppAlert } from "@/Components/admin/app-alert";
 // Custom components
 import { TabResume } from "@/Components/admin/account/tab-resume";
 import { TabPassword } from "@/Components/admin/account/tab-password";
+import { TabPfp } from "@/Components/admin/account/tab-pfp";
 
 function Account({ user }) {
     
@@ -61,10 +62,10 @@ function Account({ user }) {
             <Separator />
 
             {/* Horizontal tab */}
-            <Tabs defaultValue="password" className="my-6">
+            <Tabs defaultValue="pfp" className="my-6">
                 <TabsList className="w-full flex justify-between mb-4">
-                    <TabsTrigger value="informations" className="w-full">
-                        Informations {/* TODO */}
+                    <TabsTrigger value="pfp" className="w-full">
+                        Profile picture
                     </TabsTrigger>
                     <TabsTrigger value="resume" className="w-full">
                         Resume
@@ -73,10 +74,13 @@ function Account({ user }) {
                         Password
                     </TabsTrigger>
                 </TabsList>
-                <TabsContent value="informations">
-                    {/* TODO */}
-                    My informations
+
+                <TabsContent value="pfp">
+                    <TabPfp
+                        user={user}
+                    />
                 </TabsContent>
+
                 <TabsContent value="resume">
 
                     <TabResume
