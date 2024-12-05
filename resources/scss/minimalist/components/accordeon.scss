@@ -66,6 +66,21 @@
                 overflow: hidden;
             }
 
+            .title {
+                font-size: 14px;
+                font-weight: 400;
+                color: $body-color-light;
+
+                padding-left: $xs-spacing;
+            }
+
+            .muted {
+                // font-size: 12px;
+                font-weight: 300;
+                color: $body-color-dark;
+
+            }
+
             // max-height: 0;
             display: grid;
             grid-template-rows: 0fr;

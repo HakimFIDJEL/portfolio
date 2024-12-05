@@ -47,11 +47,8 @@
                         transition: $fast-animation;
                         transition-delay: 0.9s;
                         transform: scale(1);
-                        .carrousel-item-caption {
-                            transition-delay: 1.2s;
-                            opacity: 1;
-                        }
                     }
+
 
     
                     a.carrousel-item-image { 
@@ -63,31 +60,6 @@
                         }
                     }
 
-                    div.carrousel-item-caption {
-
-                        // color: $body-color-light;
-                        position: absolute;
-
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-
-                        pointer-events: all;
-
-                        // bottom: $xxs-spacing;
-                        // left: 50%;
-                        // transform: translateX(-50%);
-
-                        // background-color: $block-bg;
-                        // border: 1px solid $block-border;
-                        // border-radius: $border-radius;
-                        // padding: $xxs-spacing $sm-spacing;
-
-                        // opacity: 0;
-                        // transition: $fast-animation;
-
-                    }
                 }
             }
     

@@ -29,15 +29,15 @@ class Project extends Model
     ];
 
     public function stacks() {
-        return $this->belongsToMany(Stack::class, 'project_stacks') ?? null;
+        return $this->belongsToMany(Stack::class, 'project_stacks')->orderBy('id', 'asc') ?? null;
     }
 
     public function timeline() {
-        return $this->hasMany(ProjectTimeline::class) ?? null;
+        return $this->hasMany(ProjectTimeline::class)->orderBy('date', 'asc') ?? null;
     }
 
     public function images() {
-        return $this->hasMany(ProjectImage::class) ?? null;
+        return $this->hasMany(ProjectImage::class)->orderBy('id', 'asc') ?? null;
     }
 
 }

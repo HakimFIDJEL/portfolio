@@ -1,9 +1,23 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 
 export const Tooltip = ({ children, label }) => {
   const [visible, setVisible] = useState(false);
   const [coords, setCoords] = useState({ top: 0, left: 0 });
+
+  // Hide tooltip on global scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setVisible(false);
+    };
+
+    // Attach scroll listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const showTooltip = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -26,15 +40,15 @@ export const Tooltip = ({ children, label }) => {
         onFocus: showTooltip,
         onBlur: hideTooltip,
       })}
-        <div
-          className={`tooltip ${visible ? "active" : ""}`}
-          style={{ 
-            top: coords.top,
-            left: coords.left,
-           }}
-        >
-          {label}
-        </div>
+      <div
+        className={`tooltip ${visible ? "active" : ""}`}
+        style={{
+          top: coords.top,
+          left: coords.left,
+        }}
+      >
+        {label}
+      </div>
     </>
   );
 };

@@ -75,30 +75,112 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                         <AccordeonChildren>
                             <AccordeonLabel>School & Diplomas</AccordeonLabel>
                             <AccordeonContent>
-                                <p>
-                                    I am a student at the University of Science
-                                    and Technology Houari Boumediene, Algiers,
-                                    Algeria. I am currently in the 5th year of
-                                    the computer science engineering cycle. I am
-                                    also a student at the National School of
-                                    Computer Science (ESI) in Algiers, Algeria.
-                                    I am currently in the 2nd year of the
-                                    Master's cycle in Computer Science.
-                                </p>
+                                <div>
+                                    <h3 className="title">
+                                        🎓 Lycée Auguste Angellier (2018-2021)
+                                    </h3>
+                                    <p>
+                                        I completed my high school studies at
+                                        Lycée Auguste Angellier, earning a
+                                        Scientific Baccalaureate in 2021. This
+                                        solid foundation in mathematics and
+                                        sciences sparked my passion for
+                                        technology and problem-solving.
+                                    </p>
+
+                                    <br />
+                                    <hr />
+                                    <br />
+
+                                    <h3 className="title">
+                                        🎓 IG2I Centrale Lille (2021-2026)
+                                    </h3>
+                                    <p>
+                                        Currently in my 4th year at IG2I
+                                        Centrale Lille, I am pursuing an
+                                        engineering degree specializing in
+                                        industrial and computer science. The
+                                        program combines academic excellence
+                                        with real-world applications through
+                                        hands-on projects and professional
+                                        training.
+                                    </p>
+
+                                    <br />
+                                    <hr />
+                                    <br />
+
+                                    <p>
+                                        These experiences have shaped my
+                                        technical and analytical mindset,
+                                        preparing me for future challenges in
+                                        the tech world.
+                                    </p>
+                                </div>
                             </AccordeonContent>
                         </AccordeonChildren>
                         <AccordeonChildren>
                             <AccordeonLabel>Work experience</AccordeonLabel>
                             <AccordeonContent>
-                                <p>
-                                    I have been working as a fullstack developer
-                                    for 2 years. I have worked on several
-                                    projects in different fields such as
-                                    e-commerce, health, and education. I have
-                                    also worked on projects in the field of
-                                    artificial intelligence and machine
-                                    learning.
-                                </p>
+                                <div>
+                                    <h3 className="title">
+                                        💼 Fullstack Engineer - Apprentice
+                                        (09/23 - Present)
+                                    </h3>
+                                    <p>
+                                        At Réservoir Digital, I oversee the
+                                        development of web projects from
+                                        analysis to production. My role includes
+                                        ensuring compliance with business needs,
+                                        streamlining workflows, and modernizing
+                                        internal processes.
+                                    </p>
+
+                                    <br />
+                                    <hr />
+                                    <br />
+
+                                    <h3 className="title">
+                                        🔧 Fullstack Developer - Intern (05/23 -
+                                        08/23)
+                                    </h3>
+                                    <p>
+                                        During my internship at Réservoir
+                                        Digital, I improved my skills in new
+                                        technologies while contributing to
+                                        digital solution development.
+                                        Collaborating within a team was a key
+                                        part of this experience.
+                                    </p>
+
+                                    <br />
+                                    <hr />
+                                    <br />
+
+                                    <h3 className="title">
+                                        🌐 IT Technician & Web Developer -
+                                        Intern (06/22 - 08/22)
+                                    </h3>
+                                    <p>
+                                        At Hôpital Maritime de Zuydcoote, I
+                                        managed IT infrastructure to ensure
+                                        system connectivity and reliability. I
+                                        also developed an internal website that
+                                        optimized patient file management,
+                                        replacing outdated Excel processes.
+                                    </p>
+
+                                    <br />
+                                    <hr />
+                                    <br />
+
+                                    <p>
+                                        These roles have sharpened my ability to
+                                        deliver efficient, innovative solutions
+                                        while adapting to diverse professional
+                                        environments.
+                                    </p>
+                                </div>
                             </AccordeonContent>
                         </AccordeonChildren>
                     </Accordeon>
@@ -216,8 +298,10 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                         </Accordeon>
 
                         <span className="col-4 quote resp-col-12">
-                            My journey balances <span className="highlight">expertise</span> in tools I know and
-                            excitement for those I’ve yet to <span className="highlight">explore.</span>
+                            My journey balances{" "}
+                            <span className="highlight">expertise</span> in
+                            tools I know and excitement for those I’ve yet to{" "}
+                            <span className="highlight">explore.</span>
                         </span>
                     </div>
                 </div>

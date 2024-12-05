@@ -1,28 +1,83 @@
 .timeline {
-    display: flex;
-    flex-direction: column;
-
-    gap: $l-spacing;
     
     position: relative;
 
-    padding: 1px 0;
+    .timeline-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
 
-    .timeline-item {
-        
-        padding-left: $md-spacing;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        z-index: 1;
+
+        background-color: $block-btn-bg;
+        border-radius: 50%;
+        color: $block-btn-color;
+        cursor: pointer;
+        padding: 0.7rem;
+
+        transition: all $slow-animation;
+
+        border: 1px solid $block-border;
+
+        aspect-ratio: 1 / 1;
+
+
+        &.left {
+            left: 0;
+
+            &.disabled {
+                transform: translateX(-100%) translateY(-50%);
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+
+        &.right {
+            right: 0;
+
+            &.disabled {
+                transform: translateX(100%) translateY(-50%);
+                opacity: 0;
+                pointer-events: none;
+            }
+            svg {
+                transform: rotate(180deg);
+            }
+        }
+    }
+    
+    .timeline-scrollable {
+        display: flex;
+        gap: $sm-spacing;
         position: relative;
-        
-        .timeline-content {
-            padding-left: $sm-spacing;
 
-            h5 {
+        .timeline-item {
+            position: relative;
+            flex-shrink: 0;
+    
+            
+    
+    
+    
+            
+            .timeline-title {
+                border-radius: $border-radius;
+                border: 1px solid $block-border;
+                padding: $xs-spacing $x-spacing;
+    
                 font-size: 14px;
                 font-weight: 500;
                 line-height: 16px;
-            }
     
-            p {
+                max-width: 200px;
+    
+    
+            }
+            .timeline-info {
                 font-size: 13px;
                 font-weight: 300;
                 line-height: 16px;
@@ -30,36 +85,6 @@
                 color: $body-color-dark;
             }
         }
-
-
-        &::after {
-            content : '';
-            position: absolute;
-
-            width: $md-spacing;
-            height: $md-spacing;
-
-            background-color: $block-bg;
-            border: 1px solid $body-color-light;
-            border-radius: 50%;
-
-
-            top: 50%;
-            left: 0;
-
-            // z-index: 1000;
-
-            transform: translateY(-50%);
-        }
     }
 
-    .timeline-line {
-        position: absolute;
-        background-color: blue;
-        top: 0;
-        bottom: 0;
-        left: calc($md-spacing / 2);
-
-        border-left: 1px solid $body-color-light;
-    }
 }

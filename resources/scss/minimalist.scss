@@ -94,6 +94,11 @@ main {
         // border-color: $highlight !important;
         border-color: $body-color-dark !important;
     }
+    
+    &:focus {
+        border-color: $body-color-dark !important;
+        outline: none;
+    }
 }
 
 

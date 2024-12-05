@@ -1,7 +1,5 @@
-import React, { useState, useRef } from 'react';
-import {
-    Tooltip
-} from "@/Components/minimalist/Tooltip"
+import React, { useState, useRef } from "react";
+import { Tooltip } from "@/Components/minimalist/Tooltip";
 
 export const Carrousel = ({ children, navigation, pagination }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -17,12 +15,7 @@ export const Carrousel = ({ children, navigation, pagination }) => {
     }
 
     function onDrag(e) {
-
-
         console.log(e.clientX);
-
-
-
     }
 
     return (
@@ -37,21 +30,24 @@ export const Carrousel = ({ children, navigation, pagination }) => {
                     />
                 )}
 
-<Tooltip label={children[currentSlide].props.alt}>
-                <div className="carrousel-wrapper">
-                    <div className="carrousel" ref={carrouselRef} onDrag={onDrag}>
-
-                        {children.map((child, index) => (
-                            <CarrouselItem key={index} active={currentSlide === index}>
-                                {child}
-                            </CarrouselItem>
-                        ))}
-
-
-
+                <Tooltip label={children[currentSlide].props.alt}>
+                    <div className="carrousel-wrapper">
+                        <div
+                            className="carrousel"
+                            ref={carrouselRef}
+                            onDrag={onDrag}
+                        >
+                            {children.map((child, index) => (
+                                <CarrouselItem
+                                    key={index}
+                                    active={currentSlide === index}
+                                >
+                                    {child}
+                                </CarrouselItem>
+                            ))}
+                        </div>
                     </div>
-                </div>
-</Tooltip>
+                </Tooltip>
 
                 {/* Flèche droite */}
                 {navigation && (
@@ -95,8 +91,12 @@ export const Carrousel = ({ children, navigation, pagination }) => {
 
 const CarrouselItem = ({ children, active }) => {
     return (
-        <div className={`carrousel-item ${active ? 'active' : ''}`} >
-            <a href={children.props.src} target='_blank' className='carrousel-item-image'>
+        <div className={`carrousel-item ${active ? "active" : ""}`}>
+            <a
+                href={children.props.src}
+                target="_blank"
+                className="carrousel-item-image"
+            >
                 {children}
             </a>
         </div>
@@ -105,14 +105,23 @@ const CarrouselItem = ({ children, active }) => {
 
 const CarrouselArrow = ({ direction, onClick, disabled }) => {
     return (
-        <Tooltip label={direction === 'left' ? 'Previous' : 'Next'}>
+        <Tooltip label={direction === "left" ? "Previous" : "Next"}>
             <button
                 className={`carrousel-arrow carrousel-arrow-${direction} hover__effect`}
                 disabled={disabled}
                 onClick={onClick}
             >
-                <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15.0001 7H2.75009L8.00009 12.25L7.34009 13L0.840088 6.5L7.34009 0L8.00009 0.75L2.75009 6H15.0001V7Z" fill="#C9D1D9" />
+                <svg
+                    width="15"
+                    height="13"
+                    viewBox="0 0 15 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M15.0001 7H2.75009L8.00009 12.25L7.34009 13L0.840088 6.5L7.34009 0L8.00009 0.75L2.75009 6H15.0001V7Z"
+                        fill="#C9D1D9"
+                    />
                 </svg>
             </button>
         </Tooltip>
@@ -125,7 +134,9 @@ const CarrouselButtons = ({ items, currentSlide, onClick }) => {
             {items.map((_, index) => (
                 <button
                     key={index}
-                    className={`carrousel-button ${currentSlide === index ? 'active' : ''}`}
+                    className={`carrousel-button ${
+                        currentSlide === index ? "active" : ""
+                    }`}
                     onClick={() => onClick(index)}
                 />
             ))}
