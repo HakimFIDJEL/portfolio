@@ -1,36 +1,82 @@
 .timeline {
-    
     position: relative;
+    padding: $xxs-spacing 0;
+    margin-bottom: $sm-spacing;
 
-    .timeline-button {
+    .timeline-scrollable {
+        display: flex;
+        position: relative;
+        width: max-content;
+        align-items: center;
+
+        transition: all $fast-animation;
+
+        .timeline-separator {
+            width: 50px;
+            height: 1px;
+            background-color: $block-border;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .timeline-separator:last-child::after {
+            content: "";
+            position: absolute;
+            right: 0px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: $block-border;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .timeline-item {
+            position: relative;
+            flex-shrink: 0;
+
+            .timeline-title {
+                border-radius: $border-radius;
+                border: 1px solid $block-border;
+                padding: $xs-spacing $x-spacing;
+
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 16px;
+            }
+            .timeline-info {
+                position: absolute;
+                top: 100%;
+                white-space: nowrap;
+
+                font-size: 13px;
+                font-weight: 300;
+                line-height: 16px;
+
+                color: $body-color-dark;
+            }
+        }
+    }
+
+    .timeline-button-container {
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 0%;
+        bottom: 0;
+        z-index: 1;
+        transition: all $slow-animation;
 
         display: flex;
         align-items: center;
         justify-content: center;
 
-        z-index: 1;
-
-        background-color: $block-btn-bg;
-        border-radius: 50%;
-        color: $block-btn-color;
-        cursor: pointer;
-        padding: 0.7rem;
-
-        transition: all $slow-animation;
-
-        border: 1px solid $block-border;
-
-        aspect-ratio: 1 / 1;
-
-
         &.left {
             left: 0;
 
+            background: linear-gradient(to right, $block-bg, transparent);
+            padding-right: $lg-spacing;
+
             &.disabled {
-                transform: translateX(-100%) translateY(-50%);
+                transform: translateX(-100%);
                 opacity: 0;
                 pointer-events: none;
             }
@@ -39,8 +85,11 @@
         &.right {
             right: 0;
 
+            background: linear-gradient(to left, $block-bg, transparent);
+            padding-left: $lg-spacing;
+
             &.disabled {
-                transform: translateX(100%) translateY(-50%);
+                transform: translateX(100%);
                 opacity: 0;
                 pointer-events: none;
             }
@@ -48,43 +97,23 @@
                 transform: rotate(180deg);
             }
         }
-    }
-    
-    .timeline-scrollable {
-        display: flex;
-        gap: $sm-spacing;
-        position: relative;
 
-        .timeline-item {
-            position: relative;
-            flex-shrink: 0;
-    
-            
-    
-    
-    
-            
-            .timeline-title {
-                border-radius: $border-radius;
-                border: 1px solid $block-border;
-                padding: $xs-spacing $x-spacing;
-    
-                font-size: 14px;
-                font-weight: 500;
-                line-height: 16px;
-    
-                max-width: 200px;
-    
-    
-            }
-            .timeline-info {
-                font-size: 13px;
-                font-weight: 300;
-                line-height: 16px;
-    
-                color: $body-color-dark;
-            }
+        .timeline-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transition: all $fast-animation;
+
+            background-color: $block-btn-bg;
+            border-radius: 50%;
+            color: $block-btn-color;
+            cursor: pointer;
+            padding: 0.7rem;
+
+            border: 1px solid $block-border;
+
+            aspect-ratio: 1 / 1;
         }
     }
-
 }

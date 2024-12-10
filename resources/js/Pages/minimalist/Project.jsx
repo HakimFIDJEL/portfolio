@@ -126,10 +126,10 @@ function Project({ project, next_project }) {
                     {project.timeline && (
                         <Block
                             title="⏳ Timeline"
-                            collapsable={false}
+                            collapsable={true}
                             className="col-12"
                         >
-                            <div className="row flex-column gap-md">
+                            <div className="row flex-column gap-sm">
 
                                 <Timeline>
                                     {project.timeline.map((event, index) => (

@@ -12,10 +12,14 @@ export const Tooltip = ({ children, label }) => {
 
     // Attach scroll listener
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+    window.addEventListener("click", handleScroll);
 
     // Cleanup on unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("click", handleScroll);
     };
   }, []);
 
