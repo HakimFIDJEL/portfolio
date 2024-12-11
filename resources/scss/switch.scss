@@ -12,6 +12,7 @@ nav {
 
     transition: all $fast-animation;
 
+
     @include respond('breakpoint') {
         bottom: 2rem;
         gap: $xs-spacing;
@@ -45,7 +46,7 @@ nav {
 
         background-color: $body-bg;
         border-radius: 10px;
-        border: 1px solid $block-border;
+        border: 1px solid rgba($body-color-light, 0.5);
 
         width: 100%;
         

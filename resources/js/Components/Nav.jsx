@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
+import { LinkLoader } from "@/Components/minimalist/LinkLoader";
 
 export default function Nav({ isOnHome, version }) {
   const [navOpen, setNavOpen] = useState(true);
@@ -47,7 +48,7 @@ export default function Nav({ isOnHome, version }) {
 
         
         ) : (
-          <Link
+          <LinkLoader
             href="/"
             preserveScroll
             className="back-button hover__effect"
@@ -56,7 +57,7 @@ export default function Nav({ isOnHome, version }) {
               <path d="M15 7H2.75003L8.00003 12.25L7.34003 13L0.840027 6.5L7.34003 0L8.00003 0.75L2.75003 6H15V7Z" fill="#C9D1D9"/>
             </svg>
             Go back
-          </Link>
+          </LinkLoader>
         )}
 
           <button onClick={toggleNav} className="close-button hover__effect">
