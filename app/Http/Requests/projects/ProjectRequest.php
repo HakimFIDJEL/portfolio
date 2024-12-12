@@ -30,11 +30,13 @@ class ProjectRequest extends FormRequest
             'subtitle'           => ['required', 'string', 'max:255'],
             'description'        => ['required', 'string'],
             'feedback'           => ['nullable', 'string'],
+            'what_i_learned'     => ['nullable', 'string'],
             'end_date'           => ['nullable', 'date'],
             'work_in_progress'   => ['required', 'boolean'],
             'source_code_url'    => ['nullable', 'url'],
             'live_demo_url'      => ['nullable', 'url'],
             'timeline_url'       => ['nullable', 'url'],
+            'readme_url'         => ['nullable', 'url'],
 
             // Validation des images
             'images'             => ['nullable', 'array'],
@@ -46,6 +48,7 @@ class ProjectRequest extends FormRequest
             'timeline.*.title'   => ['required', 'string', 'max:255'],
             'timeline.*.date'    => ['required', 'date'],
             'timeline.*.duration'=> ['required', 'string', 'max:255'],
+            'timeline.*.index'   => ['nullable', 'integer'],
 
             // Validation des stacks
             'stacks'             => ['nullable', 'array'],
@@ -76,12 +79,14 @@ class ProjectRequest extends FormRequest
             'description.required'        => 'The project description is required.',
             'description.string'          => 'The project description must be a string.',
             'feedback.string'             => 'The project feedback must be a string.',
+            'what_i_learned.string'       => 'The project what I learned must be a string.',
             'end_date.date'               => 'The project end date must be a valid date.',
             'work_in_progress.required'   => 'The project status is required.',
             'work_in_progress.boolean'    => 'The project status must be a boolean.',
             'source_code_url.url'         => 'The source code URL must be a valid URL.',
             'live_demo_url.url'           => 'The live demo URL must be a valid URL.',
             'timeline_url.url'            => 'The timeline URL must be a valid URL.',
+            'readme_url.url'              => 'The readme URL must be a valid URL.',
         
             // Image validation
             'images.array'                => 'The project images must be an array.',
@@ -102,6 +107,8 @@ class ProjectRequest extends FormRequest
             'timeline.*.duration.required'=> 'The timeline step duration is required.',
             'timeline.*.duration.string'  => 'The timeline step duration must be a string.',
             'timeline.*.duration.max'     => 'The timeline step duration must not exceed 255 characters.',
+            'timeline.*.index.integer'    => 'The timeline step index must be an integer.',
+            'timeline.*.index.unique'     => 'The timeline step index must be unique.',
         
             // Stacks validation
             'stacks.array'                => 'The project stacks must be an array.',

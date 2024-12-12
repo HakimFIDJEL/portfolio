@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('project_id')->index();
             $table->string('url', 200);
             $table->string('caption', 100)->nullable();
-            $table->integer('order')->default(0);
             $table->string('size', 50)->nullable();
             $table->string('type', 50)->nullable();
             $table->string('extension', 50)->nullable();

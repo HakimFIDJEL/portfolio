@@ -11,6 +11,7 @@ class ProjectTimeline extends Model
         'date',
         'duration',
         'title',
+        'index',
     ];
 
     public function project() {

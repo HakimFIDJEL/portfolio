@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('project_images', function (Blueprint $table) {
-            $table->dropColumn('order');
+        Schema::table('projects', function (Blueprint $table) {
+            $table->text('what_i_learned')->nullable();
+            $table->string('readme_url')->nullable();
         });
     }
 
@@ -21,8 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('project_images', function (Blueprint $table) {
-            $table->integer('order')->after('caption');
+        Schema::table('projects', function (Blueprint $table) {
+            $table->dropColumn('what_i_learned');
+            $table->dropColumn('readme_url');
         });
     }
 };

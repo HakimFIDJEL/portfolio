@@ -16,6 +16,7 @@ class ProjectImage extends Model
         'type',
         'extension',
         'mime_type',
+        'index',
     ];
 
     public function project() {

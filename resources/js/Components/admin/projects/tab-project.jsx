@@ -128,10 +128,24 @@ export function TabProject({ data, setData, errors }) {
                     <Textarea
                         id="feedback"
                         type="text"
-                        placeholder="e.g. I learned a lot from this project"
+                        placeholder="e.g. I am very satisfied with the result"
                         value={data.feedback}
                         onChange={(e) => setData("feedback", e.target.value)}
                         className={errors.feedback ? "border-red-500" : ""}
+                    />
+                </div>
+                <div className="grid gap-2">
+                    <Label htmlFor="what_i_learned">
+                        What I learned
+                        <span className="ml-1 text-gray-500">(optional)</span>
+                    </Label>
+                    <Textarea
+                        id="what_i_learned"
+                        type="text"
+                        placeholder="e.g. I learned a lot from this project"
+                        value={data.what_i_learned}
+                        onChange={(e) => setData("what_i_learned", e.target.value)}
+                        className={errors.what_i_learned ? "border-red-500" : ""}
                     />
                 </div>
             </div>
@@ -140,7 +154,7 @@ export function TabProject({ data, setData, errors }) {
             <Separator className="mt-1" />
             <div className="grid gap-4 my-4">
                 <div className="grid grid-cols-12 gap-2">
-                    <div className="grid gap-2 col-span-4">
+                    <div className="grid gap-2 col-span-6">
                         <Label htmlFor="source_code_url">
                             Source code URL
                             <span className="ml-1 text-gray-500">
@@ -160,7 +174,7 @@ export function TabProject({ data, setData, errors }) {
                             }
                         />
                     </div>
-                    <div className="grid gap-2 col-span-4">
+                    <div className="grid gap-2 col-span-6">
                         <Label htmlFor="live_demo_url">
                             Live demo URL
                             <span className="ml-1 text-gray-500">
@@ -180,7 +194,10 @@ export function TabProject({ data, setData, errors }) {
                             }
                         />
                     </div>
-                    <div className="grid gap-2 col-span-4">
+                </div>
+
+                <div className="grid grid-cols-12 gap-2">
+                    <div className="grid gap-2 col-span-6">
                         <Label htmlFor="timeline_url">
                             Timeline URL
                             <span className="ml-1 text-gray-500">
@@ -200,7 +217,29 @@ export function TabProject({ data, setData, errors }) {
                             }
                         />
                     </div>
+                    <div className="grid gap-2 col-span-6">
+                        <Label htmlFor="readme_url">
+                            Readme URL
+                            <span className="ml-1 text-gray-500">
+                                (optional)
+                            </span>
+                        </Label>
+                        <Input
+                            id="readme_url"
+                            type="text"
+                            value={data.readme_url}
+                            placeholder="e.g. https://github.com/commits/HakimFIDJEL/my-project/blob/main/README.md"
+                            onChange={(e) =>
+                                setData("readme_url", e.target.value)
+                            }
+                            className={
+                                errors.readme_url ? "border-red-500" : ""
+                            }
+                        />
+                    </div>
                 </div>
+
+
             </div>
         </>
     );

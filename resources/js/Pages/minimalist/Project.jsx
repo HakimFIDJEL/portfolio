@@ -16,7 +16,7 @@ import {
 
 import { Timeline, TimelineItem } from "@/Components/minimalist/Timeline";
 
-function Project({ project, next_project }) {
+function Project({ project }) {
 
     const route = useRoute();
 
@@ -162,17 +162,23 @@ function Project({ project, next_project }) {
             </section>
 
             {project.images && (
-                <section id="images">
-                    <Carrousel navigation={true} pagination={true}>
-                        {project.images.map((image, index) => (
-                            <img
-                                src={image.full_url}
-                                alt={image.caption}
-                                key={`project-image-` + index}
-                            />
-                        ))}
-                    </Carrousel>
-                </section>
+                <Block 
+                    title="🖼️ Images"
+                    collapsable={true}
+                    className="col-12"
+                >
+                    <section id="images">
+                        <Carrousel navigation={true} pagination={true}>
+                            {project.images.map((image, index) => (
+                                <img
+                                    src={image.full_url}
+                                    alt={image.caption}
+                                    key={`project-image-` + index}
+                                />
+                            ))}
+                        </Carrousel>
+                    </section>
+                </Block>
             )}
 
             {project.feedback && (
@@ -184,34 +190,6 @@ function Project({ project, next_project }) {
                     >
                         <p>{project.feedback}</p>
                     </Block>
-                </section>
-            )}
-
-            {next_project && (
-                <section
-                    id="actions"
-                    className="row align-items-center justify-content-between gap-xs"
-                >
-                    <BigButton
-                        link={route("project", [next_project.slug, next_project.id])}
-                        className="d-flex align-items-center justify-content-between"
-                    >
-                        <div className="row align-items-center gap-sm">
-                            <span>See next project - {next_project.title}</span>
-                        </div>
-                        <svg
-                            width="15"
-                            height="13"
-                            viewBox="0 0 15 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M0.062477 6L12.2958 6L7.05297 0.75L7.71207 0L14.2032 6.5L7.71207 13L7.05297 12.25L12.2958 7L0.062477 7V6Z"
-                                fill="#CECECE"
-                            />
-                        </svg>
-                    </BigButton>
                 </section>
             )}
         </>

@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 
 // Icons
-import { Trash } from "lucide-react";
+import { Trash, ArrowUp, ArrowDown } from "lucide-react";
 
 // Components
 import { Button } from "@/Components/ui/button";
@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/dialog";
 
 export function TabImages({ images, existingImages, setImages, setData }) {
-
     useEffect(() => {
         const fetchAndFormatImages = async () => {
             const formatedImages = await Promise.all(
@@ -44,6 +43,7 @@ export function TabImages({ images, existingImages, setImages, setData }) {
                     );
 
                     return {
+                        index: image.index,
                         file: file,
                         label: image.caption || "No label",
                     };
@@ -62,28 +62,94 @@ export function TabImages({ images, existingImages, setImages, setData }) {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return await response.blob(); 
+        return await response.blob();
     }
 
     function setImagesData(images) {
         setData("images", images);
     }
 
-
     function onSubmitImage(image) {
-        const updatedImages = [...images, image];
+
+        console.log(image);
+
+        const updatedImages = [
+            ...images,
+            {
+                file: image.file,
+                label: image.label,
+                index: images.length,
+            },
+        ];
         setImages(updatedImages);
         setImagesData(updatedImages);
     }
 
     function handleRemoveImage(index) {
-        const updatedImages = images.filter((image, i) => i !== index);
+        const updatedImages = images
+            .filter((image) => image.index !== index)
+            .map((image, i) => ({ ...image, index: i }));
+
         setImages(updatedImages);
         setImagesData(updatedImages);
     }
 
     function setImagesData(images) {
         setData("images", images);
+    }
+
+    function incrementIndex(image) {
+        if (image.index === 0) {
+            return;
+        }
+
+        const updateImages = images.map((item) => {
+            if (item.index === image.index - 1) {
+                return {
+                    ...item,
+                    index: item.index + 1,
+                };
+            }
+
+            if (item.index === image.index) {
+                return {
+                    ...item,
+                    index: item.index - 1,
+                };
+            }
+
+            return item;
+        });
+
+        setImages(updateImages);
+        setData("images", updateImages);
+    }
+
+    function decrementIndex(image) {
+        if (image.index === images.length - 1) {
+            return;
+        }
+
+        const updateImages = images.map((item) => {
+            if (item.index === image.index + 1) {
+                return {
+                    ...item,
+                    index: item.index - 1,
+                };
+            }
+
+            if (item.index === image.index) {
+                return {
+                    ...item,
+                    index: item.index + 1,
+                };
+            }
+
+            return item;
+        });
+
+        setImages(updateImages);
+        setData("images", updateImages);
     }
 
     return (
@@ -113,6 +179,7 @@ export function TabImages({ images, existingImages, setImages, setData }) {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
+                                        <TableHead>Index</TableHead>
                                         <TableHead>Preview</TableHead>
                                         <TableHead>Label</TableHead>
                                         <TableHead className="text-right">
@@ -122,8 +189,43 @@ export function TabImages({ images, existingImages, setImages, setData }) {
                                 </TableHeader>
 
                                 <TableBody>
-                                    {images.map((image, index) => (
+                                    {images
+                                        .sort((a, b) => a.index - b.index)
+                                        .map((image, index) => (
                                         <TableRow key={index}>
+                                            {/* Index */}
+                                            <TableCell >
+                                                {/* Increment index */}
+                                                <div className="flex items-center gap-1 justify-start">
+                                                    <Button
+                                                        type="button"
+                                                        variant="secondary"
+                                                        size="icon"
+                                                        onClick={() =>
+                                                            incrementIndex(image)
+                                                        }
+                                                        disabled={image.index === 0}
+                                                    >
+                                                        <ArrowUp />
+                                                    </Button>
+
+                                                    {/* Decrement index */}
+                                                    <Button
+                                                        type="button"
+                                                        variant="secondary"
+                                                        size="icon"
+                                                        onClick={() =>
+                                                            decrementIndex(image)
+                                                        }
+                                                        disabled={
+                                                            image.index ===
+                                                            images.length - 1
+                                                        }
+                                                    >
+                                                        <ArrowDown />
+                                                    </Button>
+                                                </div>
+                                            </TableCell>
                                             <TableCell>
                                                 <Dialog>
                                                     <DialogTrigger asChild>

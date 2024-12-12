@@ -30,7 +30,6 @@ class MinimalistController extends Controller
         return Inertia::render('minimalist/Project', [
             'version' => 'minimalist', 
             'project' => $project->load('stacks', 'images', 'timeline'),
-            'next_project' => Project::where('id', '>', $project->id)->select('slug', 'id', 'title')->first(),
         ]);
     }
     

@@ -22,10 +22,12 @@ class Project extends Model
         'work_in_progress',
         'description',
         'feedback',
+        'what_i_learned',
 
         'source_code_url',
         'live_demo_url',
         'timeline_url',
+        'readme_url',
     ];
 
     public function stacks() {
@@ -33,11 +35,11 @@ class Project extends Model
     }
 
     public function timeline() {
-        return $this->hasMany(ProjectTimeline::class)->orderBy('date', 'asc') ?? null;
+        return $this->hasMany(ProjectTimeline::class)->orderBy('index', 'asc') ?? null;
     }
 
     public function images() {
-        return $this->hasMany(ProjectImage::class)->orderBy('id', 'asc') ?? null;
+        return $this->hasMany(ProjectImage::class)->orderBy('index', 'asc') ?? null;
     }
 
 }

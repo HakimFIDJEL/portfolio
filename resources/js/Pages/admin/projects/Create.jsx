@@ -40,11 +40,13 @@ function Projects({ stackCategories }) {
         subtitle: "",
         description: "",
         feedback: "",
+        what_i_learned: "",
         end_date: "",
         work_in_progress: false,
         source_code_url: "",
         live_demo_url: "",
         timeline_url: "",
+        readme_url: "",
 
         // Project images
         images: images,
@@ -88,8 +90,14 @@ function Projects({ stackCategories }) {
                 <CardContent>
                     <form onSubmit={onSubmit} className="mt-4">
                         <div className="grid gap-4">
-                            <Tabs defaultValue="project" className="w-full">
+                            <Tabs defaultValue="images" className="w-full">
                                 <TabsList className="flex gap-4 w-full">
+                                    <TabsTrigger
+                                        value="images"
+                                        className="w-full"
+                                    >
+                                        Images
+                                    </TabsTrigger>
                                     <TabsTrigger
                                         value="project"
                                         className="w-full"
@@ -103,18 +111,20 @@ function Projects({ stackCategories }) {
                                         Stacks
                                     </TabsTrigger>
                                     <TabsTrigger
-                                        value="images"
-                                        className="w-full"
-                                    >
-                                        Images
-                                    </TabsTrigger>
-                                    <TabsTrigger
                                         value="timeline"
                                         className="w-full"
                                     >
                                         Timeline
                                     </TabsTrigger>
                                 </TabsList>
+
+                                <TabsContent value="images" className="my-4">
+                                    <TabImages
+                                        images={images}
+                                        setImages={setImages}
+                                        setData={setData}
+                                    />
+                                </TabsContent>
 
                                 <TabsContent value="project" className="my-4">
                                     <TabProject
@@ -130,14 +140,6 @@ function Projects({ stackCategories }) {
                                         stackCategories={stackCategories}
                                         setData={setData}
                                         setSelectedStacks={setSelectedStacks}
-                                    />
-                                </TabsContent>
-
-                                <TabsContent value="images" className="my-4">
-                                    <TabImages
-                                        images={images}
-                                        setImages={setImages}
-                                        setData={setData}
                                     />
                                 </TabsContent>
 

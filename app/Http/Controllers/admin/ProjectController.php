@@ -77,12 +77,13 @@ class ProjectController extends Controller
             $path = Storage::disk('public')->putFileAs('projects', $file, $path);
 
             $project->images()->create([
-                'url' => $path,
-                'caption' => $image['label'] ?? null,
-                'size' => $file->getSize(),
-                'type' => $file->getMimeType(),
+                'url'       => $path,
+                'caption'   => $image['label'] ?? null,
+                'size'      => $file->getSize(),
+                'type'      => $file->getMimeType(),
                 'extension' => $file->getClientOriginalExtension(),
                 'mime_type' => $file->getMimeType(),
+                'index'     => $image['index'],
             ]);
         }
 
@@ -102,6 +103,7 @@ class ProjectController extends Controller
 
         $project->update($validated);
 
+        
         // Timeline
         $timeline = $request->timeline;
         if (!empty($timeline)) {
@@ -137,12 +139,13 @@ class ProjectController extends Controller
             $path = Storage::disk('public')->putFileAs('projects', $file, $path);
 
             $project->images()->create([
-                'url' => $path,
-                'caption' => $image['label'] ?? null,
-                'size' => $file->getSize(),
-                'type' => $file->getMimeType(),
+                'url'       => $path,
+                'caption'   => $image['label'] ?? null,
+                'size'      => $file->getSize(),
+                'type'      => $file->getMimeType(),
                 'extension' => $file->getClientOriginalExtension(),
                 'mime_type' => $file->getMimeType(),
+                'index'     => $image['index'],
             ]);
 
         }
