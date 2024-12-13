@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 
 import { Datepicker } from "@/components/ui/datepicker";
+import { RichTextEditor } from "@/components/text-editor";
 
 export function TabProject({ data, setData, errors }) {
     return (
@@ -110,7 +111,7 @@ export function TabProject({ data, setData, errors }) {
                 </div>
                 <div className="grid gap-2">
                     <Label htmlFor="description">Description</Label>
-                    <Textarea
+                    {/* <Textarea
                         id="description"
                         type="text"
                         placeholder="e.g. This project does something"
@@ -118,6 +119,12 @@ export function TabProject({ data, setData, errors }) {
                         value={data.description}
                         onChange={(e) => setData("description", e.target.value)}
                         className={errors.description ? "border-red-500" : ""}
+                    /> */}
+                    <RichTextEditor
+                        id="description"
+                        value={data.description}
+                        onChange={(value) => setData("description", value)}
+                        placeholder="e.g. This project does something"
                     />
                 </div>
                 <div className="grid gap-2">
@@ -125,13 +132,19 @@ export function TabProject({ data, setData, errors }) {
                         Feedback
                         <span className="ml-1 text-gray-500">(optional)</span>
                     </Label>
-                    <Textarea
+                    {/* <Textarea
                         id="feedback"
                         type="text"
                         placeholder="e.g. I am very satisfied with the result"
                         value={data.feedback}
                         onChange={(e) => setData("feedback", e.target.value)}
                         className={errors.feedback ? "border-red-500" : ""}
+                    /> */}
+                    <RichTextEditor
+                        id="feedback"
+                        value={data.feedback}
+                        onChange={(value) => setData("feedback", value)}
+                        placeholder="e.g. I am very satisfied with the result"
                     />
                 </div>
                 <div className="grid gap-2">
@@ -139,13 +152,19 @@ export function TabProject({ data, setData, errors }) {
                         What I learned
                         <span className="ml-1 text-gray-500">(optional)</span>
                     </Label>
-                    <Textarea
+                    {/* <Textarea
                         id="what_i_learned"
                         type="text"
                         placeholder="e.g. I learned a lot from this project"
                         value={data.what_i_learned}
                         onChange={(e) => setData("what_i_learned", e.target.value)}
                         className={errors.what_i_learned ? "border-red-500" : ""}
+                    /> */}
+                    <RichTextEditor
+                        id="what_i_learned"
+                        value={data.what_i_learned}
+                        onChange={(value) => setData("what_i_learned", value)}
+                        placeholder="e.g. I learned a lot from this project"
                     />
                 </div>
             </div>

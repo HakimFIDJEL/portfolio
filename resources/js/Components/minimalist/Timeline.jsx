@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 
 import { Tooltip } from "@/Components/minimalist/Tooltip";
 
-export const Timeline = ({ children, className }) => {
+export const Timeline = ({ children, className, disabled }) => {
     const [scrollPosition, setScrollPosition] = useState(0);
     const scrollableRef = useRef(null);
     const containerRef = useRef(null);
@@ -40,7 +40,7 @@ export const Timeline = ({ children, className }) => {
             <TimelineButton
                 onClick={() => handleScroll(-distanceToScroll)}
                 direction="left"
-                disabled={scrollPosition === 0}
+                disabled={(scrollPosition === 0) | disabled}
             />
 
             {/* Conteneur scrollable */}
@@ -57,7 +57,7 @@ export const Timeline = ({ children, className }) => {
             <TimelineButton
                 onClick={() => handleScroll(distanceToScroll)}
                 direction="right"
-                disabled={scrollPosition >= maxScroll}
+                disabled={(scrollPosition >= maxScroll) | disabled}
             />
         </div>
     );

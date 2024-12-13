@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Tooltip } from "@/Components/minimalist/Tooltip";
 
-export const Carrousel = ({ children, navigation, pagination }) => {
+export const Carrousel = ({ children, navigation, pagination, disabled }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const carrouselRef = useRef(null);
 
@@ -14,9 +14,6 @@ export const Carrousel = ({ children, navigation, pagination }) => {
         carrouselRef.current.style.transform = `translateX(-${index * 100}%)`;
     }
 
-    function onDrag(e) {
-        console.log(e.clientX);
-    }
 
     return (
         <div className="carrousel-container">
@@ -26,7 +23,7 @@ export const Carrousel = ({ children, navigation, pagination }) => {
                     <CarrouselArrow
                         direction="left"
                         onClick={() => goToSlide(currentSlide - 1)}
-                        disabled={currentSlide === 0}
+                        disabled={(currentSlide === 0) | disabled}
                     />
                 )}
 
@@ -35,12 +32,12 @@ export const Carrousel = ({ children, navigation, pagination }) => {
                         <div
                             className="carrousel"
                             ref={carrouselRef}
-                            onDrag={onDrag}
                         >
                             {children.map((child, index) => (
                                 <CarrouselItem
                                     key={index}
                                     active={currentSlide === index}
+                                    disabled={disabled}
                                 >
                                     {child}
                                 </CarrouselItem>
@@ -54,7 +51,7 @@ export const Carrousel = ({ children, navigation, pagination }) => {
                     <CarrouselArrow
                         direction="right"
                         onClick={() => goToSlide(currentSlide + 1)}
-                        disabled={currentSlide === children.length - 1}
+                        disabled={(currentSlide === children.length - 1) | disabled}
                     />
                 )}
             </div>
@@ -81,6 +78,7 @@ export const Carrousel = ({ children, navigation, pagination }) => {
                             items={children}
                             currentSlide={currentSlide}
                             onClick={(index) => goToSlide(index)}
+                            disabled = {disabled}
                         />
                     )}
                 </div>
@@ -89,11 +87,11 @@ export const Carrousel = ({ children, navigation, pagination }) => {
     );
 };
 
-const CarrouselItem = ({ children, active }) => {
+const CarrouselItem = ({ children, active, disabled }) => {
     return (
         <div className={`carrousel-item ${active ? "active" : ""}`}>
             <a
-                href={children.props.src}
+                href={disabled ? undefined : children.props.src}
                 target="_blank"
                 className="carrousel-item-image"
             >
@@ -128,7 +126,7 @@ const CarrouselArrow = ({ direction, onClick, disabled }) => {
     );
 };
 
-const CarrouselButtons = ({ items, currentSlide, onClick }) => {
+const CarrouselButtons = ({ items, currentSlide, onClick, disabled }) => {
     return (
         <div className="carrousel-buttons">
             {items.map((_, index) => (
@@ -138,6 +136,7 @@ const CarrouselButtons = ({ items, currentSlide, onClick }) => {
                         currentSlide === index ? "active" : ""
                     }`}
                     onClick={() => onClick(index)}
+                    disabled={disabled}
                 />
             ))}
         </div>

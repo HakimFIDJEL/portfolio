@@ -1,7 +1,7 @@
 .timeline {
     position: relative;
     padding: $xxs-spacing 0;
-    margin-bottom: $sm-spacing;
+    // margin-bottom: $re-spacing;
 
     .timeline-scrollable {
         display: flex;
@@ -48,6 +48,7 @@
                 position: absolute;
                 top: 100%;
                 white-space: nowrap;
+                z-index: 1;
 
                 font-size: 13px;
                 font-weight: 300;
@@ -62,7 +63,7 @@
         position: absolute;
         top: 0%;
         bottom: 0;
-        z-index: 1;
+        z-index: 2;
         transition: all $slow-animation;
 
         display: flex;
@@ -73,7 +74,7 @@
             left: 0;
 
             background: linear-gradient(to right, $block-bg, transparent);
-            padding-right: $lg-spacing;
+            padding-right: calc($lg-spacing*2);
 
             &.disabled {
                 transform: translateX(-100%);
@@ -86,7 +87,7 @@
             right: 0;
 
             background: linear-gradient(to left, $block-bg, transparent);
-            padding-left: $lg-spacing;
+            padding-left: calc($lg-spacing*2);
 
             &.disabled {
                 transform: translateX(100%);

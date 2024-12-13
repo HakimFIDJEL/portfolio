@@ -3,15 +3,23 @@ import {
     Tooltip
 } from "@/Components/minimalist/Tooltip"
 
-export const Block = ({ children, collapsable, title, className }) => {
+export const Block = ({ children, collapsable, title, className, onCollapse }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
 
     function onToggle() {
-        setIsCollapsed(prevState => !prevState);
+        const newState = !isCollapsed;
+        setIsCollapsed(newState);
+
+        if (onCollapse) {
+            onCollapse(newState);
+        }
+
+        
     }
 
     return (
         <div className={`block ${className} ${collapsable ? `collapsable ${isCollapsed ? 'collapsed' : ''}` : ''}`}>
+
             <div className="block-header d-flex align-items-center justify-content-between gap-xs">
                 <h2>{title}</h2>
                 {collapsable && (
@@ -27,10 +35,9 @@ export const Block = ({ children, collapsable, title, className }) => {
                     </Tooltip>
                 )}
             </div>
+
             <div className={`block-content`}>
-                
                 {children}
-                
             </div>
         </div>
     );

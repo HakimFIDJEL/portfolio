@@ -11,6 +11,7 @@ import {
     ArrowLeft,
     Folder,
     Settings2,
+    SquareArrowOutUpRight,
 } from "lucide-react";
 
 // Components
@@ -92,12 +93,20 @@ function Projects({ project, stackCategories }) {
                             Here you can edit a project
                         </CardDescription>
                     </span>
-                    <Link href={route("admin.projects.index")}>
-                        <Button type="primary">
-                            <ArrowLeft />
-                            Go back
-                        </Button>
-                    </Link>
+                    <span className="flex gap-2">
+                        <a href={route("project", [project.slug, project])}>
+                            <Button type="button" variant="secondary">
+                                <SquareArrowOutUpRight  />
+                                See project
+                            </Button>
+                        </a>
+                        <Link href={route("admin.projects.index")}>
+                            <Button type="primary">
+                                <ArrowLeft />
+                                Go back
+                            </Button>
+                        </Link>
+                    </span>
                 </CardHeader>
 
                 <Separator />

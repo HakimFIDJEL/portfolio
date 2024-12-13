@@ -89,6 +89,11 @@ main {
     flex-direction: column;
 }
 
+hr {
+    border: 0;
+    border-top: 1px solid $block-border;
+}
+
 
 .hover__effect {
 
@@ -152,13 +157,33 @@ main {
 
 .gap-xxs {gap: $xxs-spacing;}
 .gap-xs {gap: $xs-spacing;}
+.gap-x {gap: $x-spacing;}
 .gap-sm {gap: $sm-spacing;}
+.gap-re {gap: $re-spacing;}
 .gap-md {gap: $md-spacing;}
+.gap-l {gap: $l-spacing;}
 .gap-lg {gap: $lg-spacing;}
 
 .text-center {text-align: center;}
 .text-right {text-align: right;}
 .text-left {text-align: left;}
+
+// .mb-xxs {margin-bottom: $xxs-spacing;}
+// .mb-xs {margin-bottom: $xs-spacing;}
+// .mb-x {margin-bottom: $x-spacing;}
+// .mb-sm {margin-bottom: $sm-spacing;}
+// .mb-re {margin-bottom: $re-spacing;}
+// .mb-md {margin-bottom: $md-spacing;}
+// .mb-lg {margin-bottom: $lg-spacing;}
+
+.quote-text {
+    padding-left: $xs-spacing;
+    border-left: 2px solid $highlight;
+    font-style: italic;
+    margin: $xxs-spacing 0;
+    // line-height: 1.2;
+}
+
 
 
 

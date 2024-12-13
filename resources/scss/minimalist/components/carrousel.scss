@@ -4,7 +4,7 @@
     flex-direction: column;
     gap: $re-spacing;
 
-    padding: $re-spacing 0;
+    padding: $xs-spacing 0;
 
     // overflow: hidden;
 
@@ -53,6 +53,10 @@
     
                     a.carrousel-item-image { 
 
+                        &:focus {
+                            outline: none;
+                        }
+
                         img {
                             width: 100%;
                             height: 100%;
@@ -95,10 +99,16 @@
                 svg {
                     transform: rotate(0deg);
                 }
+                &:disabled {
+                    transform: translateX(-200%);
+                }
             }
             &.carrousel-arrow-right {
                 svg {
                     transform: rotate(180deg);
+                }
+                &:disabled {
+                    transform: translateX(200%);
                 }
             }
 

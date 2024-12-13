@@ -62,11 +62,14 @@
             overflow: hidden;
         }
 
+        border-top: 1px solid $block-border;
 
+        padding: $md-spacing 0 $xxs-spacing 0;
     }
 
     &.collapsed {
 
+        
         
         gap: 0;
         
@@ -77,6 +80,8 @@
         .block-content {
             grid-template-rows: 0fr;
             // max-height: 0;
+            border-top-color: transparent;
+            padding: 0;
         }
     }
 

@@ -1,5 +1,7 @@
 import Layout from "@/Layouts/minimalist";
 
+import React, { useState } from "react";
+
 import { Link } from "@inertiajs/react";
 import { useRoute } from "ziggy";
 
@@ -17,8 +19,11 @@ import {
 import { Timeline, TimelineItem } from "@/Components/minimalist/Timeline";
 
 function Project({ project }) {
-
     const route = useRoute();
+
+    const [collapsedDescription, setCollapsedDescription] = useState(true);
+    const [collapsedTimeline, setCollapsedTimeline] = useState(true);
+    const [collapsedImages, setCollapsedImages] = useState(true);
 
     function formatDate(date) {
         const options = { year: "numeric", month: "short", day: "numeric" };
@@ -31,7 +36,7 @@ function Project({ project }) {
                 <div className="container row justify-content-between gap-md resp-flex-column">
                     <span className="title row flex-column gap-xs">
                         <h1>{project.title}</h1>
-                        <p>{project.subtitle}</p>
+                        <p className="quote-text">{project.subtitle}</p>
                     </span>
                     <span className="links d-flex align-items-center gap-xs">
                         <Tooltip label="Source code">
@@ -118,8 +123,28 @@ function Project({ project }) {
                             title="📝 Description"
                             collapsable={true}
                             className="col-12"
+                            onCollapse={(bool) => setCollapsedDescription(bool)}
                         >
-                            <p>{project.description}</p>
+                            <div className="row flex-column gap-re">
+                                <div
+                                    dangerouslySetInnerHTML={{
+                                        __html: project.description,
+                                    }}
+                                />
+
+                                {project.readme_url && (
+                                    <Tooltip label="I think you know how to read...">
+                                        <a
+                                            href={!collapsedDescription ? project.readme_url : undefined}
+                                            className="col-12 hover__effect"
+                                            id="see-readme"
+                                            target="_blank"
+                                        >
+                                            See full README
+                                        </a>
+                                    </Tooltip>
+                                )}
+                            </div>
                         </Block>
                     )}
 
@@ -128,10 +153,10 @@ function Project({ project }) {
                             title="⏳ Timeline"
                             collapsable={true}
                             className="col-12"
+                            onCollapse={(bool) => setCollapsedTimeline(bool)}
                         >
-                            <div className="row flex-column gap-sm">
-
-                                <Timeline>
+                            <div className="row flex-column gap-md">
+                                <Timeline disabled={collapsedTimeline}>
                                     {project.timeline.map((event, index) => (
                                         <TimelineItem
                                             key={`project-timeline-` + index}
@@ -145,30 +170,35 @@ function Project({ project }) {
                                 {/* <hr /> */}
 
                                 {project.timeline_url && (
-                                    <a
-                                        href={project.timeline_url}
-                                        className="col-12 hover__effect"
-                                        id="see-full-timeline"
-                                        target="_blank"
-                                    >
-                                        See full timeline
-                                    </a>
+                                    <Tooltip label="I think you know how to read...">
+                                        <a
+                                            href={!collapsedTimeline ? project.timeline_url : undefined}
+                                            className="col-12 hover__effect"
+                                            id="see-full-timeline"
+                                            target="_blank"
+                                        >
+                                            See full timeline
+                                        </a>
+                                    </Tooltip>
                                 )}
                             </div>
                         </Block>
                     )}
-
                 </div>
             </section>
 
             {project.images && (
                 <Block 
-                    title="🖼️ Images"
-                    collapsable={true}
-                    className="col-12"
+                    title="🖼️ Images" 
+                    collapsable={true} 
+                    className="col-12" 
+                    onCollapse={(bool) => setCollapsedImages(bool)}
                 >
                     <section id="images">
-                        <Carrousel navigation={true} pagination={true}>
+                        <p className="quote-text">
+                            Hover on the images to see the caption.
+                        </p>
+                        <Carrousel navigation={true} pagination={true} disabled={collapsedImages}>
                             {project.images.map((image, index) => (
                                 <img
                                     src={image.full_url}
@@ -188,7 +218,26 @@ function Project({ project }) {
                         collapsable={true}
                         className="col-12"
                     >
-                        <p>{project.feedback}</p>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: project.feedback,
+                            }}
+                        />
+                    </Block>
+                </section>
+            )}
+            {project.what_i_learned && (
+                <section id="what_i_learned">
+                    <Block
+                        title="🧠 What I learned with it"
+                        collapsable={true}
+                        className="col-12"
+                    >
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: project.what_i_learned,
+                            }}
+                        />
                     </Block>
                 </section>
             )}
