@@ -50,19 +50,13 @@
                     }
 
 
-    
-                    a.carrousel-item-image { 
-
-                        &:focus {
-                            outline: none;
-                        }
-
-                        img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                        }
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        cursor: pointer;
                     }
+    
 
                 }
             }
@@ -234,6 +228,80 @@
                 &.carrousel-arrow-right {
                     transform: rotate(180deg);
     
+                }
+            }
+        }
+    }
+}
+.carrousel-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    transition: opacity $slow-animation; // Transition uniquement sur l'opacité
+    pointer-events: none;
+    
+    &.open {
+        opacity: 1;
+        pointer-events: all;
+    }
+    
+    backdrop-filter: blur(5px);
+
+    .carrousel-dialog-overlay {
+        position: absolute;
+
+        background-color: rgba($body-bg, 0.7);
+
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        z-index: 1;
+
+        cursor: pointer;
+
+    }
+
+
+    .carrousel-item {
+        position: relative;
+        z-index: 2;
+        display: none;
+
+        &.active {
+            display: flex;
+            gap: $xxs-spacing;
+            flex-direction: column;
+
+            p {
+                color: $body-color-light;
+                font-size: 1rem;
+                font-weight: 300;
+                line-height: 1.2;
+            }
+
+            img {
+                max-width: 70vw;
+                max-height: 70vh;
+
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+
+                @include respond('breakpoint') {
+                    max-width: 90vw;
+                    max-height: 90vh;
                 }
             }
         }

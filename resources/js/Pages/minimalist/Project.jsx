@@ -10,6 +10,8 @@ import { BigButton } from "@/Components/minimalist/BigButton";
 import { Block } from "@/Components/minimalist/Block";
 import { Carrousel } from "@/Components/minimalist/Carrousel";
 
+
+
 import {
     Badge,
     BadgeWrapper,
@@ -135,7 +137,11 @@ function Project({ project }) {
                                 {project.readme_url && (
                                     <Tooltip label="I think you know how to read...">
                                         <a
-                                            href={!collapsedDescription ? project.readme_url : undefined}
+                                            href={
+                                                !collapsedDescription
+                                                    ? project.readme_url
+                                                    : undefined
+                                            }
                                             className="col-12 hover__effect"
                                             id="see-readme"
                                             target="_blank"
@@ -155,8 +161,11 @@ function Project({ project }) {
                             className="col-12"
                             onCollapse={(bool) => setCollapsedTimeline(bool)}
                         >
-                            <div className="row flex-column gap-md">
-                                <Timeline disabled={collapsedTimeline}>
+                            <div className="row flex-column">
+                                <Timeline
+                                    disabled={collapsedTimeline}
+                                    className="mb-md"
+                                >
                                     {project.timeline.map((event, index) => (
                                         <TimelineItem
                                             key={`project-timeline-` + index}
@@ -172,7 +181,11 @@ function Project({ project }) {
                                 {project.timeline_url && (
                                     <Tooltip label="I think you know how to read...">
                                         <a
-                                            href={!collapsedTimeline ? project.timeline_url : undefined}
+                                            href={
+                                                !collapsedTimeline
+                                                    ? project.timeline_url
+                                                    : undefined
+                                            }
                                             className="col-12 hover__effect"
                                             id="see-full-timeline"
                                             target="_blank"
@@ -188,27 +201,33 @@ function Project({ project }) {
             </section>
 
             {project.images && (
-                <Block 
-                    title="🖼️ Images" 
-                    collapsable={true} 
-                    className="col-12" 
-                    onCollapse={(bool) => setCollapsedImages(bool)}
-                >
-                    <section id="images">
-                        <p className="quote-text">
-                            Hover on the images to see the caption.
-                        </p>
-                        <Carrousel navigation={true} pagination={true} disabled={collapsedImages}>
-                            {project.images.map((image, index) => (
-                                <img
-                                    src={image.full_url}
-                                    alt={image.caption}
-                                    key={`project-image-` + index}
-                                />
-                            ))}
-                        </Carrousel>
-                    </section>
-                </Block>
+                <>
+                    <Block
+                        title="🖼️ Images"
+                        collapsable={true}
+                        className="col-12"
+                        onCollapse={(bool) => setCollapsedImages(bool)}
+                    >
+                        <section id="images">
+                            <p className="quote-text">
+                                Hover on the images to see the caption or click on them to see in full size.
+                            </p>
+                            <Carrousel
+                                navigation={true}
+                                pagination={true}
+                                disabled={collapsedImages}
+                            >
+                                {project.images.map((image, index) => (
+                                    <img
+                                        src={image.full_url}
+                                        alt={image.caption}
+                                        key={`project-image-` + index}
+                                    />
+                                ))}
+                            </Carrousel>
+                        </section>
+                    </Block>
+                </>
             )}
 
             {project.feedback && (
