@@ -195,45 +195,30 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                 <AccordeonLabel>Tech stacks</AccordeonLabel>
                                 <AccordeonContent>
                                     <div>
-                                        {/* Stacks */}
 
                                         {stackCategories.length > 0 ? (
                                             stackCategories.map(
                                                 (category, index) => (
                                                     <>
                                                         <BadgeContainer
-                                                            key={
-                                                                `stackcategory-` +
-                                                                index
-                                                            }
-                                                            title={
-                                                                category.label
-                                                            }
+                                                            key={`stackcategory-${category.id}`}
+                                                            title={category.label}
                                                         >
                                                             <BadgeWrapper>
-                                                                {category.stacks.map(
-                                                                    (
-                                                                        stack,
-                                                                        index
-                                                                    ) => (
+                                                                {category.stacks.map((stack) => (
                                                                         <Badge
-                                                                            key={
-                                                                                `stack-` +
-                                                                                index
-                                                                            }
+                                                                            key={`stack-${stack.id}`}
                                                                         >
-                                                                            {
-                                                                                stack.label
-                                                                            }
+                                                                            {stack.label}
                                                                         </Badge>
                                                                     )
                                                                 )}
                                                             </BadgeWrapper>
                                                         </BadgeContainer>
 
-                                                        {index <
-                                                            stackCategories.length -
-                                                                1 && <br />}
+                                                        {(index < stackCategories.length - 1) && (
+                                                            <br />
+                                                        )}
                                                     </>
                                                 )
                                             )
@@ -247,45 +232,29 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                 <AccordeonLabel>Tech tools</AccordeonLabel>
                                 <AccordeonContent>
                                     <div>
-                                        {/* Tools */}
 
-                                        {!toolCategories.length > 0 ? (
-                                            toolCategories.map(
-                                                (category, index) => (
+                                        {toolCategories.length > 0 ? (
+                                            toolCategories.map((category, index) => (
                                                     <>
                                                         <BadgeContainer
-                                                            key={
-                                                                `toolcategory-` +
-                                                                index
-                                                            }
-                                                            title={
-                                                                category.label
-                                                            }
+                                                            key={`toolcategory-${category.id}`}
+                                                            title={category.label}
                                                         >
                                                             <BadgeWrapper>
-                                                                {category.tools.map(
-                                                                    (
-                                                                        tool,
-                                                                        index
-                                                                    ) => (
+                                                                {category.tools.map((tool) => (
                                                                         <Badge
-                                                                            key={
-                                                                                `tool-` +
-                                                                                index
-                                                                            }
+                                                                            key={`tool-${tool.id}`}
                                                                         >
-                                                                            {
-                                                                                tool.label
-                                                                            }
+                                                                            {tool.label}
                                                                         </Badge>
                                                                     )
                                                                 )}
                                                             </BadgeWrapper>
                                                         </BadgeContainer>
 
-                                                        {index <
-                                                            toolCategories.length -
-                                                                1 && <br />}
+                                                        {(index < toolCategories.length - 1) && (
+                                                            <br />
+                                                        )}
                                                     </>
                                                 )
                                             )
@@ -329,7 +298,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                         </svg>
                     </BigButton>
                 </div>
-            </Section>
+            </Section> 
 
             {/* Projects */}
             <Section
