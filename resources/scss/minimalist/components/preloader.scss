@@ -24,7 +24,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background: $body-color-light;
+    background: var(--body-color-light);
   }
   
   .banter-loader__box:nth-child(3n) {

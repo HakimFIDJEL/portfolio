@@ -14,7 +14,7 @@
         .timeline-separator {
             width: 50px;
             height: 1px;
-            background-color: $block-border;
+            background-color: var(--block-border);
             flex-shrink: 0;
             position: relative;
         }
@@ -25,7 +25,7 @@
             right: 0px;
             top: 50%;
             transform: translateY(-50%);
-            background-color: $block-border;
+            background-color: var(--block-border);
             width: 10px;
             height: 10px;
             border-radius: 50%;
@@ -37,7 +37,7 @@
 
             .timeline-title {
                 border-radius: $border-radius;
-                border: 1px solid $block-border;
+                border: 1px solid var(--block-border);
                 padding: $xs-spacing $x-spacing;
 
                 font-size: 14px;
@@ -54,7 +54,7 @@
                 font-weight: 300;
                 line-height: 16px;
 
-                color: $body-color-dark;
+                color: var(--body-color-dark);
             }
         }
     }
@@ -73,7 +73,7 @@
         &.left {
             left: 0;
 
-            background: linear-gradient(to right, $block-bg, transparent);
+            background: linear-gradient(to right, var(--block-bg), transparent);
             padding-right: calc($lg-spacing*2);
 
             &.disabled {
@@ -86,7 +86,7 @@
         &.right {
             right: 0;
 
-            background: linear-gradient(to left, $block-bg, transparent);
+            background: linear-gradient(to left, var(--block-bg), transparent);
             padding-left: calc($lg-spacing*2);
 
             &.disabled {
@@ -106,15 +106,19 @@
 
             transition: all $fast-animation;
 
-            background-color: $block-btn-bg;
+            background-color: var(--block-btn-bg);
             border-radius: 50%;
-            color: $block-btn-color;
+            color: var(--block-btn-colo);
             cursor: pointer;
             padding: 0.7rem;
 
-            border: 1px solid $block-border;
+            border: 1px solid var(--block-border);
 
             aspect-ratio: 1 / 1;
+
+            svg path {
+                fill: var(--block-btn-color);
+            }
         }
     }
 }

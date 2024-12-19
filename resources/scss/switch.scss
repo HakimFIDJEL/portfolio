@@ -22,9 +22,9 @@ nav {
         align-items: center;
         gap: $xxs-spacing;
 
-        background-color: $block-bg;
+        background-color: var(--block-bg);
         border-radius: 10px;
-        border: 1px solid $block-border;
+        border: 1px solid var(--block-border);
 
         width: 100%;
         transition: all $fast-animation;
@@ -37,7 +37,7 @@ nav {
         .nav-separator {
             height: 90%;
             width: 1px;
-            background-color: $block-border;
+            background-color: var(--block-border);
         }
 
         .nav-select {
@@ -46,7 +46,13 @@ nav {
 
             &.active {
                 .nav-select-button svg {
-                    transform: rotate(-90deg);
+                    transform: rotate(-90deg) scale(1.2);
+                }
+
+                .nav-select-container {
+                    transform: translateY(-$sm-spacing) translateX(-50%) scale(1);
+                    opacity: 1;
+                    pointer-events: all;
                 }
             }
 
@@ -55,14 +61,18 @@ nav {
                 left: 50%;
                 bottom: 100%;
 
-                transform: translateY(-$sm-spacing) translateX(-50%);
+                transition: all $very-fast-animation;
+
+                transform: translateY(0) translateX(-50%) scale(0.9);
+                opacity: 0;
+                pointer-events: none;
 
                 display: flex;
                 flex-direction: column;
                 gap: $xxs-spacing;
 
-                background-color: $block-bg;
-                border: 1px solid $block-border;
+                background-color: var(--block-bg);
+                border: 1px solid var(--block-border);
                 border-radius: $border-radius;
 
                 padding: $xs-spacing $xxs-spacing;
@@ -71,22 +81,25 @@ nav {
                 flex: 0;
 
 
+
                 
 
                 .nav-select-item {
                     white-space: nowrap;
                     font-size: 14px;
-                    color: $body-color-light;
+                    color: var(--body-color-light);
 
                     background-color: transparent;
                     border: none;
-                    border-radius: 10px;
+                    border-radius: $border-radius;
                     padding: $xs-spacing $sm-spacing;
+
+                    transition: all $very-fast-animation;
 
                     cursor: pointer;
                     &.active,
                     &:hover {
-                        background-color: $block-btn-bg;
+                        background-color: var(--block-btn-bg);
                     }
                 }
             }
@@ -106,19 +119,63 @@ nav {
                 padding: $xs-spacing $sm-spacing;
 
                 cursor: pointer;
+                color: var(--body-color-light);
+                border-radius: $border-radius;
 
-                font-size: 16px;
-                line-height: 16px;
-                font-weight: 500;
-                color: $body-color-light;
+                &:hover {
+                    background-color: var(--block-btn-bg);
+                }
 
                 svg {
-                    transform: rotate(90deg);
+                    transform: rotate(90deg) scale(1.2);
                     transition: all $very-fast-animation;
                 }
 
             }
         }
+
+
+        .nav-toggle {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+
+            // position: relative;
+
+            background-color: transparent;
+            outline: none;
+            border: none;
+
+            color: var(--body-color-light);
+            padding: $xs-spacing $x-spacing;
+
+            cursor: pointer;
+
+            transition: all $very-fast-animation;
+
+            &:hover {
+                background-color: var(--block-btn-bg);
+                border-radius: $border-radius;
+            }
+
+            .nav-toggle-item {
+
+                display: none;
+                transform: scale(0);
+
+                align-items: center;
+                justify-content: center;
+                gap: $xs-spacing;
+
+                &.active {
+                    display: flex;
+                    transform: scale(1);
+                }
+            }
+        }
+
     }
 
     button.close-button {
@@ -128,16 +185,21 @@ nav {
 
         aspect-ratio: 1 / 1;
 
-        background-color: $block-btn-bg;
+        background-color: var(--block-btn-bg);
         border: none;
         border-radius: 50%;
-        color: $block-btn-color;
+        color: var(--block-btn-colo);
         cursor: pointer;
         padding: 0.7rem;
 
         transition: all $slow-animation;
 
-        border: 1px solid $block-border;
+        border: 1px solid var(--block-border);
+
+        svg path {
+            fill: var(--body-color-light);
+            transition: all $fast-animation;
+        }
     }
 
     .link-group {
@@ -145,9 +207,9 @@ nav {
         align-items: center;
         gap: 1rem;
 
-        background-color: $body-bg;
+        background-color: var(--body-bg);
         border-radius: 10px;
-        border: 1px solid rgba($body-color-light, 0.5);
+        border: 1px solid rgba(var(--body-color-light), 0.5);
 
         width: 100%;
 
@@ -156,7 +218,7 @@ nav {
         position: relative;
 
         a {
-            color: $body-color-light;
+            color: var(--body-color-light);
             font-size: 16px;
             text-decoration: none;
 
@@ -170,14 +232,14 @@ nav {
             width: 100%;
 
             &.disabled {
-                color: $body-color-light;
+                color: var(--body-color-light);
                 opacity: 0.2;
                 cursor: default;
             }
 
             &.active {
                 font-weight: 500;
-                background-color: $block-bg;
+                background-color: var(--block-bg);
                 border-radius: $border-radius;
             }
         }
@@ -187,26 +249,34 @@ nav {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: $sm-spacing;
+        gap: $xs-spacing;
 
-        background-color: $block-bg;
-        border-radius: 10px;
-        border: 1px solid $block-border;
+        background-color: var(--block-bg);
+        border-radius: $border-radius;
+        // border: 1px solid var(--block-border);
 
         white-space: nowrap;
 
-        height: 40px;
+        // height: 40px;
         width: 100%;
         padding: $xs-spacing $sm-spacing;
 
         transition: all $fast-animation;
-        overflow: hidden;
+        // overflow: hidden;
         position: relative;
 
-        color: $body-color-light;
-        font-size: 16px;
-        font-weight: 500;
+        color: var(--body-color-light);
+        // font-size: 16px;
+        // font-weight: 500;
         text-decoration: none;
+
+            svg path {
+                fill: var(--block-btn-color);
+            }
+
+        &:hover {
+            background-color: var(--block-btn-bg);
+        }
     }
 
     &.open {

@@ -31,13 +31,13 @@
             font-size: 16px;
             line-height: 1;
             font-weight: 500;
-            color: $body-color-light;
+            color: var(--body-color-light);
         }
         .project-subtitle {
             font-size: 16px;
             line-height: 1;
             font-weight: 300;
-            color: $body-color-dark;
+            color: var(--body-color-dark);
         }
     }
 
@@ -61,7 +61,7 @@
     }
 
     &:hover {
-        background-color: $block-bg;
+        background-color: var(--block-bg);
 
         .project-content {
             margin-left: $l-spacing;

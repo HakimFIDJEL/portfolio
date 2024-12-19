@@ -8,8 +8,8 @@ main#project {
 
     section#hero {
         width: 100%;
-        background-color: $block-bg;
-        border: 1px solid $block-border;
+        background-color: var(--block-bg);
+        border: 1px solid var(--block-border);
 
         padding: $md-spacing $l-spacing;
 
@@ -42,7 +42,7 @@ main#project {
     
             .links {
                 a {
-                    background-color: $block-btn-bg;
+                    background-color: var(--block-btn-bg);
                     // padding: $xxs-spacing;
                     // aspect-ratio: 1;
     
@@ -52,7 +52,7 @@ main#project {
                     transition: $fast-animation;
     
                     border-radius: $border-radius;
-                    border: 1px solid $block-border;
+                    border: 1px solid var(--block-border);
     
                     display: flex;
                     align-items: center;
@@ -63,13 +63,28 @@ main#project {
                         opacity: 0.8;
                         pointer-events: none;
                     }
+
+                    &.stroke {
+
+                        svg path {
+                            // fill: var(--block-btn-color);
+                            stroke : var(--block-btn-color);
+                        }
+                    }
+                    &.fill {
+
+                        svg path {
+                            fill: var(--block-btn-color);
+                            // stroke : var(--block-btn-color);
+                        }
+                    }
                 }
             }
         }
 
         hr {
             border: 0;
-            border-top: 1px solid $block-border;
+            border-top: 1px solid var(--block-border);
         }
 
         .footer {
@@ -91,10 +106,10 @@ main#project {
     section#infos {
         #see-full-timeline, #see-readme {
 
-            background-color: $block-btn-bg;
+            background-color: var(--block-btn-bg);
             border-radius: $border-radius;
-            border: 1px solid $block-border;
-            color : $body-color-light;
+            border: 1px solid var(--block-border);
+            color : var(--body-color-light);
             
             padding: $xs-spacing $sm-spacing;
             transition: $fast-animation;
@@ -106,7 +121,7 @@ main#project {
             text-align: center;
 
             &:hover {
-                // background-color: $block-btn-bg-hover;
+                // background-color: var(--block-btn-bg)-hover;
             }
             
         }

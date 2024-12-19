@@ -1,99 +1,137 @@
 import { Link } from "@inertiajs/react";
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { LinkLoader } from "@/Components/minimalist/LinkLoader";
+import React from "react";
+import { set } from "date-fns";
+
+import {
+    Sun,
+    Moon,
+} from "lucide-react"
+
+// Mapping des liens
+const linkMap = {
+    'minimalist': 'Minimalist',
+    'graphic-design': 'Graphic Design',
+};
+
 
 export default function Nav({ isOnHome, version }) {
     const [navOpen, setNavOpen] = useState(true);
-
     const [activeLink, setActiveLink] = useState(version);
-    const [theme, setTheme] = useState("light");
+    const [theme, setTheme] = useState("dark");
+    const [selectOpen, setSelectOpen] = useState(false);
 
+    // Toggle du nav
+    const toggleNav = useCallback(() => setNavOpen(prev => !prev), []);
 
-    const toggleNav = () => setNavOpen(!navOpen);
-
-    function handleLinkClick(event, link) {
-        if (event.target.classList.contains("disabled")) {
-            event.preventDefault();
-            return;
+    function toggleTheme() {
+        if(theme == "light") {
+            setTheme("dark");
+            document.body.classList.add("dark");
+        } else {
+            setTheme("light");
+            document.body.classList.remove("dark");
         }
-
-        setActiveLink(link);
     }
+
+    // Fonction pour obtenir le nom actif
+    const getActiveLink = useCallback((link) => {
+        return linkMap[link] || 'Error';
+    }, []);
+
+    // Gestion du clic sur un lien
+    const handleLinkClick = useCallback((e, link) => {
+        e.preventDefault();
+        setActiveLink(link);
+        setSelectOpen(false); // Ferme le sélecteur après la sélection
+    }, []);
+
+    // Mémoriser les éléments de NavSelectItem pour éviter de les recréer à chaque rendu
+    const navSelectItems = useMemo(() => (
+        Object.keys(linkMap).map((link) => (
+            <NavSelectItem
+                key={link}
+                is_selected={activeLink === link}
+                onClick={(e) => handleLinkClick(e, link)}
+            >
+                {getActiveLink(link)}
+            </NavSelectItem>
+        ))
+    ), [linkMap, activeLink, handleLinkClick, getActiveLink]);
 
     return (
         <>
             <nav className={`${navOpen ? "open" : "closed"}`}>
                 {isOnHome ? (
-                    // <div className="link-group">
-                    //     <a
-                    //         href="javascript:void(0);"
-                    //         className={`link disabled ${
-                    //             activeLink === "graphic-design" ? "active" : ""
-                    //         }`}
-                    //         onClick={(e) =>
-                    //             handleLinkClick(e, "graphic-design")
-                    //         }
-                    //         title="Coming soon"
-                    //     >
-                    //         Graphic Design
-                    //     </a>
-                    //     <a
-                    //         href="javascript:void(0);"
-                    //         className={`link ${
-                    //             activeLink === "minimalist" ? "active" : ""
-                    //         }`}
-                    //         onClick={(e) => handleLinkClick(e, "minimalist")}
-                    //     >
-                    //         Minimalist
-                    //     </a>
-                    // </div>
                     <div className="nav-content">
-                        <NavSelect selected={activeLink}>
-                            <NavSelectItem
-                                is_selected={activeLink === "graphic-design"}
-                            >
-                                Graphic Design
-                            </NavSelectItem>
-                            <NavSelectItem
-                                is_selected={activeLink === "minimalist"}
-                            >
-                                Minimalist
-                            </NavSelectItem>
+                        <NavSelect 
+                            selected={getActiveLink(activeLink)}
+                            open={selectOpen}
+                            setOpen={setSelectOpen}
+                        >
+                            {navSelectItems}
                         </NavSelect>
                         <NavSeparator />
-                        <NavSelect selected={theme}>
-                            <NavSelectItem
+                        <NavToggle
+                            selected={theme}
+                            onClick={toggleTheme}
+                        >
+                            <NavToggleItem
                                 is_selected={theme === "light"}
                             >
-                                Light Mode
-                            </NavSelectItem>
-                            <NavSelectItem
+                                Light <Sun size={16} />
+                            </NavToggleItem>
+
+                            <NavToggleItem
                                 is_selected={theme === "dark"}
                             >
-                                Dark Mode
-                            </NavSelectItem>
-                        </NavSelect>
+                                Dark <Moon size={16} />
+                            </NavToggleItem>
+
+                        </NavToggle>
                     </div>
                 ) : (
-                    <LinkLoader
-                        href="/"
-                        preserveScroll
-                        className="back-button hover__effect"
-                    >
-                        <svg
-                            width="15"
-                            height="13"
-                            viewBox="0 0 15 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
+                    <div className="nav-content">
+                        <LinkLoader
+                            href="/"
+                            preserveScroll
+                            className="back-button hover__effect"
                         >
-                            <path
-                                d="M15 7H2.75003L8.00003 12.25L7.34003 13L0.840027 6.5L7.34003 0L8.00003 0.75L2.75003 6H15V7Z"
-                                fill="#C9D1D9"
-                            />
-                        </svg>
-                        Go back
-                    </LinkLoader>
+                            <svg
+                                width="15"
+                                height="13"
+                                viewBox="0 0 15 13"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M15 7H2.75003L8.00003 12.25L7.34003 13L0.840027 6.5L7.34003 0L8.00003 0.75L2.75003 6H15V7Z"
+                                    fill="#C9D1D9"
+                                />
+                            </svg>
+                            Go back
+                        </LinkLoader>
+                        <NavSeparator />
+                        <NavToggle
+                            selected={theme}
+                            onClick={toggleTheme}
+                        >
+                            <NavToggleItem
+                                is_selected={theme === "light"}
+                            >
+                                Light <Sun size={16} />
+                            </NavToggleItem>
+
+                            <NavToggleItem
+                                is_selected={theme === "dark"}
+                            >
+                                Dark <Moon size={16} />
+                            </NavToggleItem>
+
+                        </NavToggle>
+                    </div>
+                    
                 )}
 
                 <NavCloseButton onClick={toggleNav} />
@@ -102,22 +140,40 @@ export default function Nav({ isOnHome, version }) {
     );
 }
 
-export const NavSelect = ({ children, selected, ...props }) => {
-    const [open, setOpen] = useState(false);
+const NavToggle = React.memo(({ children, selected, onClick, ...props }) => {
+    return (
+        <button className="nav-toggle" onClick={onClick} {...props}>
+            {children}
+        </button>
+    );
+});
+
+const NavToggleItem = React.memo(({ is_selected, children }) => {
 
     return (
-        <div className={`nav-select  ${open ? "active" : ""}`} {...props}>
-            <div className='nav-select-container'>
-                {children}
-            </div>
-            <NavSelectButton onClick={() => setOpen(!open)}>
-                {selected}
-            </NavSelectButton>
+        <div className={`nav-toggle-item ${is_selected ? "active" : ""}`}>
+            {children}
         </div>
     );
-};
 
-export const NavSelectButton = ({ children, ...props }) => {
+});
+
+const NavSelect = React.memo(({ children, selected, open, setOpen, ...props }) => {
+    const toggleOpen = () => setOpen(prev => !prev);
+
+    return (
+        <div className={`nav-select ${open ? "active" : ""}`} {...props}>
+            <NavSelectButton onClick={toggleOpen}>
+                {selected}
+            </NavSelectButton>
+            <div className={`nav-select-container ${open ? "active" : ""}`}>
+                {children}
+            </div>
+        </div>
+    );
+});
+
+const NavSelectButton = React.memo(({ children, ...props }) => {
     return (
         <button className='nav-select-button' {...props}>
             {children}
@@ -135,9 +191,9 @@ export const NavSelectButton = ({ children, ...props }) => {
             </svg>
         </button>
     );
-};
+});
 
-export const NavSelectItem = ({ children, is_selected, ...props }) => {
+const NavSelectItem = React.memo(({ children, is_selected, ...props }) => {
     return (
         <button
             className={`nav-select-item ${is_selected ? "active" : ""}`}
@@ -146,13 +202,9 @@ export const NavSelectItem = ({ children, is_selected, ...props }) => {
             {children}
         </button>
     );
-};
+});
 
-export const NavSeparator = () => {
-    return <div className="nav-separator" />;
-};
-
-export const NavCloseButton = ({ onClick }) => {
+const NavCloseButton = React.memo(({ onClick }) => {
     return (
         <button onClick={onClick} className="close-button hover__effect">
             <svg
@@ -169,4 +221,8 @@ export const NavCloseButton = ({ onClick }) => {
             </svg>
         </button>
     );
-};
+});
+
+export const NavSeparator = React.memo(() => {
+    return <div className="nav-separator" />;
+});

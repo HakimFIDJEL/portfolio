@@ -45,7 +45,7 @@ function Project({ project }) {
                             <a
                                 href={project.source_code_url ?? "#"}
                                 target="_blank"
-                                className={`hover__effect ${
+                                className={`hover__effect fill ${
                                     project.source_code_url ? "" : "disabled"
                                 }`}
                             >
@@ -67,7 +67,7 @@ function Project({ project }) {
                             <a
                                 href={project.live_demo_url ?? "#"}
                                 target="_blank"
-                                className={`hover__effect ${
+                                className={`hover__effect stroke ${
                                     project.live_demo_url ? "" : "disabled"
                                 }`}
                             >

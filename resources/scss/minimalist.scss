@@ -1,26 +1,21 @@
 // Définition des couleurs
-$body-bg: #0D1117;
-$body-color-light: #C9D1D9;
-$body-color-dark: #8B949E;
-$highlight: #7EE787;
-$block-bg: #161B22;
-$block-border: #30363D;
-$block-btn-bg: #21262D;
-$block-btn-color: #8B949E;
+
+/* styles.css */
+
+/* Définition des couleurs pour le thème clair */
 
 // Définition des polices - Noto sans
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 // Variables
 $animation-name: cubic-bezier(0.38, 0.005, 0.215, 1);
 $very-fast-animation: 0.3s $animation-name;
 $fast-animation: 0.6s $animation-name;
 $slow-animation: 0.8s $animation-name;
-$very-fast-timing : 0.3s;
-$fast-timing : 0.6s;
-$slow-timing : 0.8s;
+$very-fast-timing: 0.3s;
+$fast-timing: 0.6s;
+$slow-timing: 0.8s;
 $border-radius: 5px;
-
 
 // breakpoints
 $lg-spacing: 4rem;
@@ -42,19 +37,39 @@ $breakpoints: (
     }
 }
 
-
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+
+    transition: color $fast-animation, background-color $fast-animation, border-color $fast-animation;
 }
 
-// 
+//
 body {
-    background-color: $body-bg;
-    color: $body-color-light;
-    font-family: 'Noto Sans';
+    --body-bg: #ffffff; 
+    --body-color-light: #24292e;
+    --body-color-dark: #6a737d;
+    --highlight: #0366d6;
+    --block-bg: #f6f8fa; 
+    --block-border: #8b949e; 
+    --block-btn-bg: #e1e4e8; 
+    --block-btn-color: #30363d;
+
+    &.dark {
+        --body-bg: #0d1117;
+        --body-color-light: #c9d1d9;
+        --body-color-dark: #8b949e;
+        --highlight: #7ee787;
+        --block-bg: #161b22;
+        --block-border: #30363d;
+        --block-btn-bg: #21262d;
+        --block-btn-color: #8b949e;
+    }
+
+    background-color: var(--body-bg);
+    color: var(--body-color-light);
+    font-family: "Noto Sans";
     font-size: 14px;
     font-weight: 400;
     line-height: 1.2;
@@ -63,10 +78,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
-
 }
-
 
 #app {
     display: flex;
@@ -78,7 +90,7 @@ body {
 
     width: 735px;
 
-    @include respond('breakpoint') {
+    @include respond("breakpoint") {
         width: 100%;
         padding: 0 $sm-spacing;
     }
@@ -91,24 +103,21 @@ main {
 
 hr {
     border: 0;
-    border-top: 1px solid $block-border;
+    border-top: 1px solid var(--block-border);
 }
 
-
 .hover__effect {
-
     &:hover {
         cursor: pointer;
-        // border-color: $highlight !important;
-        border-color: $body-color-dark !important;
+        // border-color: var(--highlight) !important;
+        border-color: var(--body-color-dark) !important;
     }
-    
+
     &:focus {
-        border-color: $body-color-dark !important;
+        border-color: var(--body-color-dark) !important;
         outline: none;
     }
 }
-
 
 // Useful classes
 
@@ -120,72 +129,151 @@ hr {
     // justify-content: space-between;
 }
 
-.col-12 { width: 100%; }
-.col-11 { width: 91.6666666667%; }
-.col-10 { width: 83.3333333333%; }
-.col-9 { width: 75%; }
-.col-8 { width: 66.6666666667%; }
-.col-7 { width: 58.3333333333%; }
-.col-6 { width: 50%; }
-.col-5 { width: 41.6666666667%; }
-.col-4 { width: 33.3333333333%; }
-.col-3 { width: 25%; }
-.col-2 { width: 16.6666666667%; }
-.col-1 { width: 8.3333333333%; }
+.col-12 {
+    width: 100%;
+}
+.col-11 {
+    width: 91.6666666667%;
+}
+.col-10 {
+    width: 83.3333333333%;
+}
+.col-9 {
+    width: 75%;
+}
+.col-8 {
+    width: 66.6666666667%;
+}
+.col-7 {
+    width: 58.3333333333%;
+}
+.col-6 {
+    width: 50%;
+}
+.col-5 {
+    width: 41.6666666667%;
+}
+.col-4 {
+    width: 33.3333333333%;
+}
+.col-3 {
+    width: 25%;
+}
+.col-2 {
+    width: 16.6666666667%;
+}
+.col-1 {
+    width: 8.3333333333%;
+}
 
-.d-flex {display: flex;}
-.flex-wrap {flex-wrap: wrap;}
-.flex-column {flex-direction: column;}
+.d-flex {
+    display: flex;
+}
+.flex-wrap {
+    flex-wrap: wrap;
+}
+.flex-column {
+    flex-direction: column;
+}
 
-.align-items-start {align-items: flex-start;}
-.align-items-center {align-items: center;}
-.align-items-end {align-items: flex-end;}
+.align-items-start {
+    align-items: flex-start;
+}
+.align-items-center {
+    align-items: center;
+}
+.align-items-end {
+    align-items: flex-end;
+}
 
-.justify-content-start {justify-content: flex-start;}
-.justify-content-end {justify-content: flex-end;}
-.justify-content-center {justify-content: center;}
-.justify-content-between {justify-content: space-between;}
+.justify-content-start {
+    justify-content: flex-start;
+}
+.justify-content-end {
+    justify-content: flex-end;
+}
+.justify-content-center {
+    justify-content: center;
+}
+.justify-content-between {
+    justify-content: space-between;
+}
 
-// responsive 
-@include respond('breakpoint') {
+// responsive
+@include respond("breakpoint") {
     .resp-flex-column {
         flex-direction: column;
     }
 
-    .resp-col-12 { width: 100% !important; }
+    .resp-col-12 {
+        width: 100% !important;
+    }
 }
 
-.gap-xxs {gap: $xxs-spacing;}
-.gap-xs {gap: $xs-spacing;}
-.gap-x {gap: $x-spacing;}
-.gap-sm {gap: $sm-spacing;}
-.gap-re {gap: $re-spacing;}
-.gap-md {gap: $md-spacing;}
-.gap-l {gap: $l-spacing;}
-.gap-lg {gap: $lg-spacing;}
+.gap-xxs {
+    gap: $xxs-spacing;
+}
+.gap-xs {
+    gap: $xs-spacing;
+}
+.gap-x {
+    gap: $x-spacing;
+}
+.gap-sm {
+    gap: $sm-spacing;
+}
+.gap-re {
+    gap: $re-spacing;
+}
+.gap-md {
+    gap: $md-spacing;
+}
+.gap-l {
+    gap: $l-spacing;
+}
+.gap-lg {
+    gap: $lg-spacing;
+}
 
-.text-center {text-align: center;}
-.text-right {text-align: right;}
-.text-left {text-align: left;}
+.text-center {
+    text-align: center;
+}
+.text-right {
+    text-align: right;
+}
+.text-left {
+    text-align: left;
+}
 
-.mb-xxs {margin-bottom: $xxs-spacing;}
-.mb-xs {margin-bottom: $xs-spacing;}
-.mb-x {margin-bottom: $x-spacing;}
-.mb-sm {margin-bottom: $sm-spacing;}
-.mb-re {margin-bottom: $re-spacing;}
-.mb-md {margin-bottom: $md-spacing;}
-.mb-lg {margin-bottom: $lg-spacing;}
+.mb-xxs {
+    margin-bottom: $xxs-spacing;
+}
+.mb-xs {
+    margin-bottom: $xs-spacing;
+}
+.mb-x {
+    margin-bottom: $x-spacing;
+}
+.mb-sm {
+    margin-bottom: $sm-spacing;
+}
+.mb-re {
+    margin-bottom: $re-spacing;
+}
+.mb-md {
+    margin-bottom: $md-spacing;
+}
+.mb-lg {
+    margin-bottom: $lg-spacing;
+}
 
 .quote-text {
     padding-left: $xs-spacing;
-    border-left: 2px solid $highlight;
+    border-left: 2px solid var(--highlight);
     font-style: italic;
     margin: $xxs-spacing 0;
     // line-height: 1.2;
 }
-
-
-
 
 @import "switch";
 

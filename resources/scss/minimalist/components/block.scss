@@ -1,6 +1,6 @@
 .block {
-    background-color: $block-bg;
-    border: 1px solid $block-border;
+    background-color: var(--block-bg);
+    border: 1px solid var(--block-border);
     // height: 40px;
 
     padding: $md-spacing $l-spacing;
@@ -34,8 +34,8 @@
                 transition: $fast-animation;
             }
 
-            background-color: $block-btn-bg;
-            border: 1px solid $block-border;
+            background-color: var(--block-btn-bg);
+            border: 1px solid var(--block-border);
             border-radius: $border-radius;
 
             svg {
@@ -62,7 +62,7 @@
             overflow: hidden;
         }
 
-        border-top: 1px solid $block-border;
+        border-top: 1px solid var(--block-border);
 
         padding: $md-spacing 0 $xxs-spacing 0;
     }

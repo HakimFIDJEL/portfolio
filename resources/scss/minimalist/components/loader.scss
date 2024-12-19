@@ -28,7 +28,7 @@
         .loader-open-up, .loader-open-down {
             position: relative;
             width: 100%;
-            background-color: $body-bg;
+            background-color: var(--body-bg);
             height: 50%;
             overflow: hidden;
             
@@ -41,7 +41,7 @@
                 transform: translateX(-50%);
                 width: 0%;
                 height: 1px;
-                background-color: $block-border;
+                background-color: var(--block-border);
             }
         }
 
@@ -71,7 +71,7 @@
         .loader-close-left, .loader-close-right {
             position: relative;
             height: 100%;
-            background-color: $body-bg;
+            background-color: var(--body-bg);
             width: 0;
             overflow: hidden;
 
@@ -84,7 +84,7 @@
                 transform: translateY(-50%);
                 width: 1px;
                 height: 100%;
-                background-color: $block-border;
+                background-color: var(--block-border);
             }
         }
 
