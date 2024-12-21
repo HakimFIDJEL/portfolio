@@ -24,7 +24,7 @@ import {
     CardTitle,
 } from "@/Components/ui/card";
 import { Separator } from "@/Components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 
 
 

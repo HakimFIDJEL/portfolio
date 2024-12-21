@@ -8,15 +8,15 @@ import { useForm } from "@inertiajs/react";
 import { Trash, Download, Upload, Loader2 } from "lucide-react";
 
 // Components
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@/Components/ui/button";
+import { Separator } from "@/Components/ui/separator";
 import { FileUploader } from "@/Components/admin/file-uploader";
 import {
     Card,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
+} from "@/Components/ui/card";
 import { AppAlert } from "@/Components/admin/app-alert";
 
 export function TabPfp({ user }) {

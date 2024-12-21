@@ -17,18 +17,18 @@ import {
 } from "lucide-react";
 
 // Components
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
+import { Separator } from "@/Components/ui/separator";
 import {
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
-} from "@/components/ui/table";
+} from "@/Components/ui/table";
 import { FileUploader } from "@/Components/admin/file-uploader";
 import {
     Card,
@@ -37,7 +37,7 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
+} from "@/Components/ui/card";
 import { AppAlert } from "@/Components/admin/app-alert";
 
 // Custom components

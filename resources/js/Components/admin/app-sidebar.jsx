@@ -18,7 +18,7 @@ import {
     Cog,
     Hammer,
 } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/Components/ui/separator";
 import {
     Sidebar,
     SidebarContent,
@@ -31,7 +31,7 @@ import {
     SidebarHeader,
     SidebarFooter,
     useSidebar,
-} from "@/components/ui/sidebar";
+} from "@/Components/ui/sidebar";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -40,8 +40,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar } from "@/components/ui/avatar";
+} from "@/Components/ui/dropdown-menu";
+import { Avatar } from "@/Components/ui/avatar";
 
 export function AppSidebar() {
     const route = useRoute();

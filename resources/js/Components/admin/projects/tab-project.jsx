@@ -2,17 +2,17 @@
 import { Separator } from "@/Components/ui/separator";
 import { Input } from "@/Components/ui/input";
 import { Textarea } from "@/Components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@/Components/ui/select";
 
-import { Datepicker } from "@/components/ui/datepicker";
-import { RichTextEditor } from "@/components/text-editor";
+import { Datepicker } from "@/Components/ui/datepicker";
+import { RichTextEditor } from "@/Components/text-editor";
 
 export function TabProject({ data, setData, errors }) {
     return (

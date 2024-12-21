@@ -1,6 +1,6 @@
 // Components
 import { Separator } from "@/Components/ui/separator";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@/Components/ui/toggle-group";
 
 export function TabStacks({
     setData,

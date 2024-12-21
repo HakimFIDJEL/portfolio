@@ -12,7 +12,7 @@ import {
     CardTitle,
 } from "@/Components/ui/card"
 import { Input } from "@/Components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Label } from "@/Components/ui/label"
 
 import { useForm } from "@inertiajs/react"
 import { useRoute } from "ziggy"

@@ -8,8 +8,8 @@ import { Plus, Trash, ArrowUp, ArrowDown, Settings2 } from "lucide-react";
 // Components
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Datepicker } from "@/components/ui/datepicker";
+import { Label } from "@/Components/ui/label";
+import { Datepicker } from "@/Components/ui/datepicker";
 import {
     Table,
     TableBody,
@@ -18,7 +18,7 @@ import {
     TableHeader,
     TableRow,
     TableFooter,
-} from "@/components/ui/table";
+} from "@/Components/ui/table";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -29,7 +29,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "@/Components/ui/alert-dialog";
 
 export function TabTimeline({ timeline, setTimeline, setData }) {
     // Timeline

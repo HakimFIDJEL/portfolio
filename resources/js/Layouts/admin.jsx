@@ -6,7 +6,7 @@ import { useEffect } from "react";
 // Components
 import { 
     Toaster 
-} from "@/components/ui/toaster";
+} from "@/Components/ui/toaster";
 import { 
     SidebarProvider, 
     SidebarTrigger,

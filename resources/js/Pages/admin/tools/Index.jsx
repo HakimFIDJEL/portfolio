@@ -25,7 +25,7 @@ import {
     TableHeader,
     TableRow,
     TableFooter,
-} from "@/components/ui/table";
+} from "@/Components/ui/table";
 import { AppAlert } from "@/Components/admin/app-alert";
 import {
     Dialog,
@@ -34,7 +34,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/Components/ui/dialog";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 

@@ -13,7 +13,7 @@ import {
 } from "@/Components/ui/card"
 import { Checkbox } from "@/Components/ui/checkbox"
 import { Input } from "@/Components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Label } from "@/Components/ui/label"
 
 import { useForm } from "@inertiajs/react"
 import { useRoute } from "ziggy"

@@ -18,7 +18,7 @@ import {
 } from "@/Components/ui/card";
 import { Separator } from "@/Components/ui/separator";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import { Textarea } from "@/Components/ui/textarea";
 
 function Socials({ social }) {

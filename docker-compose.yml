@@ -24,7 +24,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-network"
-      - "traefik.http.routers.app.rule=Host(`portfolio.fr`)"
+      - "traefik.http.routers.app.rule=Host(`hakimfidjel.fr`)"
       - "traefik.http.routers.app.entrypoints=websecure"
       - "traefik.http.routers.app.tls.certresolver=myresolver"
       - "com.centurylinklabs.watchtower.enable=true"
@@ -62,7 +62,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-network"
-      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.portfolio.fr`)"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.hakimfidjel.fr`)"
       - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.phpmyadmin.tls.certresolver=myresolver"
     depends_on:

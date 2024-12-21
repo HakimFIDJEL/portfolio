@@ -19,7 +19,7 @@ import {
 import { Separator } from "@/Components/ui/separator";
 import { Input } from "@/Components/ui/input";
 import { Textarea } from "@/Components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 
 function Socials() {
     const route = useRoute();

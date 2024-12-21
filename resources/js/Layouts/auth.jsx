@@ -1,6 +1,6 @@
 
 import { usePage } from '@inertiajs/react';
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/Components/ui/toaster"
 import { useToast } from "@/hooks/use-toast"
 
 import { useEffect } from 'react';

@@ -3,8 +3,8 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from '@tiptap/extension-placeholder';
 import { Bold, Strikethrough, Italic, List, ListOrdered } from "lucide-react";
-import { Toggle } from "@/components/ui/toggle";
-import { Separator } from "@/components/ui/separator";
+import { Toggle } from "@/Components/ui/toggle";
+import { Separator } from "@/Components/ui/separator";
 
 export const RichTextEditor = ({
   value,

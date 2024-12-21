@@ -7,7 +7,7 @@ import {
     AlertDialogFooter,
     AlertDialogTitle,
     AlertDialogDescription,
-} from "@/components/ui/alert-dialog";
+} from "@/Components/ui/alert-dialog";
 
 export function AppAlert({ isDialogOpen, dismissDelete, confirmDelete }) {
     return (

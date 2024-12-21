@@ -16,7 +16,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/Components/ui/alert-dialog"
 
 export function FileUploader({ onSubmitFile, accept, ...props }) {
     const labelInput = useRef(null);

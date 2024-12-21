@@ -25,7 +25,7 @@ import {
     TableHeader,
     TableRow,
     TableFooter,
-} from "@/components/ui/table";
+} from "@/Components/ui/table";
 import { AppAlert } from "@/Components/admin/app-alert";
 
 function Socials({ socials }) {
