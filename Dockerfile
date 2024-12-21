@@ -83,5 +83,11 @@ RUN php artisan db:seed
 # (Optionnel) Optimisation pour la production
 RUN php artisan config:clear && php artisan cache:clear && php artisan config:clear
 
+# Copie des script entrypoint
+COPY entrypoint-app.sh /usr/local/bin/entrypoint-app.sh
+
+# Donner les droits d'exécution
+RUN chmod +x /usr/local/bin/entrypoint-app.sh
+
 
 
