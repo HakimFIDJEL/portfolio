@@ -11,6 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('tool_categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('label', 50);
+            $table->timestamps();
+        });
+
         Schema::create('tools', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained('tool_categories')->cascadeOnDelete();
@@ -18,11 +24,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('tool_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('label', 50);
-            $table->timestamps();
-        });
     }
 
     /**

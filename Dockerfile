@@ -74,6 +74,10 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # (Optionnel) Optimisation pour la production
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
+RUN php artisan config:clear && php artisan cache:clear && php artisan config:clear
+
+# Migrations & Seeders
+# RUN php artisan migrate
+# RUN php artisan db:seed
 
 
