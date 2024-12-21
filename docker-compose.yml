@@ -1,0 +1,84 @@
+services:
+
+  # Monitoring with watchtower
+  portfolio-watchtower:
+    image: containrrr/watchtower
+    command:
+      - "--label-enable"
+      - "--interval"
+      - "30"
+      - "--rolling-restart"
+      - "--cleanup"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - portfolio-network
+
+
+  # Laravel app container
+  portfolio-app:
+    image: hakimfidjel/portfolio:latest
+    volumes:
+      - .env:/var/www/html/.env 
+    entrypoint: /usr/local/bin/entrypoint-app.sh
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.app.rule=Host(`portfolio.fr`)"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=myresolver"
+      - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - portfolio-mysql
+    restart: always
+    networks:
+      - portfolio-network
+      - traefik-network
+
+  # MySQL database container
+  portfolio-mysql:
+    image: mysql:8.0
+    volumes:
+      - mysql_data:/var/lib/mysql 
+      - .env:/run/secrets/.env  
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} 
+      MYSQL_DATABASE: ${DB_DATABASE}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    restart: always
+    networks:
+      - portfolio-network
+
+  # PhpMyAdmin container
+  portfolio-phpmyadmin:
+    image: phpmyadmin:5.2.1
+    volumes:
+      - .env:/var/www/html/.env 
+    environment:
+      - PMA_ARBITRARY=1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.portfolio.fr`)"
+      - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
+      - "traefik.http.routers.phpmyadmin.tls.certresolver=myresolver"
+    depends_on:
+      - portfolio-mysql
+    restart: always
+    networks:
+      - portfolio-network
+      - traefik-network
+
+
+
+networks:
+  portfolio-network:
+    driver: bridge
+  traefik-network:
+    external: true
+
+volumes:
+  mysql_data:
