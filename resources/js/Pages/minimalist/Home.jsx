@@ -341,7 +341,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                         .filter((project) => project.type === "lab")
                         .map((project, index) => (
                             <Project
-                                key={`project-` + index}
+                                key={`lab-` + index}
                                 title={project.title}
                                 subtitle={project.subtitle}
                                 link={route("project", [

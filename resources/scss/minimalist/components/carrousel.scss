@@ -241,6 +241,8 @@
         }
     }
 }
+
+
 .carrousel-dialog {
     position: fixed;
     top: 0;
@@ -273,7 +275,8 @@
     .carrousel-dialog-overlay {
         position: absolute;
 
-        background-color: rgba(var(--body-bg), 0.9);
+        background-color: var(--body-bg);
+        opacity: 0.4;
 
         top: 0;
         left: 0;

@@ -11,9 +11,10 @@ import {
 
 // Mapping des liens
 const linkMap = {
-    'minimalist': 'Minimalist',
-    'graphic-design': 'Graphic Design',
+    'minimalist': { title: 'Minimalist', disabled: false, href: "" },
+    'graphic-design': { title: 'Graphic Design', disabled: true, href: null },
 };
+
 
 
 export default function Nav({ isOnHome, version }) {
@@ -37,7 +38,7 @@ export default function Nav({ isOnHome, version }) {
 
     // Fonction pour obtenir le nom actif
     const getActiveLink = useCallback((link) => {
-        return linkMap[link] || 'Error';
+        return linkMap[link].title || "Error";
     }, []);
 
     // Gestion du clic sur un lien
@@ -45,18 +46,38 @@ export default function Nav({ isOnHome, version }) {
         e.preventDefault();
         setActiveLink(link);
         setSelectOpen(false); // Ferme le sélecteur après la sélection
+        window.location.href = linkMap[link].href;
     }, []);
 
     // Mémoriser les éléments de NavSelectItem pour éviter de les recréer à chaque rendu
     const navSelectItems = useMemo(() => (
+
+
+
         Object.keys(linkMap).map((link) => (
+
+
             <NavSelectItem
                 key={link}
                 is_selected={activeLink === link}
                 onClick={(e) => handleLinkClick(e, link)}
+                disabled={linkMap[link].disabled}
+                title={linkMap[link].disabled ? 'Coming soon' : ''}
             >
                 {getActiveLink(link)}
             </NavSelectItem>
+
+
+            // <NavSelectItem
+            //     key={link}
+            //     is_selected={activeLink === link}
+            //     onClick={(e) => handleLinkClick(e, link)}
+            // >
+            //     {getActiveLink(link)}
+            // </NavSelectItem>
+
+
+
         ))
     ), [linkMap, activeLink, handleLinkClick, getActiveLink]);
 

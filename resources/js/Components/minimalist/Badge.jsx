@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-export const BadgeContainer = ({ children, title, key }) => {
+export const BadgeContainer = ({ children, title }) => {
 
    
     return (
-        <div className="badge-container" key={key}>
+        <div className="badge-container">
             <h6 className="badge-title">
                 {title}
             </h6>
@@ -23,13 +23,13 @@ export const BadgeWrapper = ({ children }) => {
 };
 
 
-export const Badge = ({ children, key }) => {
+export const Badge = ({ children }) => {
 
     // get the proficiency level from the children
 
 
     return (
-        <span className="badge" key={key}>
+        <span className="badge">
             {children}
         </span>
     );

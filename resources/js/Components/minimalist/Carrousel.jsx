@@ -9,17 +9,17 @@ export const Carrousel = ({ children, navigation, pagination, disabled }) => {
 
     useEffect(() => {
         const handleKey = (event) => {
-            console.log(event.key, disabled, currentSlide, children.length - 1);
             if (event.key === "Escape" && isOpen) {
                 setIsOpen(false);
             }
-            if (event.key === "ArrowLeft" && !disabled && currentSlide > 0) {
+            if (event.key === "ArrowLeft" && !disabled && !isOpen && currentSlide > 0) {
                 goToSlide(currentSlide - 1);
             }
 
             if (
                 event.key === "ArrowRight" &&
                 !disabled &&
+                !isOpen &&
                 currentSlide < children.length - 1
             ) {
                 goToSlide(currentSlide + 1);
