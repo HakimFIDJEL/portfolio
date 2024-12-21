@@ -22,7 +22,7 @@
     @elseif(str_starts_with($request, 'graphic'))
         @vite('resources/scss/graphic.scss')
     @else
-        @vite('resources/scss/minimalist.scss')
+        @vite('resources/css/minimalist.css')
     @endif
 
     @routes

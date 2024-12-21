@@ -6,7 +6,7 @@
         "dev": "vite",
         "php:serve": "php artisan serve",
         "php:queue": "php artisan queue:work",
-        "start": "concurrently \"npm run dev\" \"npm run php:serve\" \"npm run php:queue\""
+        "start": "concurrently \"npm run dev\" \"npm run php:serve\" \"npm run php:queue\" \"sass --watch resources/scss/minimalist.scss:resources/css/minimalist.css\""
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^4.3.3",

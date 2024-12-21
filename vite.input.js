@@ -5,7 +5,7 @@ const inputFiles = fg.sync([
     'resources/js/**/*.jsx',
     'resources/js/**/*.tsx',
     'resources/css/*.css',
-    'resources/scss/*.scss',
+    // 'resources/scss/*.scss',
 ]);
 
 export default inputFiles;
