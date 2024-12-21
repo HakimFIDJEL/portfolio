@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MinimalistController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\admin\MainController as MainAdminController;
+use App\Http\Controllers\SitemapController;
 
 use App\Http\Controllers\admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\admin\BadgeController as AdminBadgeController;
@@ -21,6 +22,7 @@ use App\Http\Middleware\AuthMiddleware;
 
 Route::get('/', [MinimalistController::class, 'home'])->name('home');
 Route::get('/project/{slug}/{project}', [MinimalistController::class, 'project'])->name('project');
+Route::get('/sitemap.xml', [SitemapController::class, 'showSitemap'])->name('sitemap');
 
 // AUTH ROUTES
 Route::prefix('/auth')->name('auth.')->controller(AuthController::class)->group(function()

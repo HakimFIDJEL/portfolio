@@ -14,4 +14,8 @@
     gap: $x-spacing;
 
     transition: $fast-animation;
+
+    svg path {
+        fill: var(--block-btn-color);
+    }
 }

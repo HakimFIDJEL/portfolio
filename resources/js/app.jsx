@@ -12,6 +12,7 @@ createInertiaApp({
   setup({ el, App, props }) {
     createRoot(el).render(<App {...props} />)
   },
+  title: (title) => `${title} - My portfolio`,
   // progress: {
   //   color: '#4B5563',
   // }

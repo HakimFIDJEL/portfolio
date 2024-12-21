@@ -266,12 +266,15 @@ function Project({ project }) {
 
 Project.layout = (page) => {
     const props = page.props;
+    const project = props.project;
     return (
         <Layout
             children={page}
             page="project"
             isOnHome={false}
             version={props.version}
+            title={project.title}
+            description={project.subtitle}
         />
     );
 };

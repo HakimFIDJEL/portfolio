@@ -80,13 +80,19 @@ export default function Nav({ isOnHome, version }) {
                             <NavToggleItem
                                 is_selected={theme === "light"}
                             >
-                                Light <Sun size={16} />
+                                <span>
+                                    Light
+                                </span>
+                                <Sun size={16} />
                             </NavToggleItem>
 
                             <NavToggleItem
                                 is_selected={theme === "dark"}
                             >
-                                Dark <Moon size={16} />
+                                <span>
+                                    Dark
+                                </span>
+                                <Moon size={16} />
                             </NavToggleItem>
 
                         </NavToggle>
@@ -110,7 +116,9 @@ export default function Nav({ isOnHome, version }) {
                                     fill="#C9D1D9"
                                 />
                             </svg>
-                            Go back
+                            <span>
+                                Go back
+                            </span>
                         </LinkLoader>
                         <NavSeparator />
                         <NavToggle
@@ -120,14 +128,21 @@ export default function Nav({ isOnHome, version }) {
                             <NavToggleItem
                                 is_selected={theme === "light"}
                             >
-                                Light <Sun size={16} />
+                                <span>
+                                    Light
+                                </span>
+                                <Sun size={16} />
                             </NavToggleItem>
 
                             <NavToggleItem
                                 is_selected={theme === "dark"}
                             >
-                                Dark <Moon size={16} />
+                                <span>
+                                    Dark
+                                </span>
+                                <Moon size={16} />
                             </NavToggleItem>
+
 
                         </NavToggle>
                     </div>

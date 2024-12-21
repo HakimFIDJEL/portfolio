@@ -41,6 +41,10 @@
         }
     }
 
+    svg path {
+        fill: var(--block-btn-color);
+    }
+
     .arrow-left {
         position: absolute;
         top: 50%;

@@ -416,6 +416,8 @@ Home.layout = (page) => {
             page="home"
             isOnHome={true}
             version={props.version}
+            title="Home"
+            
         />
     );
 };

@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react"
+import { Link, Head } from "@inertiajs/react"
 import { useState, useEffect } from "react";
 
 import { Loader, openLoader } from "@/Components/minimalist/Loader";
@@ -9,7 +9,7 @@ import Nav from "@/Components/Nav";
 
 
 
-export default function Layout({children, page, isOnHome, version}) {
+export default function Layout({children, page, isOnHome, version, title, description}) {
 
     const route = useRoute();
     const [displayLoader, setDisplayLoader] = useState(true);
@@ -22,8 +22,15 @@ export default function Layout({children, page, isOnHome, version}) {
 
 
 
+
     return (
         <>
+
+            <Head>
+                <title>{title}</title>
+                <meta name="description" content={description ?? "Portfolio of Hakim, a FullStack engineering apprentice. Discover my projects, skills, and ambitions across the diverse fields of computer engineering."} />
+            </Head>
+
             <main id={page}>
                 {children}
             </main>

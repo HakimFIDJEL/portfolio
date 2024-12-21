@@ -40,6 +40,10 @@
 
             svg {
                 transform: rotate(90deg);
+
+                path {
+                    fill: var(--block-btn-color);
+                }
             }
         }
     }
