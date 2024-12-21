@@ -76,11 +76,12 @@ RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 # Create database.sqlite
 RUN touch database/database.sqlite
 
+# Migrations & Seeders
+RUN php artisan migrate
+RUN php artisan db:seed
+
 # (Optionnel) Optimisation pour la production
 RUN php artisan config:clear && php artisan cache:clear && php artisan config:clear
 
-# Migrations & Seeders
-# RUN php artisan migrate
-# RUN php artisan db:seed
 
 
