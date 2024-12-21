@@ -73,6 +73,9 @@ RUN php artisan storage:link
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Create database.sqlite
+RUN touch database/database.sqlite
+
 # (Optionnel) Optimisation pour la production
 RUN php artisan config:clear && php artisan cache:clear && php artisan config:clear
 
