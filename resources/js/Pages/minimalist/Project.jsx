@@ -105,7 +105,7 @@ function Project({ project }) {
                     </span>
                 </div>
                 <hr />
-                <div className="footer row justify-content-between gap-lg  resp-flex-column">
+                <div className="footer row justify-content-between gap-lg resp-gap-sm resp-flex-column">
                     <BadgeContainer title="Tech stack">
                         <BadgeWrapper>
                             {project.stacks.length > 0 ? (

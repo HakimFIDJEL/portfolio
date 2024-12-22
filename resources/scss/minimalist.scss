@@ -208,6 +208,10 @@ hr {
     .resp-col-12 {
         width: 100% !important;
     }
+
+    .resp-gap-sm {
+        gap: $sm-spacing !important;
+    }
 }
 
 .gap-xxs {
