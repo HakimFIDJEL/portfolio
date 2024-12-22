@@ -1049,6 +1049,21 @@ main#project section#actions {
 .block .block-content > :first-child {
   overflow: hidden;
 }
+.block .block-content p:empty {
+  display: block;
+  margin: 0.75rem 0;
+}
+.block .block-content ul {
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.block .block-content ul li {
+  list-style-type: disc;
+  list-style-position: outside;
+  margin-left: 1.5rem;
+}
 .block.collapsed {
   gap: 0;
 }

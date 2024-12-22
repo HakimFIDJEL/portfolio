@@ -23,6 +23,21 @@ import { Timeline, TimelineItem } from "@/Components/minimalist/Timeline";
 function Project({ project }) {
     const route = useRoute();
 
+    // Remove empty description
+    if(project.description && project.description == "<p></p>") {
+        project.description = null;
+    }
+
+    // Remove empty feedback
+    if(project.feedback && project.feedback == "<p></p>") {
+        project.feedback = null;
+    }
+
+    // Remove empty what_i_learned
+    if(project.what_i_learned && project.what_i_learned == "<p></p>") {
+        project.what_i_learned = null;
+    }
+
     const [collapsedDescription, setCollapsedDescription] = useState(true);
     const [collapsedTimeline, setCollapsedTimeline] = useState(true);
     const [collapsedImages, setCollapsedImages] = useState(true);
@@ -154,7 +169,7 @@ function Project({ project }) {
                         </Block>
                     )}
 
-                    {project.timeline && (
+                    {(project.timeline && project.timeline.length > 0) && (
                         <Block
                             title="⏳ Timeline"
                             collapsable={true}
@@ -200,7 +215,7 @@ function Project({ project }) {
                 </div>
             </section>
 
-            {project.images && (
+            {(project.images && project.images.length > 0) && (
                 <>
                     <Block
                         title="🖼️ Images"

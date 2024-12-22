@@ -113,10 +113,11 @@ export function TabTimeline({ timeline, setTimeline, setData }) {
 
     function handleRemoveTimeline(index) {
 
-        // update the timeline events by removing the event and updating the index of the remaining events
         const updatedTimeline = timeline
             .filter((event) => event.index !== index)
             .map((event, i) => ({ ...event, index: i }));
+
+        console.log(updatedTimeline);
             
 
 

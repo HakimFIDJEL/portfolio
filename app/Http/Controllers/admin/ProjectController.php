@@ -86,7 +86,6 @@ class ProjectController extends Controller
                 'index'     => $image['index'],
             ]);
         }
-
         return redirect()->route('admin.projects.index')->with(['success' => 'Project created successfully']);
     }
 
@@ -106,15 +105,14 @@ class ProjectController extends Controller
         
         // Timeline
         $timeline = $request->timeline;
+        $project->timeline()->delete();
         if (!empty($timeline)) {
-            $project->timeline()->delete();
             $project->timeline()->createMany($timeline);
         }
-
         // Stacks
         $stacks = $request->stacks;
+        $project->stacks()->detach();
         if (!empty($stacks)) {
-            $project->stacks()->detach();
             $project->stacks()->attach($stacks);
         }
 

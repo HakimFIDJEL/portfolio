@@ -69,6 +69,26 @@
         border-top: 1px solid var(--block-border);
 
         padding: $md-spacing 0 $xxs-spacing 0;
+
+        p:empty {
+            display: block;
+            margin: $x-spacing 0;
+        }
+
+        ul {
+            padding: $xs-spacing 0;
+            display: flex;
+            flex-direction: column;
+            gap: $xxs-spacing;
+        
+            li {
+                list-style-type: disc;
+                list-style-position: outside;
+                margin-left: $re-spacing;
+            }
+        }
+        
+
     }
 
     &.collapsed {
