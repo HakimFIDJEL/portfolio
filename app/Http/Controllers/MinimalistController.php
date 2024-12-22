@@ -18,7 +18,7 @@ class MinimalistController extends Controller
         return Inertia::render('minimalist/Home', 
         [
             'version'   => 'minimalist',
-            'projects'  => Project::all(),
+            'projects'  => Project::orderBy('created_at', 'desc')->get(),
             'socials'   => Social::all(),
             'stackCategories'    => StackCategory::with('stacks')->get(),
             'toolCategories'     => ToolCategory::with('tools')->get(),
