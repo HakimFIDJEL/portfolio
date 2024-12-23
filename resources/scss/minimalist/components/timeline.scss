@@ -3,122 +3,220 @@
     padding: $xxs-spacing 0;
     // margin-bottom: $re-spacing;
 
-    .timeline-scrollable {
-        display: flex;
-        position: relative;
-        width: max-content;
-        align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: $md-spacing;
 
-        transition: all $fast-animation;
-
-        .timeline-separator {
-            width: 50px;
-            height: 1px;
-            background-color: var(--block-border);
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .timeline-separator:last-child::after {
-            content: "";
-            position: absolute;
-            right: 0px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: var(--block-border);
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .timeline-item {
-            position: relative;
-            flex-shrink: 0;
-
-            .timeline-title {
-                border-radius: $border-radius;
-                border: 1px solid var(--block-border);
-                padding: $xs-spacing $x-spacing;
-
-                font-size: 14px;
-                font-weight: 500;
-                line-height: 16px;
-            }
-            .timeline-info {
-                position: absolute;
-                top: 100%;
-                white-space: nowrap;
-                z-index: 1;
-
-                font-size: 13px;
-                font-weight: 300;
-                line-height: 16px;
-
-                color: var(--body-color-dark);
-            }
-        }
+    margin-bottom: $md-spacing;
+    @include respond('breakpoint') {
+        margin-bottom: $xs-spacing;
     }
 
-    .timeline-button-container {
-        position: absolute;
-        top: 0%;
-        bottom: 0;
-        z-index: 2;
-        transition: all $slow-animation;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .timeline-body {
 
-        &.left {
-            left: 0;
-
-            background: linear-gradient(to right, var(--block-bg), transparent);
-            padding-right: calc($lg-spacing*2);
-
-            &.disabled {
-                transform: translateX(-100%);
-                opacity: 0;
-                pointer-events: none;
+        .timeline-scrollable {
+            display: flex;
+            position: relative;
+            width: max-content;
+            align-items: center;
+    
+            transition: all $fast-animation;
+    
+            .timeline-separator {
+                width: 50px;
+                height: 1px;
+                background-color: var(--block-border);
+                flex-shrink: 0;
+                position: relative;
+            }
+    
+            .timeline-separator:last-child::after {
+                content: "";
+                position: absolute;
+                right: 0px;
+                top: 50%;
+                transform: translateY(-50%);
+                background-color: var(--block-border);
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+            }
+    
+            .timeline-item {
+                position: relative;
+                flex-shrink: 0;
+    
+                .timeline-title {
+                    border-radius: $border-radius;
+                    border: 1px solid var(--block-border);
+                    padding: $xs-spacing $x-spacing;
+    
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 16px;
+                }
+                .timeline-info {
+                    position: absolute;
+                    top: 100%;
+                    white-space: nowrap;
+                    z-index: 1;
+    
+                    font-size: 13px;
+                    font-weight: 300;
+                    line-height: 16px;
+    
+                    color: var(--body-color-dark);
+                }
             }
         }
-
-        &.right {
-            right: 0;
-
-            background: linear-gradient(to left, var(--block-bg), transparent);
-            padding-left: calc($lg-spacing*2);
-
-            &.disabled {
-                transform: translateX(100%);
-                opacity: 0;
-                pointer-events: none;
-            }
-            svg {
-                transform: rotate(180deg);
-            }
-        }
-
-        .timeline-button {
+    
+        .timeline-button-container {
+            position: absolute;
+            top: 0%;
+            bottom: 0;
+            z-index: 2;
+            transition: all $slow-animation;
+    
             display: flex;
             align-items: center;
             justify-content: center;
 
-            transition: all $fast-animation;
-
-            background-color: var(--block-btn-bg);
-            border-radius: 50%;
-            color: var(--block-btn-colo);
-            cursor: pointer;
-            padding: 0.7rem;
-
-            border: 1px solid var(--block-border);
-
-            aspect-ratio: 1 / 1;
-
-            svg path {
-                fill: var(--block-btn-color);
+            @include respond('breakpoint') {
+                display: none;
+            }
+    
+            &.left {
+                left: 0;
+    
+                background: linear-gradient(to right, var(--block-bg), transparent);
+                padding-right: calc($lg-spacing*2);
+    
+                &.disabled {
+                    transform: translateX(-100%);
+                    opacity: 0;
+                    pointer-events: none;
+                }
+            }
+    
+            &.right {
+                right: 0;
+    
+                background: linear-gradient(to left, var(--block-bg), transparent);
+                padding-left: calc($lg-spacing*2);
+    
+                &.disabled {
+                    transform: translateX(100%);
+                    opacity: 0;
+                    pointer-events: none;
+                }
+                svg {
+                    transform: rotate(180deg);
+                }
+            }
+    
+            .timeline-button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+    
+                transition: all $fast-animation;
+    
+                background-color: var(--block-btn-bg);
+                border-radius: 50%;
+                color: var(--block-btn-colo);
+                cursor: pointer;
+                padding: 0.7rem;
+    
+                border: 1px solid var(--block-border);
+    
+                aspect-ratio: 1 / 1;
+    
+                svg path {
+                    fill: var(--block-btn-color);
+                }
             }
         }
+    }
+
+
+
+    .timeline-footer { 
+
+
+        align-items: center;
+        justify-content: space-between;
+
+        gap: $xs-spacing;
+
+        display: none;
+
+        @include respond('breakpoint') {
+            display: flex;
+            margin: 0;
+        }
+
+
+        .timeline-button-container {
+            position: relative;
+            transition: all $slow-animation;
+    
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+
+            &.left .timeline-button {
+                transform: rotate(0deg);
+            }
+
+            &.right .timeline-button {
+                transform: rotate(180deg);
+            }
+    
+           
+
+
+            .timeline-button {
+
+                width: 100%;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                padding: $xs-spacing;
+
+                background-color: var(--block-btn-bg);
+                border: 1px solid var(--block-border);
+                border-radius: $border-radius;
+
+                cursor: pointer;
+                transition: $fast-animation;
+
+                svg path {
+                    fill: var(--block-btn-color);
+                }
+
+                &:disabled {
+                    cursor: auto;
+                    opacity: 0.3;
+                    pointer-events: none;
+                }
+    
+                &.carrousel-arrow-left {
+                    transform: rotate(0deg);
+    
+                }
+                &.carrousel-arrow-right {
+                    transform: rotate(180deg);
+    
+                }
+            }
+    
+           
+        }
+
     }
 }

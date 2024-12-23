@@ -1,0 +1,13 @@
+.alert {
+
+    text-decoration: none;
+    padding : $xxs-spacing $xs-spacing;
+    border-radius: $border-radius;
+
+
+    &.alert-primary {
+        // background-color: var(--highlight);
+        color: var(--highlight);
+        border: 1px solid var(--highlight);
+    }
+}

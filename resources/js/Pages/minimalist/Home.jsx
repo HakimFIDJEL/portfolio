@@ -9,6 +9,7 @@ import { Section } from "@/Components/minimalist/Section";
 import { Project } from "@/Components/minimalist/Project";
 import { BigButton } from "@/Components/minimalist/BigButton";
 
+
 import {
     Badge,
     BadgeWrapper,
@@ -121,7 +122,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                             </AccordeonContent>
                         </AccordeonChildren>
                         <AccordeonChildren>
-                            <AccordeonLabel>Work experience</AccordeonLabel>
+                            <AccordeonLabel>Work Experience</AccordeonLabel>
                             <AccordeonContent>
                                 <div>
                                     <h3 className="title">
@@ -193,7 +194,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                     <div className="row gap-sm resp-flex-column">
                         <Accordeon className="col-8 resp-col-12">
                             <AccordeonChildren>
-                                <AccordeonLabel>Tech stacks</AccordeonLabel>
+                                <AccordeonLabel>Stacks</AccordeonLabel>
                                 <AccordeonContent>
                                     <div>
 
@@ -230,7 +231,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                 </AccordeonContent>
                             </AccordeonChildren>
                             <AccordeonChildren>
-                                <AccordeonLabel>Tech tools</AccordeonLabel>
+                                <AccordeonLabel>Tools</AccordeonLabel>
                                 <AccordeonContent>
                                     <div>
 
@@ -326,6 +327,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                     project.slug,
                                     project.id,
                                 ])}
+                                is_new={project.is_new}
                             />
                         ))
                 ) : (

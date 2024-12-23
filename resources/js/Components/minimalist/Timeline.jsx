@@ -37,28 +37,44 @@ export const Timeline = ({ children, className, disabled }) => {
             className={`timeline ${className ? className : ""}`}
             ref={containerRef}
         >
-            <TimelineButton
-                onClick={() => handleScroll(-distanceToScroll)}
-                direction="left"
-                disabled={(scrollPosition === 0) | disabled}
-            />
 
-            {/* Conteneur scrollable */}
-            <div
-                className="timeline-scrollable"
-                ref={scrollableRef}
-                style={{
-                    transform: `translateX(-${scrollPosition}px)`,
-                }}
-            >
-                {children}
+            <div className="timeline-body">
+                <TimelineButton
+                    onClick={() => handleScroll(-distanceToScroll)}
+                    direction="left"
+                    disabled={(scrollPosition === 0) | disabled}
+                />
+
+                {/* Conteneur scrollable */}
+                <div
+                    className="timeline-scrollable"
+                    ref={scrollableRef}
+                    style={{
+                        transform: `translateX(-${scrollPosition}px)`,
+                    }}
+                >
+                    {children}
+                </div>
+
+                <TimelineButton
+                    onClick={() => handleScroll(distanceToScroll)}
+                    direction="right"
+                    disabled={(scrollPosition >= maxScroll) | disabled}
+                />
             </div>
 
-            <TimelineButton
-                onClick={() => handleScroll(distanceToScroll)}
-                direction="right"
-                disabled={(scrollPosition >= maxScroll) | disabled}
-            />
+            <div className="timeline-footer">
+                <TimelineButton
+                    onClick={() => handleScroll(-distanceToScroll)}
+                    direction="left"
+                    disabled={(scrollPosition === 0) | disabled}
+                />
+                <TimelineButton
+                    onClick={() => handleScroll(distanceToScroll)}
+                    direction="right"
+                    disabled={(scrollPosition >= maxScroll) | disabled}
+                />
+            </div>
         </div>
     );
 };

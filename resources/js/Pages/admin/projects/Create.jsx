@@ -47,6 +47,7 @@ function Projects({ stackCategories }) {
         live_demo_url: "",
         timeline_url: "",
         readme_url: "",
+        is_new: false,
 
         // Project images
         images: images,

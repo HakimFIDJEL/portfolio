@@ -26,18 +26,31 @@ main#project {
             @include respond('breakpoint') {
                 margin-bottom: $md-spacing;
             }
+            
 
             .title {
-                h1 {
-                    font-size: 32px;
-                    font-weight: 600;
-                    line-height: 1;
+
+
+                .project-header {
+                    display: flex;
+                    align-items: center;
+                    gap: $x-spacing;
+                    h1 {
+                        font-size: 32px;
+                        font-weight: 600;
+                        line-height: 1;
+                    }
                 }
+
+                .project-footer {
+
+                    p {
+                        font-size: 16px;
+                        font-weight: 300;
+                    }
+                }
+
     
-                p {
-                    font-size: 16px;
-                    font-weight: 300;
-                }
             }
     
             .links {
@@ -60,7 +73,7 @@ main#project {
     
                     &.disabled {
                         cursor: auto;
-                        opacity: 0.8;
+                        opacity: 0.3;
                         pointer-events: none;
                     }
 

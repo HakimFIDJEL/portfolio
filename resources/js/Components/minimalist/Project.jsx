@@ -1,8 +1,9 @@
 import { Link } from "@inertiajs/react";
 
 import { LinkLoader } from "@/Components/minimalist/LinkLoader";
+import { Alert } from "@/Components/minimalist/Alert";
 
-export const Project = ({title, subtitle, link}) => {
+export const Project = ({title, subtitle, link, is_new}) => {
     return (
         <LinkLoader
             className="project-item"
@@ -14,12 +15,21 @@ export const Project = ({title, subtitle, link}) => {
                 </svg>
             </span>
             <div className="project-content">
-                <h3 className="project-title">
-                    {title}
-                </h3>
-                <p className="project-subtitle">
-                    {subtitle}
-                </p>
+                <div className="project-header">
+                    <h3 className="project-title">
+                        {title}
+                    </h3>
+                    {is_new == true && (
+                        <Alert variant="primary">
+                            New
+                        </Alert>
+                    )}
+                </div>
+                <div className="project-footer">
+                    <p className="project-subtitle">
+                        {subtitle}
+                    </p>
+                </div>
             </div>
             <span className="arrow-right">
                 <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">

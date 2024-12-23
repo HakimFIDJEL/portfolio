@@ -59,6 +59,7 @@ function Projects({ project, stackCategories }) {
         live_demo_url: project.live_demo_url ?? "",
         timeline_url: project.timeline_url ?? "",
         readme_url: project.readme_url ?? "",
+        is_new: project.is_new.toString() ?? "",
 
         // Project images
         images: images,

@@ -37,6 +37,7 @@ class ProjectRequest extends FormRequest
             'live_demo_url'      => ['nullable', 'url'],
             'timeline_url'       => ['nullable', 'url'],
             'readme_url'         => ['nullable', 'url'],
+            'is_new'             => ['required', 'boolean'],
 
             // Validation des images
             'images'             => ['nullable', 'array'],

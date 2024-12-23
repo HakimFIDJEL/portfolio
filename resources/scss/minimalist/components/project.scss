@@ -26,19 +26,30 @@
         transition: $fast-animation;
 
         margin-right: $l-spacing;
+
+        .project-header {
+            display: flex;
+            gap: $x-spacing;
+            align-items: center;
+
+            .project-title {
+                font-size: 16px;
+                line-height: 1;
+                font-weight: 500;
+                color: var(--body-color-light);
+            }
+        }
+
+        .project-footer {
+
+            .project-subtitle {
+                font-size: 16px;
+                line-height: 1;
+                font-weight: 300;
+                color: var(--body-color-dark);
+            }
+        }
         
-        .project-title {
-            font-size: 16px;
-            line-height: 1;
-            font-weight: 500;
-            color: var(--body-color-light);
-        }
-        .project-subtitle {
-            font-size: 16px;
-            line-height: 1;
-            font-weight: 300;
-            color: var(--body-color-dark);
-        }
     }
 
     svg path {
@@ -64,8 +75,9 @@
         transition: $fast-animation;
     }
 
-    &:hover {
+    &:hover, &:focus {
         background-color: var(--block-bg);
+        outline: none;
 
         .project-content {
             margin-left: $l-spacing;

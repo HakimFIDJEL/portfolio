@@ -108,6 +108,11 @@ function Projects({ projects }) {
                                             >
                                                 {project.work_in_progress ? "In progress" : "Completed"}
                                             </Badge>
+                                            {project.is_new == true && (
+                                                <Badge className="ml-2">
+                                                    New
+                                                </Badge>
+                                            )}
                                         </TableCell>
 
                                         <TableCell>

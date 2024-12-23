@@ -598,12 +598,17 @@ main#project section#hero .container {
     margin-bottom: 2rem;
   }
 }
-main#project section#hero .container .title h1 {
+main#project section#hero .container .title .project-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+main#project section#hero .container .title .project-header h1 {
   font-size: 32px;
   font-weight: 600;
   line-height: 1;
 }
-main#project section#hero .container .title p {
+main#project section#hero .container .title .project-footer p {
   font-size: 16px;
   font-weight: 300;
 }
@@ -620,7 +625,7 @@ main#project section#hero .container .links a {
 }
 main#project section#hero .container .links a.disabled {
   cursor: auto;
-  opacity: 0.8;
+  opacity: 0.3;
   pointer-events: none;
 }
 main#project section#hero .container .links a.stroke svg path {
@@ -658,6 +663,16 @@ main#project section#infos #see-full-timeline, main#project section#infos #see-r
 }
 main#project section#actions {
   margin-top: 0.5rem;
+}
+
+.alert {
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+}
+.alert.alert-primary {
+  color: var(--highlight);
+  border: 1px solid var(--highlight);
 }
 
 .loader {
@@ -942,13 +957,18 @@ main#project section#actions {
   transition: 0.6s cubic-bezier(0.38, 0.005, 0.215, 1);
   margin-right: 3rem;
 }
-.project-item .project-content .project-title {
+.project-item .project-content .project-header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.project-item .project-content .project-header .project-title {
   font-size: 16px;
   line-height: 1;
   font-weight: 500;
   color: var(--body-color-light);
 }
-.project-item .project-content .project-subtitle {
+.project-item .project-content .project-footer .project-subtitle {
   font-size: 16px;
   line-height: 1;
   font-weight: 300;
@@ -971,17 +991,18 @@ main#project section#actions {
   transform: translateY(-50%) translateX(-100%);
   transition: 0.6s cubic-bezier(0.38, 0.005, 0.215, 1);
 }
-.project-item:hover {
+.project-item:hover, .project-item:focus {
   background-color: var(--block-bg);
+  outline: none;
 }
-.project-item:hover .project-content {
+.project-item:hover .project-content, .project-item:focus .project-content {
   margin-left: 3rem;
   margin-right: 0;
 }
-.project-item:hover .arrow-right {
+.project-item:hover .arrow-right, .project-item:focus .arrow-right {
   transform: translateY(-50%) translateX(200%);
 }
-.project-item:hover .arrow-left {
+.project-item:hover .arrow-left, .project-item:focus .arrow-left {
   transform: translateY(-50%) translateX(100%);
 }
 
@@ -1082,22 +1103,31 @@ main#project section#actions {
 .timeline {
   position: relative;
   padding: 0.25rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
-.timeline .timeline-scrollable {
+@media (max-width: 850px) {
+  .timeline {
+    margin-bottom: 0.5rem;
+  }
+}
+.timeline .timeline-body .timeline-scrollable {
   display: flex;
   position: relative;
   width: max-content;
   align-items: center;
   transition: all 0.6s cubic-bezier(0.38, 0.005, 0.215, 1);
 }
-.timeline .timeline-scrollable .timeline-separator {
+.timeline .timeline-body .timeline-scrollable .timeline-separator {
   width: 50px;
   height: 1px;
   background-color: var(--block-border);
   flex-shrink: 0;
   position: relative;
 }
-.timeline .timeline-scrollable .timeline-separator:last-child::after {
+.timeline .timeline-body .timeline-scrollable .timeline-separator:last-child::after {
   content: "";
   position: absolute;
   right: 0px;
@@ -1108,11 +1138,11 @@ main#project section#actions {
   height: 10px;
   border-radius: 50%;
 }
-.timeline .timeline-scrollable .timeline-item {
+.timeline .timeline-body .timeline-scrollable .timeline-item {
   position: relative;
   flex-shrink: 0;
 }
-.timeline .timeline-scrollable .timeline-item .timeline-title {
+.timeline .timeline-body .timeline-scrollable .timeline-item .timeline-title {
   border-radius: 5px;
   border: 1px solid var(--block-border);
   padding: 0.5rem 0.75rem;
@@ -1120,7 +1150,7 @@ main#project section#actions {
   font-weight: 500;
   line-height: 16px;
 }
-.timeline .timeline-scrollable .timeline-item .timeline-info {
+.timeline .timeline-body .timeline-scrollable .timeline-item .timeline-info {
   position: absolute;
   top: 100%;
   white-space: nowrap;
@@ -1130,7 +1160,7 @@ main#project section#actions {
   line-height: 16px;
   color: var(--body-color-dark);
 }
-.timeline .timeline-button-container {
+.timeline .timeline-body .timeline-button-container {
   position: absolute;
   top: 0%;
   bottom: 0;
@@ -1140,30 +1170,35 @@ main#project section#actions {
   align-items: center;
   justify-content: center;
 }
-.timeline .timeline-button-container.left {
+@media (max-width: 850px) {
+  .timeline .timeline-body .timeline-button-container {
+    display: none;
+  }
+}
+.timeline .timeline-body .timeline-button-container.left {
   left: 0;
   background: linear-gradient(to right, var(--block-bg), transparent);
   padding-right: 8rem;
 }
-.timeline .timeline-button-container.left.disabled {
+.timeline .timeline-body .timeline-button-container.left.disabled {
   transform: translateX(-100%);
   opacity: 0;
   pointer-events: none;
 }
-.timeline .timeline-button-container.right {
+.timeline .timeline-body .timeline-button-container.right {
   right: 0;
   background: linear-gradient(to left, var(--block-bg), transparent);
   padding-left: 8rem;
 }
-.timeline .timeline-button-container.right.disabled {
+.timeline .timeline-body .timeline-button-container.right.disabled {
   transform: translateX(100%);
   opacity: 0;
   pointer-events: none;
 }
-.timeline .timeline-button-container.right svg {
+.timeline .timeline-body .timeline-button-container.right svg {
   transform: rotate(180deg);
 }
-.timeline .timeline-button-container .timeline-button {
+.timeline .timeline-body .timeline-button-container .timeline-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1176,8 +1211,60 @@ main#project section#actions {
   border: 1px solid var(--block-border);
   aspect-ratio: 1/1;
 }
-.timeline .timeline-button-container .timeline-button svg path {
+.timeline .timeline-body .timeline-button-container .timeline-button svg path {
   fill: var(--block-btn-color);
+}
+.timeline .timeline-footer {
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  display: none;
+}
+@media (max-width: 850px) {
+  .timeline .timeline-footer {
+    display: flex;
+    margin: 0;
+  }
+}
+.timeline .timeline-footer .timeline-button-container {
+  position: relative;
+  transition: all 0.8s cubic-bezier(0.38, 0.005, 0.215, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.timeline .timeline-footer .timeline-button-container.left .timeline-button {
+  transform: rotate(0deg);
+}
+.timeline .timeline-footer .timeline-button-container.right .timeline-button {
+  transform: rotate(180deg);
+}
+.timeline .timeline-footer .timeline-button-container .timeline-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background-color: var(--block-btn-bg);
+  border: 1px solid var(--block-border);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.6s cubic-bezier(0.38, 0.005, 0.215, 1);
+}
+.timeline .timeline-footer .timeline-button-container .timeline-button svg path {
+  fill: var(--block-btn-color);
+}
+.timeline .timeline-footer .timeline-button-container .timeline-button:disabled {
+  cursor: auto;
+  opacity: 0.3;
+  pointer-events: none;
+}
+.timeline .timeline-footer .timeline-button-container .timeline-button.carrousel-arrow-left {
+  transform: rotate(0deg);
+}
+.timeline .timeline-footer .timeline-button-container .timeline-button.carrousel-arrow-right {
+  transform: rotate(180deg);
 }
 
 .carrousel-container {
@@ -1261,7 +1348,7 @@ main#project section#actions {
 }
 .carrousel-container .carrousel-body .carrousel-arrow:disabled {
   cursor: auto;
-  opacity: 0.8;
+  opacity: 0.3;
   pointer-events: none;
 }
 .carrousel-container .carrousel-footer {
@@ -1343,7 +1430,7 @@ main#project section#actions {
 }
 .carrousel-container .carrousel-footer .carrousel-arrows .carrousel-arrow:disabled {
   cursor: auto;
-  opacity: 0.8;
+  opacity: 0.3;
   pointer-events: none;
 }
 .carrousel-container .carrousel-footer .carrousel-arrows .carrousel-arrow.carrousel-arrow-left {

@@ -21,7 +21,7 @@ export function TabProject({ data, setData, errors }) {
             <Separator className="mt-1" />
             <div className="grid gap-4 my-4">
                 <div className="grid grid-cols-12 gap-2">
-                    <div className="grid gap-2 col-span-6">
+                    <div className="grid gap-2 col-span-4">
                         <Label htmlFor="title">Title</Label>
                         <Input
                             id="title"
@@ -37,7 +37,7 @@ export function TabProject({ data, setData, errors }) {
                         />
                     </div>
 
-                    <div className="grid gap-2 col-span-6">
+                    <div className="grid gap-2 col-span-4">
                         <Label htmlFor="subtitle">Subtitle</Label>
                         <Input
                             id="subtitle"
@@ -51,6 +51,25 @@ export function TabProject({ data, setData, errors }) {
                             className={errors.subtitle ? "border-red-500" : ""}
                         />
                     </div>
+
+                    <div className="grid gap-2 col-span-4">
+                        <Label htmlFor="is_new">Higlight as new</Label>
+                        <Select
+                            onValueChange={(value) => setData("is_new", value)}
+                            value={data.is_new ? data.is_new.toString() : ""}
+                            required
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select the status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="1">Yes</SelectItem>
+                                <SelectItem value="0">No</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+
                 </div>
                 <div className="grid grid-cols-12 gap-2">
                     <div className="grid gap-2 col-span-4">

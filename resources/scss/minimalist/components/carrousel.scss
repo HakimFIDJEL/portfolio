@@ -113,7 +113,7 @@
             // disabled
             &:disabled {
                 cursor: auto;
-                opacity: 0.8;
+                opacity: 0.3;
                 pointer-events: none;
             }
         }
@@ -225,7 +225,7 @@
 
                 &:disabled {
                     cursor: auto;
-                    opacity: 0.8;
+                    opacity: 0.3;
                     pointer-events: none;
                 }
     

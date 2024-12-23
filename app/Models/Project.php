@@ -18,6 +18,7 @@ class Project extends Model
         'title',
         'subtitle',
         'type',
+        'is_new',
         'end_date',
         'work_in_progress',
         'description',

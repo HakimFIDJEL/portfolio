@@ -9,6 +9,7 @@ import { Tooltip } from "@/Components/minimalist/Tooltip";
 import { BigButton } from "@/Components/minimalist/BigButton";
 import { Block } from "@/Components/minimalist/Block";
 import { Carrousel } from "@/Components/minimalist/Carrousel";
+import { Alert } from "@/Components/minimalist/Alert";
 
 
 
@@ -52,8 +53,17 @@ function Project({ project }) {
             <section id="hero" className="row flex-column">
                 <div className="container row justify-content-between gap-md resp-flex-column">
                     <span className="title row flex-column gap-xs">
-                        <h1>{project.title}</h1>
-                        <p className="quote-text">{project.subtitle}</p>
+                        <div className="project-header">
+                            <h1>{project.title}</h1>
+                            {project.is_new == true && (
+                                <Alert variant="primary">
+                                    New
+                                </Alert>
+                            )}
+                        </div>
+                        <div className="project-footer">
+                            <p className="quote-text">{project.subtitle}</p>
+                        </div>
                     </span>
                     <span className="links d-flex align-items-center gap-xs">
                         <Tooltip label="Source code">
@@ -179,7 +189,6 @@ function Project({ project }) {
                             <div className="row flex-column">
                                 <Timeline
                                     disabled={collapsedTimeline}
-                                    className="mb-md"
                                 >
                                     {project.timeline.map((event, index) => (
                                         <TimelineItem
