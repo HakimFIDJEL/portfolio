@@ -358,6 +358,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                     project.slug,
                                     project.id,
                                 ])}
+                                is_new={project.is_new}
                             />
                         ))
                 ) : (
