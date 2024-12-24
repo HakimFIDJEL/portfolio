@@ -6,6 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    {{-- Meta title --}}
+    <title>Hakim - My Portfolio</title>
+    
+    {{-- Meta description --}}
+    <meta name="description" content="Hakim's portfolio (mine), a FullStack engineering apprentice. Discover my projects, skills, and ambitions across the diverse fields of computer engineering.">
+
+    {{-- Meta author --}}
+    <meta name="author" content="Hakim Fidjel">
+
+    {{-- Meta keywords --}}
+    <meta name="keywords" content="Hakim, Fidjel, Portfolio, FullStack, Engineering, Apprentice, Projects, Skills, Ambitions, Computer, Engineering">
+
+
+
+
     {{-- Favicon --}}
     <link rel="icon" href="{{ asset('favicon.webp') }}" type="image/x-icon" />
 
