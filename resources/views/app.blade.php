@@ -16,13 +16,18 @@
     <meta name="author" content="Hakim Fidjel">
 
     {{-- Meta keywords --}}
-    <meta name="keywords" content="Hakim, Fidjel, Portfolio, FullStack, Engineering, Apprentice, Projects, Skills, Ambitions, Computer, Engineering">
+    <meta name="keywords" content="Hakim, Fidjel, Hakim Fidjel, Portfolio, FullStack, Engineering, Apprentice, Projects, Skills, Ambitions, Computer, Engineering">
 
-
-
+    <meta name="og:title" content="Hakim - My portfolio">
+    <meta name="og:site-name" content="hakimfidjel.fr">
+    <meta name="og:description" content="Portfolio of Hakim Fidjel, a FullStack engineering apprentice. Discover my projects, skills, and ambitions across the diverse fields of computer engineering.">
+    <meta name="og:type" content="website">
+    <meta name="og:url" content="https://hakimfidjel.fr">
+    <meta name="og:image" content="https://hakimfidjel.fr/favicon.webp">
 
     {{-- Favicon --}}
     <link rel="icon" href="{{ asset('favicon.webp') }}" type="image/x-icon" />
+    
 
     @viteReactRefresh
 

@@ -28,7 +28,7 @@ export default function Layout({children, page, isOnHome, version, title, descri
 
             <Head>
                 <title>{title}</title>
-                <meta name="description" content={description ?? "Hakim's portfolio (mine), a FullStack engineering apprentice. Discover my projects, skills, and ambitions across the diverse fields of computer engineering."} />
+                <meta name="description" content={description ?? "Hakim Fidjel's portfolio (mine), a FullStack engineering apprentice. Discover my projects, skills, and ambitions across the diverse fields of computer engineering."} />
             </Head>
 
             <main id={page}>
