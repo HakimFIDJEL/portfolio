@@ -22,7 +22,6 @@ use App\Http\Middleware\AuthMiddleware;
 
 Route::get('/', [MinimalistController::class, 'home'])->name('home');
 Route::get('/project/{slug}/{project}', [MinimalistController::class, 'project'])->name('project');
-Route::get('/sitemap.xml', [SitemapController::class, 'showSitemap'])->name('sitemap');
 
 // AUTH ROUTES
 Route::prefix('/auth')->name('auth.')->controller(AuthController::class)->group(function()
