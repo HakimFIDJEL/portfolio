@@ -23,10 +23,10 @@
     <meta name="og:description" content="Portfolio of Hakim Fidjel, a FullStack engineering apprentice. Discover my projects, skills, and ambitions across the diverse fields of computer engineering.">
     <meta name="og:type" content="website">
     <meta name="og:url" content="https://hakimfidjel.fr">
-    <meta name="og:image" content="https://hakimfidjel.fr/favicon.webp">
+    <meta name="og:image" content="https://hakimfidjel.fr/favicon.png">
 
     {{-- Favicon --}}
-    <link rel="icon" href="{{ asset('favicon.webp') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/x-icon" />
     
 
     @viteReactRefresh
