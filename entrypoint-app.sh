@@ -19,6 +19,11 @@ echo "Migrations & Seeders..."
 php artisan migrate
 php artisan db:seed
 
+
+# Creating a sitemap
+echo "Creating a sitemap..."
+php artisan sitemap:generate
+
 # Démarrer Apache au premier plan
 echo "Starting Apache server..."
 apache2-foreground
