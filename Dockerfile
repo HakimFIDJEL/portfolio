@@ -90,4 +90,8 @@ COPY entrypoint-app.sh /usr/local/bin/entrypoint-app.sh
 RUN chmod +x /usr/local/bin/entrypoint-app.sh
 
 
+# Generate sitemap
+RUN php artisan sitemap:generate
+
+
 
