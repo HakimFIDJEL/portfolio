@@ -1,5 +1,5 @@
 import { Link } from "@inertiajs/react";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { LinkLoader } from "@/Components/minimalist/LinkLoader";
 import React from "react";
 import { set } from "date-fns";
@@ -51,12 +51,7 @@ export default function Nav({ isOnHome, version }) {
 
     // Mémoriser les éléments de NavSelectItem pour éviter de les recréer à chaque rendu
     const navSelectItems = useMemo(() => (
-
-
-
         Object.keys(linkMap).map((link) => (
-
-
             <NavSelectItem
                 key={link}
                 is_selected={activeLink === link}
@@ -66,18 +61,6 @@ export default function Nav({ isOnHome, version }) {
             >
                 {getActiveLink(link)}
             </NavSelectItem>
-
-
-            // <NavSelectItem
-            //     key={link}
-            //     is_selected={activeLink === link}
-            //     onClick={(e) => handleLinkClick(e, link)}
-            // >
-            //     {getActiveLink(link)}
-            // </NavSelectItem>
-
-
-
         ))
     ), [linkMap, activeLink, handleLinkClick, getActiveLink]);
 
@@ -163,8 +146,6 @@ export default function Nav({ isOnHome, version }) {
                                 </span>
                                 <Moon size={16} />
                             </NavToggleItem>
-
-
                         </NavToggle>
                     </div>
                     
@@ -196,6 +177,23 @@ const NavToggleItem = React.memo(({ is_selected, children }) => {
 
 const NavSelect = React.memo(({ children, selected, open, setOpen, ...props }) => {
     const toggleOpen = () => setOpen(prev => !prev);
+
+    const handleClickOutside = useCallback((e) => {
+        if (!e.target.closest('.nav-select')) {
+            setOpen(false);
+        }
+    }, [setOpen]);
+
+    useEffect(() => {
+        if (open) {
+            document.addEventListener('click', handleClickOutside);
+        } else {
+            document.removeEventListener('click', handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [open, handleClickOutside]);
 
     return (
         <div className={`nav-select ${open ? "active" : ""}`} {...props}>
