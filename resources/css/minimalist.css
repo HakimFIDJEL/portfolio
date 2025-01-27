@@ -167,6 +167,10 @@ hr {
   justify-content: space-between;
 }
 
+.white-nowrap {
+  white-space: nowrap;
+}
+
 @media (max-width: 850px) {
   .resp-flex-column {
     flex-direction: column;
@@ -669,6 +673,7 @@ main#project section#actions {
   text-decoration: none;
   padding: 0.25rem 0.5rem;
   border-radius: 5px;
+  white-space: nowrap;
 }
 .alert.alert-primary {
   color: var(--highlight);
