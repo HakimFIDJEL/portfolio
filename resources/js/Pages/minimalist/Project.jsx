@@ -131,16 +131,19 @@ function Project({ project }) {
                         </BadgeWrapper>
                     </BadgeContainer>
 
-                    <BadgeContainer title="End date">
-                        <BadgeWrapper>
-                            {project.end_date ? (
-                                // <Badge>18 Oct. 2024</Badge>
-                                <Badge>{formatDate(project.end_date)}</Badge>
-                            ) : (
-                                <Badge>Work in progress</Badge>
-                            )}
-                        </BadgeWrapper>
-                    </BadgeContainer>
+                    {project.end_date && (
+                        <BadgeContainer title="End date">
+                            <BadgeWrapper>
+                                {project.end_date ? (
+                                    // <Badge>18 Oct. 2024</Badge>
+                                    <Badge>{formatDate(project.end_date)}</Badge>
+                                ) : (
+                                    <Badge>Work in progress</Badge>
+                                )}
+                            </BadgeWrapper>
+                        </BadgeContainer>
+                    )}
+
                 </div>
             </section>
 

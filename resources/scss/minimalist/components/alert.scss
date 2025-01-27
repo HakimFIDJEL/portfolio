@@ -4,6 +4,8 @@
     padding : $xxs-spacing $xs-spacing;
     border-radius: $border-radius;
 
+    white-space: nowrap;
+
 
     &.alert-primary {
         // background-color: var(--highlight);
