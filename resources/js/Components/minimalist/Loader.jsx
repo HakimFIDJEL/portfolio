@@ -6,26 +6,9 @@ export const Loader = ({ display }) => {
     
     return (
         <aside className="loader">
-            <div className="loader-open">
-                <div className='loader-open-up'/>
-                <div className='loader-open-down'/>
-            </div>
-            <div className="loader-close">
-                <div className='loader-close-left'/>
-                <div className='loader-close-right'/>
-            </div>
-            <div className="preloader">
-                <div class="banter-loader">
-                    <div class="banter-loader__box"></div>
-                    <div class="banter-loader__box"></div>
-                    <div class="banter-loader__box"></div>
-                    <div class="banter-loader__box"></div>
-                    <div class="banter-loader__box"></div>
-                    <div class="banter-loader__box"></div>
-                    <div class="banter-loader__box"></div>
-                    <div class="banter-loader__box"></div>
-                    <div class="banter-loader__box"></div>
-                </div>
+            <div className="loader-panels">
+                <div className='loader-panel-left'/>
+                <div className='loader-panel-right'/>
             </div>
         </aside>
     )

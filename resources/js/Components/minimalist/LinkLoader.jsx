@@ -16,7 +16,7 @@ export const LinkLoader = ({ children, ...props }) => {
         closeLoader();
         setTimeout(() => {
             router.visit(props.href);
-        }, 1200);
+        }, 600);
     }
 
     return (

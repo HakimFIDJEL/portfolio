@@ -10,51 +10,8 @@
     z-index: 9999;
 
 
-    .loader-open {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
 
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: column;
-
-        
-        z-index: 1;
-        
-        .loader-open-up, .loader-open-down {
-            position: relative;
-            width: 100%;
-            background-color: var(--body-bg);
-            height: 50%;
-            overflow: hidden;
-            
-            pointer-events: all;
-            
-            &::after {
-                content: '';
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 0%;
-                height: 1px;
-                background-color: var(--block-border);
-            }
-        }
-
-        .loader-open-up::after {
-            bottom: 0%;
-        }
-        .loader-open-down::after {
-            top: 0%;
-        }
-
-    }
-
-    .loader-close {
+    .loader-panels {
 
         position: absolute;
         top: 0;
@@ -68,11 +25,11 @@
         align-items: center;
         justify-content: space-between;
 
-        .loader-close-left, .loader-close-right {
+        .loader-panel-left, .loader-panel-right {
             position: relative;
             height: 100%;
             background-color: var(--body-bg);
-            width: 0;
+            width: 50%;
             overflow: hidden;
 
             pointer-events: all;
@@ -88,10 +45,10 @@
             }
         }
 
-        .loader-close-left::after {
+        .loader-panel-left::after {
             right: 0%;
         }
-        .loader-close-right::after {
+        .loader-panel-right::after {
             left: 0%;
         }
 
@@ -100,30 +57,15 @@
 
     &.opened {
 
-        .preloader {
-            opacity: 0;
-        }
-
-
-        .loader-open {
-            .loader-open-up { 
-                animation: $fast-timing loader-open $fast-animation forwards;
-                &::after {
-                    animation: loader-open-separator $fast-animation forwards;
-                }
+        .loader-panels {
+            .loader-panel-left {
+                animation: loader-open $fast-animation forwards;
             }
-            .loader-open-down {
-                animation: $fast-timing loader-open $fast-animation forwards;
-                &::after {
-                    animation: loader-open-separator $fast-animation forwards;
-                }
+            .loader-panel-right {
+                animation: loader-open $fast-animation forwards;
             }
         }
 
-
-        .loader-close {
-            display: none;
-        }
 
         .loader-cover {
             opacity: 0;
@@ -132,27 +74,13 @@
 
     &.closed {
 
-        .preloader {
-            opacity: 0;
-        }
-
-        .loader-close {
-            .loader-close-left {
+        .loader-panels {
+            .loader-panel-left {
                 animation: loader-close $fast-animation forwards;
-                &::after {
-                    animation: $fast-timing loader-close-separator $fast-animation forwards;
-                }
             }
-            .loader-close-right {
+            .loader-panel-right {
                 animation: loader-close $fast-animation forwards;
-                &::after {
-                    animation: $fast-timing loader-close-separator $fast-animation forwards;
-                }
             }
-        }
-
-        .loader-open {
-            display: none;
         }
 
         .loader-cover {
@@ -161,35 +89,16 @@
     }
 
     
-    .preloader {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 2;
-
-        transition: all $very-fast-animation;
-        opacity: 1;
-    }
-
 
     @keyframes loader-open {
         0% {
-            height: 50%;
+            width: 50%;
         }
         100% {
-            height: 0%;
+            width: 0%;
         }
     }
 
-    @keyframes loader-open-separator {
-        0%{
-            width: 0%;
-        }
-        100% {
-            width: 100%;
-        }
-    }
     
     @keyframes loader-close {
         0% {
@@ -200,16 +109,5 @@
         }
     }
 
-    @keyframes loader-close-separator {
-        0%{
-            height: 100%;
-        }
-        100% {
-            height: 0%;
-        }
-    }
 
 }
-
-// Preloader
-// @import "preloader";

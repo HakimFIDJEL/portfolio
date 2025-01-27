@@ -684,42 +684,7 @@ main#project section#actions {
   pointer-events: none;
   z-index: 9999;
 }
-.loader .loader-open {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  z-index: 1;
-}
-.loader .loader-open .loader-open-up, .loader .loader-open .loader-open-down {
-  position: relative;
-  width: 100%;
-  background-color: var(--body-bg);
-  height: 50%;
-  overflow: hidden;
-  pointer-events: all;
-}
-.loader .loader-open .loader-open-up::after, .loader .loader-open .loader-open-down::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0%;
-  height: 1px;
-  background-color: var(--block-border);
-}
-.loader .loader-open .loader-open-up::after {
-  bottom: 0%;
-}
-.loader .loader-open .loader-open-down::after {
-  top: 0%;
-}
-.loader .loader-close {
+.loader .loader-panels {
   position: absolute;
   top: 0;
   left: 0;
@@ -730,15 +695,15 @@ main#project section#actions {
   align-items: center;
   justify-content: space-between;
 }
-.loader .loader-close .loader-close-left, .loader .loader-close .loader-close-right {
+.loader .loader-panels .loader-panel-left, .loader .loader-panels .loader-panel-right {
   position: relative;
   height: 100%;
   background-color: var(--body-bg);
-  width: 0;
+  width: 50%;
   overflow: hidden;
   pointer-events: all;
 }
-.loader .loader-close .loader-close-left::after, .loader .loader-close .loader-close-right::after {
+.loader .loader-panels .loader-panel-left::after, .loader .loader-panels .loader-panel-right::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -747,77 +712,36 @@ main#project section#actions {
   height: 100%;
   background-color: var(--block-border);
 }
-.loader .loader-close .loader-close-left::after {
+.loader .loader-panels .loader-panel-left::after {
   right: 0%;
 }
-.loader .loader-close .loader-close-right::after {
+.loader .loader-panels .loader-panel-right::after {
   left: 0%;
 }
-.loader.opened .preloader {
-  opacity: 0;
+.loader.opened .loader-panels .loader-panel-left {
+  animation: loader-open 0.6s cubic-bezier(0.38, 0.005, 0.215, 1) forwards;
 }
-.loader.opened .loader-open .loader-open-up {
-  animation: 0.6s loader-open 0.6s cubic-bezier(0.38, 0.005, 0.215, 1) forwards;
-}
-.loader.opened .loader-open .loader-open-up::after {
-  animation: loader-open-separator 0.6s cubic-bezier(0.38, 0.005, 0.215, 1) forwards;
-}
-.loader.opened .loader-open .loader-open-down {
-  animation: 0.6s loader-open 0.6s cubic-bezier(0.38, 0.005, 0.215, 1) forwards;
-}
-.loader.opened .loader-open .loader-open-down::after {
-  animation: loader-open-separator 0.6s cubic-bezier(0.38, 0.005, 0.215, 1) forwards;
-}
-.loader.opened .loader-close {
-  display: none;
+.loader.opened .loader-panels .loader-panel-right {
+  animation: loader-open 0.6s cubic-bezier(0.38, 0.005, 0.215, 1) forwards;
 }
 .loader.opened .loader-cover {
   opacity: 0;
 }
-.loader.closed .preloader {
-  opacity: 0;
-}
-.loader.closed .loader-close .loader-close-left {
+.loader.closed .loader-panels .loader-panel-left {
   animation: loader-close 0.6s cubic-bezier(0.38, 0.005, 0.215, 1) forwards;
 }
-.loader.closed .loader-close .loader-close-left::after {
-  animation: 0.6s loader-close-separator 0.6s cubic-bezier(0.38, 0.005, 0.215, 1) forwards;
-}
-.loader.closed .loader-close .loader-close-right {
+.loader.closed .loader-panels .loader-panel-right {
   animation: loader-close 0.6s cubic-bezier(0.38, 0.005, 0.215, 1) forwards;
-}
-.loader.closed .loader-close .loader-close-right::after {
-  animation: 0.6s loader-close-separator 0.6s cubic-bezier(0.38, 0.005, 0.215, 1) forwards;
-}
-.loader.closed .loader-open {
-  display: none;
 }
 .loader.closed .loader-cover {
   opacity: 1;
 }
-.loader .preloader {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  transition: all 0.3s cubic-bezier(0.38, 0.005, 0.215, 1);
-  opacity: 1;
-}
 @keyframes loader-open {
   0% {
-    height: 50%;
+    width: 50%;
   }
   100% {
-    height: 0%;
-  }
-}
-@keyframes loader-open-separator {
-  0% {
     width: 0%;
-  }
-  100% {
-    width: 100%;
   }
 }
 @keyframes loader-close {
@@ -826,14 +750,6 @@ main#project section#actions {
   }
   100% {
     width: 50%;
-  }
-}
-@keyframes loader-close-separator {
-  0% {
-    height: 100%;
-  }
-  100% {
-    height: 0%;
   }
 }
 
