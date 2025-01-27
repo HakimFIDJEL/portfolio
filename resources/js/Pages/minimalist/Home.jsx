@@ -328,6 +328,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                     project.id,
                                 ])}
                                 is_new={project.is_new}
+                                is_in_progress={project.work_in_progress}
                             />
                         ))
                 ) : (
@@ -359,6 +360,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                     project.id,
                                 ])}
                                 is_new={project.is_new}
+                                is_in_progress={project.work_in_progress}
                             />
                         ))
                 ) : (

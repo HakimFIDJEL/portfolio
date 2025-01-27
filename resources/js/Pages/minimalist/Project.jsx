@@ -11,8 +11,6 @@ import { Block } from "@/Components/minimalist/Block";
 import { Carrousel } from "@/Components/minimalist/Carrousel";
 import { Alert } from "@/Components/minimalist/Alert";
 
-
-
 import {
     Badge,
     BadgeWrapper,
@@ -25,17 +23,17 @@ function Project({ project }) {
     const route = useRoute();
 
     // Remove empty description
-    if(project.description && project.description == "<p></p>") {
+    if (project.description && project.description == "<p></p>") {
         project.description = null;
     }
 
     // Remove empty feedback
-    if(project.feedback && project.feedback == "<p></p>") {
+    if (project.feedback && project.feedback == "<p></p>") {
         project.feedback = null;
     }
 
     // Remove empty what_i_learned
-    if(project.what_i_learned && project.what_i_learned == "<p></p>") {
+    if (project.what_i_learned && project.what_i_learned == "<p></p>") {
         project.what_i_learned = null;
     }
 
@@ -53,13 +51,16 @@ function Project({ project }) {
             <section id="hero" className="row flex-column">
                 <div className="container row justify-content-between gap-md resp-flex-column">
                     <span className="title row flex-column gap-xs">
-                        <div className="project-header">
+                        <div className="project-header d-flex flex-wrap">
                             <h1>{project.title}</h1>
-                            {project.is_new == true && (
-                                <Alert variant="primary">
-                                    New
-                                </Alert>
-                            )}
+                            <div class="d-flex gap-xs">
+                                {project.is_new == true && (
+                                    <Alert variant="primary">New</Alert>
+                                )}
+                                {project.work_in_progress == true && (
+                                    <Alert variant="primary">In Progress</Alert>
+                                )}
+                            </div>
                         </div>
                         <div className="project-footer">
                             <p className="quote-text">{project.subtitle}</p>
@@ -179,7 +180,7 @@ function Project({ project }) {
                         </Block>
                     )}
 
-                    {(project.timeline && project.timeline.length > 0) && (
+                    {project.timeline && project.timeline.length > 0 && (
                         <Block
                             title="⏳ Timeline"
                             collapsable={true}
@@ -187,9 +188,7 @@ function Project({ project }) {
                             onCollapse={(bool) => setCollapsedTimeline(bool)}
                         >
                             <div className="row flex-column">
-                                <Timeline
-                                    disabled={collapsedTimeline}
-                                >
+                                <Timeline disabled={collapsedTimeline}>
                                     {project.timeline.map((event, index) => (
                                         <TimelineItem
                                             key={`project-timeline-` + index}
@@ -224,7 +223,7 @@ function Project({ project }) {
                 </div>
             </section>
 
-            {(project.images && project.images.length > 0) && (
+            {project.images && project.images.length > 0 && (
                 <>
                     <Block
                         title="🖼️ Images"
@@ -234,7 +233,8 @@ function Project({ project }) {
                     >
                         <section id="images">
                             <p className="quote-text">
-                                Hover on the images to see the caption or click on them to see in full size.
+                                Hover on the images to see the caption or click
+                                on them to see in full size.
                             </p>
                             <Carrousel
                                 navigation={true}

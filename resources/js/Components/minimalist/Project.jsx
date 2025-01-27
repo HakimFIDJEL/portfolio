@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/react";
 import { LinkLoader } from "@/Components/minimalist/LinkLoader";
 import { Alert } from "@/Components/minimalist/Alert";
 
-export const Project = ({title, subtitle, link, is_new}) => {
+export const Project = ({title, subtitle, link, is_new, is_in_progress}) => {
     return (
         <LinkLoader
             className="project-item"
@@ -22,6 +22,12 @@ export const Project = ({title, subtitle, link, is_new}) => {
                     {is_new == true && (
                         <Alert variant="primary">
                             New
+                        </Alert>
+                    )}
+                    
+                    {is_in_progress == true && (
+                        <Alert variant="primary">
+                            In Progress
                         </Alert>
                     )}
                 </div>
