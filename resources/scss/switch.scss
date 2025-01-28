@@ -266,6 +266,18 @@ nav {
             pointer-events: all;
             width: 100%;
             padding: $xxs-spacing $xs-spacing;
+
+            // wait $fast-timing while overflow hidden then switch to visible
+
+            overflow: hidden;
+            animation : changeToVisible $fast-timing $fast-timing forwards;
+
+            @keyframes changeToVisible {
+                to {
+                    overflow: visible;
+                }
+            }
+
         }
         a.back-button {
             opacity: 1;

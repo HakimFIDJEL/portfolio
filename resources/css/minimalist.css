@@ -454,6 +454,13 @@ nav.open .nav-content {
   pointer-events: all;
   width: 100%;
   padding: 0.25rem 0.5rem;
+  overflow: hidden;
+  animation: changeToVisible 0.6s 0.6s forwards;
+}
+@keyframes changeToVisible {
+  to {
+    overflow: visible;
+  }
 }
 nav.open a.back-button {
   opacity: 1;
@@ -582,6 +589,7 @@ main#project {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding-bottom: 2rem;
 }
 main#project section#hero {
   width: 100%;

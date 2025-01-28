@@ -6,6 +6,8 @@ main#project {
 
     gap: $xs-spacing;
 
+    padding-bottom: $md-spacing;
+
     section#hero {
         width: 100%;
         background-color: var(--block-bg);
