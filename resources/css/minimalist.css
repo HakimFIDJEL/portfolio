@@ -645,6 +645,9 @@ main#project section#hero hr {
 main#project section#hero .footer {
   padding-top: 1rem;
 }
+main#project section#hero .footer .badge-container:first-of-type .badge-title {
+  text-align: left !important;
+}
 main#project section#hero .footer .badge-container:last-of-type .badge-title {
   text-align: right;
 }

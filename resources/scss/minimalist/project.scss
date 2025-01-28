@@ -103,6 +103,10 @@ main#project {
         .footer {
             padding-top: $sm-spacing;
 
+            .badge-container:first-of-type .badge-title {
+                text-align: left !important;
+            }
+
             .badge-container:last-of-type .badge-title {
                 text-align: right;
             }
