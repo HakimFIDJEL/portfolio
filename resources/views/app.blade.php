@@ -10,7 +10,7 @@
     <title>Hakim - My Portfolio</title>
     
     {{-- Meta description --}}
-    <meta name="description" content="Hakim's portfolio (mine), a FullStack engineering apprentice. Discover my projects, skills, and ambitions across the diverse fields of computer engineering.">
+    <meta name="description" content="Hakim Fidjel's portfolio (mine), a FullStack engineering apprentice. Discover my projects, skills, and ambitions across the diverse fields of computer engineering.">
 
     {{-- Meta author --}}
     <meta name="author" content="Hakim Fidjel">
