@@ -11,6 +11,8 @@ main#home{
 
         margin-bottom: $md-spacing;
 
+        border-radius: $border-radius;
+
         @include respond('breakpoint') {
             padding: $sm-spacing;
         }

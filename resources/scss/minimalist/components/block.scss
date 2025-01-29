@@ -11,6 +11,8 @@
 
     transition: $slow-animation;
 
+    border-radius: $border-radius;
+
     @include respond('breakpoint') {
         padding: $md-spacing;
     }

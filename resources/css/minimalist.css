@@ -494,6 +494,7 @@ main#home section#hero {
   align-items: center;
   gap: 1rem;
   margin-bottom: 2rem;
+  border-radius: 5px;
 }
 @media (max-width: 850px) {
   main#home section#hero {
@@ -596,6 +597,7 @@ main#project section#hero {
   background-color: var(--block-bg);
   border: 1px solid var(--block-border);
   padding: 2rem 3rem;
+  border-radius: 5px;
 }
 @media (max-width: 850px) {
   main#project section#hero {
@@ -961,6 +963,7 @@ main#project section#actions {
   flex-direction: column;
   gap: 1.5rem;
   transition: 0.8s cubic-bezier(0.38, 0.005, 0.215, 1);
+  border-radius: 5px;
 }
 @media (max-width: 850px) {
   .block {
