@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     {{-- Meta title --}}
-    <title>Hakim - My Portfolio</title>
+    {{-- <title>Hakim - My Portfolio</title> --}}
     
     {{-- Meta description --}}
     <meta name="description" content="Hakim Fidjel's portfolio (mine), a FullStack engineering apprentice. Discover my projects, skills, and ambitions across the diverse fields of computer engineering.">
@@ -18,7 +18,7 @@
     {{-- Meta keywords --}}
     <meta name="keywords" content="Hakim, Fidjel, Hakim Fidjel, Portfolio, FullStack, Engineering, Apprentice, Projects, Skills, Ambitions, Computer, Engineering">
 
-    <meta name="og:title" content="Hakim - My portfolio">
+    {{-- <meta name="og:title" content="Hakim - My portfolio"> --}}
     <meta name="og:site-name" content="hakimfidjel.fr">
     <meta name="og:description" content="Portfolio of Hakim Fidjel, a FullStack engineering apprentice. Discover my projects, skills, and ambitions across the diverse fields of computer engineering.">
     <meta name="og:type" content="website">

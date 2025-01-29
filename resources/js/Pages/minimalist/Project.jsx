@@ -294,6 +294,8 @@ function Project({ project }) {
 Project.layout = (page) => {
     const props = page.props;
     const project = props.project;
+
+
     return (
         <Layout
             children={page}
