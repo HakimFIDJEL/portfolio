@@ -19,7 +19,7 @@ cd portfolio
 # Installer les dépendances
 npm install 
 
-# Lancer le serveur de développement (scss, vi)
+# Lancer le serveur de développement (scss, php artisan & vite)
 npm run start
 ```
 
