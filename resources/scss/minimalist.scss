@@ -275,6 +275,14 @@ hr {
     margin-bottom: $lg-spacing;
 }
 
+.text-muted {
+    color: var(--body-color-dark);
+}
+
+.text-sm {
+    font-size: 0.8rem;
+}
+
 .quote-text {
     padding-left: $xs-spacing;
     border-left: 2px solid var(--highlight);

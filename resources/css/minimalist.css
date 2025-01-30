@@ -254,6 +254,14 @@ hr {
   margin-bottom: 4rem;
 }
 
+.text-muted {
+  color: var(--body-color-dark);
+}
+
+.text-sm {
+  font-size: 0.8rem;
+}
+
 .quote-text {
   padding-left: 0.5rem;
   border-left: 2px solid var(--highlight);

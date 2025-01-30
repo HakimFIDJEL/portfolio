@@ -1,6 +1,5 @@
 import Layout from "@/Layouts/minimalist";
-
-import { Link } from "@inertiajs/react";
+import { MapPin } from "lucide-react";
 import { usePage } from "@inertiajs/react";
 import { useRoute } from "ziggy";
 
@@ -8,7 +7,6 @@ import { Tooltip } from "@/Components/minimalist/Tooltip";
 import { Section } from "@/Components/minimalist/Section";
 import { Project } from "@/Components/minimalist/Project";
 import { BigButton } from "@/Components/minimalist/BigButton";
-
 
 import {
     Badge,
@@ -26,7 +24,6 @@ import {
 function Home({ stackCategories, projects, toolCategories, user, socials }) {
     const props = usePage().props;
     const route = useRoute();
-
 
     return (
         <>
@@ -46,28 +43,36 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                     <p>
                         Aiming to build the Future, one line of code at a time
                     </p>
+                    {/* <p className="quote-text d-flex align-items-center gap-xxs" >
+                        <MapPin size={16} />
+                        Hauts-de-France, France
+                    </p> */}
                 </div>
             </section>
 
             {/* About */}
             <Section
-                title="👨‍🎓 About me"
+                title="👋 About me"
                 // subtitle="A little bit about me"
                 id="about"
             >
                 <div className="description">
+                    <p className="quote-text d-flex align-items-center gap-xxs">
+                        <MapPin size={16} />
+                        Hauts-de-France, France
+                    </p>
+
                     <p>
-                        Driven by a love for technology, I find joy in
-                        everything computer science has to offer—web
-                        development, programming, and tackling challenges
-                        head-on. For me, every line of code is a step closer to
-                        building something impactful.
+                        I'm a french fullstack engineer with a strong focus on
+                        development, infrastructure, and automation. I build and
+                        manage scalable projects, ensuring smooth deployments
+                        and efficient workflows.
                     </p>
                     <p>
-                        As an engineering student at IG2I Centrale Lille, I’m
-                        constantly exploring new technologies and refining
-                        workflows to bridge the gap between innovation and
-                        real-world solutions.
+                        With a hands-on approach, I handle everything from
+                        backend logic to server administration, always paying
+                        attention to design and usability. I strive to create
+                        solutions that are both functional and visually refined.
                     </p>
                 </div>
 
@@ -79,25 +84,9 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                             <AccordeonContent>
                                 <div>
                                     <h3 className="title">
-                                        🎓 Lycée Auguste Angellier (2018-2021)
-                                    </h3>
-                                    <p>
-                                        I completed my high school studies at
-                                        Lycée Auguste Angellier, earning a
-                                        Scientific Baccalaureate in 2021. This
-                                        solid foundation in mathematics and
-                                        sciences sparked my passion for
-                                        technology and problem-solving.
-                                    </p>
-
-                                    <br />
-                                    <hr />
-                                    <br />
-
-                                    <h3 className="title">
                                         🎓 IG2I Centrale Lille (2021-2026)
                                     </h3>
-                                    <p>
+                                    <p className="text-muted">
                                         Currently in my 4th year at IG2I
                                         Centrale Lille, I am pursuing an
                                         engineering degree specializing in
@@ -112,7 +101,39 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                     <hr />
                                     <br />
 
-                                    <p>
+                                    <h3 className="title">
+                                        📜 Cambridge First Certificate (2020)
+                                    </h3>
+                                    <p className="text-muted">
+                                        Earned the Cambridge First Certificate
+                                        in 2020, validating my English
+                                        proficiency at a B2 level. This
+                                        certification reflects my ability to
+                                        communicate effectively in professional
+                                        and academic environments.
+                                    </p>
+
+                                    <br />
+                                    <hr />
+                                    <br />
+
+                                    <h3 className="title">
+                                        🎓 Lycée Auguste Angellier (2018-2021)
+                                    </h3>
+                                    <p className="text-muted">
+                                        I completed my high school studies at
+                                        Lycée Auguste Angellier, earning a
+                                        Scientific Baccalaureate in 2021. This
+                                        solid foundation in mathematics and
+                                        sciences sparked my passion for
+                                        technology and problem-solving.
+                                    </p>
+
+                                    <br />
+                                    <hr />
+                                    <br />
+
+                                    <p className="text-muted">
                                         These experiences have shaped my
                                         technical and analytical mindset,
                                         preparing me for future challenges in
@@ -126,11 +147,14 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                             <AccordeonContent>
                                 <div>
                                     <h3 className="title">
-                                        💼 Fullstack Engineer - Apprentice
+                                        💼 Apprentice Fullstack Engineer
                                         (09/23 - Present)
                                     </h3>
-                                    <p>
-                                        At Réservoir Digital, I oversee the
+                                    <p className="quote-text">
+                                        Réservoir Digital
+                                    </p>
+                                    <p className="text-muted">
+                                        I oversee the
                                         development of web projects from
                                         analysis to production. My role includes
                                         ensuring compliance with business needs,
@@ -143,10 +167,14 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                     <br />
 
                                     <h3 className="title">
-                                        🔧 Fullstack Developer - Intern (05/23 -
+                                        🔧 Intern Fullstack Developer (05/23 -
                                         08/23)
                                     </h3>
-                                    <p>
+                                    <p className="quote-text">
+                                        Réservoir Digital
+                                    </p>
+                                    
+                                    <p className="text-muted">
                                         During my internship at Réservoir
                                         Digital, I improved my skills in new
                                         technologies while contributing to
@@ -160,10 +188,13 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                     <br />
 
                                     <h3 className="title">
-                                        🌐 IT Technician & Web Developer -
-                                        Intern (06/22 - 08/22)
+                                        🌐 Intern IT Technician & Web Developer
+                                         (06/22 - 08/22)
                                     </h3>
-                                    <p>
+                                    <p className="quote-text">
+                                        Hôpital Maritime de Zuydcoote
+                                    </p>
+                                    <p className="text-muted">
                                         At Hôpital Maritime de Zuydcoote, I
                                         managed IT infrastructure to ensure
                                         system connectivity and reliability. I
@@ -176,7 +207,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                     <hr />
                                     <br />
 
-                                    <p>
+                                    <p className="text-muted">
                                         These roles have sharpened my ability to
                                         deliver efficient, innovative solutions
                                         while adapting to diverse professional
@@ -197,30 +228,34 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                 <AccordeonLabel>Stacks</AccordeonLabel>
                                 <AccordeonContent>
                                     <div>
-
                                         {stackCategories.length > 0 ? (
                                             stackCategories.map(
                                                 (category, index) => (
                                                     <>
                                                         <BadgeContainer
                                                             key={`stackcategory-${category.id}`}
-                                                            title={category.label}
+                                                            title={
+                                                                category.label
+                                                            }
                                                         >
                                                             <BadgeWrapper>
-                                                                {category.stacks.map((stack) => (
+                                                                {category.stacks.map(
+                                                                    (stack) => (
                                                                         <Badge
                                                                             key={`stack-${stack.id}`}
                                                                         >
-                                                                            {stack.label}
+                                                                            {
+                                                                                stack.label
+                                                                            }
                                                                         </Badge>
                                                                     )
                                                                 )}
                                                             </BadgeWrapper>
                                                         </BadgeContainer>
 
-                                                        {(index < stackCategories.length - 1) && (
-                                                            <br />
-                                                        )}
+                                                        {index <
+                                                            stackCategories.length -
+                                                                1 && <br />}
                                                     </>
                                                 )
                                             )
@@ -234,29 +269,34 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                 <AccordeonLabel>Tools</AccordeonLabel>
                                 <AccordeonContent>
                                     <div>
-
                                         {toolCategories.length > 0 ? (
-                                            toolCategories.map((category, index) => (
+                                            toolCategories.map(
+                                                (category, index) => (
                                                     <>
                                                         <BadgeContainer
                                                             key={`toolcategory-${category.id}`}
-                                                            title={category.label}
+                                                            title={
+                                                                category.label
+                                                            }
                                                         >
                                                             <BadgeWrapper>
-                                                                {category.tools.map((tool) => (
+                                                                {category.tools.map(
+                                                                    (tool) => (
                                                                         <Badge
                                                                             key={`tool-${tool.id}`}
                                                                         >
-                                                                            {tool.label}
+                                                                            {
+                                                                                tool.label
+                                                                            }
                                                                         </Badge>
                                                                     )
                                                                 )}
                                                             </BadgeWrapper>
                                                         </BadgeContainer>
 
-                                                        {(index < toolCategories.length - 1) && (
-                                                            <br />
-                                                        )}
+                                                        {index <
+                                                            toolCategories.length -
+                                                                1 && <br />}
                                                     </>
                                                 )
                                             )
@@ -278,7 +318,6 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                 </div>
 
                 {user.full_resume_path != "/storage/" && (
-
                     <div className="resume">
                         <h6 className="title">Resume</h6>
 
@@ -302,12 +341,8 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                             </svg>
                         </BigButton>
                     </div>
-
                 )}
-
-
-
-            </Section> 
+            </Section>
 
             {/* Projects */}
             <Section
@@ -430,7 +465,6 @@ Home.layout = (page) => {
             isOnHome={true}
             version={props.version}
             title="Home"
-            
         />
     );
 };
