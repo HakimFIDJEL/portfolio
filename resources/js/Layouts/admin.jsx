@@ -4,28 +4,20 @@ import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 
 // Components
-import { 
-    Toaster 
-} from "@/Components/ui/toaster";
-import { 
-    SidebarProvider, 
+import { Toaster } from "@/Components/ui/toaster";
+import {
+    SidebarProvider,
     SidebarTrigger,
     SidebarInset,
 } from "@/Components/ui/sidebar";
-import { 
-    AppSidebar 
-} from "@/Components/admin/app-sidebar";
-import { 
-    AppHeader 
-} from "@/Components/admin/app-header";
+import { AppSidebar } from "@/Components/admin/app-sidebar";
+import { AppHeader } from "@/Components/admin/app-header";
 
-
-
+import { ThemeProvider } from "@/components/theme-provider";
 
 export default function Layout({ children, breadcrumbs, errors }) {
     const props = usePage().props;
     const { toast } = useToast();
-
 
     useEffect(() => {
         if (props.flash.error) {
@@ -54,19 +46,22 @@ export default function Layout({ children, breadcrumbs, errors }) {
             });
         });
     }, [props.errors]);
-    
 
     return (
-        <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-                <AppHeader breadcrumbs={breadcrumbs} />
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem={true}
+        >
+            <SidebarProvider>
+                <AppSidebar />
+                <SidebarInset>
+                    <AppHeader breadcrumbs={breadcrumbs} />
 
-                <main className="flex-1 p-4">
-                    {children}
-                </main>
-                <Toaster /> 
-            </SidebarInset>
-        </SidebarProvider>
+                    <main className="flex-1 p-4">{children}</main>
+                    <Toaster />
+                </SidebarInset>
+            </SidebarProvider>
+        </ThemeProvider>
     );
 }

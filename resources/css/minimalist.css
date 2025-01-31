@@ -9,7 +9,7 @@
   transition: color 0.6s cubic-bezier(0.38, 0.005, 0.215, 1), background-color 0.6s cubic-bezier(0.38, 0.005, 0.215, 1), border-color 0.6s cubic-bezier(0.38, 0.005, 0.215, 1);
 }
 
-body {
+html {
   --body-bg: #ffffff;
   --body-color-light: #24292e;
   --body-color-dark: #6a737d;
@@ -29,7 +29,7 @@ body {
   align-items: center;
   flex-direction: column;
 }
-body.dark {
+html.dark {
   --body-bg: #0d1117;
   --body-color-light: #c9d1d9;
   --body-color-dark: #8b949e;
@@ -403,6 +403,9 @@ nav .nav-content .nav-toggle .nav-toggle-item {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+}
+nav .nav-content .nav-toggle .nav-toggle-item svg {
+  color: var(--block-btn-color);
 }
 nav .nav-content .nav-toggle .nav-toggle-item span {
   font-size: 14px;

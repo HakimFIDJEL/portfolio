@@ -1,46 +1,45 @@
 import { useState, useEffect } from "react";
-import { Head } from '@inertiajs/react'
+import { Head } from "@inertiajs/react";
 
 import { Loader, openLoader } from "@/Components/minimalist/Loader";
 import { useRoute } from "ziggy";
 
-
 import Nav from "@/Components/Nav";
 
+import { ThemeProvider } from "@/components/theme-provider";
 
-
-export default function Layout({children, page, isOnHome, version, title, description}) {
-
+export default function Layout({
+    children,
+    page,
+    isOnHome,
+    version,
+    title,
+    description,
+}) {
     const route = useRoute();
     const [displayLoader, setDisplayLoader] = useState(true);
 
-    if(displayLoader) {
+    if (displayLoader) {
         useEffect(() => {
             openLoader();
         }, [page]);
     }
 
-
-
-
     return (
         <>
-            <Head title={title} />
+            <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem={true}
+            >
+                <Head title={title} />
 
+                <main id={page}>{children}</main>
 
-            <main id={page}>
-                {children}
-            </main>
+                <Nav isOnHome={isOnHome} version={version} />
 
-
-            <Nav 
-                isOnHome={isOnHome}
-                version={version}
-            />
-
-            <Loader 
-                display={displayLoader}
-            />
+                <Loader display={displayLoader} />
+            </ThemeProvider>
         </>
-    )
+    );
 }

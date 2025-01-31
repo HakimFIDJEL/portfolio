@@ -184,6 +184,10 @@ nav {
                 justify-content: center;
                 gap: $xs-spacing;
 
+                svg {
+                    color: var(--block-btn-color);
+                }
+
                 span {
                     font-size: 14px;
                     letter-spacing: 0px;
