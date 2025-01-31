@@ -13,7 +13,7 @@ import {
 import { AppSidebar } from "@/Components/admin/app-sidebar";
 import { AppHeader } from "@/Components/admin/app-header";
 
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/Components/theme-provider";
 
 export default function Layout({ children, breadcrumbs, errors }) {
     const props = usePage().props;

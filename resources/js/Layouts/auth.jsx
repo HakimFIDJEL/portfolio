@@ -4,7 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 
 import { useEffect } from "react";
 
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/Components/theme-provider";
 
 export default function Layout({ children }) {
     const props = usePage().props;

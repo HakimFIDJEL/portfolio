@@ -6,7 +6,7 @@ import { useRoute } from "ziggy";
 
 import Nav from "@/Components/Nav";
 
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/Components/theme-provider";
 
 export default function Layout({
     children,
