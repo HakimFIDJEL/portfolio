@@ -11,12 +11,26 @@ const linkMap = {
 };
 
 export default function Nav({ isOnHome, version }) {
+    const [mounted, setMounted] = useState(false);
+
     const [navOpen, setNavOpen] = useState(true);
     const [activeLink, setActiveLink] = useState(version);
     const [selectOpen, setSelectOpen] = useState(false);
 
     const { theme, setTheme } = useTheme();
 
+    useEffect(() => {
+        setMounted(true);
+
+        if (theme === "system") {
+            const isDark = window.matchMedia(
+                "(prefers-color-scheme: dark)"
+            ).matches;
+            setTheme(isDark ? "dark" : "light");
+        }
+
+        console.log("Mounted", theme);
+    }, [theme]);
 
     // Toggle du nav
     const toggleNav = useCallback(() => setNavOpen((prev) => !prev), []);
@@ -64,7 +78,11 @@ export default function Nav({ isOnHome, version }) {
                             {navSelectItems}
                         </NavSelect>
                         <NavSeparator />
-                        <NavThemeToggle setTheme={setTheme} theme={theme} />
+                        <NavThemeToggle
+                            setTheme={setTheme}
+                            theme={theme}
+                            mounted={mounted}
+                        />
                     </div>
                 ) : (
                     <div className="nav-content">
@@ -88,7 +106,11 @@ export default function Nav({ isOnHome, version }) {
                             <span>Go back</span>
                         </LinkLoader>
                         <NavSeparator />
-                        <NavThemeToggle setTheme={setTheme} theme={theme} />
+                        <NavThemeToggle
+                            setTheme={setTheme}
+                            theme={theme}
+                            mounted={mounted}
+                        />
                     </div>
                 )}
 
@@ -205,21 +227,26 @@ export const NavSeparator = React.memo(() => {
     return <div className="nav-separator" />;
 });
 
-const NavThemeToggle = React.memo(({ theme, setTheme }) => {
+const NavThemeToggle = React.memo(({ theme, setTheme, mounted }) => {
     return (
-        <NavToggle
-            selected={theme}
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        >
-            <NavToggleItem is_selected={theme === "light"}>
-                <span>Light</span>
-                <Sun size={14} />
-            </NavToggleItem>
-
-            <NavToggleItem is_selected={theme === "dark"}>
-                <span>Dark</span>
-                <Moon size={14} />
-            </NavToggleItem>
-        </NavToggle>
+        <>
+            {mounted && (
+                <NavToggle
+                    selected={theme}
+                    onClick={() =>
+                        setTheme(theme === "dark" ? "light" : "dark")
+                    }
+                >
+                    <NavToggleItem is_selected={theme === "light"}>
+                        <span>Light</span>
+                        <Sun size={14} />
+                    </NavToggleItem>
+                    <NavToggleItem is_selected={theme === "dark"}>
+                        <span>Dark</span>
+                        <Moon size={14} />
+                    </NavToggleItem>
+                </NavToggle>
+            )}
+        </>
     );
 });
