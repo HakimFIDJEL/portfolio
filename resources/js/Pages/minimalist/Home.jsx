@@ -147,7 +147,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                             <AccordeonContent>
                                 <div>
                                     <h3 className="title">
-                                        💼 Apprentice Fullstack Engineer
+                                        💼 Fullstack Engineer - Apprentice
                                         (09/23 - Present)
                                     </h3>
                                     <p className="quote-text">
@@ -167,7 +167,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                     <br />
 
                                     <h3 className="title">
-                                        🔧 Intern Fullstack Developer (05/23 -
+                                        🔧 Fullstack Developer - Intern (05/23 -
                                         08/23)
                                     </h3>
                                     <p className="quote-text">
@@ -188,7 +188,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                     <br />
 
                                     <h3 className="title">
-                                        🌐 Intern IT Technician & Web Developer
+                                        🌐 IT Technician & Web Developer - Intern
                                          (06/22 - 08/22)
                                     </h3>
                                     <p className="quote-text">
