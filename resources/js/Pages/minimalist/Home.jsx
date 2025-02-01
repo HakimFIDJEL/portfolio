@@ -424,6 +424,7 @@ function Home({ stackCategories, projects, toolCategories, user, socials }) {
                                         dangerouslySetInnerHTML={{
                                             __html: social.svg,
                                         }}
+                                        className="d-flex align-items-center"
                                     />
 
                                     <span>Contact me via {social.label}</span>
