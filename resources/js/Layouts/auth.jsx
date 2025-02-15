@@ -1,36 +1,32 @@
+import { usePage } from "@inertiajs/react";
+import { Toaster } from "@/Components/ui/toaster";
+import { useToast } from "@/hooks/use-toast";
 
-import { usePage } from '@inertiajs/react';
-import { Toaster } from "@/Components/ui/toaster"
-import { useToast } from "@/hooks/use-toast"
+import { useEffect } from "react";
 
-import { useEffect } from 'react';
+import { ThemeProvider } from "@/Components/theme-provider";
 
-
-
-export default function Layout({children}) {
-
-
+export default function Layout({ children }) {
     const props = usePage().props;
     const { toast } = useToast();
 
-    console.log('flash', props.flash);
+    console.log("flash", props.flash);
 
     useEffect(() => {
-        if(props.flash.error) {
+        if (props.flash.error) {
             toast({
                 variant: "destructive",
                 title: "Uh oh! Something went wrong.",
                 description: props.flash.error,
             });
         }
-        if(props.flash.success) {
+        if (props.flash.success) {
             toast({
                 title: "Success!",
                 description: props.flash.success,
             });
         }
     }, [props.flash]);
-
 
     useEffect(() => {
         Object.entries(props.errors).forEach(([field, messages]) => {
@@ -44,13 +40,16 @@ export default function Layout({children}) {
         });
     }, [props.errors]);
 
-
     return (
         <>
-            <main>
-                {children}
-            </main>
-            <Toaster />
+            <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem={true}
+            >
+                <main>{children}</main>
+                <Toaster />
+            </ThemeProvider>
         </>
-    )
+    );
 }

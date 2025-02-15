@@ -1,40 +1,39 @@
-import { Link } from "@inertiajs/react";
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { LinkLoader } from "@/Components/minimalist/LinkLoader";
 import React from "react";
-import { set } from "date-fns";
-
-import {
-    Sun,
-    Moon,
-} from "lucide-react"
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
 
 // Mapping des liens
 const linkMap = {
-    'minimalist': { title: 'Minimalist', disabled: false, href: "" },
-    'graphic-design': { title: 'Graphic Design', disabled: true, href: null },
+    minimalist: { title: "Minimalist", disabled: false, href: "" },
+    "graphic-design": { title: "Graphic Design", disabled: true, href: null },
 };
 
-
-
 export default function Nav({ isOnHome, version }) {
+    const [mounted, setMounted] = useState(false);
+
     const [navOpen, setNavOpen] = useState(true);
     const [activeLink, setActiveLink] = useState(version);
-    const [theme, setTheme] = useState("dark");
     const [selectOpen, setSelectOpen] = useState(false);
 
-    // Toggle du nav
-    const toggleNav = useCallback(() => setNavOpen(prev => !prev), []);
+    const { theme, setTheme } = useTheme();
 
-    function toggleTheme() {
-        if(theme == "light") {
-            setTheme("dark");
-            document.body.classList.add("dark");
-        } else {
-            setTheme("light");
-            document.body.classList.remove("dark");
+    useEffect(() => {
+        setMounted(true);
+
+        if (theme === "system") {
+            const isDark = window.matchMedia(
+                "(prefers-color-scheme: dark)"
+            ).matches;
+            setTheme(isDark ? "dark" : "light");
         }
-    }
+
+        console.log("Mounted", theme);
+    }, [theme]);
+
+    // Toggle du nav
+    const toggleNav = useCallback(() => setNavOpen((prev) => !prev), []);
 
     // Fonction pour obtenir le nom actif
     const getActiveLink = useCallback((link) => {
@@ -50,26 +49,28 @@ export default function Nav({ isOnHome, version }) {
     }, []);
 
     // Mémoriser les éléments de NavSelectItem pour éviter de les recréer à chaque rendu
-    const navSelectItems = useMemo(() => (
-        Object.keys(linkMap).map((link) => (
-            <NavSelectItem
-                key={link}
-                is_selected={activeLink === link}
-                onClick={(e) => handleLinkClick(e, link)}
-                disabled={linkMap[link].disabled}
-                title={linkMap[link].disabled ? 'Coming soon' : ''}
-            >
-                {getActiveLink(link)}
-            </NavSelectItem>
-        ))
-    ), [linkMap, activeLink, handleLinkClick, getActiveLink]);
+    const navSelectItems = useMemo(
+        () =>
+            Object.keys(linkMap).map((link) => (
+                <NavSelectItem
+                    key={link}
+                    is_selected={activeLink === link}
+                    onClick={(e) => handleLinkClick(e, link)}
+                    disabled={linkMap[link].disabled}
+                    title={linkMap[link].disabled ? "Coming soon" : ""}
+                >
+                    {getActiveLink(link)}
+                </NavSelectItem>
+            )),
+        [linkMap, activeLink, handleLinkClick, getActiveLink]
+    );
 
     return (
         <>
             <nav className={`${navOpen ? "open" : "closed"}`}>
                 {isOnHome ? (
                     <div className="nav-content">
-                        <NavSelect 
+                        <NavSelect
                             selected={getActiveLink(activeLink)}
                             open={selectOpen}
                             setOpen={setSelectOpen}
@@ -77,29 +78,11 @@ export default function Nav({ isOnHome, version }) {
                             {navSelectItems}
                         </NavSelect>
                         <NavSeparator />
-                        <NavToggle
-                            selected={theme}
-                            onClick={toggleTheme}
-                        >
-                            <NavToggleItem
-                                is_selected={theme === "light"}
-                            >
-                                <span>
-                                    Light
-                                </span>
-                                <Sun size={16} />
-                            </NavToggleItem>
-
-                            <NavToggleItem
-                                is_selected={theme === "dark"}
-                            >
-                                <span>
-                                    Dark
-                                </span>
-                                <Moon size={16} />
-                            </NavToggleItem>
-
-                        </NavToggle>
+                        <NavThemeToggle
+                            setTheme={setTheme}
+                            theme={theme}
+                            mounted={mounted}
+                        />
                     </div>
                 ) : (
                     <div className="nav-content">
@@ -120,35 +103,15 @@ export default function Nav({ isOnHome, version }) {
                                     fill="#C9D1D9"
                                 />
                             </svg>
-                            <span>
-                                Go back
-                            </span>
+                            <span>Go back</span>
                         </LinkLoader>
                         <NavSeparator />
-                        <NavToggle
-                            selected={theme}
-                            onClick={toggleTheme}
-                        >
-                            <NavToggleItem
-                                is_selected={theme === "light"}
-                            >
-                                <span>
-                                    Light
-                                </span>
-                                <Sun size={16} />
-                            </NavToggleItem>
-
-                            <NavToggleItem
-                                is_selected={theme === "dark"}
-                            >
-                                <span>
-                                    Dark
-                                </span>
-                                <Moon size={16} />
-                            </NavToggleItem>
-                        </NavToggle>
+                        <NavThemeToggle
+                            setTheme={setTheme}
+                            theme={theme}
+                            mounted={mounted}
+                        />
                     </div>
-                    
                 )}
 
                 <NavCloseButton onClick={toggleNav} />
@@ -166,50 +129,53 @@ const NavToggle = React.memo(({ children, selected, onClick, ...props }) => {
 });
 
 const NavToggleItem = React.memo(({ is_selected, children }) => {
-
     return (
         <div className={`nav-toggle-item ${is_selected ? "active" : ""}`}>
             {children}
         </div>
     );
-
 });
 
-const NavSelect = React.memo(({ children, selected, open, setOpen, ...props }) => {
-    const toggleOpen = () => setOpen(prev => !prev);
+const NavSelect = React.memo(
+    ({ children, selected, open, setOpen, ...props }) => {
+        const toggleOpen = () => setOpen((prev) => !prev);
 
-    const handleClickOutside = useCallback((e) => {
-        if (!e.target.closest('.nav-select')) {
-            setOpen(false);
-        }
-    }, [setOpen]);
+        const handleClickOutside = useCallback(
+            (e) => {
+                if (!e.target.closest(".nav-select")) {
+                    setOpen(false);
+                }
+            },
+            [setOpen]
+        );
 
-    useEffect(() => {
-        if (open) {
-            document.addEventListener('click', handleClickOutside);
-        } else {
-            document.removeEventListener('click', handleClickOutside);
-        }
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, [open, handleClickOutside]);
+        useEffect(() => {
+            if (open) {
+                document.addEventListener("click", handleClickOutside);
+            } else {
+                document.removeEventListener("click", handleClickOutside);
+            }
+            return () => {
+                document.removeEventListener("click", handleClickOutside);
+            };
+        }, [open, handleClickOutside]);
 
-    return (
-        <div className={`nav-select ${open ? "active" : ""}`} {...props}>
-            <NavSelectButton onClick={toggleOpen}>
-                {selected}
-            </NavSelectButton>
-            <div className={`nav-select-container ${open ? "active" : ""}`}>
-                {children}
+        return (
+            <div className={`nav-select ${open ? "active" : ""}`} {...props}>
+                <NavSelectButton onClick={toggleOpen}>
+                    {selected}
+                </NavSelectButton>
+                <div className={`nav-select-container ${open ? "active" : ""}`}>
+                    {children}
+                </div>
             </div>
-        </div>
-    );
-});
+        );
+    }
+);
 
 const NavSelectButton = React.memo(({ children, ...props }) => {
     return (
-        <button className='nav-select-button' {...props}>
+        <button className="nav-select-button" {...props}>
             {children}
             <svg
                 width="3"
@@ -259,4 +225,28 @@ const NavCloseButton = React.memo(({ onClick }) => {
 
 export const NavSeparator = React.memo(() => {
     return <div className="nav-separator" />;
+});
+
+const NavThemeToggle = React.memo(({ theme, setTheme, mounted }) => {
+    return (
+        <>
+            {mounted && (
+                <NavToggle
+                    selected={theme}
+                    onClick={() =>
+                        setTheme(theme === "dark" ? "light" : "dark")
+                    }
+                >
+                    <NavToggleItem is_selected={theme === "light"}>
+                        <span>Light</span>
+                        <Sun size={14} />
+                    </NavToggleItem>
+                    <NavToggleItem is_selected={theme === "dark"}>
+                        <span>Dark</span>
+                        <Moon size={14} />
+                    </NavToggleItem>
+                </NavToggle>
+            )}
+        </>
+    );
 });

@@ -46,7 +46,7 @@ $breakpoints: (
 }
 
 //
-body {
+html {
     --body-bg: #ffffff; 
     --body-color-light: #24292e;
     --body-color-dark: #6a737d;
@@ -273,6 +273,14 @@ hr {
 }
 .mb-lg {
     margin-bottom: $lg-spacing;
+}
+
+.text-muted {
+    color: var(--body-color-dark);
+}
+
+.text-sm {
+    font-size: 0.8rem;
 }
 
 .quote-text {
