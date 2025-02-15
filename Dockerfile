@@ -77,8 +77,8 @@ RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 RUN touch database/database.sqlite
 
 # Migrations & Seeders
-RUN php artisan migrate
-RUN php artisan db:seed
+RUN php artisan migrate --force
+RUN php artisan db:seed --force
 
 # (Optionnel) Optimisation pour la production
 RUN php artisan config:clear && php artisan cache:clear && php artisan config:clear

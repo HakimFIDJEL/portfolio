@@ -16,8 +16,8 @@ npm run build
 
 # Migrations et seeders
 echo "Migrations & Seeders..."
-php artisan migrate
-php artisan db:seed
+php artisan migrate --force
+php artisan db:seed --force
 
 
 # Creating a sitemap
