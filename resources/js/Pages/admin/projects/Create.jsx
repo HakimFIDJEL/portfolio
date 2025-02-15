@@ -48,6 +48,7 @@ function Projects({ stackCategories }) {
         timeline_url: "",
         readme_url: "",
         is_new: false,
+        online: false,
 
         // Project images
         images: images,

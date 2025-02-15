@@ -113,6 +113,17 @@ function Projects({ projects }) {
                                                     New
                                                 </Badge>
                                             )}
+                                            {project.online == true ? (
+                                                <Badge className="ml-2">
+                                                    Online
+                                                </Badge>
+                                            ) : (
+                                                <Badge className="ml-2" variant="secondary">
+                                                    Offline
+                                                </Badge>
+                                            )
+                                            }
+
                                         </TableCell>
 
                                         <TableCell>

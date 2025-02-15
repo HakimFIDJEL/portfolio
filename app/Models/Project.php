@@ -24,6 +24,7 @@ class Project extends Model
         'description',
         'feedback',
         'what_i_learned',
+        'online',
 
         'source_code_url',
         'live_demo_url',

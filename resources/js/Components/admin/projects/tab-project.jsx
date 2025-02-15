@@ -128,6 +128,30 @@ export function TabProject({ data, setData, errors }) {
                         </Select>
                     </div>
                 </div>
+                <div className="grid grid-cols-12 gap-2">
+                    <div className="grid gap-2 col-span-4">
+                        <Label htmlFor="type">En ligne</Label>
+                        <Select
+                            onValueChange={(value) => setData("online", value)}
+                            required
+                            value={data.online ? data.online.toString() : ""}
+                            className={errors.online ? "border-red-500" : ""}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="1">Oui</SelectItem>
+                                <SelectItem value="0">
+                                    Non
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+
+
+
                 <div className="grid gap-2">
                     <Label htmlFor="description">Description</Label>
                     {/* <Textarea

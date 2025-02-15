@@ -18,7 +18,7 @@ class MinimalistController extends Controller
         return Inertia::render('minimalist/Home', 
         [
             'version'   => 'minimalist',
-            'projects'  => Project::orderBy('created_at', 'desc')->get(),
+            'projects'  => Project::where('online', '1')->orderBy('created_at', 'desc')->get(),
             'socials'   => Social::all(),
             'stackCategories'    => StackCategory::with('stacks')->get(),
             'toolCategories'     => ToolCategory::with('tools')->get(),
@@ -27,6 +27,11 @@ class MinimalistController extends Controller
     }
 
     public function project(string $slug, Project $project) {
+
+        if($project->online == 0) {
+            return redirect()->route('home');
+        }
+
         return Inertia::render('minimalist/Project', [
             'version' => 'minimalist', 
             'project' => $project->load('stacks', 'images', 'timeline'),

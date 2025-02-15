@@ -38,6 +38,7 @@ class ProjectRequest extends FormRequest
             'timeline_url'       => ['nullable', 'url'],
             'readme_url'         => ['nullable', 'url'],
             'is_new'             => ['required', 'boolean'],
+            'online'             => ['required', 'boolean'],
 
             // Validation des images
             'images'             => ['nullable', 'array'],
@@ -88,6 +89,10 @@ class ProjectRequest extends FormRequest
             'live_demo_url.url'           => 'The live demo URL must be a valid URL.',
             'timeline_url.url'            => 'The timeline URL must be a valid URL.',
             'readme_url.url'              => 'The readme URL must be a valid URL.',
+            'is_new.required'             => 'The project status is required.',
+            'is_new.boolean'              => 'The project status must be a boolean.',
+            'online.required'             => 'The project status is required.',
+            'online.boolean'              => 'The project status must be a boolean.',   
         
             // Image validation
             'images.array'                => 'The project images must be an array.',
