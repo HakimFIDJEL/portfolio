@@ -1,6 +1,6 @@
 // resources/js/layouts/landing/header.tsx
 
-import UnderlineLink from "@/components/landing/undeline-link";
+import UnderlineLink from "@/components/landing/underline-link";
 
 export default function Header() {
     return (
