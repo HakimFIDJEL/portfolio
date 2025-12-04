@@ -59,7 +59,6 @@ import { Badge } from '@/components/ui/badge';
 // Interfaces
 interface UserMenuContentProps {
     user: User;
-    unread_notifications: number;
 }
 
 export function AppSidebar() {
@@ -191,7 +190,7 @@ function NavMain({ items = [] }: { items: NavItem[] }) {
 }
 
 function NavUser() {
-    const { auth, unread_notifications } = usePage<SharedData>().props;
+    const { auth } = usePage<SharedData>().props;
     const { state } = useSidebar();
     const isMobile = useIsMobile();
 
@@ -220,7 +219,7 @@ function NavUser() {
                                   : 'bottom'
                         }
                     >
-                        <UserMenuContent user={auth.user} unread_notifications={unread_notifications} />
+                        <UserMenuContent user={auth.user} />
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>
@@ -228,7 +227,7 @@ function NavUser() {
     );
 }
 
-function UserMenuContent({ user, unread_notifications }: UserMenuContentProps) {
+function UserMenuContent({ user }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
 
     const handleLogout = () => {
@@ -247,22 +246,6 @@ function UserMenuContent({ user, unread_notifications }: UserMenuContentProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
-                    <Link
-                        className="block w-full"
-                        href={route('notifications.index')}
-                        as="button"
-                    >
-                        <Bell />
-                        {__('app.layout.sidebar.usermenu.items.notifications')}
-
-                        {unread_notifications > 0 && (
-                            <Badge variant={'default'} className='ml-auto'>
-                                {unread_notifications}
-                            </Badge>
-                        )}
-                    </Link>
-                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link
                         className="block w-full"

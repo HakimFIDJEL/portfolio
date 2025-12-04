@@ -71,32 +71,4 @@ return [
         ['value' => 'violet', 'color' => 'oklch(0.541 0.281 293.009)'],
         ['value' => 'yellow', 'color' => 'oklch(0.852 0.199 91.936)'],
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Notification Preferences
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    'notification_preferences' => [
-        'auth' => [
-            'password_reset' => [
-                'mail',
-                // 'database',
-                // 'vonage',
-            ],
-            'verify_email' => [
-                'mail',
-                // 'database',
-                // 'vonage',
-            ],
-        ],
-    ],
-
-    'notification_channels' => [
-        'mail', 
-        'database', 
-        'vonage',
-    ]
 ];

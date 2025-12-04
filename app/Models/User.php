@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use App\Models\PasswordResetToken;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +22,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'timezone',
         'theme',
         'color_scheme',
-        'phone',
         'email',
         'password',
         'language',
@@ -60,19 +57,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Relations
-     */
-    public function notificationPreferences()
-    {
-        return $this->hasMany(NotificationPreference::class);
-    }
-
-    // Mandatory for notification via sms
-    public function routeNotificationForVonage(\Illuminate\Notifications\Notification $notification): string {
-        return $this->phone;
-    }
-
-    /**
      * Custom methods
      */
     public function passwordResetToken() {
@@ -83,5 +67,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Attachment::class, 'attachment_avatar');
     }
-
 }

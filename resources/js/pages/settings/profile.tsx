@@ -37,7 +37,6 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
-import { PhoneInput } from '@/components/ui/phone-input';
 
 // Types
 import type { BreadcrumbItem, Language, SharedData, Timezone } from '@/types';
@@ -112,13 +111,11 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
         _method: 'PATCH';
         name: string;
         email: string;
-        phone: string;
         avatar?: File | null;
     }>({
         _method: 'PATCH',
         name: auth.user.name ?? '',
         email: auth.user.email ?? '',
-        phone: auth.user.phone || '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -136,9 +133,6 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
         });
     };
 
-    const handlePhoneChange = useCallback((v: string) => {
-        setData('phone', v);
-    }, [setData]);
 
     return (
         <form
@@ -182,21 +176,6 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
                         required
                         placeholder={__('settings.pages.profile.info_form.fields.email.placeholder')}
                         aria-invalid={errors.email ? 'true' : 'false'}
-                    />
-                </div>
-
-                <div className="grid gap-2">
-                    <Label htmlFor="phone">
-                        {__('settings.pages.profile.info_form.fields.phone.label')}
-                    </Label>
-                    <PhoneInput
-                        id="phone"
-                        name="phone"
-                        value={data.phone}
-                        onChange={handlePhoneChange}
-                        placeholder={__('settings.pages.profile.info_form.fields.phone.placeholder')}
-                        placeholderSearch={__('settings.pages.profile.info_form.fields.phone.country_search_placeholder')}
-                        aria-invalid={errors.phone ? 'true' : 'false'}
                     />
                 </div>
             </div>

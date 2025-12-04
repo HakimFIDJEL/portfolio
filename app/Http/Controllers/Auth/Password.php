@@ -11,7 +11,6 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Notification;
 
 // Models
 use App\Models\User;
@@ -21,8 +20,11 @@ use App\Models\PasswordResetToken;
 use App\Http\Requests\Auth\SendResetLinkEmail as RequestsSendResetLinkEmail;
 use App\Http\Requests\Auth\ResetPassword as RequestsResetPassword;
 
-// Notifications
-use App\Notifications\PasswordReset as NotificationsPasswordReset;
+// Jobs
+use App\Jobs\SendEmailJob;
+
+// Mail
+use App\Mail\Auth\PasswordResetMail;
 
 /**
  * Class PasswordReset
@@ -65,7 +67,7 @@ class Password extends Controller
                 ['token' => $hashed_token, 'created_at' => now()]
             );
 
-            Notification::send($user, new NotificationsPasswordReset($plain_token));
+            SendEmailJob::dispatch(new PasswordResetMail($user, $plain_token));
         }
 
         return redirect()->back()->with(['success' => __('auth.flash.password.reset_link_sent')]);

@@ -48,7 +48,6 @@ class HandleInertiaRequests extends Middleware
 
         $user = $request->user()?->load([
             'avatar',
-            'notifications' => fn($q) => $q->whereNull('read_at'),
         ]);
 
 
@@ -100,8 +99,6 @@ class HandleInertiaRequests extends Middleware
                 ->toArray(),
 
             'timezone' => date_default_timezone_get(),
-
-            'unread_notifications' => $request->user() ? $request->user()->notifications()->whereNull('read_at')->count() : 0,
         ]);
 
         // 'translations' => fn () => Cache::rememberForever('translations_'.App::getLocale(), function () {

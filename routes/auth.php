@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 // Controllers
 use App\Http\Controllers\Auth\Login as ControllersLogin;
-use App\Http\Controllers\Auth\Register as ControllersRegister;
 use App\Http\Controllers\Auth\Password as ControllersPassword;
 use App\Http\Controllers\Auth\EmailVerification as ControllersEmail;
 
@@ -21,12 +20,6 @@ Route::prefix('auth/')->name('auth.')->group(function() {
         Route::middleware(['web', 'auth'])->group(function() {
             Route::get('logout', 'logout')->name('logout');
         });
-    });
-
-    // Register
-    Route::controller(ControllersRegister::class)->middleware('guest')->group(function() {
-        Route::get('register', 'create')->name('register');
-        Route::post('register', 'store')->name('register.store');
     });
 
     // Password Reset

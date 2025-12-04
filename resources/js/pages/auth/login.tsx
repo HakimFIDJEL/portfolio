@@ -181,27 +181,6 @@ export default function Login({
                                     )}
                                 </Link>
                             </Button>
-                            <div className="space-x-1 text-center text-sm text-muted-foreground">
-                                <span>
-                                    {__(
-                                        'auth.pages.login.register_link',
-                                    )}
-                                </span>
-                                <Button
-                                    asChild
-                                    variant={'link'}
-                                    size={'sm'}
-                                    className="p-0"
-                                    type={'button'}
-                                    tabIndex={8}
-                                >
-                                    <Link href={route('auth.register')}>
-                                        {__(
-                                            'auth.pages.login.register_link_text',
-                                        )}
-                                    </Link>
-                                </Button>
-                            </div>
                         </div>
                     </div>
                 )}
