@@ -13,6 +13,8 @@
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 
+    --font-landing: 'Montserrat Alternates', sans-serif;
+
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
@@ -140,6 +142,11 @@
   --sidebar-ring: oklch(0.41 0.159 10.272);
 }
 
+@layer utilities {
+    .font-landing {
+        font-family: var(--font-landing) !important;
+    }
+}
 
 @layer base {
     * {
