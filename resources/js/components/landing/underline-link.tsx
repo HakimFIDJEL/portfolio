@@ -21,6 +21,9 @@ export default function UnderlineLink({
                 'after:origin-right after:scale-x-0 after:transition-transform',
                 'hover:after:origin-left hover:after:scale-x-100',
 
+                // Focus styles
+                'focus:after:origin-left focus:after:scale-x-100 focus:outline-none',
+
                 // Default styles
                 'relative text-base font-medium text-foreground',
                 className,

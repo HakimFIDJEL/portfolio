@@ -1,4 +1,5 @@
-// pages/welcome.tsx
+// resources/js/pages/landing.tsx
+import { useState } from 'react';
 
 // Necessary imports
 import { Head } from '@inertiajs/react';
@@ -11,15 +12,21 @@ import AppLanding from '@/layouts/landing/layout';
 
 // Components
 import Header from '@/layouts/landing/header';
+import TransitionScreen from '@/components/landing/transition-screen';
 
 // Types
 
-export default function Welcome() {
+export default function Landing() {
+
+    const [transitionScreenActive, setTransitionScreenActive] = useState(false);
+
     return (
         <AppLanding>
             <Head title="Landing page" />
 
-            <Header />
+            <TransitionScreen active={transitionScreenActive} />
+
+            <Header handleMenuToggle={setTransitionScreenActive}/>
 
             <main>
                 {/* Hakim Fidjel */}
