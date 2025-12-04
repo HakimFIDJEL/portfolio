@@ -1,7 +1,7 @@
 // pages/welcome.tsx
 
 // Necessary imports
-import { Head, usePage } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
@@ -10,6 +10,7 @@ import AppLanding from '@/layouts/landing/layout';
 // import { useTrans } from '@/lib/translation';
 
 // Components
+import Header from '@/layouts/landing/header';
 
 // Types
 
@@ -18,8 +19,10 @@ export default function Welcome() {
         <AppLanding>
             <Head title="Landing page" />
 
+            <Header />
+
             <main>
-                Hakim Fidjel
+                {/* Hakim Fidjel */}
             </main>
         </AppLanding>
     );

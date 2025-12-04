@@ -13,7 +13,10 @@
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 
-    --font-landing: 'Montserrat Alternates', sans-serif;
+
+    --default-transition-duration: 0.5s;
+    --default-transition-timing-function: cubic-bezier(.25,.38,0,.99);
+    --font-family-landing: 'Montserrat Alternates', sans-serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -72,6 +75,8 @@
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+
+    
 }
 :root {
   --radius: 0.65rem;
@@ -143,8 +148,10 @@
 }
 
 @layer utilities {
-    .font-landing {
-        font-family: var(--font-landing) !important;
+    .landing {
+        font-family: var(--font-family-landing) !important;
+        transition-duration: var(--default-transition-duration) !important;
+        transition-timing-function: var(--default-transition-timing-function) !important;
     }
 }
 

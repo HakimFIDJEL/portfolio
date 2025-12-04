@@ -31,17 +31,15 @@ export default ({ children, breadcrumbs }: AppLayoutProps) => {
     }>();
 
     return (
-        <body className="font-landing antialiased">
-            <SidebarProvider defaultOpen={isOpen}>
-                <AppSidebar />
-                <SidebarInset className="overflow-x-hidden">
-                    <AppHeader breadcrumbs={breadcrumbs} />
-                    <main className='px-4 py-6'>
-                        {children}
-                    </main>
-                    <CustomToaster {...pageProps} />
-                </SidebarInset>
-            </SidebarProvider>
-        </body>
+        <SidebarProvider defaultOpen={isOpen}>
+            <AppSidebar />
+            <SidebarInset className="overflow-x-hidden">
+                <AppHeader breadcrumbs={breadcrumbs} />
+                <main className='px-4 py-6'>
+                    {children}
+                </main>
+                <CustomToaster {...pageProps} />
+            </SidebarInset>
+        </SidebarProvider>
     );
 };
