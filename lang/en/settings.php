@@ -12,16 +12,6 @@ return [
         'profile_updated' => 'Profile informations updated successfully.',
         'password_updated' => 'Password updated successfully.',
         'incorrect_current_password' => 'The provided current password is incorrect.',
-        'account_deleted' => 'Your account has been deleted successfully.',
-        'language_updated' => 'Language preferences updated successfully.',
-
-        'theme_loading' => 'Updating theme...',
-        'theme_updated' => 'Theme updated successfully.',
-
-        'color_scheme_loading' => 'Updating color scheme...',
-        'color_scheme_updated' => 'Color scheme updated successfully.',
-
-        'notifications_updated' => 'Notifications preferences updated successfully.',
     ],
 
     /*
@@ -38,7 +28,6 @@ return [
             'profile' => 'Profile',
             'appearance' => 'Appearance',
             'password' => 'Password',
-            'notification' => 'Notifications'
         ],
 
         'layout' => [
@@ -53,7 +42,12 @@ return [
                 'title' => 'Profile information',
                 'description' => 'Update your profile information such as name and email address.',
 
-                // NEW FRONT ERRORS (React)
+                'file_too_big_title' => 'Le fichier est trop volumineux',
+                'file_too_big_description' => 'La taille maximale autorisée est de :size Mo.',
+
+                'file_error_type' => 'Type de fichier non supporté.',
+                'file_error_type_description' => 'Formats autorisés : PDF, DOC, DOCX.',
+
                 'avatar_too_big_title' => 'The image is too large',
                 'avatar_too_big_description' => 'The maximum allowed size is :size MB.',
 
@@ -75,63 +69,20 @@ return [
                         'label' => 'Profile picture',
                         'description' => 'Drop a file or click to select one — max :size MB',
                     ],
-                    'phone' => [
-                        'label' => 'Phone number',
-                        'placeholder' => '01 23 45 67 89',
-                        'country_search_placeholder' => 'Search country...',
+                    'resume' => [
+                        'label' => 'Curriculum Vitae (CV)',
+                        'description' => 'PDF or Word document — max :size MB',
                     ],
                 ],
 
                 'buttons' => [
                     'submit' => 'Save information',
+                    'upload_file' => 'Upload file', 
+                    'select_file' => 'Select file',
                 ],
 
                 'crop_title' => 'Crop image',
                 'crop_confirm' => 'Confirm',
-            ],
-
-
-            'lang_form' => [
-                'title' => 'Language preferences',
-                'description' => 'Choose your preferred language and timezone settings',
-
-                'fields' => [
-                    'language' => [
-                        'label' => 'Language',
-                        'placeholder' => 'Select your language',
-                    ],
-                    'timezone' => [
-                        'label' => 'Timezone',
-                        'placeholder' => 'Select your timezone',
-                    ],
-                ],
-                'buttons' => [
-                    'submit' => 'Save preferences',
-                ],
-            ],
-
-            'delete_account' => [
-                'title' => 'Delete account',
-                'description' => 'Delete your account and all of its resources',
-
-                'caution_title' => 'Warning',
-                'caution_description' => 'Please proceed with caution, this cannot be undone.',
-
-                'dialog' => [
-                    'trigger' => 'Delete account',
-                    'title' => 'Are you sure you want to delete your account?',
-                    'description' => 'Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
-                    'fields' => [
-                        'password' => [
-                            'label' => 'Password',
-                            'placeholder' => 'Enter your password',
-                        ],
-                    ],
-                    'buttons' => [
-                        'cancel' => 'Cancel',
-                        'confirm' => 'Delete account',
-                    ],
-                ],
             ],
         ],
 
@@ -146,11 +97,6 @@ return [
                     'dark' => 'Dark',
                     'system' => 'System',
                 ],
-            ],
-
-            'color_form' => [
-                'title' => 'Color scheme',
-                'description' => 'Choose your preferred color scheme',
             ],
         ],
 
@@ -182,21 +128,5 @@ return [
             ],
         ],
 
-        'notification' => [
-            'head_title' => 'Notifications settings',
-
-            'phone_number' => [
-                'title' => 'Missing phone number',
-                'description' => 'Please add a phone number to your account on the \'Settings\' tab to enable SMS notifications.'
-            ],
-
-            'form' => [
-                'title' => 'Notification preferences',
-                'description' => 'Manage how and where you receive your notifications.',
-                'buttons' => [
-                    'submit' => 'Save preferences',
-                ],
-            ],
-        ],
     ],
 ];

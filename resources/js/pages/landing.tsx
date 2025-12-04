@@ -2,7 +2,6 @@
 
 // Necessary imports
 import { Head, Link, usePage } from '@inertiajs/react';
-import { useUpdateThemes } from '@/hooks/use-update-theme';
 
 // Translation Hook
 import { useTrans } from '@/lib/translation';
@@ -16,7 +15,6 @@ import { type SharedData } from '@/types';
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
     const __ = useTrans();
-    useUpdateThemes();
 
     return (
         <>
@@ -32,11 +30,6 @@ export default function Welcome() {
                             <>
                                 <Button asChild variant={'ghost'}>
                                     <Link href={route('auth.login')}>{__('landing.pages.buttons.login')}</Link>
-                                </Button>
-                                <Button asChild variant={'outline'}>
-                                    <Link href={route('auth.register')}>
-                                        {__('landing.pages.buttons.register')}
-                                    </Link>
                                 </Button>
                             </>
                         )}

@@ -1,7 +1,6 @@
 
 // Necessary imports
-import { Form, Head, useForm, usePage } from '@inertiajs/react';
-import { useCallback, useRef } from 'react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 
 // Layout
 import AppLayout from '@/layouts/app/layout';
@@ -15,44 +14,20 @@ import HeadingSmall from '@/components/heading-small';
 
 // Shadcn UI Components
 import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 
 // Types
-import type { BreadcrumbItem, Language, SharedData, Timezone } from '@/types';
+import type { BreadcrumbItem, SharedData } from '@/types';
 
 // Icons
-import { Save, Trash2 } from 'lucide-react';
+import { Save } from 'lucide-react';
 
 import AvatarUpload from '@/components/avatar-upload';
+import FileUpload from '@/components/file-upload';
 
-export default function Profile({
-                                    languages,
-                                    timezones,
-                                }: {
-    languages: Language[];
-    timezones: Timezone[];
-}) {
+export default function Profile() {
     const { auth } = usePage<SharedData>().props;
     const __ = useTrans();
 
@@ -83,22 +58,6 @@ export default function Profile({
                     <InformationForm auth={auth} />
                 </div>
 
-                <Separator className="my-8" />
-
-                <div className="space-y-6">
-                    <HeadingSmall
-                        title={__('settings.pages.profile.lang_form.title')}
-                        description={__(
-                            'settings.pages.profile.lang_form.description',
-                        )}
-                    />
-
-                    <LangForm auth={auth} languages={languages} timezones={timezones} />
-                </div>
-
-                <Separator className="my-8" />
-
-                <DeleteUser />
             </SettingsLayout>
         </AppLayout>
     );
@@ -112,6 +71,7 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
         name: string;
         email: string;
         avatar?: File | null;
+        resume?: File | null;
     }>({
         _method: 'PATCH',
         name: auth.user.name ?? '',
@@ -127,12 +87,14 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
             onSuccess: () => {
                 setData((current) => {
                     const { ...rest } = current;
-                    return rest as typeof current;
+                    return { ...rest, avatar: undefined, resume: undefined } as typeof current;
                 });
             },
         });
     };
 
+    const MAX_RESUME_SIZE_MB = 5;
+    const ALLOWED_RESUME_TYPES = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
     return (
         <form
@@ -140,18 +102,21 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
             encType="multipart/form-data"
             className="grid md:grid-cols-3 gap-x-8 gap-y-4"
         >
+            {/* Colonnes 1 & 2 : Nom et Email */}
             <div className="md:col-span-2 flex flex-col gap-2">
                 <Label htmlFor="name">
                     {__('settings.pages.profile.info_form.fields.name.label')}
                 </Label>
             </div>
 
+            {/* Colonne 3 : Label Avatar */}
             <div className="flex flex-col justify-end">
                 <Label htmlFor="avatar" className="text-left">
                     {__('settings.pages.profile.info_form.fields.avatar.label')}
                 </Label>
             </div>
 
+            {/* Colonnes 1 & 2 : Champs Input */}
             <div className="space-y-4 md:col-span-2">
                 <Input
                     id="name"
@@ -180,16 +145,42 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
                 </div>
             </div>
 
+            {/* Colonne 3 : Avatar Upload */}
             <div className="flex flex-col items-start gap-3 md:col-span-1">
                 <AvatarUpload
-                    defaultUrl={auth.user?.avatar ?? null}
+                    defaultUrl={auth.user?.avatar?.url ?? null}
                     onFileChange={(file) => {
                         setData('avatar', file);
                     }}
                 />
             </div>
 
-            <div className="md:col-span-2 flex pt-2">
+            {/* Séparateur pour le CV */}
+            <div className="md:col-span-3 h-px bg-border my-2" />
+            
+            {/* Colonnes 1 & 2 : Label CV */}
+            <div className="md:col-span-2 flex flex-col gap-2">
+                <Label htmlFor="resume">
+                    {__('settings.pages.profile.info_form.fields.resume.label')}
+                </Label>
+            </div>
+            
+            {/* Colonnes 1, 2, 3 : Champ CV */}
+            <div className="md:col-span-3 space-y-2">
+                <FileUpload
+                    defaultAttachment={auth.user?.resume ?? null}
+                    onFileChange={(file) => {
+                        setData('resume', file);
+                    }}
+                    labelKey={__("settings.pages.profile.info_form.fields.resume.label")}
+                    descriptionKey={__("settings.pages.profile.info_form.fields.resume.description")}
+                    maxSizeMB={MAX_RESUME_SIZE_MB}
+                    allowedTypes={ALLOWED_RESUME_TYPES}
+                />
+            </div>
+
+            {/* Bouton de Soumission */}
+            <div className="md:col-span-3 flex pt-2">
                 <Button disabled={processing} type="submit">
                     {processing ? <Spinner /> : <Save />}
                     {__('settings.pages.profile.info_form.buttons.submit')}
@@ -199,230 +190,3 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
     );
 }
 
-function LangForm({
-                      auth,
-                      languages,
-                      timezones,
-                  }: {
-    auth: SharedData['auth'];
-    languages: Language[];
-    timezones: Timezone[];
-}) {
-    const __ = useTrans();
-
-    return (
-        <Form
-            method={'PATCH'}
-            action={route('settings.profile.update_lang')}
-            options={{
-                preserveScroll: true,
-            }}
-        >
-            {({ processing, errors }) => (
-                <div className="grid gap-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="language">
-                            {__(
-                                'settings.pages.profile.lang_form.fields.language.label',
-                            )}
-                        </Label>
-
-                        <Select
-                            name="language"
-                            required
-                            aria-invalid={errors.language ? 'true' : 'false'}
-                            defaultValue={auth.user.language ?? languages[0].code}
-                        >
-                            <SelectTrigger
-                                tabIndex={6}
-                                id="language"
-                                className="w-full"
-                            >
-                                <SelectValue
-                                    placeholder={__(
-                                        'settings.pages.profile.lang_form.fields.language.placeholder',
-                                    )}
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>
-                                        {__(
-                                            'settings.pages.profile.lang_form.fields.language.label',
-                                        )}
-                                    </SelectLabel>
-                                    {languages.map((lang) => (
-                                        <SelectItem key={lang.code} value={lang.code}>
-                                            {lang.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="timezone">
-                            {__(
-                                'settings.pages.profile.lang_form.fields.timezone.label',
-                            )}
-                        </Label>
-
-                        <Select
-                            name="timezone"
-                            required
-                            aria-invalid={errors.timezone ? 'true' : 'false'}
-                            defaultValue={auth.user.timezone ?? timezones[0].value}
-                        >
-                            <SelectTrigger
-                                tabIndex={7}
-                                id="timezone"
-                                className="w-full"
-                            >
-                                <SelectValue
-                                    placeholder={__(
-                                        'settings.pages.profile.lang_form.fields.timezone.placeholder',
-                                    )}
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>
-                                        {__(
-                                            'settings.pages.profile.lang_form.fields.timezone.label',
-                                        )}
-                                    </SelectLabel>
-                                    {timezones.map((zone) => (
-                                        <SelectItem
-                                            key={zone.value}
-                                            value={zone.value}
-                                            className="space-x-1"
-                                        >
-                                            <span>{zone.value}</span>
-                                            <span>{zone.value !== 'UTC' && `(UTC${zone.utc})`}</span>
-                                        </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <Button disabled={processing} type={'submit'} tabIndex={8}>
-                        {processing ? <Spinner /> : <Save />}
-                        {__('settings.pages.profile.lang_form.buttons.submit')}
-                    </Button>
-                </div>
-            )}
-        </Form>
-    );
-}
-
-function DeleteUser() {
-    const passwordInput = useRef<HTMLInputElement>(null);
-    const __ = useTrans();
-
-    return (
-        <div className="space-y-6">
-            <HeadingSmall
-                title={__('settings.pages.profile.delete_account.title')}
-                description={__(
-                    'settings.pages.profile.delete_account.description',
-                )}
-            />
-            <div className="space-y-2 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
-                <div className="relative space-y-0.5 text-red-600 dark:text-red-100">
-                    <p className="font-medium">
-                        {__(
-                            'settings.pages.profile.delete_account.caution_title',
-                        )}
-                    </p>
-                    <p className="text-sm">
-                        {__(
-                            'settings.pages.profile.delete_account.caution_description',
-                        )}
-                    </p>
-                </div>
-
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button variant="destructive" tabIndex={7}>
-                            <Trash2 />
-                            {__(
-                                'settings.pages.profile.delete_account.dialog.trigger',
-                            )}
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                        <DialogTitle>
-                            {__(
-                                'settings.pages.profile.delete_account.dialog.title',
-                            )}
-                        </DialogTitle>
-                        <DialogDescription>
-                            {__(
-                                'settings.pages.profile.delete_account.dialog.description',
-                            )}
-                        </DialogDescription>
-
-                        <Form
-                            method={'DELETE'}
-                            action={route('settings.profile.destroy')}
-                            options={{
-                                preserveScroll: true,
-                            }}
-                            onError={() => passwordInput.current?.focus()}
-                            resetOnSuccess
-                        >
-                            {({ resetAndClearErrors, processing, errors }) => (
-                                <div className="space-y-4">
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="password">
-                                            {__(
-                                                'settings.pages.profile.delete_account.dialog.fields.password.label',
-                                            )}
-                                        </Label>
-
-                                        <Input
-                                            id="password"
-                                            type="password"
-                                            name="password"
-                                            ref={passwordInput}
-                                            required
-                                            placeholder={__(
-                                                'settings.pages.profile.delete_account.dialog.fields.password.placeholder',
-                                            )}
-                                            aria-invalid={errors.password ? 'true' : 'false'}
-                                        />
-                                    </div>
-
-                                    <DialogFooter className="gap-2">
-                                        <DialogClose asChild>
-                                            <Button
-                                                variant="secondary"
-                                                onClick={() => resetAndClearErrors()}
-                                            >
-                                                {__(
-                                                    'settings.pages.profile.delete_account.dialog.buttons.cancel',
-                                                )}
-                                            </Button>
-                                        </DialogClose>
-
-                                        <Button variant="destructive" disabled={processing}>
-                                            {processing ? (
-                                                <Spinner />
-                                            ) : (
-                                                <Trash2 />
-                                            )}
-                                            {__(
-                                                'settings.pages.profile.delete_account.dialog.buttons.confirm',
-                                            )}
-                                        </Button>
-                                    </DialogFooter>
-                                </div>
-                            )}
-                        </Form>
-                    </DialogContent>
-                </Dialog>
-            </div>
-        </div>
-    );
-}

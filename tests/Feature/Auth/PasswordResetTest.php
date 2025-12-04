@@ -5,8 +5,8 @@
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use App\Notifications\PasswordReset;
-use Illuminate\Support\Facades\Notification;
+use App\Jobs\SendEmailJob;
+use Illuminate\Support\Facades\Queue;
 
 test('reset password link screen can be rendered', function () {
     $response = $this->get(route('auth.password.request'));
@@ -14,7 +14,7 @@ test('reset password link screen can be rendered', function () {
 });
 
 test('reset password link can be requested', function () {
-    Notification::fake();
+    Queue::fake();
 
     $user = User::factory()->create();
 
@@ -25,7 +25,7 @@ test('reset password link can be requested', function () {
     $response->assertRedirect();
     $response->assertSessionHas('success');
 
-    Notification::assertSentTo($user, PasswordReset::class);
+    Queue::assertPushed(SendEmailJob::class);
 });
 
 

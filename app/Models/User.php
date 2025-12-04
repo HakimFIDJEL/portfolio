@@ -19,18 +19,15 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name',
-        'timezone',
-        'theme',
-        'color_scheme',
         'email',
         'password',
-        'language',
         'verification_token',
         'email_verified_at',
-        'attachment_avatar',
+        'avatar_id',
+        'resume_id',
     ];
 
-    protected $with = ['avatar'];
+    protected $with = ['avatar', 'resume'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -63,8 +60,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(PasswordResetToken::class, 'email', 'email');
     }
 
-    public function avatar(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Attachment::class, 'attachment_avatar');
+    public function avatar() {
+        return $this->belongsTo(Attachment::class, 'avatar_id');
+    }
+
+    public function resume() {
+        return $this->belongsTo(Attachment::class, 'resume_id');
     }
 }

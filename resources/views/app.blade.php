@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])
-    data-color-scheme="{{ $color_scheme ?? 'default' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
 
 <head>
     <meta charset="utf-8">
@@ -10,7 +9,6 @@
     <script>
         (function() {
             const appearance = '{{ $appearance ?? 'system' }}';
-            const colorScheme = '{{ $color_scheme ?? 'default' }}';
             const user = '{{ Auth::check() }}'
 
             if (appearance === 'system') {
@@ -22,7 +20,6 @@
             }
 
             if(user) {
-                localStorage.setItem('color-scheme', colorScheme);
                 localStorage.setItem('appearance', appearance);
             }
             

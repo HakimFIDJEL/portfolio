@@ -46,7 +46,6 @@ import type { NavItem, SharedData, User } from '@/types';
 // Icons
 import AppLogoIcon from '@/components/app-logo-icon';
 import {
-    Bell,
     BookOpen,
     ChevronsUpDown,
     Folder,
@@ -54,7 +53,6 @@ import {
     LogOut,
     Settings,
 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 
 // Interfaces
 interface UserMenuContentProps {
@@ -283,7 +281,7 @@ function UserInfo({ user }: { user: User }) {
         <>
             <Avatar className="h-8 w-8 overflow-hidden rounded-full">
                 <AvatarImage
-                    src={user.avatar ?? undefined}
+                    src={user.avatar?.url ?? undefined}
                     alt={user.name}
                 />
                 <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">

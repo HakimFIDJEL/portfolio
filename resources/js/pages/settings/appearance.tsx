@@ -2,9 +2,7 @@
 
 // Necessary imports
 import { type Appearance, useAppearance } from '@/hooks/use-appearance';
-import { type ColorScheme, useColorScheme } from '@/hooks/use-color-scheme';
-import { cn } from '@/lib/utils';
-import { Head, useForm } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 
 // Layout
 import AppLayout from '@/layouts/app/layout';
@@ -14,9 +12,6 @@ import SettingsLayout from '@/layouts/settings/layout';
 import { useTrans } from '@/lib/translation';
 
 // Shadcn UI Components
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Custom components
@@ -24,17 +19,15 @@ import HeadingSmall from '@/components/heading-small';
 import { Icon } from '@/components/icon';
 
 // Types
-import type { BreadcrumbItem, Color, Theme } from '@/types';
+import type { BreadcrumbItem, Theme } from '@/types';
 
 // Icons
-import { CheckIcon, Monitor, Moon, Sun } from 'lucide-react';
+import { Monitor, Moon, Sun } from 'lucide-react';
 
 export default function Appearance({
     themes,
-    colors,
 }: {
     themes: Theme[];
-    colors: Color[];
 }) {
     const __ = useTrans();
 
@@ -63,18 +56,6 @@ export default function Appearance({
                     />
                     <AppearanceToggle themes={themes} />
                 </div>
-
-                <Separator className="my-8" />
-
-                <div className="mb-0 space-y-6">
-                    <HeadingSmall
-                        title={__('settings.pages.appearance.color_form.title')}
-                        description={__(
-                            'settings.pages.appearance.color_form.description',
-                        )}
-                    />
-                    <ColorDropdown colors={colors} />
-                </div>
             </SettingsLayout>
         </AppLayout>
     );
@@ -95,14 +76,8 @@ function AppearanceToggle({ themes }: { themes: Theme[] }) {
         label: __(`common.themes.${theme.value}`),
     }));
 
-    // Form
-    const { put, processing } = useForm();
-
     const handleChange = (value: string) => {
-        put(route('settings.appearance.update_theme', { theme: value }), {
-            preserveScroll: true,
-            onSuccess: () => updateAppearance(value as Appearance),
-        });
+        updateAppearance(value as Appearance);
     };
 
     return (
@@ -113,7 +88,6 @@ function AppearanceToggle({ themes }: { themes: Theme[] }) {
                         key={value}
                         value={value}
                         className="flex gap-2 px-4 py-3"
-                        disabled={processing}
                     >
                         <Icon iconNode={icon} />
                         <span className="hidden sm:inline">{label}</span>
@@ -121,83 +95,5 @@ function AppearanceToggle({ themes }: { themes: Theme[] }) {
                 ))}
             </TabsList>
         </Tabs>
-    );
-}
-
-function ColorDropdown({ colors }: { colors: Color[] }) {
-    const { scheme, updateColorScheme } = useColorScheme();
-
-    // Form
-    const { put, processing } = useForm();
-
-    const handleChange = (value: string) => {
-        put(
-            route('settings.appearance.update_color', { color_scheme: value }),
-            {
-                preserveScroll: true,
-                onSuccess: () => updateColorScheme(value as ColorScheme),
-            },
-        );
-    };
-
-    return (
-        <RadioGroup
-            className="grid grid-cols-3 gap-2"
-            value={scheme}
-            onValueChange={handleChange}
-        >
-            {colors.map(({ value, color }) => (
-                <ColorOption
-                    key={value}
-                    value={value}
-                    color={color}
-                    isActive={scheme === value}
-                    disabled={processing}
-                />
-            ))}
-        </RadioGroup>
-    );
-}
-
-function ColorOption({
-    value,
-    color = '',
-    isActive = false,
-    disabled = false,
-}: {
-    value: string;
-    color?: string;
-    isActive?: boolean;
-    disabled?: boolean;
-}) {
-    const __ = useTrans();
-
-    return (
-        <Label
-            className={cn(
-                'flex h-8 items-center gap-2 rounded-md border px-3 py-2',
-                'hover:cursor-pointer hover:bg-accent',
-                'transition-all',
-                isActive && 'border-2 border-primary',
-                disabled && 'pointer-events-none opacity-50',
-            )}
-            htmlFor={value}
-        >
-            <div
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
-                style={{ backgroundColor: color }}
-            >
-                {isActive && <CheckIcon className="h-4 w-4 text-white" />}
-            </div>
-            <RadioGroupItem
-                value={value}
-                id={value}
-                className="sr-only"
-                disabled={disabled}
-            />
-            <span className="text-xs capitalize">
-                {__('common.colors.' + value)}
-            </span>
-        </Label>
     );
 }

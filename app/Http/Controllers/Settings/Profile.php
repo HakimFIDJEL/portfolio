@@ -6,10 +6,12 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\UploadedFile; // Ajouté
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request; // Ajouté pour le type-hinting de la requête dans la méthode privée
 
 // Requests
 use App\Http\Requests\Settings\Profile as RequestsProfile;
@@ -27,13 +29,7 @@ class Profile extends Controller
      */
     public function edit(): Response
     {
-        $languages = config('preferences.languages');
-        $timezones = config('preferences.timezones');
-
-        return Inertia::render('settings/profile', [
-            'timezones' => $timezones,
-            'languages' => $languages,
-        ]);
+        return Inertia::render('settings/profile');
     }
 
     /**
@@ -44,40 +40,59 @@ class Profile extends Controller
     public function update(RequestsProfile $request): RedirectResponse
     {
         $data = $request->validated();
-        /** @var \App\Models\User|null $user */
         $user = Auth::user();
 
         $emailChanged = array_key_exists('email', $data) && $data['email'] !== $user->email;
 
-        unset($data['avatar']);
-        // Normalize phone number by removing spaces
-        if($data['phone']) {
-            $data['phone'] = preg_replace('/\s+/', '', $data['phone']);
-        }
+        unset($data['avatar'], $data['resume']);
 
-        $user->update($data);
+        $user->fill($data);
 
         if ($emailChanged) {
-            $user->update(['email_verified_at' => null]);
+            $user->email_verified_at = null;
         }
 
-        if ($request->exists('avatar') && $request->avatar === null && $user->avatar) {
-            Storage::disk('public')->delete($user->avatar->file_path);
-            $user->avatar->delete();
-            $user->update(['attachment_avatar' => null]);
+        $this->handleAttachmentUpdate($user, 'avatar', 'avatar', 'avatars', $request);
+
+        $this->handleAttachmentUpdate($user, 'resume', 'resume', 'resumes', $request);
+
+        $user->save();
+        
+        Auth::setUser($user->fresh(['avatar', 'resume']));
+
+        return redirect()
+            ->route('settings.profile.edit')
+            ->with(['success' => __('settings.flash.profile_updated')]);
+    }
+    /**
+     * Handle attachment update logic for avatar and resume.
+     *
+     * @param User $user
+     * @param string $relationName The name of the relation on the User model ('avatar' or 'resume')
+     * @param string $requestKey The key in the request ('avatar' or 'resume')
+     * @param string $diskFolder The folder on disk to store the files ('avatars' or 'resumes')
+     * @param Request $request The incoming request
+     */
+    private function handleAttachmentUpdate(User $user, string $relationName, string $requestKey, string $diskFolder, Request $request): void
+    {
+        $currentAttachment = $user->$relationName;
+        
+        if ($request->exists($requestKey) && $request->input($requestKey) === null && $currentAttachment) {
+            Storage::disk('public')->delete($currentAttachment->file_path);
+            $currentAttachment->delete();
+            $user->$relationName()->dissociate();
         }
 
-
-        elseif ($request->hasFile('avatar')) {
-
-            $file = $request->file('avatar');
-
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar->file_path);
-                $user->avatar->delete();
+        elseif ($request->hasFile($requestKey)) {
+            /** @var UploadedFile $file */
+            $file = $request->file($requestKey);
+            $storagePath = "users/{$user->id}/{$diskFolder}";
+            if ($currentAttachment) {
+                Storage::disk('public')->delete($currentAttachment->file_path);
+                $currentAttachment->delete();
             }
 
-            $path = Storage::disk('public')->putFile("users/{$user->id}/avatars", $file);
+            $path = Storage::disk('public')->putFile($storagePath, $file);
 
             $attachment = Attachment::create([
                 'file_name'      => $file->getClientOriginalName(),
@@ -87,59 +102,7 @@ class Profile extends Controller
                 'file_size'      => $file->getSize(),
             ]);
 
-            $user->avatar()->associate($attachment);
-            $user->save();
+            $user->$relationName()->associate($attachment);
         }
-
-        Auth::setUser($user->fresh(['avatar']));
-
-        return redirect()
-            ->route('settings.profile.edit')
-            ->with(['success' => __('settings.flash.profile_updated')]);
-    }
-
-
-
-    public function update_lang(RequestsLang $request): RedirectResponse
-    {
-        $data = $request->validated();
-        $user = Auth::user();
-
-        $user->update([
-            'language' => $data['language'],
-            'timezone' => $data['timezone'],
-        ]);
-
-        Auth::setUser($user->fresh());
-
-        return redirect()->route('settings.profile.edit')->with(['success' => __('settings.flash.language_updated', [], $data['language'])]);
-    }
-
-
-    /**
-     * Delete the user's account.
-     *
-     * @param \App\Http\Requests\Settings\DeleteAccount $request
-     */
-    public function destroy(RequestsDeleteAccount $request): RedirectResponse
-    {
-        /** @var \Illuminate\Http\Request $request */
-        $data = $request->validated();
-        $user = Auth::user();
-
-        if(!Auth::validate(['email' => $user->email, 'password' => $data['password']])) {
-            return back()->withErrors([
-                'password' => __('settings.flash.incorrect_current_password'),
-            ]);
-        }
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('home')->with(['success' => __('settings.flash.account_deleted')]);
     }
 }

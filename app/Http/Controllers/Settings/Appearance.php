@@ -23,51 +23,10 @@ class Appearance extends Controller
     public function edit(): Response
     {
         $themes = config('preferences.themes');
-        $colors = config('preferences.colors');
 
         return Inertia::render('settings/appearance', [
             'themes' => $themes,
-            'colors' => $colors,
         ]);
     }
 
-    /**
-     * Update the user's theme settings.
-     * 
-     * @param \App\Http\Requests\Settings\Theme $request
-     */
-    public function update_theme(RequestsTheme $request)
-    {
-        $data = $request->validated();
-
-        $theme = $data['theme'];
-
-        Auth::user()->update([
-            'theme' => $theme,
-        ]);
-
-        Auth::user()->fresh();
-
-        return back()->with(['success'=> __('settings.flash.theme_updated')]);
-    }
-
-    /**
-     * Update the user's color scheme settings.
-     * 
-     * @param \App\Http\Requests\Settings\ColorScheme $request
-     */
-    public function update_color(RequestsColorScheme $request)
-    {
-        $data = $request->validated();
-
-        $colorScheme = $data['color_scheme'];
-
-        Auth::user()->update([
-            'color_scheme' => $colorScheme,
-        ]);
-
-        Auth::user()->fresh();
-
-        return back()->with(['success'=> __('settings.flash.color_scheme_updated')]);
-    }
 }

@@ -3,7 +3,6 @@
 // Necessary imports
 import { usePage } from '@inertiajs/react';
 import { type ReactNode } from 'react';
-import { useUpdateThemes } from '@/hooks/use-update-theme';
 
 // Types
 import type { BreadcrumbItem, SharedData } from '@/types';
@@ -30,8 +29,6 @@ export default ({ children, breadcrumbs }: AppLayoutProps) => {
         error?: string;
         errors?: Record<string, string>;
     }>();
-
-    useUpdateThemes();
 
     return (
         <SidebarProvider defaultOpen={isOpen}>

@@ -22,18 +22,9 @@ class HandleAppearance
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
-
-        if($user) {
-            $appearance = $user->theme;
-            $colorScheme = $user->color_scheme;
-        } else {
-            $appearance = $request->cookie('appearance') ?? 'system';
-            $colorScheme = $request->cookie('color-scheme') ?? 'default';
-        }
-
+        $appearance = $request->cookie('appearance') ?? 'system';
+        
         View::share('appearance', $appearance);
-        View::share('color_scheme', $colorScheme);
 
         return $next($request);
     }

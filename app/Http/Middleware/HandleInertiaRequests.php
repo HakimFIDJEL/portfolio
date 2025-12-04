@@ -48,6 +48,7 @@ class HandleInertiaRequests extends Middleware
 
         $user = $request->user()?->load([
             'avatar',
+            'resume',
         ]);
 
 
@@ -58,13 +59,8 @@ class HandleInertiaRequests extends Middleware
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'avatar' => $user->avatar?->getUrl(),
-                    'email_verified_at' => $user->email_verified_at,
-                    'language' => $user->language,
-                    'timezone' => $user->timezone,
-                    'theme' => $user->theme,
-                    'color_scheme' => $user->color_scheme,
-                    'phone' => $user->phone,
+                    'avatar' => $user->avatar,
+                    'resume' => $user->resume,
                 ] : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
@@ -100,15 +96,5 @@ class HandleInertiaRequests extends Middleware
 
             'timezone' => date_default_timezone_get(),
         ]);
-
-        // 'translations' => fn () => Cache::rememberForever('translations_'.App::getLocale(), function () {
-        //     return collect(File::files(lang_path(App::getLocale())))
-        //         ->mapWithKeys(function ($file) {
-        //             $name = pathinfo($file, PATHINFO_FILENAME);
-
-        //             return [$name => trans($name)];
-        //         })
-        //         ->toArray();
-        // }),
     }
 }

@@ -50,27 +50,8 @@ class Profile extends FormRequest
             ],
 
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:2048'],
+            'resume' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
 
-            'phone' => [
-                'nullable',
-                'string',
-                'max:20',
-                Rule::unique(User::class)->ignore(Auth::id()),
-                function ($attribute, $value, $fail) {
-                    if (!$value) return;
-
-                    $phoneUtil = PhoneNumberUtil::getInstance();
-
-                    try {
-                        $proto = $phoneUtil->parse($value, null);
-                        if (!$phoneUtil->isValidNumber($proto)) {
-                            $fail(__('validation.custom.phone.invalid'));
-                        }
-                    } catch (NumberParseException $e) {
-                        $fail(__('validation.custom.phone.invalid'));
-                    }
-                }
-            ],
         ];
     }
 }

@@ -30,6 +30,8 @@ class Attachment extends Model
         'file_size',
     ];
 
+    protected $appends = ['url'];
+
     /**
      * A file can be the avatar of a user.
      */
@@ -38,7 +40,7 @@ class Attachment extends Model
         return $this->hasOne(User::class, 'attachment_avatar');
     }
 
-    public function getUrl(): string
+    public function getUrlAttribute(): string
     {
         return Storage::url($this->file_path);
     }

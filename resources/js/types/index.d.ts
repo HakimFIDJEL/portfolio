@@ -44,31 +44,13 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    attachment_avatar?: string;
-    avatar: string | null;
     email_verified_at: string | null;
-    language: string;
-    timezone: string;
-    theme: string;
-    color_scheme: string;
-    phone?: string;
+    avatar_id: number | null;
+    resume_id: number | null;
+    avatar?: Attachment | null;
+    resume?: Attachment | null;
     created_at: string;
     updated_at: string;
-}
-
-export interface Notification {
-    id: string;
-    type: string;
-    data: {
-        type: string;
-        category: string;
-        title: string;
-        message: string;
-        action?: string | null;
-        action_url?: string | null;
-    }
-    created_at: string;
-    read_at: string | null;
 }
 
 export interface PaginationProps {
@@ -91,29 +73,7 @@ export interface PaginationProps {
     }
 }
 
-export interface NotificationPreference {
-    user_id: number;
-    category: string;
-    type: string;
-    channel: string;
-    enabled: boolean;
-}
-
-export interface Language {
-    code: string;
-    name: string;
-}
-
-export interface Timezone {
-    value: string;
-    utc: string;
-} ;
 
 export interface Theme {
     value: string;
-}
-
-export interface Color {
-    value: string;
-    color: string;
 }

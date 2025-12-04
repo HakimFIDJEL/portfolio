@@ -12,12 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('attachment_avatar')->nullable()->after('email');
+            $table->foreignId('avatar_id')
+                ->nullable()
+                ->constrained('attachments')
+                ->nullOnDelete();          
 
-            $table->foreign('attachment_avatar')
-                ->references('id')->
-                on('attachments')->
-                onDelete('set null');
+            $table->foreignId('resume_id')
+                ->nullable()
+                ->constrained('attachments')
+                ->nullOnDelete();
         });
     }
 
@@ -27,8 +30,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['attachment_avatar']);
-            $table->dropColumn('attachment_avatar');
+
         });
     }
 };

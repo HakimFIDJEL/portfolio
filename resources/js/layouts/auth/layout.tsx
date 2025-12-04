@@ -2,7 +2,6 @@
 
 // Necessary imports
 import { Link, usePage } from '@inertiajs/react';
-import { useUpdateThemes } from '@/hooks/use-update-theme';
 
 // Translation Hook
 import { useTrans } from '@/lib/translation';
@@ -35,8 +34,6 @@ export default function AuthLayout({
 
     const { name } = usePage<SharedData>().props;
     const __ = useTrans();
-
-    useUpdateThemes();
 
     return (
         <main className="flex min-h-dvh flex-col">
