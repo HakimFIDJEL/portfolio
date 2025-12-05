@@ -23,7 +23,7 @@ export default function UnderlineLink({
 
                 // Focus styles
                 'focus-visible:after:origin-left focus-visible:after:scale-x-100',
-                'focus-visible:outline-primary focus-visible:outline-2 focus-visible:outline-offset-8 transition-all',
+                'transition-all focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-primary',
 
                 // Default styles
                 'relative text-base font-medium text-foreground',
