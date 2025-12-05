@@ -31,9 +31,6 @@ export default function Header({ showMenu, handleMenuToggle }: HeaderProps) {
                 className={cn(
                     // Default styles
                     'col-span-1',
-
-                    // Responsive styles
-                    'hidden md:block',
                 )}
             >
                 <MenuButton handleClick={handleMenuToggle} />
@@ -44,12 +41,20 @@ export default function Header({ showMenu, handleMenuToggle }: HeaderProps) {
                     'col-span-1 text-base font-medium italic',
 
                     // Responsive styles
-                    'text-left md:text-center',
+                    'text-right md:text-center',
                 )}
             >
                 HF
             </div>
-            <div className={cn('col-span-1 text-right')}>
+            <div
+                className={cn(
+                    // Default styles
+                    'col-span-1 text-right',
+
+                    // Responsive styles
+                    'hidden md:block',
+                )}
+            >
                 <UnderlineLink href="#">Contact</UnderlineLink>
             </div>
         </header>
