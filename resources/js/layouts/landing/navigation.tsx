@@ -163,8 +163,8 @@ function NavigationLink({ link }: NavigationLinkProps) {
                     show && 'w-max translate-y-0',
 
                     // Focus & hover styles
-                    'hover:md:gap-[80px] hover:md:pl-[30px]',
-                    'focus-visible:md:gap-[80px] focus-visible:md:pl-[30px] focus-visible:md:outline-none',
+                    'hover:!text-primary-foreground hover:md:gap-[80px] hover:md:pl-[30px]',
+                    'focus-visible:!text-primary-foreground focus-visible:md:gap-[80px] focus-visible:md:pl-[30px] focus-visible:md:outline-none',
 
                     // Responsive styles
                     'gap-[10px] sm:gap-[50px] md:gap-[120px]',
@@ -223,6 +223,8 @@ function NavigationLink({ link }: NavigationLinkProps) {
 
                         // Reponsive styles
                         'text-4xl sm:text-6xl',
+
+                        'transition-all duration-1000',
                     )}
                 >
                     {label}
@@ -231,7 +233,7 @@ function NavigationLink({ link }: NavigationLinkProps) {
                 {/* Background animation */}
                 <div
                     className={cn(
-                        'absolute inset-0 z-[-1] h-full w-0 bg-red-400 transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
+                        'absolute inset-0 z-[-1] h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
                     )}
                 ></div>
             </a>

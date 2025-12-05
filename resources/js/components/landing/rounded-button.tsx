@@ -1,6 +1,6 @@
 // resources/js/components/landing/rounded-button.tsx
-
 import { cn } from '@/lib/utils';
+import React, { useState } from 'react';
 
 // Necessary imports
 interface RoundedButtonProps {
@@ -14,9 +14,23 @@ export default function RoundedButton({
     onClick,
     className,
 }: RoundedButtonProps) {
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleClick = () => {
+        setIsClicked(true); // Réduire à l'activation
+
+        setTimeout(() => {
+            setIsClicked(false); // Agrandir après un court délai
+        }, 150); // Ajustez la durée de l'effet
+
+        if (onClick) {
+            onClick();
+        }
+    };
+
     return (
         <button
-            onClick={onClick}
+            onClick={handleClick}
             className={cn(
                 // Default styles
                 'cursor-pointer',
@@ -27,13 +41,21 @@ export default function RoundedButton({
                 'group transition-all',
 
                 // Hover & Focus styles
-                'hover:!text-foreground',
-                'focus-visible:!text-foreground focus-visible:outline-none',
+                'hover:!text-primary-foreground',
+                'focus-visible:!text-primary-foreground focus-visible:outline-none',
 
                 className,
             )}
         >
-            {children}
+            <div
+                className={cn(
+                    // Default styles
+                    'transition-all',
+                    isClicked && 'scale-75 opacity-75',
+                )}
+            >
+                {children}
+            </div>
 
             <div
                 className={cn(

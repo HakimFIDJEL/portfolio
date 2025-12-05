@@ -3,20 +3,36 @@
 // Necessary imports
 import { cn } from '@/lib/utils';
 
+// Hooks
+import { useAppearance } from '@/hooks/use-appearance';
+
 // Components
 import CircularText from '@/components/landing/circular-text';
 import Delimiter from '@/components/landing/delimiter';
 import RoundedButton from '@/components/landing/rounded-button';
 
 // Icons
-import { ArrowDown, Sun } from 'lucide-react';
+import { ArrowDown, Monitor, Moon, Sun } from 'lucide-react';
 
 export default function Hero() {
+    const { appearance, updateAppearance } = useAppearance();
+
+    function handleSwitchAppearance() {
+        const newAppearance =
+            appearance === 'light'
+                ? 'dark'
+                : appearance === 'dark'
+                  ? 'system'
+                  : 'light';
+
+        updateAppearance(newAppearance);
+    }
+
     return (
-        <section className="flex h-[calc(100vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]">
+        <section className="flex h-[calc(80vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]">
             <Delimiter
                 dashedBorders={['top', 'bottom']}
-                plusCorners={['bottom-left', 'bottom-right']}
+                plusCorners={['top-left', 'top-right']}
                 className="h-12"
             />
 
@@ -100,8 +116,10 @@ export default function Hero() {
                     <RoundedButton>
                         <ArrowDown className="stroke-1" />
                     </RoundedButton>
-                    <RoundedButton>
-                        <Sun className="stroke-1" />
+                    <RoundedButton onClick={handleSwitchAppearance}>
+                        {appearance === 'dark' && <Moon className="stroke-1" />}
+                        {appearance === 'light' && <Sun className="stroke-1" />}
+                        {appearance === 'system' && <Monitor className="stroke-1" />}
                     </RoundedButton>
                     <RoundedButton>EN</RoundedButton>
                 </Delimiter>
