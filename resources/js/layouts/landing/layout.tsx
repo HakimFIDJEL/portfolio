@@ -2,25 +2,38 @@
 
 // Necessary imports
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
-// Types
-
-// Shadcn UI Components
-
-// Custom components
+// Components
+import TransitionScreen from '@/components/landing/transition-screen';
+import Header from '@/layouts/landing/header';
 
 interface AppLayoutProps {
     children: ReactNode;
 }
 
 export default function AppLanding({ children }: AppLayoutProps) {
+    const [transitionScreenActive, setTransitionScreenActive] = useState(false);
+
+    useEffect(() => {
+        if(transitionScreenActive) {
+            const timer = setTimeout(() => {
+                setTransitionScreenActive(false);
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [transitionScreenActive]);
+
     return (
         <>
-            <div className='landing antialiased relative z-1 bg-background max-w-7xl w-[90%] mx-auto min-h-screen transition-default'>
+            <div className="landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased">
+                <TransitionScreen active={transitionScreenActive} />
+
+                <Header handleMenuToggle={setTransitionScreenActive} />
                 {children}
             </div>
-            <PlaceholderPattern className="fixed w-[100vw] h-[100vh] inset-0 size-full z-0 stroke-neutral-900/20 dark:stroke-neutral-100/20"/>
+            <PlaceholderPattern className="fixed inset-0 z-0 size-full h-[100vh] w-[100vw] stroke-neutral-900/20 dark:stroke-neutral-100/20" />
         </>
     );
 }

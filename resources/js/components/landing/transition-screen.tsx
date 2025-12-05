@@ -4,7 +4,7 @@
 import { cn } from '@/lib/utils';
 import { useEffect, useMemo, useState } from 'react';
 
-const DELAY_INCREMENT = 50;
+const DELAY_INCREMENT = 75;
 
 interface TransitionScreenProps {
     active: boolean;
@@ -17,32 +17,19 @@ export default function TransitionScreen({ active }: TransitionScreenProps) {
     useEffect(() => {
         if (active) {
             setVisiblePanels([]);
-
-            let current = 0;
-
             panelIndices.forEach((index) => {
-                current += DELAY_INCREMENT * (index + 1);
-
                 setTimeout(() => {
                     setVisiblePanels((prev) => [...prev, index]);
-                }, current);
+                }, index * DELAY_INCREMENT);
             });
         } else {
-            let current = 0;
-
             panelIndices.forEach((index) => {
-                current += DELAY_INCREMENT * (index + 1);
-
                 setTimeout(() => {
                     setVisiblePanels((prev) => prev.filter((i) => i !== index));
-                }, current);
+                }, index * DELAY_INCREMENT);
             });
         }
-
-        return () => {
-            setVisiblePanels([]);
-        };
-    }, [active, panelIndices]);
+    }, [active]);
 
     return (
         <div
