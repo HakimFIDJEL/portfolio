@@ -19,8 +19,9 @@ export default function Navigation({
     return (
         <nav
             className={cn(
-                'pointer-events-none fixed inset-0 z-2000 translate-y-[-100%] bg-card opacity-0',
+                'pointer-events-none fixed inset-0 z-2000 translate-y-[-100%] opacity-0',
                 'flex items-end justify-start',
+                // 'bg-card',
                 showNavigation &&
                     'pointer-events-auto translate-y-0 opacity-100',
             )}
@@ -153,7 +154,7 @@ function NavigationLink({ link }: NavigationLinkProps) {
     return (
         <Curtain showCurtain={!show}>
             <a
-                href={href}
+                {...(show ? { href } : {})}
                 className={cn(
                     // Default styles
                     'group flex translate-y-[-50%] overflow-hidden py-4 pr-12 transition-all duration-1000',
@@ -166,7 +167,6 @@ function NavigationLink({ link }: NavigationLinkProps) {
                     'focus-visible:md:gap-[80px] focus-visible:md:pl-[30px] focus-visible:md:outline-none',
 
                     // Responsive styles
-                    // 'bg-red-400 sm:bg-green-400 md:bg-card',
                     'gap-[10px] sm:gap-[50px] md:gap-[120px]',
                     'flex-col sm:flex-row',
                     'items-start sm:items-center',

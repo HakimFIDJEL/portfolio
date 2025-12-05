@@ -28,14 +28,12 @@ export default function AppLanding({ children }: AppLayoutProps) {
             setShowMenu(false);
 
             const timeout = setTimeout(() => {
-                // We first show the navigation container
                 setShowNavigation(true);
 
-                // Then we show the navigation content (after 1s)
                 setTimeout(() => {
                     setShowNavigationContent(true);
                 }, 0);
-            }, 1000);
+            }, 500);
 
             return () => clearTimeout(timeout);
         } else {
@@ -43,17 +41,15 @@ export default function AppLanding({ children }: AppLayoutProps) {
             setShowNavigationContent(false);
 
             const timeout = setTimeout(() => {
-                // Then we hide the navigation container (after 1s)
                 setShowNavigation(false);
 
-                // Finally, we hide the transition screen (after another 1s)
                 setTimeout(() => {
                     setTransitionScreenActive(false);
                     setTimeout(() => {
                         setShowMenu(true);
-                    }, 1000);
+                    }, 500);
                 }, 0);
-            }, 500);
+            }, 750);
 
             return () => clearTimeout(timeout);
         }

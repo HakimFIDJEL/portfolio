@@ -18,7 +18,7 @@ export function Curtain({
     background,
 }: CurtainProps) {
     return (
-        <div className={cn('relative', className)}>
+        <div className={cn('relative w-max', className)}>
             {children}
             <div
                 className={cn(
