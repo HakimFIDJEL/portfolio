@@ -22,9 +22,9 @@ export function Curtain({
             {children}
             <div
                 className={cn(
-                    'absolute top-0 right-0 bottom-0 left-0 transition-all',
+                    'absolute top-[-50%] right-0 bottom-0 left-0 transition-all',
                     background ? `bg-${background}` : 'bg-card',
-                    !showCurtain && 'bottom-full duration-1000',
+                    !showCurtain && 'top-0 bottom-full duration-1000',
                 )}
             ></div>
         </div>
