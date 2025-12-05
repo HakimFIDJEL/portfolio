@@ -154,24 +154,70 @@ function NavigationLink({ link }: NavigationLinkProps) {
             <a
                 href={href}
                 className={cn(
-                    'group flex translate-y-[-50%] items-center gap-[120px] overflow-hidden py-4 pr-12 transition-all duration-1000',
-                    'hover:gap-[80px] hover:pl-[30px]',
+                    // Default styles
+                    'group flex translate-y-[-50%] overflow-hidden py-4 pr-12 transition-all duration-1000',
+                    
+                    // Conditional styles based on show state
                     show && 'w-max translate-y-0',
-                    'focus-visible:gap-[80px] focus-visible:pl-[30px] focus-visible:outline-none',
+                    
+                    // Focus & hover styles
+                    'hover:md:gap-[80px] hover:md:pl-[30px]',
+                    'focus-visible:md:gap-[80px] focus-visible:md:pl-[30px] focus-visible:md:outline-none',
+
+                    // Responsive styles
+                    // 'bg-red-400 sm:bg-green-400 md:bg-card',
+                    'gap-[10px] sm:gap-[50px] md:gap-[120px]',
+                    "flex-col sm:flex-row",
+                    "items-start sm:items-center",
                 )}
             >
-                <div className="relative flex items-center gap-0 overflow-hidden transition-all duration-1000">
-                    <div className="absolute translate-x-[-100%] transition-all duration-1000 group-hover:translate-x-0 group-focus-visible:translate-x-0">
-                        <ArrowRight className="h-12 w-12 stroke-1 transition-all duration-500 group-focus-visible:w-12" />
+
+                {/* Index with arrow */}
+                <div className={cn(
+                    // Default styles
+                    "relative flex items-center gap-0 overflow-hidden transition-all duration-1000",
+                )}>
+                    {/* Arrow */}
+                    <div className={cn(
+                        // Default styles
+                        "absolute translate-x-[-100%] transition-all duration-1000",
+
+                        // Focus & hover styles
+                        "group-hover:translate-x-0 group-focus-visible:translate-x-0",
+
+                        // Responsive styles
+                        "hidden md:block",
+                    )}>
+                        <ArrowRight className={cn("h-12 w-12 stroke-1 transition-all duration-500 group-focus-visible:w-12")} />
                     </div>
-                    <span className="col-span-1 w-[150px] text-6xl font-semibold transition-all duration-1000 group-hover:pl-18 group-focus-visible:pl-18">
+                    {/* Index */}
+                    <span className={cn(
+                        // Default styles
+                        "col-span-1 w-[150px] font-semibold transition-all duration-1000",
+
+                        // Focus & hover styles
+                        "group-hover:md:pl-18 group-focus-visible:md:pl-18",
+
+                        // Reponsive styles
+                        "text-3xl sm:text-6xl",
+                        )}>
                         {index}
                     </span>
                 </div>
-                <span className="col-span-1 text-6xl font-normal uppercase">
+
+                {/* Label */}
+                <span className={cn(
+                    // Default styles
+                    "col-span-1 font-normal uppercase",
+
+                    // Reponsive styles
+                    "text-4xl sm:text-6xl",
+                    )}>
                     {label}
                 </span>
-                <div className="absolute inset-0 z-[-1] h-full w-0 bg-red-400 transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000"></div>
+
+                {/* Background animation */}
+                <div className={cn("absolute inset-0 z-[-1] h-full w-0 bg-red-400 transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000")}></div>
             </a>
         </Curtain>
     );
