@@ -2,29 +2,66 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 // Components
 import UnderlineLink from '@/components/landing/underline-link';
 
 interface HeaderProps {
     showMenu: boolean;
+    setShowMenu: (open: boolean) => void;
     handleMenuToggle: (open: boolean) => void;
 }
 
-export default function Header({ showMenu, handleMenuToggle }: HeaderProps) {
+export default function Header({
+    showMenu,
+    setShowMenu,
+    handleMenuToggle,
+}: HeaderProps) {
+    const [scrollY, setScrollY] = useState(0);
+
+    useEffect(() => {
+        let lastScrollY = 0;
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > lastScrollY) {
+                // Down
+                setShowMenu(false);
+            } else if (currentScrollY < lastScrollY - 10) {
+                // Up
+                setShowMenu(true);
+            }
+
+            setScrollY(currentScrollY);
+            lastScrollY = currentScrollY;
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
         <header
             className={cn(
                 // Default styles
-                'fixed top-0 right-0 left-0 z-10 mx-auto grid w-[90%] max-w-7xl',
-                'transition-all delay-1000 duration-1000',
+                'sticky top-0 right-0 left-0 z-10 grid w-full',
+                'transition-all duration-1000',
+                'border-b border-transparent',
 
                 // Responsive styles
                 'px-8 py-6 lg:px-12.5 lg:py-10',
                 'grid-cols-2 md:grid-cols-3',
+                'h-[73px] lg:h-[105px]',
 
                 // Conditional styles based on showMenu state
-                !showMenu && 'translate-y-[-100%] delay-0 duration-500',
+                !showMenu && 'translate-y-[-100%] duration-500',
+                scrollY > 50 &&
+                    'border-border bg-background/50 !backdrop-blur-lg',
             )}
         >
             <div

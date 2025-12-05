@@ -14,6 +14,7 @@ interface AppLayoutProps {
 }
 
 export default function AppLanding({ children }: AppLayoutProps) {
+    const [showMenu, setShowMenu] = useState(true);
     const [transitionScreenActive, setTransitionScreenActive] = useState(false);
 
     const [switchNavigation, setSwitchNavigation] = useState(false);
@@ -24,6 +25,7 @@ export default function AppLanding({ children }: AppLayoutProps) {
     useEffect(() => {
         if (switchNavigation) {
             setTransitionScreenActive(true);
+            setShowMenu(false);
 
             const timeout = setTimeout(() => {
                 // We first show the navigation container
@@ -47,6 +49,9 @@ export default function AppLanding({ children }: AppLayoutProps) {
                 // Finally, we hide the transition screen (after another 1s)
                 setTimeout(() => {
                     setTransitionScreenActive(false);
+                    setTimeout(() => {
+                        setShowMenu(true);
+                    }, 1000);
                 }, 0);
             }, 500);
 
@@ -66,7 +71,8 @@ export default function AppLanding({ children }: AppLayoutProps) {
                 />
 
                 <Header
-                    showMenu={!transitionScreenActive}
+                    showMenu={showMenu}
+                    setShowMenu={setShowMenu}
                     handleMenuToggle={setSwitchNavigation}
                 />
                 {children}
