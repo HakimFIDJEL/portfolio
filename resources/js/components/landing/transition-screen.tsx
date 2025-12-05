@@ -29,7 +29,7 @@ export default function TransitionScreen({ active }: TransitionScreenProps) {
                 }, index * DELAY_INCREMENT);
             });
         }
-    }, [active]);
+    }, [active, panelIndices]);
 
     return (
         <div

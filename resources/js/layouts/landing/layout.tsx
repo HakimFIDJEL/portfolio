@@ -30,7 +30,7 @@ export default function AppLanding({ children }: AppLayoutProps) {
             <div className="landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased">
                 <TransitionScreen active={transitionScreenActive} />
 
-                <Header handleMenuToggle={setTransitionScreenActive} />
+                <Header showMenu={!transitionScreenActive} handleMenuToggle={setTransitionScreenActive} />
                 {children}
             </div>
             <PlaceholderPattern className="fixed inset-0 z-0 size-full h-[100vh] w-[100vw] stroke-neutral-900/20 dark:stroke-neutral-100/20" />
