@@ -1,7 +1,8 @@
 // resources/js/pages/landing.tsx
 
 // Necessary imports
-import { Head } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
+import { useState, useEffect } from 'react';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
@@ -10,12 +11,16 @@ import AppLanding from '@/layouts/landing/layout';
 import Hero from '@/components/landing/sections/hero';
 
 export default function Landing() {
+
+    // States content
+    const [showContent, setShowContent] = useState(false);
+
     return (
-        <AppLanding>
+        <AppLanding showContent={showContent} setShowContent={setShowContent}>
             <Head title="Landing page" />
 
             <main className="min-h-[200vh]">
-                <Hero />
+                <Hero appear={showContent} />
             </main>
         </AppLanding>
     );
