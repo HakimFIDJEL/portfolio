@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 export function useLandingTransitions(
     showContent: boolean,
     setShowContent: (v: boolean) => void,
+    skipLoader: boolean,
 ) {
     // Menu & navigation
     const [showMenu, setShowMenu] = useState(false);
@@ -13,7 +14,6 @@ export function useLandingTransitions(
     const [switchNavigation, setSwitchNavigation] = useState(false);
 
     // Loader
-    const [skipLoader] = useState(false);
     const [showLoader, setShowLoader] = useState(skipLoader ? false : true);
     const [showLoaderContent, setShowLoaderContent] = useState(false);
 

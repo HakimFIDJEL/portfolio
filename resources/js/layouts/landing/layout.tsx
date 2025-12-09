@@ -27,6 +27,9 @@ export default function AppLanding({
     showContent,
     setShowContent,
 }: AppLayoutProps) {
+
+    const skipLoader = true;
+
     const {
         showLoader,
         showLoaderContent,
@@ -36,7 +39,7 @@ export default function AppLanding({
         showMenu,
         setShowMenu,
         transitionScreenActive,
-    } = useLandingTransitions(showContent, setShowContent);
+    } = useLandingTransitions(showContent, setShowContent, skipLoader);
 
     return (
         <>
