@@ -9,6 +9,7 @@ import AppLanding from '@/layouts/landing/layout';
 
 // Sections
 import Hero from '@/components/landing/sections/hero';
+import About from '@/components/landing/sections/about';
 
 export default function Landing() {
     // States content
@@ -18,8 +19,9 @@ export default function Landing() {
         <AppLanding showContent={showContent} setShowContent={setShowContent}>
             <Head title="Landing page" />
 
-            <main className="min-h-[200vh]">
+            <main className="min-h-[300vh]">
                 <Hero appear={showContent} />
+                <About appear={showContent} />
             </main>
         </AppLanding>
     );
