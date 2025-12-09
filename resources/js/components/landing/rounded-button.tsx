@@ -63,7 +63,8 @@ export default function RoundedButton({
                     'absolute z-[-1]',
                     'rounded-full',
                     'bg-primary transition-all',
-                    'inset-1/2',
+                    'inset-1/2 duration-500',
+                    'group-hover:!duration-1000 group-focus-visible:!duration-1000',
 
                     // Hover & Focus styles
                     'group-hover:inset-0',

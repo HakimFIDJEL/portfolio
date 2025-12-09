@@ -8,13 +8,18 @@ import { useAppearance } from '@/hooks/use-appearance';
 
 // Components
 import CircularText from '@/components/landing/circular-text';
+import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import RoundedButton from '@/components/landing/rounded-button';
 
 // Icons
 import { ArrowDown, Monitor, Moon, Sun } from 'lucide-react';
 
-export default function Hero() {
+interface HeroProps {
+    appear?: boolean;
+}
+
+export default function Hero({ appear }: HeroProps) {
     const { appearance, updateAppearance } = useAppearance();
 
     function handleSwitchAppearance() {
@@ -51,23 +56,29 @@ export default function Hero() {
                         'px-8 lg:px-12.5',
                     )}
                 >
-                    <CircularText
-                        text="Welcome to my portfolio ~ "
-                        onHover={'slowDown'}
-                        spinDuration={20}
-                        className={cn(
-                            // Default styles
-                            'font-medium !text-primary',
-                        )}
-                        fontSize="text-xl"
-                    />
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={250}
+                    >
+                        <CircularText
+                            text="Welcome to my portfolio ~ "
+                            onHover={'slowDown'}
+                            spinDuration={20}
+                            className={cn(
+                                // Default styles
+                                'font-medium !text-primary',
+                            )}
+                            fontSize="text-xl"
+                        />
+                    </Curtain>
                 </div>
 
                 {/* Title */}
                 <div
                     className={cn(
                         // Default styles
-                        'flex w-full justify-between gap-2',
+                        'flex w-full justify-between',
 
                         // Responsive styles
                         'py-6 lg:py-8',
@@ -76,29 +87,43 @@ export default function Hero() {
                         'items-start md:items-end',
                     )}
                 >
-                    <h1
-                        className={cn(
-                            // Default styles
-                            '!leading-none font-medium',
-                            'text-4xl sm:text-7xl md:text-[10vw]',
-                            'whitespace-nowrap',
-                        )}
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={0}
                     >
-                        Hakim Fidjel
-                    </h1>
-                    <h2
-                        className={cn(
-                            // Default styles
-                            '!leading-none font-light',
+                        <h1
+                            className={cn(
+                                // Default styles
+                                '!leading-none font-medium',
+                                'text-[2.65rem] sm:text-7xl md:text-[clamp(2rem,10vw,8.5rem)]',
+                                'whitespace-nowrap',
+                            )}
+                        >
+                            Hakim Fidjel
+                        </h1>
+                    </Curtain>
 
-                            // Responsive styles
-                            'text-2xl sm:text-3xl md:text-[3vw]',
-                            'text-left md:text-right',
-                            'p-0 md:pb-3',
-                        )}
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={0}
                     >
-                        Fullstack Engineer
-                    </h2>
+                        <h2
+                            className={cn(
+                                // Default styles
+                                '!leading-none font-light',
+
+                                // Responsive styles
+                                'text-2xl sm:text-3xl md:text-[clamp(2rem,4vw,3.5rem)]',
+                                'text-left md:text-right',
+                                'ml-0 md:ml-2',
+                                'p-0 md:pb-3',
+                            )}
+                        >
+                            Fullstack Engineer
+                        </h2>
+                    </Curtain>
                 </div>
 
                 <Delimiter
@@ -113,15 +138,39 @@ export default function Hero() {
                         'py-6',
                     )}
                 >
-                    <RoundedButton>
-                        <ArrowDown className="stroke-1" />
-                    </RoundedButton>
-                    <RoundedButton onClick={handleSwitchAppearance}>
-                        {appearance === 'dark' && <Moon className="stroke-1" />}
-                        {appearance === 'light' && <Sun className="stroke-1" />}
-                        {appearance === 'system' && <Monitor className="stroke-1" />}
-                    </RoundedButton>
-                    <RoundedButton>EN</RoundedButton>
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={500}
+                    >
+                        <RoundedButton>
+                            <ArrowDown className="stroke-1" />
+                        </RoundedButton>
+                    </Curtain>
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={750}
+                    >
+                        <RoundedButton onClick={handleSwitchAppearance}>
+                            {appearance === 'dark' && (
+                                <Moon className="stroke-1" />
+                            )}
+                            {appearance === 'light' && (
+                                <Sun className="stroke-1" />
+                            )}
+                            {appearance === 'system' && (
+                                <Monitor className="stroke-1" />
+                            )}
+                        </RoundedButton>
+                    </Curtain>
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={1000}
+                    >
+                        <RoundedButton>EN</RoundedButton>
+                    </Curtain>
                 </Delimiter>
             </div>
         </section>

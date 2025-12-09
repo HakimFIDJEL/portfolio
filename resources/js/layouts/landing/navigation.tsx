@@ -1,6 +1,6 @@
 // resources/js/layouts/landing/navigation.tsx
 
-import { Curtain } from '@/components/landing/curtain';
+import Curtain from '@/components/landing/curtain';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -51,11 +51,8 @@ function NavigationHeader({
         >
             <div
                 className={cn(
-                    'transition-all delay-0 duration-500',
-                    'translate-y-[-50%]',
                     'grid grid-cols-2',
                     'px-8 py-6 lg:px-12.5 lg:py-10',
-                    showNavigationContent && 'translate-y-0 duration-1000',
                 )}
             >
                 <div className="col-span-1 text-left">
@@ -157,10 +154,7 @@ function NavigationLink({ link }: NavigationLinkProps) {
                 {...(show ? { href } : {})}
                 className={cn(
                     // Default styles
-                    'group flex translate-y-[-50%] overflow-hidden py-4 pr-12 transition-all duration-1000',
-
-                    // Conditional styles based on show state
-                    show && 'w-max translate-y-0',
+                    'group flex overflow-hidden py-4 pr-12 transition-all duration-1000',
 
                     // Focus & hover styles
                     'hover:!text-primary-foreground hover:md:gap-[80px] hover:md:pl-[30px]',

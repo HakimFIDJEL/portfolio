@@ -2,62 +2,56 @@
 
 // Necessary imports
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { useEffect, useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
+
+// Shadcn UI Components
 
 // Components
 import TransitionScreen from '@/components/landing/transition-screen';
+import { useLandingTransitions } from '@/hooks/use-loading-transition';
 import Header from '@/layouts/landing/header';
+import Loader from '@/layouts/landing/loader';
 import Navigation from '@/layouts/landing/navigation';
+import { cn } from '@/lib/utils';
+
+// Pages
 
 interface AppLayoutProps {
     children: ReactNode;
+    showContent: boolean;
+    setShowContent: (show: boolean) => void;
 }
 
-export default function AppLanding({ children }: AppLayoutProps) {
-    const [showMenu, setShowMenu] = useState(true);
-    const [transitionScreenActive, setTransitionScreenActive] = useState(false);
-
-    const [switchNavigation, setSwitchNavigation] = useState(false);
-    const [showNavigation, setShowNavigation] = useState(false);
-    const [showNavigationContent, setShowNavigationContent] = useState(false);
-
-    // Handle navigation transitions
-    useEffect(() => {
-        if (switchNavigation) {
-            setTransitionScreenActive(true);
-            setShowMenu(false);
-
-            const timeout = setTimeout(() => {
-                setShowNavigation(true);
-
-                setTimeout(() => {
-                    setShowNavigationContent(true);
-                }, 0);
-            }, 500);
-
-            return () => clearTimeout(timeout);
-        } else {
-            // We first hide the navigation content
-            setShowNavigationContent(false);
-
-            const timeout = setTimeout(() => {
-                setShowNavigation(false);
-
-                setTimeout(() => {
-                    setTransitionScreenActive(false);
-                    setTimeout(() => {
-                        setShowMenu(true);
-                    }, 500);
-                }, 0);
-            }, 750);
-
-            return () => clearTimeout(timeout);
-        }
-    }, [switchNavigation]);
+export default function AppLanding({
+    children,
+    showContent,
+    setShowContent,
+}: AppLayoutProps) {
+    const {
+        showLoader,
+        showLoaderContent,
+        showNavigation,
+        showNavigationContent,
+        setSwitchNavigation,
+        showMenu,
+        setShowMenu,
+        transitionScreenActive,
+    } = useLandingTransitions(showContent, setShowContent);
 
     return (
         <>
-            <div className="landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased">
+            <div
+                className={cn(
+                    'landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased',
+                    !showContent &&
+                        'pointer-events-none h-[100vh] overflow-hidden select-none',
+                )}
+            >
+                <Loader
+                    showLoader={showLoader}
+                    showLoaderContent={showLoaderContent}
+                />
+
                 <TransitionScreen active={transitionScreenActive} />
 
                 <Navigation
@@ -71,6 +65,7 @@ export default function AppLanding({ children }: AppLayoutProps) {
                     setShowMenu={setShowMenu}
                     handleMenuToggle={setSwitchNavigation}
                 />
+
                 {children}
             </div>
             <PlaceholderPattern className="fixed inset-0 z-0 size-full h-[100vh] w-[100vw] stroke-neutral-900/20 dark:stroke-neutral-100/20" />
