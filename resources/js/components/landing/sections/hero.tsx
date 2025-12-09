@@ -34,7 +34,7 @@ export default function Hero({ appear }: HeroProps) {
     }
 
     return (
-        <section className="flex h-[calc(80vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]">
+        <section className="flex h-[calc(100vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]">
             <Delimiter
                 dashedBorders={['top', 'bottom']}
                 plusCorners={['top-left', 'top-right']}
