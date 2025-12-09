@@ -2,15 +2,17 @@
 
 // Necessary imports
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { useEffect, useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 // Shadcn UI Components
 
 // Components
 import TransitionScreen from '@/components/landing/transition-screen';
+import { useLandingTransitions } from '@/hooks/use-loading-transition';
 import Header from '@/layouts/landing/header';
 import Loader from '@/layouts/landing/loader';
 import Navigation from '@/layouts/landing/navigation';
+import { cn } from '@/lib/utils';
 
 // Pages
 
@@ -25,82 +27,26 @@ export default function AppLanding({
     showContent,
     setShowContent,
 }: AppLayoutProps) {
-    // States
-    const [showMenu, setShowMenu] = useState(false);
-    const [showNavigation, setShowNavigation] = useState(false);
-
-    
-    // States menu & navigation
-    const [transitionScreenActive, setTransitionScreenActive] = useState(false);
-    const [switchNavigation, setSwitchNavigation] = useState(false);
-    const [showNavigationContent, setShowNavigationContent] = useState(false);
-
-    // States loader
-    const [showLoader, setShowLoader] = useState(true);
-    const [showLoaderContent, setShowLoaderContent] = useState(false);
-
-    // Handle navigation transitions
-    useEffect(() => {
-        if(showLoader) return;
-
-        if (switchNavigation) {
-            setTransitionScreenActive(true);
-            setShowMenu(false);
-            setShowContent(false);
-
-            const timeout = setTimeout(() => {
-                setShowNavigation(true);
-
-                setTimeout(() => {
-                    setShowNavigationContent(true);
-                }, 0);
-            }, 500);
-
-            return () => clearTimeout(timeout);
-        } else {
-            // We first hide the navigation content
-            setShowNavigationContent(false);
-
-            const timeout = setTimeout(() => {
-                setShowNavigation(false);
-
-                setTimeout(() => {
-                    setTransitionScreenActive(false);
-                    setTimeout(() => {
-                        setShowMenu(true);
-                        setShowContent(true);
-                    }, 500);
-                }, 0);
-            }, 750);
-
-            return () => clearTimeout(timeout);
-        }
-    }, [switchNavigation]);
-
-    
-
-    // Handle appear state
-    useEffect(() => {
-        setShowLoaderContent(true);
-
-        const timeout = setTimeout(() => {
-            setShowLoaderContent(false);
-            setTimeout(() => {
-                setShowLoader(false);
-
-                setTimeout(() => {
-                    setShowContent(true);
-                    setShowMenu(true);
-                }, 500);
-            }, 500);
-        }, 1500);
-
-        return () => clearTimeout(timeout);
-    }, []);
+    const {
+        showLoader,
+        showLoaderContent,
+        showNavigation,
+        showNavigationContent,
+        setSwitchNavigation,
+        showMenu,
+        setShowMenu,
+        transitionScreenActive,
+    } = useLandingTransitions(showContent, setShowContent);
 
     return (
         <>
-            <div className="landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased">
+            <div
+                className={cn(
+                    'landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased',
+                    !showContent &&
+                        'pointer-events-none h-[100vh] overflow-hidden select-none',
+                )}
+            >
                 <Loader
                     showLoader={showLoader}
                     showLoaderContent={showLoaderContent}

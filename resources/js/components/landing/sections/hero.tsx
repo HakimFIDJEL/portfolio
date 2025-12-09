@@ -78,7 +78,7 @@ export default function Hero({ appear }: HeroProps) {
                 <div
                     className={cn(
                         // Default styles
-                        'flex w-full justify-between gap-2',
+                        'flex w-full justify-between',
 
                         // Responsive styles
                         'py-6 lg:py-8',
@@ -96,7 +96,7 @@ export default function Hero({ appear }: HeroProps) {
                             className={cn(
                                 // Default styles
                                 '!leading-none font-medium',
-                                'text-4xl sm:text-7xl md:text-[10vw]',
+                                'text-[2.65rem] sm:text-7xl md:text-[clamp(2rem,10vw,8.5rem)]',
                                 'whitespace-nowrap',
                             )}
                         >
@@ -115,8 +115,9 @@ export default function Hero({ appear }: HeroProps) {
                                 '!leading-none font-light',
 
                                 // Responsive styles
-                                'text-2xl sm:text-3xl md:text-[3vw]',
+                                'text-2xl sm:text-3xl md:text-[clamp(2rem,4vw,3.5rem)]',
                                 'text-left md:text-right',
+                                'ml-0 md:ml-2',
                                 'p-0 md:pb-3',
                             )}
                         >

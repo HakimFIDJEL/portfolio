@@ -154,7 +154,7 @@ function NavigationLink({ link }: NavigationLinkProps) {
                 {...(show ? { href } : {})}
                 className={cn(
                     // Default styles
-                    'group flex  overflow-hidden py-4 pr-12 transition-all duration-1000',
+                    'group flex overflow-hidden py-4 pr-12 transition-all duration-1000',
 
                     // Focus & hover styles
                     'hover:!text-primary-foreground hover:md:gap-[80px] hover:md:pl-[30px]',

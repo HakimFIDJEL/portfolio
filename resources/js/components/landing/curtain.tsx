@@ -19,20 +19,34 @@ export default function Curtain({
     background,
     delay = 0,
 }: CurtainProps) {
+    if (!React.isValidElement(children)) {
+        return children;
+    }
+
+    type ChildProps = {
+        className?: string;
+        style?: React.CSSProperties;
+    };
+
+    const child = children as React.ReactElement<ChildProps>;
+
+    const animatedChild = React.cloneElement(child, {
+        className: cn(
+            child.props.className,
+            'transition-all duration-500',
+            'translate-y-[-50%]',
+            !showCurtain && 'translate-y-0 duration-1000',
+        ),
+        style: {
+            ...(child.props.style || {}),
+            transitionDelay: `${delay}ms`,
+        },
+    });
+
     return (
         <div className={cn('relative w-max', className)}>
             {/* Contenu */}
-            <div
-                className={cn(
-                    'relative',
-                    'transition-all duration-500',
-                    'translate-y-[-50%]',
-                    !showCurtain && 'translate-y-0 duration-1500',
-                )}
-                style={{ transitionDelay: `${delay}ms` }}
-            >
-                {children}
-            </div>
+            {animatedChild}
 
             {/* Rideau */}
             <div
