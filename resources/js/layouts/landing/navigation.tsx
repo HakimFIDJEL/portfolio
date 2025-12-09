@@ -57,6 +57,7 @@ function NavigationHeader({
             >
                 <div className="col-span-1 text-left">
                     <NavigationButton
+                        show={showNavigationContent}
                         handleClick={() => handleMenuToggle(false)}
                     />
                 </div>
@@ -69,12 +70,14 @@ function NavigationHeader({
 }
 
 interface NavigationButtonProps {
+    show: boolean;
     handleClick: (open: boolean) => void;
 }
 
-function NavigationButton({ handleClick }: NavigationButtonProps) {
+function NavigationButton({ show, handleClick }: NavigationButtonProps) {
     return (
         <button
+            tabIndex={show ? 0 : -1}
             onClick={() => handleClick(false)}
             className={cn(
                 'relative flex h-full cursor-pointer flex-col items-center justify-center pt-[6px]',
@@ -152,9 +155,10 @@ function NavigationLink({ link }: NavigationLinkProps) {
         <Curtain showCurtain={!show}>
             <a
                 {...(show ? { href } : {})}
+                tabIndex={show ? 0 : -1}
                 className={cn(
                     // Default styles
-                    'group flex overflow-hidden py-4 pr-12 transition-all duration-1000',
+                    'group flex overflow-hidden py-4 pr-12 transition-all duration-1000 relative',
 
                     // Focus & hover styles
                     'hover:!text-primary-foreground hover:md:gap-[80px] hover:md:pl-[30px]',

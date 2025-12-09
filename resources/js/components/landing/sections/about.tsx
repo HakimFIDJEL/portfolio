@@ -30,6 +30,8 @@ export default function About({ appear }: AboutProps) {
 
                 // Responsive styles
                 'gap-0 md:gap-12 lg:gap-24',
+                'mt-12 md:mt-24 lg:mt-48',
+                'mb-12 md:mb-24 lg:mb-48',
             )}
         >
             {/* Panels */}
@@ -55,11 +57,9 @@ function Panels() {
                 'flex items-stretch justify-between',
 
                 // Responsive styles
-                'px-8 lg:px-12.5',
+                'px-6 sm:px-8 md:px-10 lg:px-12.5',
                 'flex-col md:flex-row',
                 'gap-0 md:gap-8',
-
-                // 'bg-red-400 sm:bg-blue-400 md:bg-green-400'
             )}
         >
             {/* Left Panel */}
@@ -71,10 +71,14 @@ function Panels() {
                     // Responsive styles
                     'h-auto',
                     'w-full md:w-max',
-                    'px-8 py-7',
+                    
+                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                    'py-4 sm:py-6 md:py-8 lg:py-10',
+
+                    'before:h-12 md:before:h-24 lg:before:h-48',
 
                     // Before styles
-                    'before:absolute before:inset-0 before:-z-1 before:h-48',
+                    'before:absolute before:inset-0 before:-z-1',
                     'before:translate-y-[-100%]',
                     'before:border-r before:border-l before:border-dashed before:border-border',
                 )}
@@ -86,7 +90,7 @@ function Panels() {
                         // Default styles
                         'flex flex-col',
 
-                        'sticky top-[100px]',
+                        // 'sticky top-[100px]',
 
                         'gap-4 sm:gap-8',
                     )}
@@ -130,13 +134,13 @@ function Panels() {
                     'flex flex-col',
 
                     // Responsive styles
-                    'px-8 md:px-0',
-                    'py-12',
+                    'px-6 sm:px-8 md:px-2 lg:px-12.5',
+                    'py-12 md:py-10',
                     'gap-4 md:gap-12',
 
                     'text-lg sm:text-xl md:text-2xl',
                     'border-t border-r border-l border-dashed border-border md:border-0',
-                    'w-full md:w-max md:max-w-[55%] lg:max-w-[45%]',
+                    'w-full md:w-max md:max-w-[75%] lg:max-w-[45%]',
                 )}
             >
                 <p>
@@ -169,7 +173,7 @@ function Panels() {
 // -------------------------
 
 function Accordions() {
-    const [openIndex, setOpenIndex] = React.useState<number | null>(2);
+    const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
     return (
         <div
@@ -178,7 +182,7 @@ function Accordions() {
                 'w-full border border-dashed border-border',
 
                 // Responsive styles
-                'px-8 lg:px-12.5',
+                'px-6 sm:px-8 md:px-10 lg:px-12.5',
             )}
         >
             <Delimiter
@@ -188,6 +192,13 @@ function Accordions() {
 
                     // Responsive styles
                     'max-w-full lg:max-w-[70%]',
+                    'before:h-12 md:before:h-24 lg:before:h-48',
+
+                    // Before styles
+                    'relative',
+                    'before:absolute before:right-0 before:bottom-0 before:left-0 before:-z-1',
+                    'before:translate-y-[100%]',
+                    'before:border-r before:border-l before:border-dashed before:border-border',
                 )}
                 dashedBorders={['right', 'left']}
                 plusCorners={['all']}
@@ -272,10 +283,9 @@ function AccordionItem({
         <div
             className={cn(
                 'flex flex-col',
-
-                // "bg-red-400 sm:bg-blue-400 md:bg-green-400"
             )}
         >
+            {/* Accordion Head */}
             <div
                 className={cn(
                     // Default styles
@@ -283,7 +293,8 @@ function AccordionItem({
                     'bg-card',
 
                     // Responsive styles
-                    'p-4 lg:px-10 lg:py-8',
+                    'px-4 sm:px-8 md:px-10',
+                    'py-4 sm:py-6 md:py-8',
 
                     // Open styles
                     open &&
@@ -313,7 +324,7 @@ function AccordionItem({
                             'font-light',
 
                             // Responsive styles
-                            'text-xl sm:text-3xl',
+                            'text-lg sm:text-3xl',
                         )}
                     >
                         {title}
@@ -321,7 +332,13 @@ function AccordionItem({
                 </div>
                 <RoundedButton
                     className={cn(
-                        'z-10',
+                        // Default styles
+                        'z-1',
+
+                        // Responsive styles
+                        'scale-80 sm:scale-100',
+
+                        // Open styles
                         open &&
                             'border-primary-foreground !text-primary-foreground',
                     )}
@@ -331,6 +348,7 @@ function AccordionItem({
                 </RoundedButton>
             </div>
 
+            {/* Accordion Content */}
             <div
                 ref={contentRef}
                 style={{ maxHeight: height }}
@@ -342,6 +360,7 @@ function AccordionItem({
                     className={cn(
                         // Default styles
                         'border-r border-l border-border',
+                        index === 5 && 'border-b',
                     )}
                 >
                     {children}
@@ -374,6 +393,9 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
                     // Apparition styles
                     'scale-90 opacity-0 transition-all duration-1000',
                     open && 'scale-100 opacity-100 delay-125',
+
+                    // Responsive styles
+                    'flex-col sm:flex-row',
                 )}
             >
                 {/* Left Panel - Photo */}
@@ -381,9 +403,11 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
                     className={cn(
                         // Default styles
                         'aspect-[9/16] shrink-0 bg-card',
-                        'w-1/3',
-
-                        'flex items-center justify-center',
+                        
+                        'items-center justify-center w-1/3',
+                        
+                        // Responsive styles
+                        'hidden sm:flex',
                     )}
                 >
                     Photo
@@ -403,7 +427,8 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
                             'flex flex-col justify-between gap-6',
 
                             // Responsive styles
-                            'p-4 lg:px-16 lg:py-12',
+                            'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                            'py-4 sm:py-6 md:py-8 lg:py-10',
                         )}
                     >
                         <h4
@@ -431,18 +456,21 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
                     <button
                         className={cn(
                             'group relative w-full cursor-pointer bg-secondary text-xl',
-                            'p-4',
-
+                            
                             // Hover styles
                             'border-t border-border',
                             'focus-visible:outline-none',
+
+                            // Responsive styles
+                            'p-2 text-lg sm:p-4 sm:text-xl',
                         )}
                         tabIndex={open ? 0 : -1}
                     >
                         <div
                             className={cn(
-                                'flex items-center justify-center gap-4',
+                                'flex items-center justify-center gap-4 transition-all',
                                 'relative z-1',
+                                'group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
                             )}
                         >
                             Download my resume
@@ -497,10 +525,12 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
             <div
                 className={cn(
                     // Default styles
-                    'flex flex-col gap-12',
+                    'flex flex-col',
 
                     // Responsive styles
-                    'p-4 lg:px-16 lg:py-12',
+                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                    'py-4 sm:py-6 md:py-8 lg:py-10',
+                    'gap-6 sm:gap-12',
 
                     // Apparition styles
                     'scale-90 opacity-0 transition-all duration-1000',
@@ -510,7 +540,10 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
                 <ul
                     className={cn(
                         // Default styles
-                        'flex flex-col gap-10',
+                        'flex flex-col',
+
+                        // Responsive styles
+                        'gap-6 sm:gap-10'
                     )}
                 >
                     {experiences.map((exp, idx) => (
@@ -519,14 +552,18 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
                             className={cn(
                                 // Default styles
                                 'flex items-start justify-between',
+
+                                // Responsive styles
+                                'flex-col gap-4 sm:flex-row sm:gap-0',
+                                'pb-4 border-b border-border sm:pb-0 sm:border-0',
                             )}
                         >
                             <div
                                 className={cn(
                                     // Default styles
-                                    'flex flex-col shrink-0',
+                                    'flex shrink-0 flex-col',
 
-                                    'w-[25%]',
+                                    'sm:w-[25%]',
                                 )}
                             >
                                 <h4
@@ -556,14 +593,13 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
                                 >
                                     {exp.duration}
                                 </p>
-
                             </div>
                             <p
                                 className={cn(
                                     // Default styles
                                     'font-light',
                                     'text-base',
-                                    'shrink-0 w-[65%]'
+                                    'sm:w-[65%] shrink-0',
                                 )}
                             >
                                 {exp.description}
@@ -587,6 +623,44 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
 }
 
 function AccordionSchool({ index, title, open, onChange }: AccordionItemProps) {
+    const experiences = [
+        {
+            title: 'IG2I de Centrale Lille Institut',
+            type: 'School',
+            duration: '09/21 - Present',
+            description:
+                'Currently in my 4th year at IG2I Centrale Lille, I am pursuing an engineering degree specializing in industrial and computer science. The program combines academic excellence with real-world applications through hands-on projects and professional training.',
+        },
+        {
+            title: 'TOEIC',
+            type: 'Diploma',
+            duration: '01/25',
+            description:
+                'Achieved a perfect score on the TOEIC (990/990) in 2025, demonstrating complete mastery of professional English.',
+        },
+        {
+            title: 'Baccaulaureate',
+            type: 'Diploma',
+            duration: '08/21',
+            description:
+                'I completed my high school studies at Lycée Auguste Angellier, earning a Scientific Baccalaureate with Honors in 2021. My specialization in Mathematics and Physics provided a strong analytical foundation, fueling my interest in technology and complex problem-solving.',
+        },
+        {
+            title: 'Cambridge First Certificate',
+            type: 'Diploma',
+            duration: '06/20',
+            description:
+                'Earned the Cambridge First Certificate in 2020,  validating my English proficiency at a B2 level. This certification  reflects my ability to communicate effectively in professional and  academic environments.',
+        },
+        {
+            title: 'Lycée Auguste Angellier',
+            type: 'School',
+            duration: '09/18 - 08/21',
+            description:
+                'I completed my high school studies at Lycée  Auguste Angellier, earning a Scientific Baccalaureate in 2021. This  solid foundation in mathematics and sciences sparked my passion for  technology and problem-solving.',
+        },
+    ];
+
     return (
         <AccordionItem
             index={index}
@@ -595,7 +669,102 @@ function AccordionSchool({ index, title, open, onChange }: AccordionItemProps) {
             onChange={onChange}
         >
             {/* Content goes here */}
-            <div></div>
+            <div
+                className={cn(
+                    // Default styles
+                    'flex flex-col',
+
+                    // Responsive styles
+                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                    'py-4 sm:py-6 md:py-8 lg:py-10',
+                    'gap-6 sm:gap-12',
+
+                    // Apparition styles
+                    'scale-90 opacity-0 transition-all duration-1000',
+                    open && 'scale-100 opacity-100 delay-125',
+                )}
+            >
+                <ul
+                    className={cn(
+                        // Default styles
+                        'flex flex-col',
+
+                        // Responsive styles
+                        'gap-6 sm:gap-10'
+                    )}
+                >
+                    {experiences.map((exp, idx) => (
+                        <li
+                            key={idx}
+                            className={cn(
+                                // Default styles
+                                'flex items-start justify-between',
+
+                                // Responsive styles
+                                'flex-col gap-4 sm:flex-row sm:gap-0',
+                                'pb-4 border-b border-border sm:pb-0 sm:border-0',
+                            )}
+                        >
+                            <div
+                                className={cn(
+                                    // Default styles
+                                    'flex shrink-0 flex-col',
+
+                                    'sm:w-[25%]',
+                                )}
+                            >
+                                <h4
+                                    className={cn(
+                                        // Default styles
+                                        'font-medium',
+                                        'text-lg',
+                                    )}
+                                >
+                                    {exp.title}
+                                </h4>
+                                <p
+                                    className={cn(
+                                        // Default styles
+                                        'font-light',
+                                        'text-base',
+                                    )}
+                                >
+                                    {exp.type}
+                                </p>
+                                <p
+                                    className={cn(
+                                        // Default styles
+                                        'font-light',
+                                        'text-base',
+                                    )}
+                                >
+                                    {exp.duration}
+                                </p>
+                            </div>
+                            <p
+                                className={cn(
+                                    // Default styles
+                                    'font-light',
+                                    'text-base',
+                                    'sm:w-[65%] shrink-0',
+                                )}
+                            >
+                                {exp.description}
+                            </p>
+                        </li>
+                    ))}
+                </ul>
+                <div
+                    className={cn(
+                        // Default styles
+                        'text-lg font-medium',
+                    )}
+                >
+                    These experiences have shaped my technical and analytical
+                    mindset, preparing me for future challenges in the tech
+                    world.
+                </div>
+            </div>
         </AccordionItem>
     );
 }
@@ -606,6 +775,54 @@ function AccordionTechStack({
     open,
     onChange,
 }: AccordionItemProps) {
+    const stack = [
+        {
+            category: 'Frontend',
+            technologies: [
+                'HTML',
+                'CSS',
+                'SCSS',
+                'Tailwind',
+                'JavaScript',
+                'TypeScript',
+                'React',
+                'jQuery',
+                'Next.js',
+            ],
+        },
+        {
+            category: 'Backend',
+            technologies: [
+                'PHP',
+                'Laravel',
+                'OctoberCMS',
+                'Node.js',
+                'NestJS',
+                'Express.js',
+                'Inertia.js',
+            ],
+        },
+        {
+            category: 'Databases',
+            technologies: [
+                'MySQL',
+                'PostgreSQL',
+                'PL/SQL',
+                'NoSQL',
+                'SQLite',
+                'MongoDB',
+            ],
+        },
+        {
+            category: 'Software',
+            technologies: ['C', 'Java', 'Python', 'Bash'],
+        },
+        {
+            category: 'Mobile',
+            technologies: ['React Native', 'Flutter'],
+        },
+    ];
+
     return (
         <AccordionItem
             index={index}
@@ -614,12 +831,142 @@ function AccordionTechStack({
             onChange={onChange}
         >
             {/* Content goes here */}
-            <div></div>
+            <div
+                className={cn(
+                    // Default styles
+                    'flex flex-col',
+
+                    // Responsive styles
+                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                    'py-4 sm:py-6 md:py-8 lg:py-10',
+                    'gap-6 sm:gap-12',
+
+                    // Apparition styles
+                    'scale-90 opacity-0 transition-all duration-1000',
+                    open && 'scale-100 opacity-100 delay-125',
+                )}
+            >
+                <ul
+                    className={cn(
+                        // Default styles
+                        'flex flex-col',
+
+                        // Responsive styles
+                        'gap-6 sm:gap-10'
+                    )}
+                >
+                    {stack.map((s, idx) => (
+                        <li
+                            key={idx}
+                            className={cn(
+                                // Default styles
+                                'flex items-start justify-between',
+
+                                // Responsive styles
+                                'flex-col gap-4 sm:flex-row sm:gap-0',
+                                'pb-4 border-b border-border sm:pb-0 sm:border-0',
+                                idx === stack.length - 1 && 'border-0',
+                            )}
+                        >
+                            <div
+                                className={cn(
+                                    // Default styles
+                                    'flex shrink-0 flex-col',
+
+                                    'sm:w-[25%]',
+                                )}
+                            >
+                                <h4
+                                    className={cn(
+                                        // Default styles
+                                        'font-medium',
+                                        'text-lg',
+                                    )}
+                                >
+                                    {s.category}
+                                </h4>
+                            </div>
+                            <div
+                                className={cn(
+                                    // Default styles
+                                    'flex sm:w-[65%] flex-wrap gap-2.5',
+                                )}
+                            >
+                                {s.technologies.map((tech, techIdx) => (
+                                    <span
+                                        className={cn(
+                                            // Default styles
+                                            'border border-primary px-2.5 py-1 font-light',
+                                        )}
+                                    >
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </AccordionItem>
     );
 }
 
 function AccordionTools({ index, title, open, onChange }: AccordionItemProps) {
+    const stack = [
+        {
+            category: 'IDE',
+            technologies: [
+                'VS Code',
+                'Visual Studio',
+                'Sublime Text',
+                'Notepad++',
+                'Nano',
+                'Vim',
+                'PhpStorm',
+                'IntelliJ IDEA',
+                'PyCharm',
+            ],
+        },
+        {
+            category: 'DevOps',
+            technologies: [
+                'Docker',
+                'Git',
+                'GitHub Actions',
+                'CI/CD',
+                'Nginx',
+                'Apache',
+                'Kafka',
+                'Nifi',
+            ],
+        },
+        {
+            category: 'Databases',
+            technologies: [
+                'PhpMyAdmin',
+                'PgAdmin',
+                'Datagrip',
+                'MongoDB',
+                'DataBricks',
+            ],
+        },
+        {
+            category: 'Tools',
+            technologies: [
+                'Postman',
+                'Figma',
+                'Docker Desktop',
+                'Docs',
+                'Sheets',
+                'Slides',
+                'Canva',
+                'Trello',
+                'Draw.io',
+                'ClickUp',
+            ],
+        },
+    ];
+
     return (
         <AccordionItem
             index={index}
@@ -628,7 +975,82 @@ function AccordionTools({ index, title, open, onChange }: AccordionItemProps) {
             onChange={onChange}
         >
             {/* Content goes here */}
-            <div></div>
+            <div
+                className={cn(
+                    // Default styles
+                    'flex flex-col',
+
+                    // Responsive styles
+                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                    'py-4 sm:py-6 md:py-8 lg:py-10',
+                    'gap-6 sm:gap-12',
+
+                    // Apparition styles
+                    'scale-90 opacity-0 transition-all duration-1000',
+                    open && 'scale-100 opacity-100 delay-125',
+                )}
+            >
+                <ul
+                    className={cn(
+                        // Default styles
+                        'flex flex-col',
+
+                        // Responsive styles
+                        'gap-6 sm:gap-10'
+                    )}
+                >
+                    {stack.map((s, idx) => (
+                        <li
+                            key={idx}
+                            className={cn(
+                                // Default styles
+                                'flex items-start justify-between',
+
+                                // Responsive styles
+                                'flex-col gap-4 sm:flex-row sm:gap-0',
+                                'pb-4 border-b border-border sm:pb-0 sm:border-0',
+                                idx === stack.length - 1 && 'border-0',
+                            )}
+                        >
+                            <div
+                                className={cn(
+                                    // Default styles
+                                    'flex shrink-0 flex-col',
+
+                                    'sm:w-[25%]',
+                                )}
+                            >
+                                <h4
+                                    className={cn(
+                                        // Default styles
+                                        'font-medium',
+                                        'text-lg',
+                                    )}
+                                >
+                                    {s.category}
+                                </h4>
+                            </div>
+                            <div
+                                className={cn(
+                                    // Default styles
+                                    'flex sm:w-[65%] flex-wrap gap-2.5',
+                                )}
+                            >
+                                {s.technologies.map((tech, techIdx) => (
+                                    <span
+                                        className={cn(
+                                            // Default styles
+                                            'border border-primary px-2.5 py-1 font-light',
+                                        )}
+                                    >
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </AccordionItem>
     );
 }

@@ -19,39 +19,49 @@ export default function Curtain({
     background,
     delay = 0,
 }: CurtainProps) {
-    if (!React.isValidElement(children)) {
-        return children;
-    }
+    // if (!React.isValidElement(children)) {
+    //     return children;
+    // }
 
-    type ChildProps = {
-        className?: string;
-        style?: React.CSSProperties;
-    };
+    // type ChildProps = {
+    //     className?: string;
+    //     style?: React.CSSProperties;
+    // };
 
-    const child = children as React.ReactElement<ChildProps>;
+    // const child = children as React.ReactElement<ChildProps>;
 
-    const animatedChild = React.cloneElement(child, {
-        className: cn(
-            child.props.className,
-            'transition-all duration-500',
-            'translate-y-[-50%]',
-            !showCurtain && 'translate-y-0 duration-1000',
-        ),
-        style: {
-            ...(child.props.style || {}),
-            transitionDelay: `${delay}ms`,
-        },
-    });
+    // const animatedChild = React.cloneElement(child, {
+    //     className: cn(
+    //         child.props.className,
+    // 'transition-all duration-500',
+    // 'translate-y-[-50%]',
+    // !showCurtain && 'translate-y-0 duration-1000',
+    //     ),
+    //     style: {
+    //         ...(child.props.style || {}),
+    //         transitionDelay: `${delay}ms`,
+    //     },
+    // });
 
     return (
         <div className={cn('relative w-max', className)}>
             {/* Contenu */}
-            {animatedChild}
+            <div
+                className={cn(
+                    // Default styles
+                    'transition-all duration-500',
+                    'translate-y-[-50%]',
+                    !showCurtain && 'translate-y-0 duration-1000',
+                )}
+                style={{ transitionDelay: `${delay}ms` }}
+            >
+                {children}
+            </div>
 
             {/* Rideau */}
             <div
                 className={cn(
-                    'absolute top-[-50%] right-0 bottom-0 left-0 transition-all',
+                    'absolute top-[-50%] right-[-1px] bottom-0 left-[-1px] transition-all',
                     background ? `bg-${background}` : 'bg-card',
                     !showCurtain && 'top-0 bottom-full duration-1500',
                 )}

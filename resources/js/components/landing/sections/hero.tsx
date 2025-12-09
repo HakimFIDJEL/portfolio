@@ -53,7 +53,7 @@ export default function Hero({ appear }: HeroProps) {
                 <div
                     className={cn(
                         // Responsive styles
-                        'px-8 lg:px-12.5',
+                        'px-4 sm:px-8 md:px-10 lg:px-12.5',
                     )}
                 >
                     <Curtain
@@ -81,8 +81,8 @@ export default function Hero({ appear }: HeroProps) {
                         'flex w-full justify-between',
 
                         // Responsive styles
-                        'py-6 lg:py-8',
-                        'px-8 lg:px-12.5',
+                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                        'py-4 sm:py-6 md:py-8 lg:py-10',
                         'flex-col md:flex-row',
                         'items-start md:items-end',
                     )}
@@ -134,8 +134,8 @@ export default function Hero({ appear }: HeroProps) {
                         'flex items-center gap-5',
 
                         // Responsive styles
-                        'px-8 lg:px-12.5',
-                        'py-6',
+                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                        'py-4 sm:py-5 md:py-6 lg:py-8',
                     )}
                 >
                     <Curtain
