@@ -41,6 +41,8 @@ export default function AppLanding({
         transitionScreenActive,
     } = useLandingTransitions(showContent, setShowContent, skipLoader);
 
+    // TODO : Fix scroll up when navigation is opened
+
     return (
         <>
             <div

@@ -1,30 +1,37 @@
 // resources/js/components/landing/sections/about.tsx
 
 // Necessary imports
-import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
+import React, { useEffect, useRef, useState } from 'react';
 
 // Components
 import Delimiter from '@/components/landing/delimiter';
-import UnderlineLink from '@/components/landing/underline-link';
 import RoundedButton from '@/components/landing/rounded-button';
+import UnderlineLink from '@/components/landing/underline-link';
 
 // UI Components
 import { Separator } from '@/components/ui/separator';
 
 // Icons
-import { ArrowDownRight, Minus, Plus } from 'lucide-react';
+import { ArrowDownRight, Download, Minus, Plus } from 'lucide-react';
 
 interface AboutProps {
     appear: boolean;
 }
 
 export default function About({ appear }: AboutProps) {
-
     console.log(appear);
 
     return (
-        <section className="mt-48 flex flex-col gap-24">
+        <section
+            className={cn(
+                // Default styles
+                'mt-48 flex flex-col',
+
+                // Responsive styles
+                'gap-0 md:gap-12 lg:gap-24',
+            )}
+        >
             {/* Panels */}
             <Panels />
 
@@ -162,7 +169,7 @@ function Panels() {
 // -------------------------
 
 function Accordions() {
-    const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+    const [openIndex, setOpenIndex] = React.useState<number | null>(2);
 
     return (
         <div
@@ -175,7 +182,13 @@ function Accordions() {
             )}
         >
             <Delimiter
-                className={cn('w-full max-w-[70%]')}
+                className={cn(
+                    // Default styles
+                    'w-full transition-all',
+
+                    // Responsive styles
+                    'max-w-full lg:max-w-[70%]',
+                )}
                 dashedBorders={['right', 'left']}
                 plusCorners={['all']}
             >
@@ -256,16 +269,55 @@ function AccordionItem({
     }, [open]);
 
     return (
-        <div className="flex flex-col">
+        <div
+            className={cn(
+                'flex flex-col',
+
+                // "bg-red-400 sm:bg-blue-400 md:bg-green-400"
+            )}
+        >
             <div
                 className={cn(
-                    'flex items-center justify-between px-8 py-6 transition-all duration-500 lg:px-10 lg:py-8 border-b border-transparent bg-card ',
-                    open && 'bg-primary text-primary-foreground duration-1000 border-border',
+                    // Default styles
+                    'flex items-center justify-between gap-4 border-b border-transparent transition-all duration-500',
+                    'bg-card',
+
+                    // Responsive styles
+                    'p-4 lg:px-10 lg:py-8',
+
+                    // Open styles
+                    open &&
+                        'border-border bg-primary text-primary-foreground duration-1000',
                 )}
             >
-                <div className="flex items-center gap-6">
-                    <h3 className="text-3xl font-semibold">0{index}</h3>
-                    <p className="text-3xl font-light">{title}</p>
+                <div
+                    className={cn(
+                        'flex',
+                        'flex-col gap-0 sm:flex-row sm:items-center sm:gap-6',
+                    )}
+                >
+                    <h3
+                        className={cn(
+                            // Default styles
+                            'font-semibold',
+
+                            // Responsive styles
+                            'text-xl sm:text-3xl',
+                        )}
+                    >
+                        0{index}
+                    </h3>
+                    <p
+                        className={cn(
+                            // Default styles
+                            'font-light',
+
+                            // Responsive styles
+                            'text-xl sm:text-3xl',
+                        )}
+                    >
+                        {title}
+                    </p>
                 </div>
                 <RoundedButton
                     className={cn(
@@ -282,15 +334,16 @@ function AccordionItem({
             <div
                 ref={contentRef}
                 style={{ maxHeight: height }}
-                className={cn('overflow-hidden py-0 transition-all duration-500')}
+                className={cn(
+                    'overflow-hidden py-0 transition-all duration-500',
+                )}
             >
-                <div className={cn(
-                    // Default styles
-                    'bg-background border-border border-l border-r',
-
-                    // Responsive styles
-                    'px-8 py-6 lg:px-10 lg:py-8',
-                )}>
+                <div
+                    className={cn(
+                        // Default styles
+                        'border-r border-l border-border',
+                    )}
+                >
                     {children}
                 </div>
             </div>
@@ -299,6 +352,13 @@ function AccordionItem({
 }
 
 function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
+    const quotes = [
+        '“Aiming to build the future one line of code at a time.”',
+        "“It's never a bug, it's a feature.”",
+        '“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”',
+        '“If it’s not broken, do not fix it.”',
+    ];
+
     return (
         <AccordionItem
             index={index}
@@ -306,13 +366,126 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
             open={open}
             onChange={onChange}
         >
-            {/* Content goes here */}
-            <div></div>
+            <div
+                className={cn(
+                    // Default styles
+                    'flex justify-between bg-background',
+
+                    // Apparition styles
+                    'scale-90 opacity-0 transition-all duration-1000',
+                    open && 'scale-100 opacity-100 delay-125',
+                )}
+            >
+                {/* Left Panel - Photo */}
+                <div
+                    className={cn(
+                        // Default styles
+                        'aspect-[9/16] shrink-0 bg-card',
+                        'w-1/3',
+
+                        'flex items-center justify-center',
+                    )}
+                >
+                    Photo
+                </div>
+
+                {/* Right Panel - Text + Button */}
+                <div
+                    className={cn(
+                        // Default styles
+                        'flex flex-col justify-between',
+                    )}
+                >
+                    {/* My philosophy */}
+                    <div
+                        className={cn(
+                            // Default styles
+                            'flex flex-col justify-between gap-6',
+
+                            // Responsive styles
+                            'p-4 lg:px-16 lg:py-12',
+                        )}
+                    >
+                        <h4
+                            className={cn(
+                                // Default styles
+                                'text-xl font-light',
+                            )}
+                        >
+                            My philosophy
+                        </h4>
+                        <ul
+                            className={cn(
+                                // Default styles
+                                'flex flex-col gap-6',
+                                'text-xl font-medium',
+                            )}
+                        >
+                            {quotes.map((quote, index) => (
+                                <li key={index}>{quote}</li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Temp Button */}
+                    <button
+                        className={cn(
+                            'group relative w-full cursor-pointer bg-secondary text-xl',
+                            'p-4',
+
+                            // Hover styles
+                            'border-t border-border',
+                            'focus-visible:outline-none',
+                        )}
+                        tabIndex={open ? 0 : -1}
+                    >
+                        <div
+                            className={cn(
+                                'flex items-center justify-center gap-4',
+                                'relative z-1',
+                            )}
+                        >
+                            Download my resume
+                            <Download className="stroke-1" />
+                        </div>
+
+                        <div
+                            className={cn(
+                                'absolute inset-0 z-0 h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
+                            )}
+                        ></div>
+                    </button>
+                </div>
+            </div>
         </AccordionItem>
     );
 }
 
 function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
+    const experiences = [
+        {
+            company: 'Réservoir Digital',
+            status: 'Apprenticeship',
+            duration: '09/23 - Present',
+            description:
+                'I oversee the development of web projects from analysis to production.  My role includes ensuring compliance with business needs, streamlining  workflows, and modernizing internal processes.',
+        },
+        {
+            company: 'Réservoir Digital',
+            status: 'Internship',
+            duration: '05/23 - 08/23',
+            description:
+                'During my internship at Réservoir Digital, I  improved my skills in new technologies while contributing to digital  solution development. Collaborating within a team was a key part of this experience.',
+        },
+        {
+            company: 'Hôpital Maritime de Zuydcoote',
+            status: 'Internship',
+            duration: '06/22 - 08/22',
+            description:
+                'I managed IT  infrastructure to ensure system connectivity and reliability. I also  developed an internal website that optimized patient file management,  replacing outdated Excel processes.',
+        },
+    ];
+
     return (
         <AccordionItem
             index={index}
@@ -321,7 +494,94 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
             onChange={onChange}
         >
             {/* Content goes here */}
-            <div></div>
+            <div
+                className={cn(
+                    // Default styles
+                    'flex flex-col gap-12',
+
+                    // Responsive styles
+                    'p-4 lg:px-16 lg:py-12',
+
+                    // Apparition styles
+                    'scale-90 opacity-0 transition-all duration-1000',
+                    open && 'scale-100 opacity-100 delay-125',
+                )}
+            >
+                <ul
+                    className={cn(
+                        // Default styles
+                        'flex flex-col gap-10',
+                    )}
+                >
+                    {experiences.map((exp, idx) => (
+                        <li
+                            key={idx}
+                            className={cn(
+                                // Default styles
+                                'flex items-start justify-between',
+                            )}
+                        >
+                            <div
+                                className={cn(
+                                    // Default styles
+                                    'flex flex-col shrink-0',
+
+                                    'w-[25%]',
+                                )}
+                            >
+                                <h4
+                                    className={cn(
+                                        // Default styles
+                                        'font-medium',
+                                        'text-lg',
+                                    )}
+                                >
+                                    {exp.company}
+                                </h4>
+                                <p
+                                    className={cn(
+                                        // Default styles
+                                        'font-light',
+                                        'text-base',
+                                    )}
+                                >
+                                    {exp.status}
+                                </p>
+                                <p
+                                    className={cn(
+                                        // Default styles
+                                        'font-light',
+                                        'text-base',
+                                    )}
+                                >
+                                    {exp.duration}
+                                </p>
+
+                            </div>
+                            <p
+                                className={cn(
+                                    // Default styles
+                                    'font-light',
+                                    'text-base',
+                                    'shrink-0 w-[65%]'
+                                )}
+                            >
+                                {exp.description}
+                            </p>
+                        </li>
+                    ))}
+                </ul>
+                <div
+                    className={cn(
+                        // Default styles
+                        'text-lg font-medium',
+                    )}
+                >
+                    These roles have sharpened my ability to deliver efficient,
+                    innovative solutions while adapting to diverse professional
+                    environments.
+                </div>
+            </div>
         </AccordionItem>
     );
 }
