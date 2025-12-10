@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 
 // Shadcn UI Components
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { BreakpointIndicator } from '@/components/ui/breakpoint-indicator';
 
 // Hooks
 import { useLandingTransitions } from '@/hooks/use-loading-transition';
@@ -15,7 +16,6 @@ import TransitionScreen from '@/components/landing/transition-screen';
 import Header from '@/layouts/landing/header';
 import Loader from '@/layouts/landing/loader';
 import Navigation from '@/layouts/landing/navigation';
-// import ScreenWidthDisplay from '@/components/landing/screen-width-display';
 
 
 interface AppLayoutProps {
@@ -30,7 +30,7 @@ export default function AppLanding({
     setShowContent,
 }: AppLayoutProps) {
 
-    const skipLoader = false;
+    const skipLoader = true;
 
     const {
         showLoader,
@@ -43,8 +43,6 @@ export default function AppLanding({
         transitionScreenActive,
     } = useLandingTransitions(showContent, setShowContent, skipLoader);
 
-    // TODO : Fix scroll up when navigation is opened
-
     return (
         <>
             <div
@@ -54,7 +52,9 @@ export default function AppLanding({
                     //     'pointer-events-none h-[100vh] overflow-hidden select-none',
                 )}
             >
-                {/* <ScreenWidthDisplay /> */}
+                
+                <BreakpointIndicator className="fixed bottom-5 left-6" />
+
 
                 <Loader
                     showLoader={showLoader}
@@ -74,6 +74,7 @@ export default function AppLanding({
                     setShowMenu={setShowMenu}
                     handleMenuToggle={setSwitchNavigation}
                 />
+
 
                 {children}
             </div>

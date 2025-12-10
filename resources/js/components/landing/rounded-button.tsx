@@ -7,12 +7,14 @@ interface RoundedButtonProps {
     children: React.ReactNode;
     onClick?: () => void;
     className?: string;
+    disabled?: boolean;
 }
 
 export default function RoundedButton({
     children,
     onClick,
     className,
+    disabled,
 }: RoundedButtonProps) {
     const [isClicked, setIsClicked] = useState(false);
 
@@ -30,7 +32,7 @@ export default function RoundedButton({
 
     return (
         <button
-            onClick={handleClick}
+            onClick={disabled ? undefined : handleClick}
             className={cn(
                 // Default styles
                 'cursor-pointer',
@@ -44,33 +46,40 @@ export default function RoundedButton({
                 'hover:!text-primary-foreground',
                 'focus-visible:!text-primary-foreground focus-visible:outline-none',
 
+                // Disabled styles
+                disabled &&
+                    'pointer-events-none opacity-50 hover:!text-primary focus-visible:!text-primary',
+
                 className,
             )}
         >
             <div
                 className={cn(
                     // Default styles
-                    'transition-all',
+                    'transition-all flex items-center justify-center',
+                    'h-max',
                     isClicked && 'scale-75 opacity-75',
                 )}
             >
                 {children}
             </div>
 
-            <div
-                className={cn(
-                    // Default styles
-                    'absolute z-[-1]',
-                    'rounded-full',
-                    'bg-primary transition-all',
-                    'inset-1/2 duration-500',
-                    'group-hover:!duration-1000 group-focus-visible:!duration-1000',
+            {!disabled && (
+                <div
+                    className={cn(
+                        // Default styles
+                        'absolute z-[-1]',
+                        'rounded-full',
+                        'bg-primary transition-all',
+                        'inset-1/2 duration-1000',
+                        'group-hover:!duration-500 group-focus-visible:!duration-500',
 
-                    // Hover & Focus styles
-                    'group-hover:inset-0',
-                    'group-focus-visible:inset-0',
-                )}
-            ></div>
+                        // Hover & Focus styles
+                        'group-hover:inset-0',
+                        'group-focus-visible:inset-0',
+                    )}
+                ></div>
+            )}
         </button>
     );
 }

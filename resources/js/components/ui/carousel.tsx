@@ -24,13 +24,16 @@ type CarouselContextProps = {
   api: ReturnType<typeof useEmblaCarousel>[1]
   scrollPrev: () => void
   scrollNext: () => void
+  scrollTo: (index: number) => void
   canScrollPrev: boolean
   canScrollNext: boolean
+  currentIndex: number
+  totalSlides: number
 } & CarouselProps
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null)
 
-function useCarousel() {
+export function useCarousel() {
   const context = React.useContext(CarouselContext)
 
   if (!context) {
@@ -58,11 +61,13 @@ function Carousel({
   )
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(false)
+  const [currentIndex, setCurrentIndex] = React.useState(0)
 
   const onSelect = React.useCallback((api: CarouselApi) => {
     if (!api) return
     setCanScrollPrev(api.canScrollPrev())
     setCanScrollNext(api.canScrollNext())
+    setCurrentIndex(api.selectedScrollSnap())
   }, [])
 
   const scrollPrev = React.useCallback(() => {
@@ -72,6 +77,13 @@ function Carousel({
   const scrollNext = React.useCallback(() => {
     api?.scrollNext()
   }, [api])
+
+  const scrollTo = React.useCallback(
+    (index: number) => {
+      api?.scrollTo(index)
+    },
+    [api]
+  )
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -102,6 +114,8 @@ function Carousel({
     }
   }, [api, onSelect])
 
+  const totalSlides = api ? api.scrollSnapList().length : 0
+
   return (
     <CarouselContext.Provider
       value={{
@@ -112,8 +126,11 @@ function Carousel({
           orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
         scrollPrev,
         scrollNext,
+        scrollTo,
         canScrollPrev,
         canScrollNext,
+        currentIndex,
+        totalSlides
       }}
     >
       <div
@@ -171,6 +188,7 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
 
 function CarouselPrevious({
   className,
+  children,
   variant = "outline",
   size = "icon",
   ...props
@@ -193,14 +211,19 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft />
-      <span className="sr-only">Previous slide</span>
+      {children ? children : (
+        <>
+          <ArrowLeft />
+          <span className="sr-only">Previous slide</span>
+        </>
+      )}
     </Button>
   )
 }
 
 function CarouselNext({
   className,
+  children,
   variant = "outline",
   size = "icon",
   ...props
@@ -223,8 +246,13 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight />
-      <span className="sr-only">Next slide</span>
+      {children ? children : (
+        <>
+          <ArrowRight />
+          <span className="sr-only">Next slide</span>
+        </>
+      )}
+      
     </Button>
   )
 }
