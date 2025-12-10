@@ -61,8 +61,8 @@ function Panels({ appear }: AboutProps) {
 
                 // Responsive styles
                 'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                'flex-col md:flex-row',
-                'gap-0 md:gap-8',
+                'flex-col lg:flex-row',
+                'gap-0 lg:gap-8',
             )}
         >
             {/* Left Panel */}
@@ -73,7 +73,7 @@ function Panels({ appear }: AboutProps) {
 
                     // Responsive styles
                     'h-auto',
-                    'w-full md:w-max',
+                    'w-full lg:w-max',
 
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
                     'py-4 sm:py-6 md:py-8 lg:py-10',
@@ -95,7 +95,7 @@ function Panels({ appear }: AboutProps) {
 
                         'sticky top-[100px]',
 
-                        'gap-4 sm:gap-8',
+                        'gap-2 sm:gap-4 md:gap-6 lg:gap-8',
                     )}
                 >
                     <Curtain
@@ -129,7 +129,7 @@ function Panels({ appear }: AboutProps) {
 
                                 // Responsive styles
                                 'font-normal',
-                                'md:translate-x-[8px]',
+                                'translate-x-[4px]',
                             )}
                         >
                             Skip
@@ -150,19 +150,19 @@ function Panels({ appear }: AboutProps) {
                     'flex flex-col',
 
                     // Responsive styles
-                    'px-6 sm:px-8 md:px-2 lg:px-12.5',
-                    'py-12 md:py-10',
-                    'gap-4 md:gap-12',
+                    'px-6 sm:px-8 lg:px-6 xl:px-12.5',
+                    'py-12 lg:py-10',
+                    'gap-4 lg:gap-12',
 
                     '!text-lg sm:!text-xl md:!text-2xl',
-                    'border-t border-r border-l border-dashed border-border md:border-0',
-                    'w-full md:w-max md:max-w-[75%] lg:max-w-[45%]',
+                    'border-t border-r border-l border-dashed border-border lg:border-0',
+                    'w-full lg:w-max lg:max-w-[45%]',
                 )}
             >
                 {/* Reveal */}
                 <TextReveal
-                    text_className="!text-lg sm:!text-xl md:!text-2xl"
-                    className="h-[200vh] sm:h-[120vh] md:h-[200vh] hidden md:block"
+                    text_className="!text-lg sm:!text-xl lg:!text-2xl"
+                    className="h-[200vh] sm:h-[120vh] lg:h-[200vh] hidden lg:block"
                 >
                     <strong className="font-semibold">Hi, I’m Hakim.</strong>
                     <br />
@@ -187,7 +187,7 @@ function Panels({ appear }: AboutProps) {
                 </TextReveal>
 
                 {/* Reveal */}
-                <FadeIn className="md:hidden w-full" delay={500} show={appear}>
+                <FadeIn className="lg:hidden w-full" delay={500} show={appear}>
                     <strong className="font-semibold">Hi, I’m Hakim.</strong>
                     <br />
                     <p className="font-light">
@@ -464,12 +464,12 @@ function AccordionAbout({
                 <div
                     className={cn(
                         // Default styles
-                        'aspect-[9/16] shrink-0 bg-card',
+                        'flex  shrink-0 bg-card',
 
-                        'w-1/3 items-center justify-center',
+                        ' items-center justify-center',
 
                         // Responsive styles
-                        'hidden sm:flex',
+                        'aspect-square w-full max-w-[300px] sm:aspect-[9/16] sm:w-1/3 sm:max-w-none',
                     )}
                 >
                     Photo

@@ -17,6 +17,7 @@ import Header from '@/layouts/landing/header';
 import Loader from '@/layouts/landing/loader';
 import Footer from '@/layouts/landing/footer';
 import Navigation from '@/layouts/landing/navigation';
+import ScrollTopButton from '@/components/landing/scroll-top-button';
 
 
 interface AppLayoutProps {
@@ -80,6 +81,8 @@ export default function AppLanding({
 
                 <Footer appear={showContent} />
 
+
+                <ScrollTopButton appear={showContent} />
             </div>
             <PlaceholderPattern className="fixed inset-0 z-0 size-full h-[100vh] w-[100vw] stroke-neutral-900/20 dark:stroke-neutral-100/20" />
         </>

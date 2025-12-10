@@ -56,7 +56,7 @@ export default function Hero({ appear }: HeroProps) {
                 <div
                     className={cn(
                         // Responsive styles
-                        'px-4 sm:px-8 md:px-10 lg:px-12.5',
+                        'px-4 sm:px-8 md:px-10 lg:px-12.5 overflow-hidden',
                     )}
                 >
                     <Curtain
@@ -121,7 +121,7 @@ export default function Hero({ appear }: HeroProps) {
                                 'text-2xl sm:text-3xl md:text-[clamp(2rem,4vw,3.5rem)]',
                                 'text-left md:text-right',
                                 'ml-0 md:ml-2',
-                                'p-0 md:pb-3',
+                                'p-0 sm:pb-1 md:pb-2 lg:pb-2.5 xl:pb-3',
                             )}
                         >
                             Fullstack Engineer
