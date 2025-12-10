@@ -84,7 +84,7 @@ export default function Projects({ appear }: { appear: boolean }) {
 
                         // Responsive styles
                         'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                        'py-4 sm:py-6 md:py-8 lg:py-10',
+                        'py-6 sm:py-6 md:py-8 lg:py-10',
 
                         'flex-col sm:flex-row',
                         'items-start sm:items-center',
@@ -98,7 +98,7 @@ export default function Projects({ appear }: { appear: boolean }) {
                         className='w-full'
                     >
                         <p>
-                            Take a loot at my projects.
+                            Take a look at my projects.
                             <br />
                             I've currently worked on{' '}
                             <strong className="font-semibold">
@@ -114,13 +114,14 @@ export default function Projects({ appear }: { appear: boolean }) {
                     >
                         <UnderlineLink
                             href="#sandbox"
+                            showUnderline
                             className={cn(
                                 // Default styles
                                 'group flex w-max items-center gap-2',
 
                                 // Responsive styles
-                                'text-lg',
-                                'ml-1.5',
+                                'font-normal',
+                                'sm:translate-x-[8px]',
                             )}
                         >
                             Skip

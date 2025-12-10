@@ -237,14 +237,15 @@ export default function Sandbox({ appear }: { appear: boolean }) {
                         delay={500}
                     >
                         <UnderlineLink
-                            href="#projects"
+                            href="#contact"
+                            showUnderline
                             className={cn(
                                 // Default styles
                                 'group flex w-max items-center gap-2',
 
                                 // Responsive styles
-                                'text-lg',
-                                'ml-1.5',
+                                'font-normal',
+                                'translate-x-[0px]',
                             )}
                         >
                             Skip
