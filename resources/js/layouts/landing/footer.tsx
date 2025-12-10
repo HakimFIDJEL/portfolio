@@ -7,16 +7,16 @@ import { cn } from '@/lib/utils';
 import { useAppearance } from '@/hooks/use-appearance';
 
 // Components
-import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
-import RoundedButton from '@/components/landing/rounded-button';
 import FadeIn from '@/components/landing/fade-in';
+import RoundedButton from '@/components/landing/rounded-button';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
 
 // Icons
-import { ArrowDown, ArrowUp, Monitor, Moon, Sun } from 'lucide-react';
+import UnderlineLink from '@/components/landing/underline-link';
+import { ArrowUp, Monitor, Moon, Sun } from 'lucide-react';
 
 interface FooterProps {
     appear: boolean;
@@ -26,63 +26,63 @@ const links = [
     {
         name: 'Sitemap',
         items: [
-            { 
+            {
                 label: 'Hero',
-                href: '#hero'
+                href: '#hero',
             },
             {
                 label: 'About',
-                href: '#about'
+                href: '#about',
             },
             {
                 label: 'Projects',
-                href: '#projects'
+                href: '#projects',
             },
             {
                 label: 'Sandbox',
-                href: '#sandbox'
+                href: '#sandbox',
             },
             {
                 label: 'Contact',
-                href: '#contact'
-            }
-        ]
+                href: '#contact',
+            },
+        ],
     },
     {
         name: 'Contact',
         items: [
             {
                 label: 'Email',
-                href: 'mailto:hakimfidjel.pro@gmail.com'
+                href: 'mailto:hakimfidjel.pro@gmail.com',
             },
             {
                 label: 'LinkedIn',
-                href: 'https://www.linkedin.com/in/hakim-fidjel/'
+                href: 'https://www.linkedin.com/in/hakim-fidjel/',
             },
             {
                 label: 'GitHub',
-                href: 'https://github.com/hakimfidjel'
+                href: 'https://github.com/hakimfidjel',
             },
             {
                 label: 'GitLab',
-                href: 'https://gitlab.com/hakimfidjel'
-            }
-        ]
+                href: 'https://gitlab.com/hakimfidjel',
+            },
+        ],
     },
     {
         name: 'Resources',
         items: [
             {
                 label: 'Terms',
-                href: '#'
+                href: '#',
             },
             {
                 label: 'Source Code',
-                href: '#'
-            }
-        ]
-    }
-]
+                href: '#',
+            },
+        ],
+    },
+];
 
 export default function Footer({ appear }: FooterProps) {
     const { appearance, updateAppearance } = useAppearance();
@@ -99,152 +99,183 @@ export default function Footer({ appear }: FooterProps) {
     }
 
     return (
-        <footer
-            className={cn(
-                // Default styles
-                'bg-card',
+        <>
+            <footer
+                className={cn(
+                    // Default styles
+                    'border-t border-b border-dashed',
 
-                'border-t border-b border-dashed',
+                    'flex items-stretch justify-between',
 
-                'flex items-stretch justify-between',
-            )}
-        >
-            {/* Left Panel */}
-            <Delimiter
-                dashedBorders={['left', 'right']}
-                plusCorners={['all']}
-                className={cn()
-                // Default styles
-                }
+                    'flex-col lg:flex-row',
+
+                    // Responsive styles
+                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                )}
             >
+                {/* Left Panel */}
+                <Delimiter
+                    dashedBorders={['left', 'right']}
+                    plusCorners={['all']}
+                >
+                    <div
+                        className={cn(
+                            // Default styles
+                            'grid gap-4',
+
+                            // Responsive styles
+                            'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                            'py-4 sm:py-6 md:py-8 lg:py-10',
+                            'grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4',
+                        )}
+                    >
+                        {/* Buttons */}
+                        <div
+                            className={cn(
+                                // Default styles
+                                'col-span-1 flex flex-col gap-4',
+                            )}
+                        >
+                            <FadeIn show={appear} delay={250}>
+                                <Magnet magnetStrength={3} padding={20}>
+                                    <RoundedButton>
+                                        <a href="#top" tabIndex={-1}>
+                                            <ArrowUp className="stroke-1" />
+                                        </a>
+                                    </RoundedButton>
+                                </Magnet>
+                            </FadeIn>
+                            <FadeIn show={appear} delay={500}>
+                                <Magnet magnetStrength={3} padding={20}>
+                                    <RoundedButton
+                                        onClick={handleSwitchAppearance}
+                                    >
+                                        {appearance === 'dark' && (
+                                            <Moon className="stroke-1" />
+                                        )}
+                                        {appearance === 'light' && (
+                                            <Sun className="stroke-1" />
+                                        )}
+                                        {appearance === 'system' && (
+                                            <Monitor className="stroke-1" />
+                                        )}
+                                    </RoundedButton>
+                                </Magnet>
+                            </FadeIn>
+                            <FadeIn show={appear} delay={750}>
+                                <Magnet magnetStrength={3} padding={20}>
+                                    <RoundedButton>EN</RoundedButton>
+                                </Magnet>
+                            </FadeIn>
+                        </div>
+
+                        {links.map((linkGroup, index) => (
+                            <ul
+                                key={`footer-link-group-${index}`}
+                                className={cn(
+                                    // Default styles
+                                    'col-span-1 flex flex-col gap-2',
+                                )}
+                            >
+                                <li
+                                    className={cn(
+                                        // Default styles
+                                        'mb-2 font-medium',
+                                    )}
+                                >
+                                    {linkGroup.name}
+                                </li>
+                                {linkGroup.items.map((item, itemIndex) => (
+                                    <li
+                                        key={`footer-link-item-${index}-${itemIndex}`}
+                                        className={
+                                            cn()
+                                            // Default styles
+                                        }
+                                    >
+                                        <UnderlineLink
+                                            href={item.href}
+                                            className={cn(
+                                                // Default styles
+                                                'font-light transition-all',
+
+                                                'text-muted-foreground hover:text-foreground focus-visible:text-foreground',
+                                            )}
+                                        >
+                                            {item.label}
+                                        </UnderlineLink>
+                                    </li>
+                                ))}
+                            </ul>
+                        ))}
+                    </div>
+                </Delimiter>
+
+                {/* Right Panel */}
                 <div
                     className={cn(
                         // Default styles
-                        'grid grid-cols-4 gap-4',
+                        'flex w-full flex-col items-start justify-end gap-2 align-bottom',
 
                         // Responsive styles
                         'px-6 sm:px-8 md:px-10 lg:px-12.5',
                         'py-4 sm:py-6 md:py-8 lg:py-10',
+
+                        'border-t border-r border-l border-dashed lg:border-0',
                     )}
                 >
-                    {/* Buttons */}
-                    <div className={cn(
-                        // Default styles
-                        'flex flex-col gap-4 col-span-1',
-                    )}>
-                        <FadeIn
-                            show={appear}
-                            delay={250}
-                        >
-                            <Magnet magnetStrength={3} padding={20}>
-                                <RoundedButton>
-                                    <a href="#top" tabIndex={-1}>
-                                        <ArrowUp className="stroke-1" />
-                                    </a>
-                                </RoundedButton>
-                            </Magnet>
-                        </FadeIn>
-                        <FadeIn
-                            show={appear}
-                            delay={500}
-                        >
-                            <Magnet magnetStrength={3} padding={20}>
-                                <RoundedButton onClick={handleSwitchAppearance}>
-                                    {appearance === 'dark' && (
-                                        <Moon className="stroke-1" />
-                                    )}
-                                    {appearance === 'light' && (
-                                        <Sun className="stroke-1" />
-                                    )}
-                                    {appearance === 'system' && (
-                                        <Monitor className="stroke-1" />
-                                    )}
-                                </RoundedButton>
-                            </Magnet>
-                        </FadeIn>
-                        <FadeIn
-                            show={appear}
-                            delay={750}
-                        >
-                            <Magnet magnetStrength={3} padding={20}>
-                                <RoundedButton>EN</RoundedButton>
-                            </Magnet>
-                        </FadeIn>
-                    </div>
-
-                    {links.map((linkGroup, index) => (
-                        <ul className={cn(
+                    <p
+                        className={cn(
                             // Default styles
-                        )}>
-                            
+                            'font-medium',
 
+                            // Repsonsive styles
+                            'text-xs sm:text-sm md:text-base lg:text-sm xl:text-base',
+                            'translate-x-[0px] sm:translate-x-[2px] md:translate-x-[5px] lg:translate-x-[4px]',
+                        )}
+                    >
+                        Designed, Developped, Deployed and Hosted by
+                    </p>
+                    <p
+                        className={cn(
+                            // Default styles
+                            'font-semibold',
 
-                            <li className={cn(
-                                // Default styles
-                            )}>
-                                Sitemap
-                            </li>
-                            <li>
-                                <a href="#about">About Me</a>
-                            </li>
+                            // Responsive styles
+                            'text-3xl sm:text-4xl md:text-7xl lg:text-5xl xl:text-7xl',
+                        )}
+                    >
+                        Hakim Fidjel.
+                    </p>
+                    <p
+                        className={cn(
+                            // Default styles
+                            'text-muted-foreground',
 
-                        </ul>
-                    ))}
-
-
-
-
+                            // Responsive styles
+                            'text-xs',
+                            'translate-x-[0px] sm:translate-x-[2px] md:translate-x-[5px] lg:translate-x-[4px]',
+                        )}
+                    >
+                        © {new Date().getFullYear()} Hakim Fidjel. All rights
+                        reserved.
+                    </p>
                 </div>
-            </Delimiter>
-
-            {/* Right Panel */}
+            </footer>
+            {/* Borders */}
             <div
                 className={cn(
-                    // Default styles
-                    'flex w-full flex-col items-start align-bottom justify-end gap-2',
-
                     // Responsive styles
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                    'py-4 sm:py-6 md:py-8 lg:py-10',
                 )}
             >
-                <p
+                <div
                     className={cn(
                         // Default styles
-                        'font-medium',
-
-                        // Repsonsive styles
-                        'text-base',
-                        'translate-x-[5px]',
+                        'h-8 w-full border-r border-l border-dashed',
                     )}
-                >
-                    Designed, Developped, Deployed and Hosted by
-                </p>
-                <p
-                    className={cn(
-                        // Default styles
-                        'font-semibold',
-
-                        // Responsive styles
-                        'text-7xl',
-                    )}
-                >
-                    Hakim Fidjel.
-                </p>
-                <p
-                    className={cn(
-                        // Default styles
-                        'text-muted-foreground',
-
-                        // Responsive styles
-                        'text-xs',
-                        'translate-x-[5px]',
-                    )}
-                >
-                    © {new Date().getFullYear()} Hakim Fidjel. All rights
-                    reserved.
-                </p>
+                ></div>
             </div>
-        </footer>
+        </>
     );
 }
