@@ -133,7 +133,7 @@ function Panels({ appear }: AboutProps) {
                             Skip
                             <ArrowDownRight
                                 size={32}
-                                className="stroke-1 transition-all group-hover:rotate-45"
+                                className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
                             />
                         </UnderlineLink>
                     </Curtain>
