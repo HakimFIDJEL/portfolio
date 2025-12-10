@@ -10,7 +10,11 @@ import RoundedButton from '@/components/landing/rounded-button';
 import UnderlineLink from '@/components/landing/underline-link';
 
 // UI Components
+import Curtain from '@/components/landing/curtain';
+import FadeIn from '@/components/landing/fade-in';
+import Magnet from '@/components/ui/magnet';
 import { Separator } from '@/components/ui/separator';
+import { TextReveal } from '@/components/ui/text-reveal';
 
 // Icons
 import { ArrowDownRight, Download, Minus, Plus } from 'lucide-react';
@@ -20,8 +24,6 @@ interface AboutProps {
 }
 
 export default function About({ appear }: AboutProps) {
-    console.log(appear);
-
     return (
         <section
             className={cn(
@@ -35,10 +37,10 @@ export default function About({ appear }: AboutProps) {
             )}
         >
             {/* Panels */}
-            <Panels />
+            <Panels appear={appear} />
 
             {/* Accordion */}
-            <Accordions />
+            <Accordions appear={appear} />
         </section>
     );
 }
@@ -47,7 +49,7 @@ export default function About({ appear }: AboutProps) {
 // Panels
 // -------------------------
 
-function Panels() {
+function Panels({ appear }: AboutProps) {
     return (
         <div
             className={cn(
@@ -71,7 +73,7 @@ function Panels() {
                     // Responsive styles
                     'h-auto',
                     'w-full md:w-max',
-                    
+
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
                     'py-4 sm:py-6 md:py-8 lg:py-10',
 
@@ -90,39 +92,51 @@ function Panels() {
                         // Default styles
                         'flex flex-col',
 
-                        // 'sticky top-[100px]',
+                        'sticky top-[100px]',
 
                         'gap-4 sm:gap-8',
                     )}
                 >
-                    <h2
-                        className={cn(
-                            // Default styles
-                            'font-medium transition-all',
-
-                            'text-4xl sm:text-7xl',
-                        )}
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={0}
                     >
-                        About me
-                    </h2>
+                        <h2
+                            className={cn(
+                                // Default styles
+                                'font-medium transition-all',
 
-                    <UnderlineLink
-                        href="#"
-                        className={cn(
-                            // Default styles
-                            'group flex w-max items-center gap-2',
+                                'text-4xl sm:text-7xl',
+                            )}
+                        >
+                            About me
+                        </h2>
+                    </Curtain>
 
-                            // Responsive styles
-                            'text-lg',
-                            'ml-1.5',
-                        )}
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={250}
                     >
-                        Skip
-                        <ArrowDownRight
-                            size={32}
-                            className="stroke-1 transition-all group-hover:rotate-45"
-                        />
-                    </UnderlineLink>
+                        <UnderlineLink
+                            href="#"
+                            className={cn(
+                                // Default styles
+                                'group flex w-max items-center gap-2',
+
+                                // Responsive styles
+                                'text-lg',
+                                'ml-1.5',
+                            )}
+                        >
+                            Skip
+                            <ArrowDownRight
+                                size={32}
+                                className="stroke-1 transition-all group-hover:rotate-45"
+                            />
+                        </UnderlineLink>
+                    </Curtain>
                 </div>
             </Delimiter>
 
@@ -138,31 +152,61 @@ function Panels() {
                     'py-12 md:py-10',
                     'gap-4 md:gap-12',
 
-                    'text-lg sm:text-xl md:text-2xl',
+                    '!text-lg sm:!text-xl md:!text-2xl',
                     'border-t border-r border-l border-dashed border-border md:border-0',
                     'w-full md:w-max md:max-w-[75%] lg:max-w-[45%]',
                 )}
             >
-                <p>
+                {/* Reveal */}
+                <TextReveal
+                    text_className="!text-lg sm:!text-xl md:!text-2xl"
+                    className="h-[200vh] sm:h-[120vh] md:h-[200vh] hidden md:block"
+                >
                     <strong className="font-semibold">Hi, I’m Hakim.</strong>
-                </p>
-                <p>
-                    <strong className="font-semibold">
-                        I'm a french fullstack engineer
-                    </strong>{' '}
-                    with a strong focus on development, infrastructure, and
-                    automation. I build and manage scalable projects, ensuring
-                    smooth deployments and efficient workflows.
-                </p>
-                <p>
-                    With a hands-on approach, I handle everything from backend
-                    logic to server administration, always paying attention to
-                    design and usability. I strive to create solutions that are
-                    both{' '}
-                    <strong className="font-semibold">
-                        functional and visually refined.
-                    </strong>
-                </p>
+                    <br />
+                    <p className="font-light">
+                        <strong className="font-semibold">
+                            I'm a french fullstack engineer
+                        </strong>{' '}
+                        with a strong focus on development, infrastructure, and
+                        automation. I build and manage scalable projects,
+                        ensuring smooth deployments and efficient workflows.
+                    </p>
+                    <br />
+                    <p className="font-normal">
+                        With a hands-on approach, I handle everything from
+                        backend logic to server administration, always paying
+                        attention to design and usability. I strive to create
+                        solutions that are both{' '}
+                        <strong className="font-semibold">
+                            functional and visually refined.
+                        </strong>
+                    </p>
+                </TextReveal>
+
+                {/* Reveal */}
+                <FadeIn className="md:hidden w-full" delay={500} show={appear}>
+                    <strong className="font-semibold">Hi, I’m Hakim.</strong>
+                    <br />
+                    <p className="font-light">
+                        <strong className="font-semibold">
+                            I'm a french fullstack engineer
+                        </strong>{' '}
+                        with a strong focus on development, infrastructure, and
+                        automation. I build and manage scalable projects,
+                        ensuring smooth deployments and efficient workflows.
+                    </p>
+                    <br />
+                    <p className="font-normal">
+                        With a hands-on approach, I handle everything from
+                        backend logic to server administration, always paying
+                        attention to design and usability. I strive to create
+                        solutions that are both{' '}
+                        <strong className="font-semibold">
+                            functional and visually refined.
+                        </strong>
+                    </p>
+                </FadeIn>
             </div>
         </div>
     );
@@ -172,8 +216,10 @@ function Panels() {
 // Accordions
 // -------------------------
 
-function Accordions() {
+function Accordions({ appear }: AboutProps) {
     const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+
+    console.log(appear);
 
     return (
         <div
@@ -210,6 +256,7 @@ function Accordions() {
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
                     }
+                    appear={appear}
                 />
                 <Separator />
                 <AccordionWork
@@ -219,6 +266,7 @@ function Accordions() {
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
                     }
+                    appear={appear}
                 />
                 <Separator />
                 <AccordionSchool
@@ -228,6 +276,7 @@ function Accordions() {
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
                     }
+                    appear={appear}
                 />
                 <Separator />
                 <AccordionTechStack
@@ -237,6 +286,7 @@ function Accordions() {
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
                     }
+                    appear={appear}
                 />
                 <Separator />
                 <AccordionTools
@@ -246,6 +296,7 @@ function Accordions() {
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
                     }
+                    appear={appear}
                 />
             </Delimiter>
         </div>
@@ -257,6 +308,7 @@ interface AccordionItemProps {
     title: string;
     open?: boolean;
     onChange?: (index: number) => void;
+    appear?: boolean;
 }
 
 interface AccordionLayoutProps extends AccordionItemProps {
@@ -269,6 +321,7 @@ function AccordionItem({
     children,
     open,
     onChange,
+    appear,
 }: AccordionLayoutProps) {
     const contentRef = useRef<HTMLDivElement>(null);
     const [height, setHeight] = useState('0px');
@@ -280,97 +333,103 @@ function AccordionItem({
     }, [open]);
 
     return (
-        <div
-            className={cn(
-                'flex flex-col',
-            )}
-        >
-            {/* Accordion Head */}
-            <div
-                className={cn(
-                    // Default styles
-                    'flex items-center justify-between gap-4 border-b border-transparent transition-all duration-500',
-                    'bg-card',
-
-                    // Responsive styles
-                    'px-4 sm:px-8 md:px-10',
-                    'py-4 sm:py-6 md:py-8',
-
-                    // Open styles
-                    open &&
-                        'border-border bg-primary text-primary-foreground duration-1000',
-                )}
-            >
+        <FadeIn className="w-full" delay={index * 150} show={appear ?? false}>
+            <div className={cn('flex flex-col')}>
+                {/* Accordion Head */}
                 <div
                     className={cn(
-                        'flex',
-                        'flex-col gap-0 sm:flex-row sm:items-center sm:gap-6',
-                    )}
-                >
-                    <h3
-                        className={cn(
-                            // Default styles
-                            'font-semibold',
-
-                            // Responsive styles
-                            'text-xl sm:text-3xl',
-                        )}
-                    >
-                        0{index}
-                    </h3>
-                    <p
-                        className={cn(
-                            // Default styles
-                            'font-light',
-
-                            // Responsive styles
-                            'text-lg sm:text-3xl',
-                        )}
-                    >
-                        {title}
-                    </p>
-                </div>
-                <RoundedButton
-                    className={cn(
                         // Default styles
-                        'z-1',
+                        'flex items-center justify-between gap-4 border-b border-transparent transition-all duration-500',
+                        'bg-card',
 
                         // Responsive styles
-                        'scale-80 sm:scale-100',
+                        'px-4 sm:px-6 md:px-8',
+                        'py-4 sm:py-5 md:py-6',
 
                         // Open styles
                         open &&
-                            'border-primary-foreground !text-primary-foreground',
+                            'border-border bg-primary text-primary-foreground duration-1000',
                     )}
-                    onClick={() => onChange && onChange(index)}
                 >
-                    {open ? <Minus /> : <Plus />}
-                </RoundedButton>
-            </div>
+                    <div
+                        className={cn(
+                            'flex',
+                            'flex-col gap-0 sm:flex-row sm:items-center sm:gap-6',
+                        )}
+                    >
+                        <h3
+                            className={cn(
+                                // Default styles
+                                'font-semibold',
 
-            {/* Accordion Content */}
-            <div
-                ref={contentRef}
-                style={{ maxHeight: height }}
-                className={cn(
-                    'overflow-hidden py-0 transition-all duration-500',
-                )}
-            >
+                                // Responsive styles
+                                'text-xl sm:text-3xl',
+                            )}
+                        >
+                            0{index}
+                        </h3>
+                        <p
+                            className={cn(
+                                // Default styles
+                                'font-light',
+
+                                // Responsive styles
+                                'text-lg sm:text-3xl',
+                            )}
+                        >
+                            {title}
+                        </p>
+                    </div>
+                    <Magnet magnetStrength={3} padding={20}>
+                        <RoundedButton
+                            className={cn(
+                                // Default styles
+                                'z-1',
+
+                                // Responsive styles
+                                'scale-80 sm:scale-100',
+
+                                // Open styles
+                                open &&
+                                    'border-primary-foreground !text-primary-foreground',
+                            )}
+                            onClick={() => onChange && onChange(index)}
+                        >
+                            {open ? <Minus /> : <Plus />}
+                        </RoundedButton>
+                    </Magnet>
+                </div>
+
+                {/* Accordion Content */}
                 <div
+                    ref={contentRef}
+                    style={{ maxHeight: height }}
                     className={cn(
-                        // Default styles
-                        'border-r border-l border-border',
-                        index === 5 && 'border-b',
+                        'overflow-hidden py-0 transition-all duration-500',
                     )}
                 >
-                    {children}
+                    <div
+                        className={cn(
+                            // Default styles
+                            'border-r border-l border-border',
+                            index === 5 && 'border-b',
+                        )}
+                    >
+                        {children}
+                    </div>
                 </div>
             </div>
-        </div>
+        </FadeIn>
     );
 }
 
-function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
+function AccordionAbout({
+    index,
+    title,
+    open,
+    onChange,
+    appear,
+}: AccordionItemProps) {
     const quotes = [
         '“Aiming to build the future one line of code at a time.”',
         "“It's never a bug, it's a feature.”",
@@ -384,6 +443,7 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
             title={title}
             open={open}
             onChange={onChange}
+            appear={appear}
         >
             <div
                 className={cn(
@@ -403,9 +463,9 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
                     className={cn(
                         // Default styles
                         'aspect-[9/16] shrink-0 bg-card',
-                        
-                        'items-center justify-center w-1/3',
-                        
+
+                        'w-1/3 items-center justify-center',
+
                         // Responsive styles
                         'hidden sm:flex',
                     )}
@@ -428,7 +488,7 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
 
                             // Responsive styles
                             'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                            'py-4 sm:py-6 md:py-8 lg:py-10',
+                            'py-10',
                         )}
                     >
                         <h4
@@ -443,7 +503,7 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
                             className={cn(
                                 // Default styles
                                 'flex flex-col gap-6',
-                                'text-xl font-medium',
+                                'text-base font-medium md:text-xl',
                             )}
                         >
                             {quotes.map((quote, index) => (
@@ -456,7 +516,7 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
                     <button
                         className={cn(
                             'group relative w-full cursor-pointer bg-secondary text-xl',
-                            
+
                             // Hover styles
                             'border-t border-border',
                             'focus-visible:outline-none',
@@ -489,7 +549,13 @@ function AccordionAbout({ index, title, open, onChange }: AccordionItemProps) {
     );
 }
 
-function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
+function AccordionWork({
+    index,
+    title,
+    open,
+    onChange,
+    appear,
+}: AccordionItemProps) {
     const experiences = [
         {
             company: 'Réservoir Digital',
@@ -520,6 +586,7 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
             title={title}
             open={open}
             onChange={onChange}
+            appear={appear}
         >
             {/* Content goes here */}
             <div
@@ -543,19 +610,19 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
                         'flex flex-col',
 
                         // Responsive styles
-                        'gap-6 sm:gap-10'
+                        'gap-6 sm:gap-10',
                     )}
                 >
                     {experiences.map((exp, idx) => (
                         <li
-                            key={idx}
+                            key={`experience-${idx}`}
                             className={cn(
                                 // Default styles
                                 'flex items-start justify-between',
 
                                 // Responsive styles
                                 'flex-col gap-4 sm:flex-row sm:gap-0',
-                                'pb-4 border-b border-border sm:pb-0 sm:border-0',
+                                'border-b border-border pb-4 sm:border-0 sm:pb-0',
                             )}
                         >
                             <div
@@ -599,7 +666,7 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
                                     // Default styles
                                     'font-light',
                                     'text-base',
-                                    'sm:w-[65%] shrink-0',
+                                    'shrink-0 sm:w-[65%]',
                                 )}
                             >
                                 {exp.description}
@@ -610,7 +677,7 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
                 <div
                     className={cn(
                         // Default styles
-                        'text-lg font-medium',
+                        'text-base font-medium md:text-lg',
                     )}
                 >
                     These roles have sharpened my ability to deliver efficient,
@@ -622,7 +689,13 @@ function AccordionWork({ index, title, open, onChange }: AccordionItemProps) {
     );
 }
 
-function AccordionSchool({ index, title, open, onChange }: AccordionItemProps) {
+function AccordionSchool({
+    index,
+    title,
+    open,
+    onChange,
+    appear,
+}: AccordionItemProps) {
     const experiences = [
         {
             title: 'IG2I de Centrale Lille Institut',
@@ -667,6 +740,7 @@ function AccordionSchool({ index, title, open, onChange }: AccordionItemProps) {
             title={title}
             open={open}
             onChange={onChange}
+            appear={appear}
         >
             {/* Content goes here */}
             <div
@@ -690,19 +764,19 @@ function AccordionSchool({ index, title, open, onChange }: AccordionItemProps) {
                         'flex flex-col',
 
                         // Responsive styles
-                        'gap-6 sm:gap-10'
+                        'gap-6 sm:gap-10',
                     )}
                 >
                     {experiences.map((exp, idx) => (
                         <li
-                            key={idx}
+                            key={`school-${idx}`}
                             className={cn(
                                 // Default styles
                                 'flex items-start justify-between',
 
                                 // Responsive styles
                                 'flex-col gap-4 sm:flex-row sm:gap-0',
-                                'pb-4 border-b border-border sm:pb-0 sm:border-0',
+                                'border-b border-border pb-4 sm:border-0 sm:pb-0',
                             )}
                         >
                             <div
@@ -746,7 +820,7 @@ function AccordionSchool({ index, title, open, onChange }: AccordionItemProps) {
                                     // Default styles
                                     'font-light',
                                     'text-base',
-                                    'sm:w-[65%] shrink-0',
+                                    'shrink-0 sm:w-[65%]',
                                 )}
                             >
                                 {exp.description}
@@ -757,7 +831,7 @@ function AccordionSchool({ index, title, open, onChange }: AccordionItemProps) {
                 <div
                     className={cn(
                         // Default styles
-                        'text-lg font-medium',
+                        'text-base font-medium md:text-lg',
                     )}
                 >
                     These experiences have shaped my technical and analytical
@@ -774,6 +848,7 @@ function AccordionTechStack({
     title,
     open,
     onChange,
+    appear,
 }: AccordionItemProps) {
     const stack = [
         {
@@ -829,6 +904,7 @@ function AccordionTechStack({
             title={title}
             open={open}
             onChange={onChange}
+            appear={appear}
         >
             {/* Content goes here */}
             <div
@@ -852,19 +928,19 @@ function AccordionTechStack({
                         'flex flex-col',
 
                         // Responsive styles
-                        'gap-6 sm:gap-10'
+                        'gap-6 sm:gap-10',
                     )}
                 >
                     {stack.map((s, idx) => (
                         <li
-                            key={idx}
+                            key={`techstack-${idx}`}
                             className={cn(
                                 // Default styles
                                 'flex items-start justify-between',
 
                                 // Responsive styles
                                 'flex-col gap-4 sm:flex-row sm:gap-0',
-                                'pb-4 border-b border-border sm:pb-0 sm:border-0',
+                                'border-b border-border pb-4 sm:border-0 sm:pb-0',
                                 idx === stack.length - 1 && 'border-0',
                             )}
                         >
@@ -889,11 +965,12 @@ function AccordionTechStack({
                             <div
                                 className={cn(
                                     // Default styles
-                                    'flex sm:w-[65%] flex-wrap gap-2.5',
+                                    'flex flex-wrap gap-2.5 sm:w-[65%]',
                                 )}
                             >
                                 {s.technologies.map((tech, techIdx) => (
                                     <span
+                                        key={`stack-${techIdx}`}
                                         className={cn(
                                             // Default styles
                                             'border border-primary px-2.5 py-1 font-light',
@@ -911,7 +988,13 @@ function AccordionTechStack({
     );
 }
 
-function AccordionTools({ index, title, open, onChange }: AccordionItemProps) {
+function AccordionTools({
+    index,
+    title,
+    open,
+    onChange,
+    appear,
+}: AccordionItemProps) {
     const stack = [
         {
             category: 'IDE',
@@ -973,6 +1056,7 @@ function AccordionTools({ index, title, open, onChange }: AccordionItemProps) {
             title={title}
             open={open}
             onChange={onChange}
+            appear={appear}
         >
             {/* Content goes here */}
             <div
@@ -996,19 +1080,19 @@ function AccordionTools({ index, title, open, onChange }: AccordionItemProps) {
                         'flex flex-col',
 
                         // Responsive styles
-                        'gap-6 sm:gap-10'
+                        'gap-6 sm:gap-10',
                     )}
                 >
                     {stack.map((s, idx) => (
                         <li
-                            key={idx}
+                            key={`tools-${idx}`}
                             className={cn(
                                 // Default styles
                                 'flex items-start justify-between',
 
                                 // Responsive styles
                                 'flex-col gap-4 sm:flex-row sm:gap-0',
-                                'pb-4 border-b border-border sm:pb-0 sm:border-0',
+                                'border-b border-border pb-4 sm:border-0 sm:pb-0',
                                 idx === stack.length - 1 && 'border-0',
                             )}
                         >
@@ -1033,11 +1117,12 @@ function AccordionTools({ index, title, open, onChange }: AccordionItemProps) {
                             <div
                                 className={cn(
                                     // Default styles
-                                    'flex sm:w-[65%] flex-wrap gap-2.5',
+                                    'flex flex-wrap gap-2.5 sm:w-[65%]',
                                 )}
                             >
                                 {s.technologies.map((tech, techIdx) => (
                                     <span
+                                        key={`tool-${techIdx}`}
                                         className={cn(
                                             // Default styles
                                             'border border-primary px-2.5 py-1 font-light',
