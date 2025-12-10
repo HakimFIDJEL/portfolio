@@ -122,13 +122,14 @@ function Panels({ appear }: AboutProps) {
                     >
                         <UnderlineLink
                             href="#projects"
+                            showUnderline
                             className={cn(
                                 // Default styles
                                 'group flex w-max items-center gap-2',
 
                                 // Responsive styles
-                                'text-lg',
-                                'ml-1.5',
+                                'font-normal',
+                                'md:translate-x-[8px]',
                             )}
                         >
                             Skip

@@ -6,12 +6,14 @@ interface UnderlineLinkProps {
     href: string;
     children: React.ReactNode;
     className?: string;
+    showUnderline?: boolean;
 }
 
 export default function UnderlineLink({
     href,
     children,
     className,
+    showUnderline
 }: UnderlineLinkProps) {
     return (
         <a
@@ -27,6 +29,9 @@ export default function UnderlineLink({
 
                 // Default styles
                 'relative text-base font-medium text-foreground',
+
+                // Conditional underline
+                showUnderline && 'after:scale-x-100',
                 className,
             )}
             href={href}
