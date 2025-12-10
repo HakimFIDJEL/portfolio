@@ -29,7 +29,7 @@ export default function AppLanding({
     setShowContent,
 }: AppLayoutProps) {
 
-    const skipLoader = true;
+    const skipLoader = false;
 
     const {
         showLoader,

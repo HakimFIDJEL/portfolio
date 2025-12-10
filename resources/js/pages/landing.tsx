@@ -10,6 +10,7 @@ import AppLanding from '@/layouts/landing/layout';
 // Sections
 import Hero from '@/components/landing/sections/hero';
 import About from '@/components/landing/sections/about';
+import Projects from '@/components/landing/sections/projects';
 
 export default function Landing() {
     // States content
@@ -29,8 +30,7 @@ export default function Landing() {
             <main>
                 <Hero appear={showContent} />
                 <About appear={showContent} />
-
-                <p>Next section</p>
+                {/* <Projects appear={showContent} /> */}
             </main>
         </AppLanding>
     );
