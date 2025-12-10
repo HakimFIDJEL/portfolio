@@ -12,6 +12,9 @@ import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import RoundedButton from '@/components/landing/rounded-button';
 
+// UI Components
+import Magnet from '@/components/ui/magnet';
+
 // Icons
 import { ArrowDown, Monitor, Moon, Sun } from 'lucide-react';
 
@@ -34,7 +37,7 @@ export default function Hero({ appear }: HeroProps) {
     }
 
     return (
-        <section className="flex h-[calc(80vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]">
+        <section className="flex h-[calc(100vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]">
             <Delimiter
                 dashedBorders={['top', 'bottom']}
                 plusCorners={['top-left', 'top-right']}
@@ -53,7 +56,7 @@ export default function Hero({ appear }: HeroProps) {
                 <div
                     className={cn(
                         // Responsive styles
-                        'px-8 lg:px-12.5',
+                        'px-4 sm:px-8 md:px-10 lg:px-12.5',
                     )}
                 >
                     <Curtain
@@ -81,8 +84,8 @@ export default function Hero({ appear }: HeroProps) {
                         'flex w-full justify-between',
 
                         // Responsive styles
-                        'py-6 lg:py-8',
-                        'px-8 lg:px-12.5',
+                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                        'py-4 sm:py-6 md:py-8 lg:py-10',
                         'flex-col md:flex-row',
                         'items-start md:items-end',
                     )}
@@ -134,8 +137,8 @@ export default function Hero({ appear }: HeroProps) {
                         'flex items-center gap-5',
 
                         // Responsive styles
-                        'px-8 lg:px-12.5',
-                        'py-6',
+                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                        'py-4 sm:py-5 md:py-6 lg:py-8',
                     )}
                 >
                     <Curtain
@@ -143,33 +146,39 @@ export default function Hero({ appear }: HeroProps) {
                         background="background"
                         delay={500}
                     >
-                        <RoundedButton>
-                            <ArrowDown className="stroke-1" />
-                        </RoundedButton>
+                        <Magnet magnetStrength={3} padding={20}>
+                            <RoundedButton>
+                                <ArrowDown className="stroke-1" />
+                            </RoundedButton>
+                        </Magnet>
                     </Curtain>
                     <Curtain
                         showCurtain={!appear}
                         background="background"
                         delay={750}
                     >
-                        <RoundedButton onClick={handleSwitchAppearance}>
-                            {appearance === 'dark' && (
-                                <Moon className="stroke-1" />
-                            )}
-                            {appearance === 'light' && (
-                                <Sun className="stroke-1" />
-                            )}
-                            {appearance === 'system' && (
-                                <Monitor className="stroke-1" />
-                            )}
-                        </RoundedButton>
+                        <Magnet magnetStrength={3} padding={20}>
+                            <RoundedButton onClick={handleSwitchAppearance}>
+                                {appearance === 'dark' && (
+                                    <Moon className="stroke-1" />
+                                )}
+                                {appearance === 'light' && (
+                                    <Sun className="stroke-1" />
+                                )}
+                                {appearance === 'system' && (
+                                    <Monitor className="stroke-1" />
+                                )}
+                            </RoundedButton>
+                        </Magnet>
                     </Curtain>
                     <Curtain
                         showCurtain={!appear}
                         background="background"
                         delay={1000}
                     >
-                        <RoundedButton>EN</RoundedButton>
+                        <Magnet magnetStrength={3} padding={20}>
+                            <RoundedButton>EN</RoundedButton>
+                        </Magnet>
                     </Curtain>
                 </Delimiter>
             </div>

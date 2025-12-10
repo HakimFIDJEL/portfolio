@@ -1,20 +1,21 @@
 // layouts/landing/layout.tsx
 
 // Necessary imports
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { type ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
 // Shadcn UI Components
+import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+
+// Hooks
+import { useLandingTransitions } from '@/hooks/use-loading-transition';
 
 // Components
 import TransitionScreen from '@/components/landing/transition-screen';
-import { useLandingTransitions } from '@/hooks/use-loading-transition';
 import Header from '@/layouts/landing/header';
 import Loader from '@/layouts/landing/loader';
 import Navigation from '@/layouts/landing/navigation';
-import { cn } from '@/lib/utils';
 
-// Pages
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -27,6 +28,9 @@ export default function AppLanding({
     showContent,
     setShowContent,
 }: AppLayoutProps) {
+
+    const skipLoader = true;
+
     const {
         showLoader,
         showLoaderContent,
@@ -36,17 +40,21 @@ export default function AppLanding({
         showMenu,
         setShowMenu,
         transitionScreenActive,
-    } = useLandingTransitions(showContent, setShowContent);
+    } = useLandingTransitions(showContent, setShowContent, skipLoader);
+
+    // TODO : Fix scroll up when navigation is opened
 
     return (
         <>
             <div
                 className={cn(
                     'landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased',
-                    !showContent &&
-                        'pointer-events-none h-[100vh] overflow-hidden select-none',
+                    // !showContent &&
+                    //     'pointer-events-none h-[100vh] overflow-hidden select-none',
                 )}
             >
+                {/* <ScreenWidthDisplay /> */}
+
                 <Loader
                     showLoader={showLoader}
                     showLoaderContent={showLoaderContent}
