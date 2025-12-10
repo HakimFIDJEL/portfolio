@@ -28,8 +28,8 @@ export default function Landing() {
             <Head title="Landing page" />
 
             <main>
-                {/* <Hero appear={showContent} /> */}
-                {/* <About appear={showContent} /> */}
+                <Hero appear={showContent} />
+                <About appear={showContent} />
                 <Projects appear={showContent} />
             </main>
         </AppLanding>

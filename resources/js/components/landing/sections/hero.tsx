@@ -37,7 +37,7 @@ export default function Hero({ appear }: HeroProps) {
     }
 
     return (
-        <section className="flex h-[calc(100vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]">
+        <section className="flex h-[calc(100vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]" id='hero'>
             <Delimiter
                 dashedBorders={['top', 'bottom']}
                 plusCorners={['top-left', 'top-right']}
@@ -148,7 +148,9 @@ export default function Hero({ appear }: HeroProps) {
                     >
                         <Magnet magnetStrength={3} padding={20}>
                             <RoundedButton>
-                                <ArrowDown className="stroke-1" />
+                                <a href="#about">
+                                    <ArrowDown className="stroke-1" />
+                                </a>
                             </RoundedButton>
                         </Magnet>
                     </Curtain>

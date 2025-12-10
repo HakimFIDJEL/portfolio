@@ -15,7 +15,7 @@ import TransitionScreen from '@/components/landing/transition-screen';
 import Header from '@/layouts/landing/header';
 import Loader from '@/layouts/landing/loader';
 import Navigation from '@/layouts/landing/navigation';
-import ScreenWidthDisplay from '@/components/landing/screen-width-display';
+// import ScreenWidthDisplay from '@/components/landing/screen-width-display';
 
 
 interface AppLayoutProps {
@@ -54,7 +54,7 @@ export default function AppLanding({
                     //     'pointer-events-none h-[100vh] overflow-hidden select-none',
                 )}
             >
-                <ScreenWidthDisplay />
+                {/* <ScreenWidthDisplay /> */}
 
                 <Loader
                     showLoader={showLoader}

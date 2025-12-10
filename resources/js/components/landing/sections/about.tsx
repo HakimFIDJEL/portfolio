@@ -35,6 +35,7 @@ export default function About({ appear }: AboutProps) {
                 'mt-12 md:mt-24 lg:mt-48',
                 'mb-12 md:mb-24 lg:mb-48',
             )}
+            id='about'
         >
             {/* Panels */}
             <Panels appear={appear} />
@@ -120,7 +121,7 @@ function Panels({ appear }: AboutProps) {
                         delay={250}
                     >
                         <UnderlineLink
-                            href="#"
+                            href="#projects"
                             className={cn(
                                 // Default styles
                                 'group flex w-max items-center gap-2',

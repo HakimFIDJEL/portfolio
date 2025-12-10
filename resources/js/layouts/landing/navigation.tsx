@@ -30,7 +30,7 @@ export default function Navigation({
                 showNavigationContent={showNavigationContent}
                 handleMenuToggle={handleMenuToggle}
             />
-            <NavigationContent showNavigationContent={showNavigationContent} />
+            <NavigationContent showNavigationContent={showNavigationContent} handleMenuToggle={handleMenuToggle} />
         </nav>
     );
 }
@@ -93,17 +93,18 @@ function NavigationButton({ show, handleClick }: NavigationButtonProps) {
 
 interface NavigationContentProps {
     showNavigationContent: boolean;
+    handleMenuToggle: (show: boolean) => void;
 }
 type Link = { index: string; href: string; label: string; show: boolean };
 
-function NavigationContent({ showNavigationContent }: NavigationContentProps) {
+function NavigationContent({ showNavigationContent, handleMenuToggle }: NavigationContentProps) {
     const links: Link[] = useMemo(
         () => [
-            { index: '01', href: '#', label: 'Home', show: false },
-            { index: '02', href: '#', label: 'About', show: false },
-            { index: '03', href: '#', label: 'Projects', show: false },
-            { index: '04', href: '#', label: 'Sandbox', show: false },
-            { index: '05', href: '#', label: 'Contact', show: false },
+            { index: '01', href: '#hero', label: 'Home', show: false },
+            { index: '02', href: '#about', label: 'About', show: false },
+            { index: '03', href: '#projects', label: 'Projects', show: false },
+            { index: '04', href: '#sandbox', label: 'Sandbox', show: false },
+            { index: '05', href: '#contact', label: 'Contact', show: false },
         ],
         [],
     );
@@ -139,7 +140,7 @@ function NavigationContent({ showNavigationContent }: NavigationContentProps) {
     return (
         <div className="mx-auto flex w-[90%] max-w-7xl flex-col px-8 py-6 lg:px-12.5 lg:py-10">
             {visibleLinks.map((link, index) => (
-                <NavigationLink link={link} key={index} />
+                <NavigationLink link={link} key={index} handleMenuToggle={handleMenuToggle} />
             ))}
         </div>
     );
@@ -147,8 +148,9 @@ function NavigationContent({ showNavigationContent }: NavigationContentProps) {
 
 interface NavigationLinkProps {
     link: Link;
+    handleMenuToggle: (show: boolean) => void;
 }
-function NavigationLink({ link }: NavigationLinkProps) {
+function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     const { href, index, label, show } = link;
 
     return (
@@ -169,6 +171,7 @@ function NavigationLink({ link }: NavigationLinkProps) {
                     'flex-col sm:flex-row',
                     'items-start sm:items-center',
                 )}
+                onClick={() => handleMenuToggle(false)}
             >
                 {/* Index with arrow */}
                 <div

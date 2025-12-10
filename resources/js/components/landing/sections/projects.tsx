@@ -48,6 +48,7 @@ export default function Projects({ appear }: { appear: boolean }) {
 
                 'gap-8 sm:gap-10 md:gap-12 lg:gap-14',
             )}
+            id="projects"
         >
             {/* Title */}
             <Delimiter dashedBorders={['all']} plusCorners={['all']}>
@@ -106,7 +107,7 @@ export default function Projects({ appear }: { appear: boolean }) {
                         delay={250}
                     >
                         <UnderlineLink
-                            href="#"
+                            href="#sandbox"
                             className={cn(
                                 // Default styles
                                 'group flex w-max items-center gap-2',
