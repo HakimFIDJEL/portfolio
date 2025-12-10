@@ -138,7 +138,7 @@ export default function Projects({ appear }: { appear: boolean }) {
                     plusCorners={['all']}
                     className={cn(
                         // Default styles
-                        'flex flex-col transition-all duration-1000',
+                        'flex flex-col transition-all duration-1000 relative',
                     )}
                 >
                     {projects.map((project, index) => (

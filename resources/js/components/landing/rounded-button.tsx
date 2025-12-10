@@ -56,7 +56,8 @@ export default function RoundedButton({
             <div
                 className={cn(
                     // Default styles
-                    'transition-all',
+                    'transition-all flex items-center justify-center',
+                    'h-max',
                     isClicked && 'scale-75 opacity-75',
                 )}
             >
