@@ -15,6 +15,7 @@ import TransitionScreen from '@/components/landing/transition-screen';
 import Header from '@/layouts/landing/header';
 import Loader from '@/layouts/landing/loader';
 import Navigation from '@/layouts/landing/navigation';
+// import ScreenWidthDisplay from '@/components/landing/screen-width-display';
 
 
 interface AppLayoutProps {
@@ -29,7 +30,7 @@ export default function AppLanding({
     setShowContent,
 }: AppLayoutProps) {
 
-    const skipLoader = true;
+    const skipLoader = false;
 
     const {
         showLoader,
