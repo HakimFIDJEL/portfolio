@@ -12,6 +12,7 @@ import Magnet from '@/components/ui/magnet';
 
 // Icons
 import * as LucideIcon from 'lucide-react';
+import type { LucideIcon as LucideIconType } from 'lucide-react';
 import { ArrowUpRight } from 'lucide-react';
 
 interface ContactItemData {
@@ -222,7 +223,9 @@ function ContactItem({ item }: ContactItemProps) {
 
     // Récupération de l'icône en utilisant le nom en PascalCase
     const iconName = toPascalCase(item.icon);
-    const IconComponent = (LucideIcon as any)[iconName];
+    
+    // const IconComponent = (LucideIcon as any)[iconName];
+    const IconComponent = LucideIcon[iconName as keyof typeof LucideIcon] as LucideIconType;
 
     // Vérification de sécurité au cas où l'icône n'existe pas
     if (!IconComponent) {
