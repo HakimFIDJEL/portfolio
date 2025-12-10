@@ -100,7 +100,7 @@ export default function Header({
                     'hidden md:block',
                 )}
             >
-                <UnderlineLink href="#">Contact</UnderlineLink>
+                <UnderlineLink href="#contact">Contact</UnderlineLink>
             </div>
         </header>
     );
