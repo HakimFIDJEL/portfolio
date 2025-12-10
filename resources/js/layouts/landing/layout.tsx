@@ -15,6 +15,7 @@ import { useLandingTransitions } from '@/hooks/use-loading-transition';
 import TransitionScreen from '@/components/landing/transition-screen';
 import Header from '@/layouts/landing/header';
 import Loader from '@/layouts/landing/loader';
+import Footer from '@/layouts/landing/footer';
 import Navigation from '@/layouts/landing/navigation';
 
 
@@ -75,8 +76,10 @@ export default function AppLanding({
                     handleMenuToggle={setSwitchNavigation}
                 />
 
-
                 {children}
+
+                <Footer appear={showContent} />
+
             </div>
             <PlaceholderPattern className="fixed inset-0 z-0 size-full h-[100vh] w-[100vw] stroke-neutral-900/20 dark:stroke-neutral-100/20" />
         </>

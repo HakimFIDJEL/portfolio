@@ -203,9 +203,28 @@ export default function Contact({ appear }: ContactProps) {
                         )}
                     >
                         {contactItems.map((item, index) => (
-                            <ContactItem key={index} item={item} />
+                            <FadeIn key={index} show={appear} delay={index * 100} className='w-full'> 
+                                <ContactItem item={item} />
+                            </FadeIn>
                         ))}
                     </Delimiter>
+                </div>
+
+                {/* Borders */}
+                <div
+                    className={cn(
+                        // Responsive styles
+                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                    )}
+                >
+                    <div
+                        className={cn(
+                            // Default styles
+                            'h-32 w-full border-r border-l border-dashed',
+                        )}
+                    >
+                        
+                    </div>
                 </div>
             </div>
         </section>
@@ -234,7 +253,7 @@ function ContactItem({ item }: ContactItemProps) {
     }
 
     return (
-        <Magnet magnetStrength={25} padding={10}>
+        <Magnet magnetStrength={25} padding={10} wrapperClassName='w-full'>
             <a
                 className={cn(
                     // Default styles
