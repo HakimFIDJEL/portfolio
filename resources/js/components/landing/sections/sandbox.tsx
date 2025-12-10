@@ -270,7 +270,7 @@ export default function Sandbox({ appear }: { appear: boolean }) {
                     // Responsive styles
                     'px-6 sm:px-8 md:px-6 lg:px-12.5',
                     'py-12 md:py-10',
-                    'gap-4 md:gap-12',
+                    'gap-4 md:gap-8',
 
                     'w-full',
                     'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
@@ -280,7 +280,7 @@ export default function Sandbox({ appear }: { appear: boolean }) {
                     <div
                         key={`column-${colIndex}`}
                         className={cn(
-                            'flex flex-col gap-4 md:gap-12',
+                            'flex flex-col gap-4 md:gap-8',
                             'w-full',
                         )}
                     >

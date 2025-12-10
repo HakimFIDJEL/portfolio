@@ -199,7 +199,7 @@ export default function Contact({ appear }: ContactProps) {
                             'grid grid-cols-1 md:grid-cols-2',
 
                             // Responsive styles
-                            'gap-4 sm:gap-4 md:gap-5 lg:gap-6',
+                            'gap-4 md:gap-8',
                         )}
                     >
                         {contactItems.map((item, index) => (

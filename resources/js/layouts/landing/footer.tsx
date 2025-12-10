@@ -22,6 +22,68 @@ interface FooterProps {
     appear: boolean;
 }
 
+const links = [
+    {
+        name: 'Sitemap',
+        items: [
+            { 
+                label: 'Hero',
+                href: '#hero'
+            },
+            {
+                label: 'About',
+                href: '#about'
+            },
+            {
+                label: 'Projects',
+                href: '#projects'
+            },
+            {
+                label: 'Sandbox',
+                href: '#sandbox'
+            },
+            {
+                label: 'Contact',
+                href: '#contact'
+            }
+        ]
+    },
+    {
+        name: 'Contact',
+        items: [
+            {
+                label: 'Email',
+                href: 'mailto:hakimfidjel.pro@gmail.com'
+            },
+            {
+                label: 'LinkedIn',
+                href: 'https://www.linkedin.com/in/hakim-fidjel/'
+            },
+            {
+                label: 'GitHub',
+                href: 'https://github.com/hakimfidjel'
+            },
+            {
+                label: 'GitLab',
+                href: 'https://gitlab.com/hakimfidjel'
+            }
+        ]
+    },
+    {
+        name: 'Resources',
+        items: [
+            {
+                label: 'Terms',
+                href: '#'
+            },
+            {
+                label: 'Source Code',
+                href: '#'
+            }
+        ]
+    }
+]
+
 export default function Footer({ appear }: FooterProps) {
     const { appearance, updateAppearance } = useAppearance();
 
@@ -65,6 +127,7 @@ export default function Footer({ appear }: FooterProps) {
                         'py-4 sm:py-6 md:py-8 lg:py-10',
                     )}
                 >
+                    {/* Buttons */}
                     <div className={cn(
                         // Default styles
                         'flex flex-col gap-4 col-span-1',
@@ -108,6 +171,29 @@ export default function Footer({ appear }: FooterProps) {
                             </Magnet>
                         </FadeIn>
                     </div>
+
+                    {links.map((linkGroup, index) => (
+                        <ul className={cn(
+                            // Default styles
+                        )}>
+                            
+
+
+                            <li className={cn(
+                                // Default styles
+                            )}>
+                                Sitemap
+                            </li>
+                            <li>
+                                <a href="#about">About Me</a>
+                            </li>
+
+                        </ul>
+                    ))}
+
+
+
+
                 </div>
             </Delimiter>
 
