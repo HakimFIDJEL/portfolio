@@ -11,6 +11,7 @@ import AppLanding from '@/layouts/landing/layout';
 import Hero from '@/components/landing/sections/hero';
 import About from '@/components/landing/sections/about';
 import Projects from '@/components/landing/sections/projects';
+import Sandbox from '@/components/landing/sections/sandbox';
 
 export default function Landing() {
     // States content
@@ -28,9 +29,10 @@ export default function Landing() {
             <Head title="Landing page" />
 
             <main>
-                <Hero appear={showContent} />
-                <About appear={showContent} />
-                <Projects appear={showContent} />
+                {/* <Hero appear={showContent} /> */}
+                {/* <About appear={showContent} /> */}
+                {/* <Projects appear={showContent} /> */}
+                <Sandbox appear={showContent} />
             </main>
         </AppLanding>
     );

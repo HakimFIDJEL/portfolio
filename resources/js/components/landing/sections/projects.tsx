@@ -17,26 +17,32 @@ export default function Projects({ appear }: { appear: boolean }) {
         {
             name: 'Vps Manager',
             href: '#',
+            sort_order: 1,
         },
         {
             name: 'Vps Hosting & Deployment',
             href: '#',
+            sort_order: 2,
         },
         {
             name: 'Portfolio',
             href: '#',
+            sort_order: 3,
         },
         {
             name: 'jCoaching',
             href: '#',
+            sort_order: 4,
         },
         {
             name: 'GC Trackr',
             href: '#',
+            sort_order: 5,
         },
         {
             name: 'RSC Wasquehal',
             href: '#',
+            sort_order: 6,
         },
     ];
 
