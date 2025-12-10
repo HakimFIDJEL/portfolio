@@ -47,7 +47,8 @@ export default function RoundedButton({
                 'focus-visible:!text-primary-foreground focus-visible:outline-none',
 
                 // Disabled styles
-                disabled && 'cursor-not-allowed opacity-50 hover:!text-primary focus-visible:!text-primary',
+                disabled &&
+                    'pointer-events-none opacity-50 hover:!text-primary focus-visible:!text-primary',
 
                 className,
             )}
@@ -78,7 +79,6 @@ export default function RoundedButton({
                     )}
                 ></div>
             )}
-
         </button>
     );
 }

@@ -6,16 +6,20 @@ import React from 'react';
 
 // UI Components
 import { Separator } from '@/components/ui/separator';
+import Magnet from '@/components/ui/magnet';
 
 // Components
+import Carousel from '@/components/landing/carousel';
 import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import FadeIn from '@/components/landing/fade-in';
 import RoundedButton from '@/components/landing/rounded-button';
 import UnderlineLink from '@/components/landing/underline-link';
 
-// Icons
+// Types
 import { Attachment } from '@/types';
+
+// Icons
 import {
     ArrowDownRight,
     ArrowUpRight,
@@ -24,7 +28,7 @@ import {
     X,
 } from 'lucide-react';
 
-const sandboxItems = [
+const sandboxItems: SandboxItemType[] = [
     {
         id: '1',
         sort_order: 1,
@@ -32,32 +36,28 @@ const sandboxItems = [
         subtitle: 'This is a description for Sample Project 1.',
         date: '2023-01-15',
         tags: ['JavaScript', 'Web Development'],
-        description: `My portfolio is a personal project designed to showcase my  skills, projects, and achievements in a structured and visually  appealing way.
-Backoffice Excellence: I utilized ShadCN UI to build a sleek and functional backoffice, making content management  simple and intuitive. The components provide a modern and polished  design that aligns with my portfolio's professional tone.
-
-Innovative Integration: For the first time, I combined React (frontend) and Laravel (backend) using Inertia.js, which offered an incredible developer experience. This setup allowed me to bridge the gap between client-side interactivity and server-side  functionality seamlessly, significantly enhancing my React proficiency.
-
-Theming System: The portfolio includes a customizable theme system, featuring:
-A light theme for clarity.
-A dark theme for a modern and sleek look.
-A minimalist version, currently completed, prioritizing simplicity and focus.
-A planned graphic design version, awaiting UX design mockups from my collaborator.
-
-Learning and Growth: This project was highly instructive, pushing me to experiment with  advanced tools and architectures. It’s a testament to my ability to  combine aesthetics with functionality while constantly improving my  technical skills.`,
-        feedback: `This project is one of my favorites for several reasons:
-I’m incredibly proud of the result, as it reflects my growth and expertise as a developer.
-The backoffice system built with ShadCN UI exceeded my expectations in terms of usability and design.
-Exploring Inertia.js was a game-changer for my skills, and the hybrid React-Laravel architecture was a joy to work with.
-The theming system gave me the opportunity to push my creativity and technical capabilities.
-Overall, I see this project as a foundation for showcasing my future achievements, and I’m thrilled with how it turned out.`,
-        what_i_learned: `Working on my portfolio was an enriching experience that taught me:
-How to integrate React and Laravel using Inertia.js, opening up new possibilities for hybrid front-end and back-end development.
-The power of ShadCN UI to simplify UI design while maintaining a modern and professional look.
-How to implement a custom theming system, allowing me to experiment with user experience through light/dark modes and minimalist/graphic design layouts.
-The importance of clean and maintainable code to manage a project that will evolve over time.
-How to manage the balance between functionality and aesthetics, especially  when building a professional portfolio to represent myself.`,
+        description: '',
+        feedback: '',
+        what_i_learned: '',
         stacks: ['JavaScript', 'React', 'CSS'],
-        images: [],
+        attachments: [
+            {
+                file_path: '',
+                url: '',
+            },
+            {
+                file_path: '',
+                url: '',
+            },
+            {
+                file_path: '',
+                url: '',
+            },
+            {
+                file_path: '',
+                url: '',
+            },
+        ],
     },
     {
         id: '2',
@@ -71,7 +71,7 @@ How to manage the balance between functionality and aesthetics, especially  whe
         feedback: '',
         what_i_learned: '',
         stacks: ['JavaScript', 'React', 'CSS'],
-        images: [],
+        attachments: [],
     },
     {
         id: '3',
@@ -84,7 +84,7 @@ How to manage the balance between functionality and aesthetics, especially  whe
         feedback: '',
         what_i_learned: '',
         stacks: ['JavaScript', 'React', 'CSS'],
-        images: [],
+        attachments: [],
     },
     {
         id: '4',
@@ -97,7 +97,7 @@ How to manage the balance between functionality and aesthetics, especially  whe
         feedback: '',
         what_i_learned: '',
         stacks: ['JavaScript', 'React', 'CSS'],
-        images: [],
+        attachments: [],
     },
     {
         id: '5',
@@ -110,7 +110,7 @@ How to manage the balance between functionality and aesthetics, especially  whe
         feedback: '',
         what_i_learned: '',
         stacks: ['JavaScript', 'React', 'CSS'],
-        images: [],
+        attachments: [],
     },
 ];
 
@@ -122,7 +122,7 @@ interface SandboxItemType {
     date: string;
     tags: string[];
 
-    images?: Attachment[];
+    attachments?: Attachment[];
     source_code_url?: string;
     live_demo_url?: string;
     stacks?: string[];
@@ -291,20 +291,22 @@ export default function Sandbox({ appear }: { appear: boolean }) {
                                 // Ajuster le délai pour la séquence dans la colonne
                                 delay={(colIndex + itemIndex * cols) * 100}
                             >
-                                <SandboxItem
-                                    id={item.id}
-                                    title={item.title}
-                                    subtitle={item.subtitle}
-                                    date={item.date}
-                                    tags={item.tags}
-                                    active={
-                                        activeIndex ===
-                                        colIndex + itemIndex * cols
-                                    }
-                                    handleClick={() =>
-                                        handleClick(colIndex + itemIndex * cols)
-                                    }
-                                />
+                                <Magnet magnetStrength={5} padding={10}>
+                                    <SandboxItem
+                                        id={item.id}
+                                        title={item.title}
+                                        subtitle={item.subtitle}
+                                        date={item.date}
+                                        tags={item.tags}
+                                        active={
+                                            activeIndex ===
+                                            colIndex + itemIndex * cols
+                                        }
+                                        handleClick={() =>
+                                            handleClick(colIndex + itemIndex * cols)
+                                        }
+                                    />
+                                </Magnet>
                             </FadeIn>
                         ))}
                     </div>
@@ -340,14 +342,14 @@ function SandboxItem({
     handleClick,
 }: SandboxItemProps) {
     return (
-        <a
-            href="#"
+        <button
             className={cn(
                 // Default styles
                 'group relative h-max',
                 'flex flex-col',
                 'cursor-pointer transition-all duration-500',
                 'border bg-card text-foreground',
+                'text-start',
 
                 // Responsive styles
                 'px-6 sm:px-6 md:px-6 lg:px-6',
@@ -434,7 +436,7 @@ function SandboxItem({
                     day: 'numeric',
                 })}
             </time>
-        </a>
+        </button>
     );
 }
 
@@ -444,7 +446,6 @@ interface SandboxDialogProps {
 }
 
 function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
-
     const [open, setOpen] = React.useState<boolean>(false);
     const [isFullyClosed, setIsFullyClosed] = React.useState<boolean>(true);
 
@@ -453,7 +454,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
             setOpen(true);
             setIsFullyClosed(false);
         } else {
-            setOpen(false); 
+            setOpen(false);
         }
     }, [item]);
 
@@ -463,7 +464,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
         if (!open && !isFullyClosed) {
             timeoutId = setTimeout(() => {
                 handleClose();
-                setIsFullyClosed(true); 
+                setIsFullyClosed(true);
             }, 500);
         }
 
@@ -490,13 +491,15 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
         <div
             className={cn(
                 // Default styles
-                'fixed inset-0 z-40 flex items-center justify-center bg-background/50 backdrop-blur-md cursor-pointer',
+                'fixed inset-0 z-40 flex cursor-pointer items-center justify-center bg-background/50 backdrop-blur-md',
 
                 // Transition
                 'transition-opacity duration-1000',
 
                 // Visibility
-                open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none delay-250',
+                open
+                    ? 'pointer-events-auto opacity-100'
+                    : 'pointer-events-none opacity-0 delay-250',
             )}
             onClick={() => setOpen(false)}
         >
@@ -504,15 +507,16 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                 className={cn(
                     // Default styles
                     'fixed inset-0 z-50 mx-auto my-auto border-4 bg-card',
-                    'overflow-auto cursor-auto',
+                    'cursor-auto overflow-auto',
                     'transition-all focus-visible:outline-4 focus-visible:outline-primary',
 
                     // Transition
                     'translate-y-0 opacity-100 transition-all delay-250 duration-1000',
-                    !open && 'translate-y-[50%] opacity-0 delay-0 duration-1000',
+                    !open &&
+                        'translate-y-[50%] opacity-0 delay-0 duration-1000',
 
                     // Responsive styles
-                    'sm:h-[70vh] sm:w-[90%] sm:max-w-4xl',
+                    'sm:h-[80vh] sm:w-[90%] sm:max-w-5xl',
                     'h-full w-full',
                 )}
                 onClick={(e) => e.stopPropagation()}
@@ -526,7 +530,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         'border-b border-border bg-card',
 
                         // Responsive styles
-                        'px-6 sm:px-8 md:px-8 lg:px-8',
+                        'px-6 sm:px-8 md:px-16',
                         'py-10 sm:py-6 md:py-6 lg:py-6',
 
                         'sm:flex-row sm:items-start sm:justify-between sm:gap-6',
@@ -558,24 +562,41 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                     <div
                         className={cn(
                             // Default styles
-                            'flex items-center gap-3',
+                            'flex items-center gap-4',
                         )}
                     >
                         {/* Code source */}
-                        <RoundedButton disabled={!item?.source_code_url}>
-                            <a href={item?.source_code_url} target='_blank' tabIndex={(item && item.source_code_url) ? 0 : -1}>
+                        <RoundedButton
+                            disabled={!item?.source_code_url}
+                            className="p-2.5"
+                        >
+                            <a
+                                href={item?.source_code_url}
+                                target="_blank"
+                                tabIndex={item && item.source_code_url ? 0 : -1}
+                            >
                                 <Code2 />
                             </a>
                         </RoundedButton>
-                        
+
                         {/* Live demo */}
-                        <RoundedButton disabled={!item?.live_demo_url}>
-                            <a href={item?.live_demo_url} target='_blank' tabIndex={(item && item.live_demo_url) ? 0 : -1}>
+                        <RoundedButton
+                            disabled={!item?.live_demo_url}
+                            className="p-2.5"
+                        >
+                            <a
+                                href={item?.live_demo_url}
+                                target="_blank"
+                                tabIndex={item && item.live_demo_url ? 0 : -1}
+                            >
                                 <SquareArrowOutUpRight />
                             </a>
                         </RoundedButton>
                         {/* Code source */}
-                        <RoundedButton onClick={() => setOpen(false)}>
+                        <RoundedButton
+                            onClick={() => setOpen(false)}
+                            className="p-2.5"
+                        >
                             <X />
                         </RoundedButton>
                     </div>
@@ -588,7 +609,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         'flex flex-col',
 
                         // Responsive styles
-                        'px-6 sm:px-8 md:px-8 lg:px-8',
+                        'px-6 sm:px-8 md:px-16',
                         'py-4 sm:py-6 md:py-8 lg:py-10',
 
                         // Responsive styles
@@ -597,7 +618,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                 >
                     {/* Tech Stack */}
                     {item?.stacks && item?.stacks.length > 0 && (
-                        <FadeIn show={open} className='w-full' delay={250}>
+                        <FadeIn show={open} className="w-full" delay={250}>
                             <div
                                 className={cn(
                                     // Default styles
@@ -650,7 +671,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
 
                     {/* Description */}
                     {item?.description && (
-                        <FadeIn show={open} className='w-full' delay={250}>
+                        <FadeIn show={open} className="w-full" delay={250}>
                             <div
                                 className={cn(
                                     // Default styles
@@ -693,9 +714,41 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         </FadeIn>
                     )}
 
+                    {/* Attachments */}
+                    {item?.attachments && item.attachments.length > 0 && (
+                        <FadeIn show={open} className="w-full" delay={250}>
+                            <div
+                                className={cn(
+                                    // Default styles
+                                    'flex flex-col items-start',
+
+                                    // Responsive styles
+                                    'gap-4',
+                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
+                                )}
+                            >
+                                <h4
+                                    className={cn(
+                                        // Default styles
+                                        'font-medium',
+                                        'text-lg',
+                                    )}
+                                >
+                                    Attachments
+                                </h4>
+
+                                <Carousel
+                                    attachments={item.attachments}
+                                    show_navigation={false}
+                                    show_pagination={true}
+                                />
+                            </div>
+                        </FadeIn>
+                    )}
+
                     {/* Feedback */}
                     {item?.feedback && (
-                        <FadeIn show={open} className='w-full' delay={250}>
+                        <FadeIn show={open} className="w-full" delay={250}>
                             <div
                                 className={cn(
                                     // Default styles
@@ -740,7 +793,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
 
                     {/* What I Learned */}
                     {item?.what_i_learned && (
-                        <FadeIn show={open} className='w-full' delay={250}>
+                        <FadeIn show={open} className="w-full" delay={250}>
                             <div
                                 className={cn(
                                     // Default styles
