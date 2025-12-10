@@ -148,7 +148,7 @@ export default function Hero({ appear }: HeroProps) {
                     >
                         <Magnet magnetStrength={3} padding={20}>
                             <RoundedButton>
-                                <a href="#about">
+                                <a href="#about" tabIndex={-1}>
                                     <ArrowDown className="stroke-1" />
                                 </a>
                             </RoundedButton>

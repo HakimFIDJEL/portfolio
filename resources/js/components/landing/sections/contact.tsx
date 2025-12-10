@@ -283,14 +283,14 @@ function ContactItem({ item }: ContactItemProps) {
                     <IconComponent
                         className={cn(
                             // Default styles
-                            'h-6 w-6 stroke-1 text-primary transition-all duration-500',
+                            'h-6 w-6 stroke-2 text-primary transition-all duration-500',
 
                             // Hover & Focus styles
                             'group-hover:text-primary-foreground group-hover:duration-1000',
                             'group-focus-visible:text-primary-foreground group-focus-visible:duration-1000',
                         )}
                     />
-                    <span>{item.label}</span>
+                    <span className='font-semibold'>{item.label}</span>
                 </div>
 
                 {/* Content */}
@@ -301,8 +301,8 @@ function ContactItem({ item }: ContactItemProps) {
                         'w-full p-4 underline transition-all duration-500',
 
                         // Hover & Focus styles
-                        'group-hover:border-primary group-hover:bg-card group-hover:text-primary-foreground group-hover:duration-1000',
-                        'group-focus-visible:border-primary group-focus-visible:bg-card group-focus-visible:text-primary-foreground group-focus-visible:duration-1000',
+                        'group-hover:border-primary group-hover:bg-card  group-hover:duration-1000',
+                        'group-focus-visible:border-primary group-focus-visible:bg-card group-focus-visible:duration-1000',
                     )}
                 >
                     {item.name}

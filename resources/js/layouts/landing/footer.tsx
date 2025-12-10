@@ -75,7 +75,7 @@ export default function Footer({ appear }: FooterProps) {
                         >
                             <Magnet magnetStrength={3} padding={20}>
                                 <RoundedButton>
-                                    <a href="#top">
+                                    <a href="#top" tabIndex={-1}>
                                         <ArrowUp className="stroke-1" />
                                     </a>
                                 </RoundedButton>
