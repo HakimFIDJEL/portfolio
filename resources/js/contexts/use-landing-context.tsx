@@ -1,35 +1,35 @@
-// resources/js/contexts/use-landing-context.tsx
+import {
+    LandingTransitionsHook,
+    useLandingTransitions,
+} from '@/hooks/use-loading-transition';
 import { createContext, useContext, useMemo } from 'react';
-import { useLandingTransitions, LandingTransitionsHook } from '@/hooks/use-loading-transition';
 
-// Définir le type pour les props du Context Provider
 interface LandingTransitionsProviderProps {
     children: React.ReactNode;
     initialShowContent: boolean;
     setShowContentExternal: (v: boolean) => void;
     skipLoader: boolean;
+    showPanels: boolean;
 }
 
-// 1. Créer le Context (initialisé à undefined)
-// Le type LandingTransitionsHook sera défini dans la prochaine étape
-const LandingTransitionsContext = createContext<LandingTransitionsHook | undefined>(undefined);
+const LandingTransitionsContext = createContext<
+    LandingTransitionsHook | undefined
+>(undefined);
 
-// 2. Créer le Provider
 export function LandingTransitionsProvider({
     children,
     initialShowContent,
     setShowContentExternal,
     skipLoader,
+    showPanels,
 }: LandingTransitionsProviderProps) {
-    
-    // Utiliser le hook pour obtenir toutes les valeurs (états + handlers)
     const transitions = useLandingTransitions(
         initialShowContent,
         setShowContentExternal,
-        skipLoader
+        skipLoader,
+        showPanels,
     );
 
-    // Mémoriser la valeur du contexte pour éviter les re-renders inutiles
     const contextValue = useMemo(() => transitions, [transitions]);
 
     return (
@@ -43,7 +43,9 @@ export function LandingTransitionsProvider({
 export function useLandingContext() {
     const context = useContext(LandingTransitionsContext);
     if (context === undefined) {
-        throw new Error('useLandingContext doit être utilisé au sein d\'un LandingTransitionsProvider');
+        throw new Error(
+            "useLandingContext doit être utilisé au sein d'un LandingTransitionsProvider",
+        );
     }
     return context;
 }

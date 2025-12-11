@@ -9,12 +9,16 @@ export function useLandingTransitions(
     initialShowContent: boolean,
     setShowContentExternal: (v: boolean) => void,
     skipLoader: boolean,
+    showPanels: boolean,
 ) {
     // Main states
     const [loaderActive, setLoaderActive] = useState(skipLoader ? false : true);
     const [navigationActive, setNavigationActive] = useState(false);
     const [contentActive, setContentActive] = useState(initialShowContent);
-    const [transitionPanelsActive, setTransitionPanelsActive] = useState(false);
+    const [transitionPanelsActive, setTransitionPanelsActive] = useState(() => {
+        return skipLoader ? showPanels : false;
+    });
+    const [coverScreenActive, setCoverScreenActive] = useState(showPanels);
 
     // Sub states for animations
     const [pageNavigationActive, setPageNavigationActive] = useState(false);
@@ -109,26 +113,29 @@ export function useLandingTransitions(
 
     // Page navigation sequences
     function openPageSequence() {
-
         setTransitionPanelsActive(true);
         setContentActive(false);
         setShowContentExternal(false);
 
-        
         timers.current.push(
             window.setTimeout(() => {
                 if (targetHref) {
                     router.visit(targetHref, {
+                        method: 'get',
                         preserveState: true,
                         preserveScroll: true,
+
                         onFinish: () => {
-                            setPageNavigationActive(false);
+                            setCoverScreenActive(false);
+                            setTimeout(() => {
+                                setPageNavigationActive(false);
+                            }, 500);
                         },
                     });
                 } else {
                     setPageNavigationActive(false);
                 }
-            }, 1000),
+            }, 750),
         );
     }
 
@@ -136,12 +143,14 @@ export function useLandingTransitions(
     function closePageSequence() {
         setTargetHref(null);
 
-        timers.current.push(
-            window.setTimeout(() => {
+        setTimeout(() => {
+            setCoverScreenActive(false);
+            setTransitionPanelsActive(false);
+            setTimeout(() => {
                 setContentActive(true);
                 setShowContentExternal(true);
-            }, 500),
-        );
+            }, 500);
+        }, 1000);
     }
 
     /**
@@ -151,13 +160,17 @@ export function useLandingTransitions(
     // Initial load effect
     useEffect(() => {
         if (skipLoader) {
-            setLoaderActive(false);
-            setContentActive(true);
-            setShowContentExternal(true);
+            if (!transitionPanelsActive) {
+                setLoaderActive(false);
+                setContentActive(true);
+                setShowContentExternal(true);
+            }
             return;
         }
 
-        if (loaderActive) startLoaderSequence();
+        if (loaderActive) {
+            startLoaderSequence();
+        }
 
         return () => clearTimers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -165,8 +178,10 @@ export function useLandingTransitions(
 
     // Navigation open/close effect
     useEffect(() => {
+        if (loaderActive) return;
+
         clearTimers();
-        if(!pageNavigationActive) {
+        if (!pageNavigationActive) {
             if (switchNavigationActive) openNavigationSequence();
             else closeNavigationSequence();
         }
@@ -177,6 +192,8 @@ export function useLandingTransitions(
 
     // Page navigation effect
     useEffect(() => {
+        if (loaderActive) return;
+
         clearTimers();
         if (pageNavigationActive) {
             if (targetHref) {
@@ -215,6 +232,7 @@ export function useLandingTransitions(
         navigationContentActive,
         contentActive,
         transitionPanelsActive,
+        coverScreenActive,
 
         // handlers
         _toggleNavigation,

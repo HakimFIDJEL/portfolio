@@ -6,12 +6,9 @@ import { useState } from 'react';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
-import { useLandingTransitions } from '@/hooks/use-loading-transition';
 
 // Sections
-
 export default function Project() {
-
 
     // States content
     const [showContent, setShowContent] = useState(false);

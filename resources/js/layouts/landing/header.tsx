@@ -8,6 +8,9 @@ import { useEffect, useState } from 'react';
 // Components
 import UnderlineLink from '@/components/landing/underline-link';
 
+// Contexts
+import { useLandingContext } from '@/contexts/use-landing-context';
+
 interface HeaderProps {
     showContent: boolean;
     handleMenuToggle: (open: boolean) => void;
@@ -16,6 +19,16 @@ interface HeaderProps {
 export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
     const [scrollY, setScrollY] = useState(0);
     const [showMenu, setShowMenu] = useState(true);
+
+    const { _navigateToPage } = useLandingContext();
+
+    function handleProjectClick(
+        e: React.MouseEvent<HTMLAnchorElement>,
+        href: string,
+    ) {
+        e.preventDefault();
+        _navigateToPage(href);
+    }
 
     useEffect(() => {
         let lastScrollY = 0;
@@ -42,7 +55,6 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
         };
     }, [setShowMenu]);
 
-    // Remove the #something in currentUrl
     const currentUrl = usePage().url.split('#')[0];
     const homePath = new URL(route('home')).pathname;
 
@@ -86,6 +98,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
                 )}
             >
                 <a
+                    onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'))}
                     href={currentUrl === homePath ? '#top' : route('home')}
                     className={cn(
                         // Focus styles

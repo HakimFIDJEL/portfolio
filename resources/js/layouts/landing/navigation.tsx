@@ -1,9 +1,17 @@
 // resources/js/layouts/landing/navigation.tsx
 
-import Curtain from '@/components/landing/curtain';
 import { cn } from '@/lib/utils';
-import { ArrowRight } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
+
+// Components
+import Curtain from '@/components/landing/curtain';
+
+// Contexts
+import { useLandingContext } from '@/contexts/use-landing-context';
+
+// Icons
+import { ArrowRight } from 'lucide-react';
 
 interface NavigationProps {
     showNavigation: boolean;
@@ -30,7 +38,10 @@ export default function Navigation({
                 showNavigationContent={showNavigationContent}
                 handleMenuToggle={handleMenuToggle}
             />
-            <NavigationContent showNavigationContent={showNavigationContent} handleMenuToggle={handleMenuToggle} />
+            <NavigationContent
+                showNavigationContent={showNavigationContent}
+                handleMenuToggle={handleMenuToggle}
+            />
         </nav>
     );
 }
@@ -97,10 +108,13 @@ interface NavigationContentProps {
 }
 type Link = { index: string; href: string; label: string; show: boolean };
 
-function NavigationContent({ showNavigationContent, handleMenuToggle }: NavigationContentProps) {
+function NavigationContent({
+    showNavigationContent,
+    handleMenuToggle,
+}: NavigationContentProps) {
     const links: Link[] = useMemo(
         () => [
-            { index: '01', href: '#hero', label: 'Home', show: false },
+            { index: '01', href: '#top', label: 'Home', show: false },
             { index: '02', href: '#about', label: 'About', show: false },
             { index: '03', href: '#projects', label: 'Projects', show: false },
             { index: '04', href: '#sandbox', label: 'Sandbox', show: false },
@@ -140,7 +154,11 @@ function NavigationContent({ showNavigationContent, handleMenuToggle }: Navigati
     return (
         <div className="mx-auto flex w-[90%] max-w-7xl flex-col px-8 py-6 lg:px-12.5 lg:py-10">
             {visibleLinks.map((link, index) => (
-                <NavigationLink link={link} key={index} handleMenuToggle={handleMenuToggle} />
+                <NavigationLink
+                    link={link}
+                    key={index}
+                    handleMenuToggle={handleMenuToggle}
+                />
             ))}
         </div>
     );
@@ -153,14 +171,33 @@ interface NavigationLinkProps {
 function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     const { href, index, label, show } = link;
 
+    const currentUrl = usePage().url.split('#')[0];
+    const homePath = new URL(route('home')).pathname;
+
+    const { _navigateToPage } = useLandingContext();
+
+    function handleProjectClick(
+        e: React.MouseEvent<HTMLAnchorElement>,
+        href: string,
+    ) {
+        if (currentUrl !== homePath) {
+            e.preventDefault();
+            _navigateToPage(href);
+        } else {
+            handleMenuToggle(false);
+        }
+    }
+
     return (
         <Curtain showCurtain={!show}>
             <a
-                {...(show ? { href } : {})}
+                {...(show
+                    ? { href: currentUrl === homePath ? href : route('home') }
+                    : {})}
                 tabIndex={show ? 0 : -1}
                 className={cn(
                     // Default styles
-                    'group flex overflow-hidden py-4 pr-12 transition-all duration-1000 relative',
+                    'group relative flex overflow-hidden py-4 pr-12 transition-all duration-1000',
 
                     // Focus & hover styles
                     'hover:!text-primary-foreground hover:md:gap-[80px] hover:md:pl-[30px]',
@@ -171,7 +208,12 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
                     'flex-col sm:flex-row',
                     'items-start sm:items-center',
                 )}
-                onClick={() => handleMenuToggle(false)}
+                onClick={(e) =>
+                    handleProjectClick(
+                        e,
+                        currentUrl === homePath ? href : route('home'),
+                    )
+                }
             >
                 {/* Index with arrow */}
                 <div

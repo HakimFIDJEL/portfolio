@@ -14,6 +14,7 @@ import Projects from '@/components/landing/sections/projects';
 import Sandbox from '@/components/landing/sections/sandbox';
 import Contact from '@/components/landing/sections/contact';
 
+
 export default function Landing() {
     // States content
     const [showContent, setShowContent] = useState(false);
