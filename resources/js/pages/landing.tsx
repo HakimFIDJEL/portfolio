@@ -27,7 +27,7 @@ export default function Landing() {
 
     return (
         <AppLanding showContent={showContent} setShowContent={setShowContent}>
-            <Head title="Landing page" />
+            <Head title="Porfolio" />
 
             <main>
                 <Hero appear={showContent} />

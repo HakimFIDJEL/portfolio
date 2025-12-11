@@ -2,8 +2,8 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
 import { usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 // Components
 import UnderlineLink from '@/components/landing/underline-link';
@@ -46,7 +46,8 @@ export default function Header({
         };
     }, [setShowMenu]);
 
-    const currentUrl = usePage().url;
+    // Remove the #something in currentUrl
+    const currentUrl = usePage().url.split('#')[0];
     const homePath = new URL(route('home')).pathname;
 
     return (
@@ -85,8 +86,12 @@ export default function Header({
                     'text-right md:text-center',
                 )}
             >
-                <a 
+                <a
                     href={currentUrl === homePath ? '#top' : route('home')}
+                    className={cn(
+                        // Focus styles
+                        'transition-all focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-primary',
+                    )}
                 >
                     HF
                 </a>
