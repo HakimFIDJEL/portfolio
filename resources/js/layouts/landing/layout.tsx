@@ -19,6 +19,12 @@ import Footer from '@/layouts/landing/footer';
 import Navigation from '@/layouts/landing/navigation';
 import ScrollTopButton from '@/components/landing/scroll-top-button';
 
+// Contexts
+import {
+    useLandingContext,
+    LandingTransitionsProvider,
+} from '@/contexts/use-landing-context';
+
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -26,7 +32,7 @@ interface AppLayoutProps {
     setShowContent: (show: boolean) => void;
 }
 
-export default function AppLanding({
+function AppLandingContent({
     children,
     showContent,
     setShowContent,
@@ -35,15 +41,23 @@ export default function AppLanding({
     const skipLoader = true;
 
     const {
-        showLoader,
-        showLoaderContent,
-        showNavigation,
-        showNavigationContent,
-        setSwitchNavigation,
-        showMenu,
-        setShowMenu,
-        transitionScreenActive,
-    } = useLandingTransitions(showContent, setShowContent, skipLoader);
+        // states
+        loaderActive,
+        loaderContentActive,
+        navigationActive,
+        navigationContentActive,
+        contentActive,
+        transitionPanelsActive,
+
+        // handlers
+        _toggleNavigation,
+        _navigateToPage,
+
+        // low-level setters if needed
+        setNavigationActive,
+        setTransitionPanelsActive,
+        setContentActive,
+    } = useLandingContext();
 
     return (
         <>
@@ -59,22 +73,21 @@ export default function AppLanding({
 
 
                 <Loader
-                    showLoader={showLoader}
-                    showLoaderContent={showLoaderContent}
+                    showLoader={loaderActive}
+                    showLoaderContent={loaderContentActive}
                 />
 
-                <TransitionScreen active={transitionScreenActive} />
+                <TransitionScreen active={transitionPanelsActive} />
 
                 <Navigation
-                    showNavigation={showNavigation}
-                    showNavigationContent={showNavigationContent}
-                    handleMenuToggle={setSwitchNavigation}
+                    showNavigation={navigationActive}
+                    showNavigationContent={navigationContentActive}
+                    handleMenuToggle={() => _toggleNavigation(false)}
                 />
 
                 <Header
-                    showMenu={showMenu}
-                    setShowMenu={setShowMenu}
-                    handleMenuToggle={setSwitchNavigation}
+                    showContent={contentActive}
+                    handleMenuToggle={() => _toggleNavigation(true)}
                 />
 
                 {children}
@@ -86,5 +99,28 @@ export default function AppLanding({
             </div>
             <PlaceholderPattern className="fixed inset-0 z-0 size-full h-[100vh] w-[100vw] stroke-neutral-900/20 dark:stroke-neutral-100/20" />
         </>
+    );
+}
+
+export default function AppLanding({
+    children,
+    showContent,
+    setShowContent,
+}: AppLayoutProps) {
+    const skipLoader = true;
+    
+    return (
+        <LandingTransitionsProvider
+            initialShowContent={showContent}
+            setShowContentExternal={setShowContent}
+            skipLoader={skipLoader}
+        >
+            <AppLandingContent
+                showContent={showContent}
+                setShowContent={setShowContent}
+            >
+                {children}
+            </AppLandingContent>
+        </LandingTransitionsProvider>
     );
 }

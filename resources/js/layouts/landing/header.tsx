@@ -9,17 +9,13 @@ import { useEffect, useState } from 'react';
 import UnderlineLink from '@/components/landing/underline-link';
 
 interface HeaderProps {
-    showMenu: boolean;
-    setShowMenu: (open: boolean) => void;
+    showContent: boolean;
     handleMenuToggle: (open: boolean) => void;
 }
 
-export default function Header({
-    showMenu,
-    setShowMenu,
-    handleMenuToggle,
-}: HeaderProps) {
+export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
     const [scrollY, setScrollY] = useState(0);
+    const [showMenu, setShowMenu] = useState(true);
 
     useEffect(() => {
         let lastScrollY = 0;
@@ -63,8 +59,11 @@ export default function Header({
                 'grid-cols-2 md:grid-cols-3',
                 'h-[73px] lg:h-[105px]',
 
-                // Conditional styles based on showMenu state
-                !showMenu && 'translate-y-[-100%] duration-500',
+                // Conditional styles based on showContent & showMenu state
+
+                (!showContent || (showContent && !showMenu)) &&
+                    'translate-y-[-100%] duration-500',
+
                 scrollY > 50 &&
                     'border-border bg-background/50 !backdrop-blur-lg',
             )}

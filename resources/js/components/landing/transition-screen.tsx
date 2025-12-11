@@ -15,6 +15,9 @@ export default function TransitionScreen({ active }: TransitionScreenProps) {
     const [visiblePanels, setVisiblePanels] = useState<number[]>([]);
 
     useEffect(() => {
+
+        console.log('TransitionScreen active:', active);
+
         if (active) {
             setVisiblePanels([]);
             panelIndices.forEach((index) => {

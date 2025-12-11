@@ -3,6 +3,9 @@
 // Necessary imports
 import { cn } from '@/lib/utils';
 
+// Contexts
+import { useLandingContext } from '@/contexts/use-landing-context';
+
 // Components
 import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
@@ -12,39 +15,55 @@ import UnderlineLink from '@/components/landing/underline-link';
 // Icons
 import { ArrowDownRight, ArrowRight } from 'lucide-react';
 
-export default function Projects({ appear }: { appear: boolean }) {
-    const projects = [
-        {
-            name: 'Vps Manager',
-            href: '#',
-            sort_order: 1,
-        },
-        {
-            name: 'Vps Hosting & Deployment',
-            href: '#',
-            sort_order: 2,
-        },
-        {
-            name: 'Portfolio',
-            href: '#',
-            sort_order: 3,
-        },
-        {
-            name: 'jCoaching',
-            href: '#',
-            sort_order: 4,
-        },
-        {
-            name: 'GC Trackr',
-            href: '#',
-            sort_order: 5,
-        },
-        {
-            name: 'RSC Wasquehal',
-            href: '#',
-            sort_order: 6,
-        },
-    ];
+
+const projects = [
+    {
+        name: 'Vps Manager',
+        href: route('project', { slug: 'vps-manager' }),
+        sort_order: 1,
+    },
+    {
+        name: 'Vps Hosting & Deployment',
+        href: route('project', { slug: 'vps-hosting-deployment' }),
+        sort_order: 2,
+    },
+    {
+        name: 'Portfolio',
+        href: route('project', { slug: 'portfolio' }),
+        sort_order: 3,
+    },
+    {
+        name: 'jCoaching',
+        href: route('project', { slug: 'jcoaching' }),
+        sort_order: 4,
+    },
+    {
+        name: 'GC Trackr',
+        href: route('project', { slug: 'gc-trackr' }),
+        sort_order: 5,
+    },
+    {
+        name: 'RSC Wasquehal',
+        href: route('project', { slug: 'rsc-wasquehal' }),
+        sort_order: 6,
+    },
+];
+
+interface ProjectsProps {
+    appear : boolean;
+}
+
+export default function Projects({ appear }: ProjectsProps) {
+    
+    const {
+        _navigateToPage,
+    } = useLandingContext();
+
+
+    function handleProjectClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+        e.preventDefault();
+        _navigateToPage(href);
+    }
 
     return (
         <section
@@ -151,6 +170,7 @@ export default function Projects({ appear }: { appear: boolean }) {
                         >
                             <a
                                 {...(appear ? { href: project.href } : {})}
+                                onClick={(e) => handleProjectClick(e, project.href)}
                                 tabIndex={appear ? 0 : -1}
                                 className={cn(
                                     // Default styles

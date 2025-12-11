@@ -4,22 +4,16 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\App;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
+// Controllers
+use App\Http\Controllers\Landing as LandingController;
 
-Route::get('/', function () {
-    // abort(404);
-    return Inertia::render('landing');
-})->name('home');
+Route::get('/', [LandingController::class, 'landing'])->name('home');
+Route::get('/{slug}', [LandingController::class, 'project'])->name('project');
 
 Route::middleware(['auth', 'verified:auth.verification.notice'])->group(function () {
     Route::get('/dashboard', function () {
-
-        // Notification::send(Auth::user(), new \App\Notifications\Example());
-
         return Inertia::render('dashboard');
     })->name('dashboard');
 });

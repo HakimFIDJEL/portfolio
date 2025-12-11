@@ -221,8 +221,6 @@ function Panels({ appear }: AboutProps) {
 function Accordions({ appear }: AboutProps) {
     const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
-    console.log(appear);
-
     return (
         <div
             className={cn(
