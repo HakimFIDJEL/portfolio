@@ -12,6 +12,8 @@ import Hero from '@/components/projects/sections/hero';
 
 // Types
 import { type Project } from '@/types';
+import { mockProjects } from '@/types/data';
+import Content from '@/components/projects/sections/content';
 
 export default function Project({ project }: { project: Project }) {
 
@@ -23,8 +25,8 @@ export default function Project({ project }: { project: Project }) {
             <Head title="Project" />
 
             <main>
-                <Hero appear={showContent} project={project}/>
-
+                <Hero appear={showContent} project={mockProjects[0]}/>
+                <Content appear={showContent} project={mockProjects[0]} />
             </main>
         </AppLanding>
     );

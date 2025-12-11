@@ -1,4 +1,5 @@
-// resources/js/hooks/useLandingTransitions.ts
+// resources/js/hooks/use-landing-transition.ts
+
 import { router } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -121,15 +122,23 @@ export function useLandingTransitions(
             window.setTimeout(() => {
                 if (targetHref) {
                     router.visit(targetHref, {
-                        method: 'get',
                         preserveState: true,
-                        preserveScroll: true,
+                        preserveScroll: false,
 
                         onFinish: () => {
-                            setCoverScreenActive(false);
                             setTimeout(() => {
-                                setPageNavigationActive(false);
-                            }, 500);
+                                window.scrollTo({
+                                    top: 0,
+                                    left: 0,
+                                    behavior: 'instant',
+                                });
+
+                                setCoverScreenActive(false);
+
+                                setTimeout(() => {
+                                    setPageNavigationActive(false);
+                                }, 500);
+                            }, 100);
                         },
                     });
                 } else {
@@ -138,7 +147,6 @@ export function useLandingTransitions(
             }, 750),
         );
     }
-
     // Close page sequence
     function closePageSequence() {
         setTargetHref(null);

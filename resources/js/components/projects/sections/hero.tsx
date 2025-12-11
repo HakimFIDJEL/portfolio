@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { useAppearance } from '@/hooks/use-appearance';
 
 // Components
-import CircularText from '@/components/landing/circular-text';
 import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import RoundedButton from '@/components/landing/rounded-button';
@@ -16,13 +15,20 @@ import RoundedButton from '@/components/landing/rounded-button';
 import Magnet from '@/components/ui/magnet';
 
 // Icons
-import { ArrowDown, Monitor, Moon, Sun } from 'lucide-react';
+import {
+    ArrowDown,
+    Code2,
+    Monitor,
+    Moon,
+    SquareArrowOutUpRight,
+    Sun,
+} from 'lucide-react';
 
 // Types
 import { Project } from '@/types';
 
 interface HeroProps {
-    appear?: boolean;
+    appear: boolean;
     project: Project;
 }
 
@@ -41,7 +47,10 @@ export default function Hero({ appear, project }: HeroProps) {
     }
 
     return (
-        <section className="flex h-[calc(100vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]" id='hero'>
+        <section
+            className="flex h-[calc(100vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]"
+            id="hero"
+        >
             <Delimiter
                 dashedBorders={['top', 'bottom']}
                 plusCorners={['top-left', 'top-right']}
@@ -57,32 +66,10 @@ export default function Hero({ appear, project }: HeroProps) {
                     'items-start md:items-end',
                 )}
             >
-                <div
-                    className={cn(
-                        // Responsive styles
-                        'px-4 sm:px-8 md:px-10 lg:px-12.5 overflow-hidden',
-                    )}
-                >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={250}
-                    >
-                        <CircularText
-                            text="Welcome to my portfolio ~ "
-                            onHover={'slowDown'}
-                            spinDuration={20}
-                            className={cn(
-                                // Default styles
-                                'font-medium !text-primary',
-                            )}
-                            fontSize="text-xl"
-                        />
-                    </Curtain>
-                </div>
-
                 {/* Title */}
-                <div
+                <Delimiter
+                    dashedBorders={['top', 'bottom']}
+                    plusCorners={['all']}
                     className={cn(
                         // Default styles
                         'flex w-full justify-between',
@@ -91,7 +78,7 @@ export default function Hero({ appear, project }: HeroProps) {
                         'px-6 sm:px-8 md:px-10 lg:px-12.5',
                         'py-4 sm:py-6 md:py-8 lg:py-10',
                         'flex-col md:flex-row',
-                        'items-start md:items-end',
+                        'items-start md:items-center',
                     )}
                 >
                     <Curtain
@@ -102,12 +89,12 @@ export default function Hero({ appear, project }: HeroProps) {
                         <h1
                             className={cn(
                                 // Default styles
-                                '!leading-none font-medium',
-                                'text-[2.65rem] sm:text-7xl md:text-[clamp(2rem,10vw,8.5rem)]',
+                                '!leading-none font-semibold',
+                                'text-[2.65rem] sm:text-8xl',
                                 'whitespace-nowrap',
                             )}
                         >
-                            Hakim Fidjel
+                            {project.title}
                         </h1>
                     </Curtain>
 
@@ -115,78 +102,167 @@ export default function Hero({ appear, project }: HeroProps) {
                         showCurtain={!appear}
                         background="background"
                         delay={0}
+                        className={cn(
+                            // Default styles
+                            'flex items-end gap-2',
+                        )}
                     >
                         <h2
                             className={cn(
                                 // Default styles
-                                '!leading-none font-light',
+                                '!leading-none font-medium uppercase',
 
                                 // Responsive styles
-                                'text-2xl sm:text-3xl md:text-[clamp(2rem,4vw,3.5rem)]',
+                                'text-2xl sm:text-3xl',
                                 'text-left md:text-right',
                                 'ml-0 md:ml-2',
                                 'p-0 sm:pb-1 md:pb-2 lg:pb-2.5 xl:pb-3',
                             )}
                         >
-                            Fullstack Engineer
+                            Project
                         </h2>
-                    </Curtain>
-                </div>
+                        <div
+                            className={cn(
+                                // Default styles
+                                'flex items-center justify-end gap-2',
+                            )}
+                        >
+                            {project.tags
+                                .sort((a, b) => a.sort_order - b.sort_order)
+                                .map((tag, index) => (
+                                    <span
+                                        key={`project-${project.id}-tag-${index}`}
+                                        className={cn(
+                                            // Default styles
+                                            'border px-2.5 py-0.5 text-sm font-medium',
+                                            'transition-all duration-1000',
 
-                <Delimiter
-                    dashedBorders={['top', 'bottom']}
-                    plusCorners={['bottom-left', 'bottom-right']}
+                                            // Hover & Focus styles
+                                            'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
+                                        )}
+                                    >
+                                        {tag.name}
+                                    </span>
+                                ))}
+                        </div>
+                    </Curtain>
+                </Delimiter>
+
+                <div
                     className={cn(
                         // Default styles
-                        'flex items-center gap-5',
+                        'flex w-full items-center justify-between gap-5',
 
                         // Responsive styles
                         'px-6 sm:px-8 md:px-10 lg:px-12.5',
                         'py-4 sm:py-5 md:py-6 lg:py-8',
                     )}
                 >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={500}
+                    <p
+                        className={cn(
+                            // Default styles
+                            'text-lg font-medium',
+                        )}
                     >
-                        <Magnet magnetStrength={3} padding={20}>
-                            <RoundedButton>
-                                <a href="#about" tabIndex={-1}>
-                                    <ArrowDown className="stroke-1" />
+                        {project.title}
+                    </p>
+                    <div
+                        className={cn(
+                            // Default styles
+                            'flex items-center gap-5',
+                        )}
+                    >
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={500}
+                        >
+                            <Magnet magnetStrength={3} padding={20}>
+                                <a
+                                    {...(project?.source_code_url && {
+                                        href: project.source_code_url,
+                                    })}
+                                    target="_blank"
+                                    tabIndex={-1}
+                                >
+                                    <RoundedButton
+                                        disabled={!project?.source_code_url}
+                                        tabIndex={
+                                            project?.source_code_url ? 0 : -1
+                                        }
+                                    >
+                                        <Code2 className="stroke-1" />
+                                    </RoundedButton>
                                 </a>
-                            </RoundedButton>
-                        </Magnet>
-                    </Curtain>
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={750}
-                    >
-                        <Magnet magnetStrength={3} padding={20}>
-                            <RoundedButton onClick={handleSwitchAppearance}>
-                                {appearance === 'dark' && (
-                                    <Moon className="stroke-1" />
-                                )}
-                                {appearance === 'light' && (
-                                    <Sun className="stroke-1" />
-                                )}
-                                {appearance === 'system' && (
-                                    <Monitor className="stroke-1" />
-                                )}
-                            </RoundedButton>
-                        </Magnet>
-                    </Curtain>
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={1000}
-                    >
-                        <Magnet magnetStrength={3} padding={20}>
-                            <RoundedButton>EN</RoundedButton>
-                        </Magnet>
-                    </Curtain>
-                </Delimiter>
+                            </Magnet>
+                        </Curtain>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={750}
+                        >
+                            <Magnet magnetStrength={3} padding={20}>
+                                <a
+                                    {...(project?.live_demo_url && {
+                                        href: project.live_demo_url,
+                                    })}
+                                    target="_blank"
+                                    tabIndex={-1}
+                                >
+                                    <RoundedButton
+                                        disabled={!project?.live_demo_url}
+                                        tabIndex={
+                                            project?.live_demo_url ? 0 : -1
+                                        }
+                                    >
+                                        <SquareArrowOutUpRight className="stroke-1" />
+                                    </RoundedButton>
+                                </a>
+                            </Magnet>
+                        </Curtain>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={1000}
+                        >
+                            <Magnet magnetStrength={3} padding={20}>
+                                <RoundedButton onClick={handleSwitchAppearance}>
+                                    {appearance === 'dark' && (
+                                        <Moon className="stroke-1" />
+                                    )}
+                                    {appearance === 'light' && (
+                                        <Sun className="stroke-1" />
+                                    )}
+                                    {appearance === 'system' && (
+                                        <Monitor className="stroke-1" />
+                                    )}
+                                </RoundedButton>
+                            </Magnet>
+                        </Curtain>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={1250}
+                        >
+                            <Magnet magnetStrength={3} padding={20}>
+                                <RoundedButton>EN</RoundedButton>
+                            </Magnet>
+                        </Curtain>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={1500}
+                        >
+                            <Magnet magnetStrength={3} padding={20}>
+                                <RoundedButton>
+                                    <a href="#about" tabIndex={-1}>
+                                        <ArrowDown className="stroke-1" />
+                                    </a>
+                                </RoundedButton>
+                            </Magnet>
+                        </Curtain>
+                    </div>
+                </div>
             </div>
         </section>
     );

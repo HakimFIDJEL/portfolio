@@ -1,7 +1,7 @@
 import {
     LandingTransitionsHook,
     useLandingTransitions,
-} from '@/hooks/use-loading-transition';
+} from '@/hooks/use-landing-transition';
 import { createContext, useContext, useMemo } from 'react';
 
 interface LandingTransitionsProviderProps {
