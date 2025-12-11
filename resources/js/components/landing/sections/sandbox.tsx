@@ -270,7 +270,7 @@ export default function Sandbox({ appear }: { appear: boolean }) {
                     // Responsive styles
                     'px-6 sm:px-8 md:px-6 lg:px-12.5',
                     'py-12 md:py-10',
-                    'gap-4 md:gap-12',
+                    'gap-4 md:gap-8',
 
                     'w-full',
                     'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
@@ -280,7 +280,7 @@ export default function Sandbox({ appear }: { appear: boolean }) {
                     <div
                         key={`column-${colIndex}`}
                         className={cn(
-                            'flex flex-col gap-4 md:gap-12',
+                            'flex flex-col gap-4 md:gap-8',
                             'w-full',
                         )}
                     >
@@ -306,6 +306,7 @@ export default function Sandbox({ appear }: { appear: boolean }) {
                                         handleClick={() =>
                                             handleClick(colIndex + itemIndex * cols)
                                         }
+                                        dialog_open={activeIndex !== null}
                                     />
                                 </Magnet>
                             </FadeIn>
@@ -331,6 +332,7 @@ interface SandboxItemProps {
     tags: string[];
     active?: boolean;
     handleClick?: () => void;
+    dialog_open?: boolean;
 }
 
 function SandboxItem({
@@ -341,6 +343,7 @@ function SandboxItem({
     tags,
     active,
     handleClick,
+    dialog_open,
 }: SandboxItemProps) {
     return (
         <button
@@ -363,6 +366,7 @@ function SandboxItem({
                 'duration-1000 focus-visible:border-primary focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-none',
                 active && 'border-primary bg-primary text-primary-foreground',
             )}
+            tabIndex={dialog_open ? -1 : 0}
             onClick={handleClick}
         >
             {/* Button */}
@@ -392,7 +396,11 @@ function SandboxItem({
                         key={`sandbox-${id}-tag-${index}`}
                         className={cn(
                             // Default styles
-                            'border border-foreground px-1.5 py-0.5 text-sm font-light',
+                            'border px-1.5 py-0.5 text-sm font-light',
+                            'transition-all duration-1000',
+
+                            // Hover & Focus styles
+                            'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
                         )}
                     >
                         {tag}
@@ -422,7 +430,7 @@ function SandboxItem({
                 {subtitle}
             </p>
 
-            <Separator className="mt-2 bg-foreground" />
+            <Separator className="transition-all duration-1000 mt-2 bg-foreground group-hover:bg-primary-foreground group-focus-visible:bg-primary-foreground" />
 
             {/* Date */}
             <time
@@ -521,6 +529,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                     'h-full w-full',
                 )}
                 onClick={(e) => e.stopPropagation()}
+                tabIndex={-1}
             >
                 {/* Header */}
                 <div
@@ -570,11 +579,12 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         <RoundedButton
                             disabled={!item?.source_code_url}
                             className="p-2.5"
+                            tabIndex={open && item && item.source_code_url ? 0 : -1}
                         >
                             <a
                                 href={item?.source_code_url}
                                 target="_blank"
-                                tabIndex={item && item.source_code_url ? 0 : -1}
+                                tabIndex={open && item && item.source_code_url ? 0 : -1}
                             >
                                 <Code2 />
                             </a>
@@ -584,11 +594,12 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         <RoundedButton
                             disabled={!item?.live_demo_url}
                             className="p-2.5"
+                            tabIndex={open && item && item.live_demo_url ? 0 : -1}
                         >
                             <a
                                 href={item?.live_demo_url}
                                 target="_blank"
-                                tabIndex={item && item.live_demo_url ? 0 : -1}
+                                tabIndex={open && item && item.live_demo_url ? 0 : -1}
                             >
                                 <SquareArrowOutUpRight />
                             </a>
@@ -597,6 +608,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         <RoundedButton
                             onClick={() => setOpen(false)}
                             className="p-2.5"
+                            tabIndex={open ? 0 : -1}
                         >
                             <X />
                         </RoundedButton>

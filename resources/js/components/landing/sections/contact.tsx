@@ -199,13 +199,32 @@ export default function Contact({ appear }: ContactProps) {
                             'grid grid-cols-1 md:grid-cols-2',
 
                             // Responsive styles
-                            'gap-4 sm:gap-4 md:gap-5 lg:gap-6',
+                            'gap-4 md:gap-8',
                         )}
                     >
                         {contactItems.map((item, index) => (
-                            <ContactItem key={index} item={item} />
+                            <FadeIn key={index} show={appear} delay={index * 100} className='w-full'> 
+                                <ContactItem item={item} />
+                            </FadeIn>
                         ))}
                     </Delimiter>
+                </div>
+
+                {/* Borders */}
+                <div
+                    className={cn(
+                        // Responsive styles
+                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                    )}
+                >
+                    <div
+                        className={cn(
+                            // Default styles
+                            'h-32 w-full border-r border-l border-dashed',
+                        )}
+                    >
+                        
+                    </div>
                 </div>
             </div>
         </section>
@@ -234,7 +253,7 @@ function ContactItem({ item }: ContactItemProps) {
     }
 
     return (
-        <Magnet magnetStrength={25} padding={10}>
+        <Magnet magnetStrength={25} padding={10} wrapperClassName='w-full'>
             <a
                 className={cn(
                     // Default styles
@@ -264,14 +283,14 @@ function ContactItem({ item }: ContactItemProps) {
                     <IconComponent
                         className={cn(
                             // Default styles
-                            'h-6 w-6 stroke-1 text-primary transition-all duration-500',
+                            'h-6 w-6 stroke-2 text-primary transition-all duration-500',
 
                             // Hover & Focus styles
                             'group-hover:text-primary-foreground group-hover:duration-1000',
                             'group-focus-visible:text-primary-foreground group-focus-visible:duration-1000',
                         )}
                     />
-                    <span>{item.label}</span>
+                    <span className='font-semibold'>{item.label}</span>
                 </div>
 
                 {/* Content */}
@@ -282,8 +301,8 @@ function ContactItem({ item }: ContactItemProps) {
                         'w-full p-4 underline transition-all duration-500',
 
                         // Hover & Focus styles
-                        'group-hover:border-primary group-hover:bg-card group-hover:text-primary-foreground group-hover:duration-1000',
-                        'group-focus-visible:border-primary group-focus-visible:bg-card group-focus-visible:text-primary-foreground group-focus-visible:duration-1000',
+                        'group-hover:border-primary group-hover:bg-card  group-hover:duration-1000',
+                        'group-focus-visible:border-primary group-focus-visible:bg-card group-focus-visible:duration-1000',
                     )}
                 >
                     {item.name}

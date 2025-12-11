@@ -8,6 +8,7 @@ interface RoundedButtonProps {
     onClick?: () => void;
     className?: string;
     disabled?: boolean;
+    tabIndex?: number;
 }
 
 export default function RoundedButton({
@@ -15,6 +16,7 @@ export default function RoundedButton({
     onClick,
     className,
     disabled,
+    tabIndex,
 }: RoundedButtonProps) {
     const [isClicked, setIsClicked] = useState(false);
 
@@ -33,11 +35,12 @@ export default function RoundedButton({
     return (
         <button
             onClick={disabled ? undefined : handleClick}
+            tabIndex={tabIndex}
             className={cn(
                 // Default styles
                 'cursor-pointer',
                 'relative rounded-full p-3',
-                'border border-primary',
+                'border border-primary ',
                 'bg-transparent !text-primary',
 
                 'group transition-all',
@@ -58,6 +61,7 @@ export default function RoundedButton({
                     // Default styles
                     'transition-all flex items-center justify-center',
                     'h-max',
+                    'relative z-1',
                     isClicked && 'scale-75 opacity-75',
                 )}
             >
@@ -68,7 +72,7 @@ export default function RoundedButton({
                 <div
                     className={cn(
                         // Default styles
-                        'absolute z-[-1]',
+                        'absolute z-0',
                         'rounded-full',
                         'bg-primary transition-all',
                         'inset-1/2 duration-1000',

@@ -3,6 +3,7 @@
 // Necessary imports
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
+import { usePage } from '@inertiajs/react';
 
 // Components
 import UnderlineLink from '@/components/landing/underline-link';
@@ -45,6 +46,9 @@ export default function Header({
         };
     }, [setShowMenu]);
 
+    const currentUrl = usePage().url;
+    const homePath = new URL(route('home')).pathname;
+
     return (
         <header
             className={cn(
@@ -81,7 +85,11 @@ export default function Header({
                     'text-right md:text-center',
                 )}
             >
-                HF
+                <a 
+                    href={currentUrl === homePath ? '#top' : route('home')}
+                >
+                    HF
+                </a>
             </div>
             <div
                 className={cn(
@@ -92,7 +100,7 @@ export default function Header({
                     'hidden md:block',
                 )}
             >
-                <UnderlineLink href="#">Contact</UnderlineLink>
+                <UnderlineLink href="#contact">Contact</UnderlineLink>
             </div>
         </header>
     );
