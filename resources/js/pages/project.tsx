@@ -8,7 +8,12 @@ import { useState } from 'react';
 import AppLanding from '@/layouts/landing/layout';
 
 // Sections
-export default function Project() {
+import Hero from '@/components/projects/sections/hero';
+
+// Types
+import { type Project } from '@/types';
+
+export default function Project({ project }: { project: Project }) {
 
     // States content
     const [showContent, setShowContent] = useState(false);
@@ -18,6 +23,7 @@ export default function Project() {
             <Head title="Project" />
 
             <main>
+                <Hero appear={showContent} project={project}/>
 
             </main>
         </AppLanding>

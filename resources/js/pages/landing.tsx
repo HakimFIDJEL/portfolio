@@ -14,6 +14,9 @@ import Projects from '@/components/landing/sections/projects';
 import Sandbox from '@/components/landing/sections/sandbox';
 import Contact from '@/components/landing/sections/contact';
 
+// Mocks
+import { mockStacks, mockTools, mockContacts, mockProjects } from '@/types/data';
+
 
 export default function Landing() {
     // States content
@@ -32,10 +35,10 @@ export default function Landing() {
 
             <main>
                 <Hero appear={showContent} />
-                <About appear={showContent} />
-                <Projects appear={showContent} />
-                <Sandbox appear={showContent} />
-                <Contact appear={showContent} />
+                <About appear={showContent} stacks={mockStacks} tools={mockTools} />
+                <Projects appear={showContent} projects={mockProjects} />
+                <Sandbox appear={showContent} projects={mockProjects} />
+                <Contact appear={showContent} contacts={mockContacts}/>
             </main>
         </AppLanding>
     );
