@@ -6,11 +6,17 @@ import { cn } from '@/lib/utils';
 // Components
 import Curtain from '@/components/landing/curtain';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface CoverScreenProps {
     active: boolean;
 }
 
 export default function CoverScreen({ active }: CoverScreenProps) {
+
+    const __ = useTrans();
+
     return (
         <div
             className={cn(
@@ -23,13 +29,13 @@ export default function CoverScreen({ active }: CoverScreenProps) {
             )}
         >
             <Curtain showCurtain={!active} delay={0}>
-                <h1 className="text-4xl font-light sm:text-5xl">Loading...</h1>
+                <h1 className="text-4xl font-light sm:text-5xl">{__('landing.loader.loading', 'Loading...')}</h1>
             </Curtain>
             <Curtain showCurtain={!active} delay={125}>
-                <h1 className="text-4xl font-normal sm:text-5xl">Loading...</h1>
+                <h1 className="text-4xl font-normal sm:text-5xl">{__('landing.loader.loading', 'Loading...')}</h1>
             </Curtain>
             <Curtain showCurtain={!active} delay={250}>
-                <h1 className="text-4xl font-medium sm:text-5xl">Loading...</h1>
+                <h1 className="text-4xl font-medium sm:text-5xl">{__('landing.loader.loading', 'Loading...')}</h1>
             </Curtain>
         </div>
     );

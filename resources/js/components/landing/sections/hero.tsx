@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 
 // Hooks
 import { useAppearance } from '@/hooks/use-appearance';
+import { useTrans } from '@/lib/translation';
 
 // Components
 import CircularText from '@/components/landing/circular-text';
@@ -25,6 +26,7 @@ interface HeroProps {
 
 export default function Hero({ appear }: HeroProps) {
     const { appearance, updateAppearance } = useAppearance();
+    const __ = useTrans();
 
     function handleSwitchAppearance() {
         const newAppearance =
@@ -66,7 +68,7 @@ export default function Hero({ appear }: HeroProps) {
                         delay={250}
                     >
                         <CircularText
-                            text="Welcome to my portfolio ~ "
+                            text={__('landing.hero.circularText', "Welcome to my portfolio ~ ")}
                             onHover={'slowDown'}
                             spinDuration={20}
                             className={cn(
@@ -125,7 +127,8 @@ export default function Hero({ appear }: HeroProps) {
                                 'p-0 sm:pb-1 md:pb-2 lg:pb-2.5 xl:pb-3',
                             )}
                         >
-                            Fullstack Engineer
+                            {__('landing.hero.h2', 'Fullstack Engineer')}
+                            
                         </h2>
                     </Curtain>
                 </div>

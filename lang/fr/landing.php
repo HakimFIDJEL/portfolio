@@ -10,8 +10,8 @@ return [
     */
 
     'loader' => [
-        'loading' => 'Loading...',
-        'intro' => "Hi, I'm Hakim",
+        'loading' => 'Chargement...',
+        'intro' => "Salut, c'est Hakim",
     ],
 
     'header' => [
@@ -19,28 +19,27 @@ return [
     ],
 
     'navigation' => [
-        'home' => 'Home',
-        'about' => 'About',
-        'projects' => 'Projects',
-        'sandbox' => 'Sandbox',
+        'home' => 'Accueil',
+        'about' => 'À propos',
+        'projects' => 'Projets',
+        'sandbox' => 'Bac à sable',
         'contact' => 'Contact',
     ],
 
     'hero' => [
-        'h2' => 'Fullstack Engineer',
-        'circularText' => 'Welcome to my portfolio ~ ',
+        'h2' => 'Ingénieur Fullstack',
+        'circularText' => 'Bienvenue sur mon portfolio ~ ',
     ],
-
 
     'footer' => [
         'links' => [
             'sitemap' => [
                 'title' => 'Sitemap',
                 'items' => [
-                    'home' => 'Home',
-                    'about' => 'About',
-                    'projects' => 'Projects',
-                    'sandbox' => 'Sandbox',
+                    'home' => 'Accueil',
+                    'about' => 'À propos',
+                    'projects' => 'Projets',
+                    'sandbox' => 'Bac à sable',
                     'contact' => 'Contact',
                 ],
             ],
@@ -54,14 +53,15 @@ return [
                 ],
             ],
             'resources' => [
-                'title' => 'Resources',
+                'title' => 'Ressources',
                 'items' => [
-                    'terms' => 'Terms',
-                    'source_code' => 'Source Code',
+                    'terms' => 'Conditions',
+                    'source_code' => 'Code source',
                 ],
             ],
         ],
-        'caption' => 'Designed, Developped, Deployed and Hosted by',
-        'copyright' => 'All rights reserved.',
+        'caption' => 'Conçu, développé, déployé et hébergé par',
+        'copyright' => 'Tous droits réservés.',
     ],
+
 ];

@@ -23,78 +23,84 @@ import { ArrowUp, Monitor, Moon, Sun } from 'lucide-react';
 // Contexts
 import { useLandingContext } from '@/contexts/use-landing-context';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface FooterProps {
     appear: boolean;
 }
 
-const links = [
-    {
-        name: 'Sitemap',
-        items: [
-            {
-                label: 'Hero',
-                href: '#hero',
-            },
-            {
-                label: 'About',
-                href: '#about',
-            },
-            {
-                label: 'Projects',
-                href: '#projects',
-            },
-            {
-                label: 'Sandbox',
-                href: '#sandbox',
-            },
-            {
-                label: 'Contact',
-                href: '#contact',
-            },
-        ],
-    },
-    {
-        name: 'Contact',
-        items: [
-            {
-                label: 'Email',
-                href: 'mailto:hakimfidjel.pro@gmail.com',
-            },
-            {
-                label: 'LinkedIn',
-                href: 'https://www.linkedin.com/in/hakim-fidjel/',
-                target:'_blank',
-            },
-            {
-                label: 'GitHub',
-                href: 'https://github.com/hakimfidjel',
-                target:'_blank',
-            },
-            {
-                label: 'GitLab',
-                href: 'https://gitlab.com/hakimfidjel',
-                target:'_blank',
-            },
-        ],
-    },
-    {
-        name: 'Resources',
-        items: [
-            {
-                label: 'Terms',
-                href: route('home'),
-            },
-            {
-                label: 'Source Code',
-                href: 'https://github.com/HakimFIDJEL/portfolio',
-                target:'_blank',
-            },
-        ],
-    },
-];
 
 export default function Footer({ appear }: FooterProps) {
     const { appearance, updateAppearance } = useAppearance();
+
+    const __ = useTrans();
+    
+    const links = [
+        {
+            name: __('landing.footer.links.sitemap.title', 'Sitemap'),
+            items: [
+                {
+                    label: __('landing.footer.links.sitemap.items.home', 'Home'),
+                    href: '#top',
+                },
+                {
+                    label: __('landing.footer.links.sitemap.items.about', 'About'),
+                    href: '#about',
+                },
+                {
+                    label: __('landing.footer.links.sitemap.items.projects', 'Projects'),
+                    href: '#projects',
+                },
+                {
+                    label: __('landing.footer.links.sitemap.items.sandbox', 'Sandbox'),
+                    href: '#sandbox',
+                },
+                {
+                    label: __('landing.footer.links.sitemap.items.contact', 'Contact'),
+                    href: '#contact',
+                },
+            ],
+        },
+        {
+            name: __('landing.footer.links.contact.title', 'Contact'),
+            items: [
+                {
+                    label: __('landing.footer.links.contact.items.email', 'Email'),
+                    href: 'mailto:hakimfidjel.pro@gmail.com',
+                },
+                {
+                    label: __('landing.footer.links.contact.items.linkedin', 'LinkedIn'),
+                    href: 'https://www.linkedin.com/in/hakim-fidjel/',
+                    target:'_blank',
+                },
+                {
+                    label: __('landing.footer.links.contact.items.github', 'GitHub'),
+                    href: 'https://github.com/hakimfidjel',
+                    target:'_blank',
+                },
+                {
+                    label: __('landing.footer.links.contact.items.gitlab', 'GitLab'),
+                    href: 'https://gitlab.com/hakimfidjel',
+                    target:'_blank',
+                },
+            ],
+        },
+        {
+            name: __('landing.footer.links.resources.title', 'Resources'),
+            items: [
+                {
+                    label: __('landing.footer.links.resources.items.terms', 'Terms'),
+                    href: route('home'),
+                },
+                {
+                    label: __('landing.footer.links.resources.items.source_code', 'Source Code'),
+                    href: 'https://github.com/HakimFIDJEL/portfolio',
+                    target:'_blank',
+                },
+            ],
+        },
+    ];
 
     function handleSwitchAppearance() {
         const newAppearance =
@@ -266,7 +272,7 @@ export default function Footer({ appear }: FooterProps) {
                             'translate-x-[0px] sm:translate-x-[2px] md:translate-x-[5px] lg:translate-x-[4px]',
                         )}
                     >
-                        Designed, Developped, Deployed and Hosted by
+                        {__('landing.footer.caption', 'Designed, Developped, Deployed and Hosted by')}
                     </p>
                     <p
                         className={cn(
@@ -289,8 +295,7 @@ export default function Footer({ appear }: FooterProps) {
                             'translate-x-[0px] sm:translate-x-[2px] md:translate-x-[5px] lg:translate-x-[4px]',
                         )}
                     >
-                        © {new Date().getFullYear()} Hakim Fidjel. All rights
-                        reserved.
+                        © {new Date().getFullYear()} Hakim Fidjel. {__('landing.footer.copyright', 'All rights reserved.')}
                     </p>
                 </div>
             </footer>

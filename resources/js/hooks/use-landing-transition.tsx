@@ -129,7 +129,14 @@ export function useLandingTransitions(
 
                         onFinish: () => {
                             setTimeout(() => {
-                                if(targetAnchor) {
+
+                                if(targetAnchor === '' || !targetAnchor) {
+                                    window.scrollTo({
+                                        top: 0,
+                                        left: 0,
+                                        behavior: 'instant',
+                                    });
+                                } else {
                                     if(targetAnchor === 'top') {
                                         window.scrollTo({
                                             top: 0,
@@ -143,6 +150,8 @@ export function useLandingTransitions(
                                         }
                                     }
                                 }
+
+                                
                                 // setCoverScreenActive(false);
 
                                 setTimeout(() => {
