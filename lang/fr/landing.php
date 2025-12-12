@@ -31,6 +31,29 @@ return [
         'circularText' => 'Bienvenue sur mon portfolio ~ ',
     ],
 
+    'about' => [
+        'h2' => 'À propos de moi',
+        'skip' => 'Passer',
+
+        'p_1' => "Salut, c'est Hakim",
+        'p_2' => "Je suis un ingénieur fullstack français",
+        'p_3' => "avec une forte expertise en développement, infrastructure et automatisation. Je construis et gère des projets évolutifs, assurant des déploiements fluides et des flux de travail efficaces.",
+        'p_4' => "Avec une approche pratique, je m'occupe de tout, de la logique backend à l'administration serveur, en accordant toujours une attention particulière au design et à l'utilisabilité. Je m'efforce de créer des solutions à la fois",
+        'p_5' => "fonctionnelles et visuellement raffinées.",  
+        
+        'tabs' => [
+            'about' => [
+                'title' => 'À propos de moi',
+                'my_philosophy' => 'Ma philosophie',
+                'p_1' => "“Viser à construire l'avenir une ligne de code à la fois.”",
+                'p_2' => "“Ce n'est jamais un bug, c'est une fonctionnalité.”",
+                'p_3' => "“Mon parcours équilibre expertise dans les outils que je connais et enthousiasme pour ceux que je n'ai pas encore explorés.”",
+                'p_4' => "“Si ce n'est pas cassé, ne le réparez pas.”",
+                'button' => "Télécharger mon CV",
+            ],
+        ],
+    ],
+
     'footer' => [
         'links' => [
             'sitemap' => [

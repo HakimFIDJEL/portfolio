@@ -31,6 +31,28 @@ return [
         'circularText' => 'Welcome to my portfolio ~ ',
     ],
 
+    'about' => [
+        'h2' => 'About Me',
+        'skip' => 'Skip',
+
+        'p_1' => "Hi I'm Hakim",
+        'p_2' => "I'm a french fullstack engineer",
+        'p_3' => "with a strong focus on development, infrastructure, and automation. I build and manage scalable projects, ensuring smooth deployments and efficient workflows.",
+        'p_4' => "With a hands-on approach, I handle everything from backend logic to server administration, always paying attention to design and usability. I strive to create solutions that are both",
+        'p_5' => "functional and visually refined.",     
+        
+        'tabs' => [
+            'about' => [
+                'title' => 'About Me',
+                'my_philosophy' => 'My Philosophy',
+                'p_1' => "“Aiming to build the future one line of code at a time.”",
+                'p_2' => "“It's never a bug, it's a feature.”",
+                'p_3' => "“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”",
+                'p_4' => "“If it’s not broken, do not fix it.”",
+                'button' => "Download my resume",
+            ],
+        ],
+    ],
 
     'footer' => [
         'links' => [

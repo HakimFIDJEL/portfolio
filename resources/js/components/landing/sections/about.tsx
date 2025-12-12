@@ -27,6 +27,9 @@ import {
     Tools as ToolsType,
 } from '@/types';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface AboutProps {
     appear: boolean;
     stacks: StacksType[];
@@ -79,6 +82,9 @@ interface PanelsProps {
 }
 
 function Panels({ appear }: PanelsProps) {
+
+    const __ = useTrans();
+
     return (
         <div
             className={cn(
@@ -101,7 +107,7 @@ function Panels({ appear }: PanelsProps) {
 
                     // Responsive styles
                     'h-auto',
-                    'w-full lg:w-max',
+                    'w-full lg:w-max lg:max-w-[40%]',
 
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
                     'py-4 sm:py-6 md:py-8 lg:py-10',
@@ -130,6 +136,7 @@ function Panels({ appear }: PanelsProps) {
                         showCurtain={!appear}
                         background="background"
                         delay={0}
+                        className='w-full'
                     >
                         <h2
                             className={cn(
@@ -139,7 +146,7 @@ function Panels({ appear }: PanelsProps) {
                                 'text-4xl sm:text-7xl',
                             )}
                         >
-                            About me
+                            {__('landing.about.h2', "About me")}
                         </h2>
                     </Curtain>
 
@@ -160,7 +167,7 @@ function Panels({ appear }: PanelsProps) {
                                 'translate-x-[4px]',
                             )}
                         >
-                            Skip
+                            {__('landing.about.skip', 'Skip')}
                             <ArrowDownRight
                                 size={32}
                                 className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
@@ -184,7 +191,7 @@ function Panels({ appear }: PanelsProps) {
 
                     '!text-lg sm:!text-xl md:!text-2xl',
                     'border-t border-r border-l border-dashed border-border lg:border-0',
-                    'w-full lg:w-max lg:max-w-[45%]',
+                    'w-full lg:w-max lg:max-w-[50%]',
                 )}
             >
                 {/* Reveal */}
@@ -192,48 +199,38 @@ function Panels({ appear }: PanelsProps) {
                     text_className="!text-lg sm:!text-xl lg:!text-2xl"
                     className="hidden h-[200vh] sm:h-[120vh] lg:block lg:h-[200vh]"
                 >
-                    <strong className="font-semibold">Hi, I’m Hakim.</strong>
+                    <strong className="font-semibold">{__('landing.about.p_1', "Hi, I’m Hakim.")}</strong>
                     <br />
                     <p className="font-light">
                         <strong className="font-semibold">
-                            I'm a french fullstack engineer
+                            {__('landing.about.p_2', "I'm a french fullstack engineer")}
                         </strong>{' '}
-                        with a strong focus on development, infrastructure, and
-                        automation. I build and manage scalable projects,
-                        ensuring smooth deployments and efficient workflows.
+                        {__('landing.about.p_3', "with a strong focus on development, infrastructure, and automation. I build and manage scalable projects, ensuring smooth deployments and efficient workflows.")}
                     </p>
                     <br />
                     <p className="font-normal">
-                        With a hands-on approach, I handle everything from
-                        backend logic to server administration, always paying
-                        attention to design and usability. I strive to create
-                        solutions that are both{' '}
+                        {__('landing.about.p_4', "With a hands-on approach, I handle everything from backend logic to server administration, always paying attention to design and usability. I strive to create solutions that are both")} {' '}
                         <strong className="font-semibold">
-                            functional and visually refined.
+                            {__('landing.about.p_5', "functional and visually refined.")}
                         </strong>
                     </p>
                 </TextReveal>
 
                 {/* Reveal */}
                 <FadeIn className="w-full lg:hidden" delay={500} show={appear}>
-                    <strong className="font-semibold">Hi, I’m Hakim.</strong>
+                    <strong className="font-semibold">{__('landing.about.p_1', "Hi, I’m Hakim.")}</strong>
                     <br />
                     <p className="font-light">
                         <strong className="font-semibold">
-                            I'm a french fullstack engineer
+                            {__('landing.about.p_2', "I'm a french fullstack engineer")}
                         </strong>{' '}
-                        with a strong focus on development, infrastructure, and
-                        automation. I build and manage scalable projects,
-                        ensuring smooth deployments and efficient workflows.
+                        {__('landing.about.p_3', "with a strong focus on development, infrastructure, and automation. I build and manage scalable projects, ensuring smooth deployments and efficient workflows.")}
                     </p>
                     <br />
                     <p className="font-normal">
-                        With a hands-on approach, I handle everything from
-                        backend logic to server administration, always paying
-                        attention to design and usability. I strive to create
-                        solutions that are both{' '}
+                        {__('landing.about.p_4', "With a hands-on approach, I handle everything from backend logic to server administration, always paying attention to design and usability. I strive to create solutions that are both")} {' '}
                         <strong className="font-semibold">
-                            functional and visually refined.
+                            {__('landing.about.p_5', "functional and visually refined.")}
                         </strong>
                     </p>
                 </FadeIn>
@@ -468,11 +465,14 @@ function AccordionAbout({
     onChange,
     appear,
 }: AccordionItemProps) {
+
+    const __ = useTrans();
+
     const quotes = [
-        '“Aiming to build the future one line of code at a time.”',
-        "“It's never a bug, it's a feature.”",
-        '“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”',
-        '“If it’s not broken, do not fix it.”',
+        __('landing.about.tabs.about.p_1', "“Aiming to build the future one line of code at a time.”"),
+        __('landing.about.tabs.about.p_2', "“It's never a bug, it's a feature.”"),
+        __('landing.about.tabs.about.p_3', "“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”"),
+        __('landing.about.tabs.about.p_4', "“If it’s not broken, do not fix it.”"),
     ];
 
     return (
@@ -535,7 +535,7 @@ function AccordionAbout({
                                 'text-xl font-light',
                             )}
                         >
-                            My philosophy
+                            {__('landing.about.tabs.about.my_philosophy', 'My philosophy')}
                         </h4>
                         <ul
                             className={cn(
@@ -571,7 +571,7 @@ function AccordionAbout({
                                 'group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
                             )}
                         >
-                            Download my resume
+                            {__('landing.about.tabs.about.button', 'Download my resume')}
                             <Download className="stroke-1" />
                         </div>
 
