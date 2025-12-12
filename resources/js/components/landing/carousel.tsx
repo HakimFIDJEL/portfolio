@@ -90,8 +90,8 @@ function CarouselContent({
                 {attachments.map((item, index) => (
                     <UI_CarouselItem key={index}>
                         <div className="p-1">
-                            <Card>
-                                <CardContent className="flex aspect-[16/9] cursor-grab items-center justify-center p-6">
+                            <Card className='rounded-none shadow-none border'>
+                                <CardContent className="flex aspect-[16/9] cursor-grab items-center justify-center p-6 rounded-none">
                                     {item.url ? (
                                         <img
                                             src={item.url}

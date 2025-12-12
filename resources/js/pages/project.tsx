@@ -26,7 +26,7 @@ export default function Project({ project }: { project: Project }) {
 
             <main>
                 <Hero appear={showContent} project={mockProjects[0]}/>
-                {/* <Content appear={showContent} project={mockProjects[0]} /> */}
+                <Content appear={showContent} project={mockProjects[0]} />
             </main>
         </AppLanding>
     );

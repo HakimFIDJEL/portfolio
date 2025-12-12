@@ -170,6 +170,8 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                                         'px-6 sm:px-8 md:px-10 lg:px-12.5',
                                         'py-8 sm:py-10 md:py-12 lg:py-14',
 
+                                        'bg-card',
+
                                         index !== projects.length - 1 &&
                                             'border-b',
                                     )}
@@ -181,7 +183,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                                             'relative text-center font-light transition-all duration-1000',
 
                                             // Focus & hover styles
-                                            'pl-0',
+                                            'pl-0 z-1',
                                             'group-hover:pl-4 sm:group-hover:pl-6',
                                             'group-focus-visible:pl-4 sm:group-focus-visible:pl-6',
                                         )}
@@ -208,7 +210,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                                     {/* Background animation */}
                                     <div
                                         className={cn(
-                                            'absolute inset-0 z-[-1] h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
+                                            'absolute inset-0 z-[0] h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
                                         )}
                                     ></div>
                                 </a>

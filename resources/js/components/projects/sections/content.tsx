@@ -52,7 +52,9 @@ export default function Content({ project, appear }: ContentProps) {
 
                                 // Responsive styles
                                 'flex-col gap-4 sm:flex-row sm:gap-0',
-                                'border-b border-border pb-4 sm:border-0 sm:pb-0',
+                                'border-border pb-4 sm:border-0 sm:pb-0',
+                                'pt-4 sm:pt-0',
+                                (!project.attachments && (project.description || project.feedback || project.what_i_learned)) && 'border-b',
                             )}
                         >
                             <div
@@ -120,7 +122,6 @@ export default function Content({ project, appear }: ContentProps) {
 
                             // Responsive styles
                             'gap-4',
-                            'border-b border-border pb-4 sm:border-0 sm:pb-0',
                         )}
                     >
                         <h4
@@ -161,6 +162,8 @@ export default function Content({ project, appear }: ContentProps) {
                         'py-4 sm:py-6 md:py-8 lg:py-10',
 
                         'gap-6 sm:gap-20',
+
+                        !project.attachments && 'pt-0',
                     )}
                 >
                     {/* Description */}
@@ -173,7 +176,9 @@ export default function Content({ project, appear }: ContentProps) {
 
                                     // Responsive styles
                                     'flex-col gap-4 sm:flex-row sm:gap-0',
-                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
+                                    'border-border pb-4 sm:border-0 sm:pb-0',
+                                    project.attachments && 'pt-4 sm:pt-0',
+                                    (project.feedback || project.what_i_learned) ? 'border-b' : 'pb-6',
                                 )}
                             >
                                 <div
@@ -218,7 +223,9 @@ export default function Content({ project, appear }: ContentProps) {
 
                                     // Responsive styles
                                     'flex-col gap-4 sm:flex-row sm:gap-0',
-                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
+                                    'border-border pb-4 sm:border-0 sm:pb-0',
+                                    (project.what_i_learned) && 'border-b',
+                                    !project.description && 'pt-4 sm:pt-0',
                                 )}
                             >
                                 <div
@@ -263,7 +270,8 @@ export default function Content({ project, appear }: ContentProps) {
 
                                     // Responsive styles
                                     'flex-col gap-4 sm:flex-row sm:gap-0',
-                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
+                                    'pb-4 sm:pb-0',
+                                    !project.feedback && !project.description && 'pt-4 sm:pt-0',
                                 )}
                             >
                                 <div
@@ -299,6 +307,21 @@ export default function Content({ project, appear }: ContentProps) {
                     )}
                 </Delimiter>
             )}
+
+            {/* Borders */}
+                <div
+                    className={cn(
+                        // Responsive styles
+                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                    )}
+                >
+                    <div
+                        className={cn(
+                            // Default styles
+                            'h-32 w-full border-r border-l border-dashed',
+                        )}
+                    ></div>
+                </div>
         </section>
     );
 }
