@@ -12,6 +12,7 @@ import Delimiter from '@/components/landing/delimiter';
 import FadeIn from '@/components/landing/fade-in';
 import RoundedButton from '@/components/landing/rounded-button';
 import UnderlineLink from '@/components/landing/underline-link';
+import LanguageToggle from '@/components/landing/language-toggle';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
@@ -188,11 +189,7 @@ export default function Footer({ appear }: FooterProps) {
                                     </RoundedButton>
                                 </Magnet>
                             </FadeIn>
-                            <FadeIn show={appear} delay={750}>
-                                <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton>EN</RoundedButton>
-                                </Magnet>
-                            </FadeIn>
+                            <LanguageToggle appear={appear} delay={750} />
                         </div>
 
                         {links.map((linkGroup, index) => (

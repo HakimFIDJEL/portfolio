@@ -53,6 +53,7 @@ export interface SharedData {
     auth: Auth;
     sidebarOpen: boolean;
     unread_notifications: number;
+    locale: string;
     [key: string]: unknown;
 }
 

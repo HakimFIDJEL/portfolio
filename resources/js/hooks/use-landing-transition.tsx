@@ -30,7 +30,7 @@ export function useLandingTransitions(
 
     // Navigation state
     const [targetHref, setTargetHref] = useState<string | null>(null);
-    const [targetAnchor, setTargetAnchor] = useState<string>('top');
+    const [targetAnchor, setTargetAnchor] = useState<string>();
 
     // timers ref for cleanup
     const timers = useRef<number[]>([]);
@@ -122,25 +122,28 @@ export function useLandingTransitions(
         timers.current.push(
             window.setTimeout(() => {
                 if (targetHref) {
+                    setCoverScreenActive(true);
                     router.visit(targetHref, {
                         preserveState: true,
                         preserveScroll: false,
 
                         onFinish: () => {
                             setTimeout(() => {
-                                if(targetAnchor === 'top') {
-                                    window.scrollTo({
-                                        top: 0,
-                                        left: 0,
-                                        behavior: 'instant',
-                                    });
-                                } else {
-                                    const element = document.getElementById(targetAnchor);
-                                    if (element) {
-                                        element.scrollIntoView({ behavior: 'instant' });
+                                if(targetAnchor) {
+                                    if(targetAnchor === 'top') {
+                                        window.scrollTo({
+                                            top: 0,
+                                            left: 0,
+                                            behavior: 'instant',
+                                        });
+                                    } else {
+                                        const element = document.getElementById(targetAnchor);
+                                        if (element) {
+                                            element.scrollIntoView({ behavior: 'instant' });
+                                        }
                                     }
                                 }
-                                setCoverScreenActive(false);
+                                // setCoverScreenActive(false);
 
                                 setTimeout(() => {
                                     setPageNavigationActive(false);
@@ -160,11 +163,13 @@ export function useLandingTransitions(
 
         setTimeout(() => {
             setCoverScreenActive(false);
-            setTransitionPanelsActive(false);
             setTimeout(() => {
-                setContentActive(true);
-                setShowContentExternal(true);
-            }, 500);
+                setTransitionPanelsActive(false);
+                setTimeout(() => {
+                    setContentActive(true);
+                    setShowContentExternal(true);
+                }, 500);
+            }, 250);
         }, 1000);
     }
 
@@ -233,9 +238,9 @@ export function useLandingTransitions(
         setSwitchNavigationActive(show);
     }
 
-    function _navigateToPage(href: string, anchor: string = 'top') {
+    function _navigateToPage(href: string, anchor: string | null) {
         setTargetHref(href);
-        setTargetAnchor(anchor);
+        setTargetAnchor(anchor ?? '');
         setPageNavigationActive(true);
         
     }

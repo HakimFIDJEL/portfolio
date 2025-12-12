@@ -11,6 +11,7 @@ import CircularText from '@/components/landing/circular-text';
 import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import RoundedButton from '@/components/landing/rounded-button';
+import LanguageToggle from '@/components/landing/language-toggle';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
@@ -173,15 +174,7 @@ export default function Hero({ appear }: HeroProps) {
                             </RoundedButton>
                         </Magnet>
                     </Curtain>
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={1000}
-                    >
-                        <Magnet magnetStrength={3} padding={20}>
-                            <RoundedButton>EN</RoundedButton>
-                        </Magnet>
-                    </Curtain>
+                    <LanguageToggle appear={appear} delay={1000} />
                 </Delimiter>
             </div>
         </section>
