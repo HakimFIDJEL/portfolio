@@ -180,7 +180,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                                     <h3
                                         className={cn(
                                             // Default styles
-                                            'relative text-center font-light transition-all duration-1000',
+                                            'relative text-center font-medium transition-all duration-1000',
 
                                             // Focus & hover styles
                                             'pl-0 z-1',
