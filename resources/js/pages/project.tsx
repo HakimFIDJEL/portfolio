@@ -20,13 +20,15 @@ export default function Project({ project }: { project: Project }) {
     // States content
     const [showContent, setShowContent] = useState(false);
 
+    const temp = project || mockProjects[0];
+
     return (
         <AppLanding showContent={showContent} setShowContent={setShowContent}>
             <Head title="Project" />
 
             <main>
-                <Hero appear={showContent} project={mockProjects[0]}/>
-                <Content appear={showContent} project={mockProjects[0]} />
+                <Hero appear={showContent} project={temp}/>
+                <Content appear={showContent} project={temp} />
             </main>
         </AppLanding>
     );
