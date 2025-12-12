@@ -5,8 +5,8 @@ import { cn } from '@/lib/utils';
 import React from 'react';
 
 // UI Components
-import { Separator } from '@/components/ui/separator';
 import Magnet from '@/components/ui/magnet';
+import { Separator } from '@/components/ui/separator';
 
 // Components
 import Carousel from '@/components/landing/carousel';
@@ -17,7 +17,7 @@ import RoundedButton from '@/components/landing/rounded-button';
 import UnderlineLink from '@/components/landing/underline-link';
 
 // Types
-import { Attachment } from '@/types';
+import { Project } from '@/types';
 
 // Icons
 import {
@@ -28,120 +28,23 @@ import {
     X,
 } from 'lucide-react';
 
-const sandboxItems: SandboxItemType[] = [
-    {
-        id: '1',
-        sort_order: 1,
-        title: 'Sample Project 1',
-        subtitle: 'This is a description for Sample Project 1.',
-        date: '2023-01-15',
-        tags: ['JavaScript', 'Web Development'],
-        description: '',
-        feedback: '',
-        what_i_learned: '',
-        stacks: ['JavaScript', 'React', 'CSS'],
-        attachments: [
-            {
-                file_path: '',
-                url: '',
-            },
-            {
-                file_path: '',
-                url: '',
-            },
-            {
-                file_path: '',
-                url: '',
-            },
-            {
-                file_path: '',
-                url: '',
-            },
-        ],
-    },
-    {
-        id: '2',
-        sort_order: 2,
-        title: 'Sample Project 2',
-        subtitle:
-            'This is a description for Sample Project 2. This is a description for Sample Project 2.',
-        date: '2023-01-15',
-        tags: ['JavaScript', 'Web Development'],
-        description: '',
-        feedback: '',
-        what_i_learned: '',
-        stacks: ['JavaScript', 'React', 'CSS'],
-        attachments: [],
-    },
-    {
-        id: '3',
-        sort_order: 3,
-        title: 'Sample Project 3',
-        subtitle: 'This is a description for Sample Project 3.',
-        date: '2023-01-15',
-        tags: ['JavaScript', 'Web Development'],
-        description: '',
-        feedback: '',
-        what_i_learned: '',
-        stacks: ['JavaScript', 'React', 'CSS'],
-        attachments: [],
-    },
-    {
-        id: '4',
-        sort_order: 4,
-        title: 'Sample Project 4',
-        subtitle: 'This is a description for Sample Project 4.',
-        date: '2023-01-15',
-        tags: ['JavaScript', 'Web Development'],
-        description: '',
-        feedback: '',
-        what_i_learned: '',
-        stacks: ['JavaScript', 'React', 'CSS'],
-        attachments: [],
-    },
-    {
-        id: '5',
-        sort_order: 5,
-        title: 'Sample Project 5',
-        subtitle: 'This is a description for Sample Project 5.',
-        date: '2023-01-15',
-        tags: ['JavaScript', 'Web Development'],
-        description: '',
-        feedback: '',
-        what_i_learned: '',
-        stacks: ['JavaScript', 'React', 'CSS'],
-        attachments: [],
-    },
-];
-
-interface SandboxItemType {
-    id: string;
-    sort_order: number;
-    title: string;
-    subtitle: string;
-    date: string;
-    tags: string[];
-
-    attachments?: Attachment[];
-    source_code_url?: string;
-    live_demo_url?: string;
-    stacks?: string[];
-    description?: string;
-    feedback?: string;
-    what_i_learned?: string;
-}
-
-export default function Sandbox({ appear }: { appear: boolean }) {
+export default function Sandbox({
+    appear,
+    projects,
+}: {
+    appear: boolean;
+    projects: Project[];
+}) {
     const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
 
     const cols =
         window.innerWidth >= 1279 ? 3 : window.innerWidth >= 639 ? 2 : 1;
 
-    const columns: SandboxItemType[][] = Array.from({ length: cols }, () => []);
+    const columns: Project[][] = Array.from({ length: cols }, () => []);
 
-    sandboxItems
+    projects
         .sort((a, b) => a.sort_order - b.sort_order)
-        .forEach((item: SandboxItemType, index) => {
+        .forEach((item: Project, index) => {
             const columnIndex = index % cols;
             columns[columnIndex].push(item);
         });
@@ -279,12 +182,9 @@ export default function Sandbox({ appear }: { appear: boolean }) {
                 {columns.map((columnItems, colIndex) => (
                     <div
                         key={`column-${colIndex}`}
-                        className={cn(
-                            'flex flex-col gap-4 md:gap-8',
-                            'w-full',
-                        )}
+                        className={cn('flex flex-col gap-4 md:gap-8', 'w-full')}
                     >
-                        {columnItems.map((item: SandboxItemType, itemIndex) => (
+                        {columnItems.map((item: Project, itemIndex) => (
                             <FadeIn
                                 show={appear}
                                 key={item.id}
@@ -294,17 +194,15 @@ export default function Sandbox({ appear }: { appear: boolean }) {
                             >
                                 <Magnet magnetStrength={5} padding={10}>
                                     <SandboxItem
-                                        id={item.id}
-                                        title={item.title}
-                                        subtitle={item.subtitle}
-                                        date={item.date}
-                                        tags={item.tags}
+                                        project={item}
                                         active={
                                             activeIndex ===
                                             colIndex + itemIndex * cols
                                         }
                                         handleClick={() =>
-                                            handleClick(colIndex + itemIndex * cols)
+                                            handleClick(
+                                                colIndex + itemIndex * cols,
+                                            )
                                         }
                                         dialog_open={activeIndex !== null}
                                     />
@@ -317,7 +215,7 @@ export default function Sandbox({ appear }: { appear: boolean }) {
 
             {/* Dialog */}
             <SandboxDialog
-                item={sandboxItems[activeIndex ?? -1] || null}
+                item={projects[activeIndex ?? -1] || null}
                 handleClose={() => handleClick(null)}
             />
         </section>
@@ -325,22 +223,14 @@ export default function Sandbox({ appear }: { appear: boolean }) {
 }
 
 interface SandboxItemProps {
-    id: string;
-    title: string;
-    subtitle: string;
-    date: string;
-    tags: string[];
+    project: Project;
     active?: boolean;
     handleClick?: () => void;
     dialog_open?: boolean;
 }
 
 function SandboxItem({
-    id,
-    title,
-    subtitle,
-    date,
-    tags,
+    project,
     active,
     handleClick,
     dialog_open,
@@ -391,21 +281,23 @@ function SandboxItem({
                     'flex flex-wrap gap-2',
                 )}
             >
-                {tags.map((tag, index) => (
-                    <span
-                        key={`sandbox-${id}-tag-${index}`}
-                        className={cn(
-                            // Default styles
-                            'border px-1.5 py-0.5 text-sm font-light',
-                            'transition-all duration-1000',
+                {project.tags
+                    .sort((a, b) => a.sort_order - b.sort_order)
+                    .map((tag, index) => (
+                        <span
+                            key={`sandbox-${project.id}-tag-${index}`}
+                            className={cn(
+                                // Default styles
+                                'border px-1.5 py-0.5 text-sm font-light',
+                                'transition-all duration-1000',
 
-                            // Hover & Focus styles
-                            'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
-                        )}
-                    >
-                        {tag}
-                    </span>
-                ))}
+                                // Hover & Focus styles
+                                'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
+                            )}
+                        >
+                            {tag.name}
+                        </span>
+                    ))}
             </div>
 
             {/* Title */}
@@ -417,7 +309,7 @@ function SandboxItem({
                     'text-lg',
                 )}
             >
-                {title}
+                {project.title}
             </h4>
 
             {/* Description */}
@@ -427,30 +319,45 @@ function SandboxItem({
                     // Default styles
                 }
             >
-                {subtitle}
+                {project.subtitle}
             </p>
 
-            <Separator className="transition-all duration-1000 mt-2 bg-foreground group-hover:bg-primary-foreground group-focus-visible:bg-primary-foreground" />
+            <Separator className="mt-2 bg-foreground transition-all duration-1000 group-hover:bg-primary-foreground group-focus-visible:bg-primary-foreground" />
 
             {/* Date */}
-            <time
-                className={
-                    cn()
-                    // Default styles
-                }
-            >
-                {new Date(date).toLocaleDateString(undefined, {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                })}
-            </time>
+            {project.end_date ? (
+                <time
+                    className={
+                        cn()
+                        // Default styles
+                    }
+                >
+                    {new Date(project.end_date).toLocaleDateString(undefined, {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                    })}
+                </time>
+            ) : (
+                <span
+                    className={cn(
+                        // Default styles
+                        'border px-1.5 py-0.5 text-sm font-light w-max',
+                        'transition-all duration-1000',
+
+                        // Hover & Focus styles
+                        'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
+                    )}
+                >
+                    Ongoing
+                </span>
+            )}
         </button>
     );
 }
 
 interface SandboxDialogProps {
-    item: SandboxItemType | null;
+    item: Project | null;
     handleClose: () => void;
 }
 
@@ -579,12 +486,20 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         <RoundedButton
                             disabled={!item?.source_code_url}
                             className="p-2.5"
-                            tabIndex={open && item && item.source_code_url ? 0 : -1}
+                            tabIndex={
+                                open && item && item.source_code_url ? 0 : -1
+                            }
                         >
                             <a
-                                href={item?.source_code_url}
+                                {...(item?.source_code_url && {
+                                    href: item.source_code_url,
+                                })}
                                 target="_blank"
-                                tabIndex={open && item && item.source_code_url ? 0 : -1}
+                                tabIndex={
+                                    open && item && item.source_code_url
+                                        ? 0
+                                        : -1
+                                }
                             >
                                 <Code2 />
                             </a>
@@ -594,16 +509,23 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         <RoundedButton
                             disabled={!item?.live_demo_url}
                             className="p-2.5"
-                            tabIndex={open && item && item.live_demo_url ? 0 : -1}
+                            tabIndex={
+                                open && item && item.live_demo_url ? 0 : -1
+                            }
                         >
                             <a
-                                href={item?.live_demo_url}
+                                {...(item?.live_demo_url && {
+                                    href: item.live_demo_url,
+                                })}
                                 target="_blank"
-                                tabIndex={open && item && item.live_demo_url ? 0 : -1}
+                                tabIndex={
+                                    open && item && item.live_demo_url ? 0 : -1
+                                }
                             >
                                 <SquareArrowOutUpRight />
                             </a>
                         </RoundedButton>
+
                         {/* Code source */}
                         <RoundedButton
                             onClick={() => setOpen(false)}
@@ -666,17 +588,22 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'flex flex-wrap gap-2.5 sm:w-[65%]',
                                     )}
                                 >
-                                    {item.stacks.map((tech, techIdx) => (
-                                        <span
-                                            key={`stack-${techIdx}`}
-                                            className={cn(
-                                                // Default styles
-                                                'border border-primary px-2.5 py-1 font-light',
-                                            )}
-                                        >
-                                            {tech}
-                                        </span>
-                                    ))}
+                                    {item.stacks
+                                        .sort(
+                                            (a, b) =>
+                                                a.sort_order - b.sort_order,
+                                        )
+                                        .map((tech, techIdx) => (
+                                            <span
+                                                key={`stack-${techIdx}`}
+                                                className={cn(
+                                                    // Default styles
+                                                    'border border-primary px-2.5 py-1 font-light',
+                                                )}
+                                            >
+                                                {tech.name}
+                                            </span>
+                                        ))}
                                 </div>
                             </div>
                         </FadeIn>

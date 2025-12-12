@@ -11,55 +11,25 @@ import UnderlineLink from '@/components/landing/underline-link';
 import Magnet from '@/components/ui/magnet';
 
 // Icons
-import * as LucideIcon from 'lucide-react';
 import type { LucideIcon as LucideIconType } from 'lucide-react';
+import * as LucideIcon from 'lucide-react';
 import { ArrowUpRight } from 'lucide-react';
 
-interface ContactItemData {
-    icon: string;
-    label: string;
-    name: string;
-    link: string;
-}
-
-const contactItems: ContactItemData[] = [
-    {
-        icon: 'mail',
-        label: 'Email',
-        name: 'hakimfidjel.pro@gmail.com',
-        link: 'mailto:hakimfidjel.pro@gmail.com',
-    },
-    {
-        icon: 'linkedin',
-        label: 'LinkedIn',
-        name: 'Hakim Fidjel',
-        link: 'https://www.linkedin.com/in/hakim-fidjel/',
-    },
-    {
-        icon: 'github',
-        label: 'GitHub',
-        name: 'HakimFIDJEL',
-        link: 'https://github.com/HakimFIDJEL',
-    },
-    {
-        icon: 'gitlab',
-        label: 'GitLab',
-        name: 'HakimFIDJEL',
-        link: 'https://gitlab.com/HakimFIDJEL',
-    },
-];
+// Types
+import { type Contact as ContactType } from '@/types';
 
 interface ContactProps {
     appear: boolean;
+    contacts: ContactType[];
 }
-export default function Contact({ appear }: ContactProps) {
+export default function Contact({ appear, contacts }: ContactProps) {
     return (
         <section
             className={cn(
                 // Default styles
                 'flex flex-col',
 
-                'mt-0 sm:mt-12 md:mt-24'
+                'mt-0 sm:mt-12 md:mt-24',
             )}
             id="contact"
         >
@@ -69,7 +39,7 @@ export default function Contact({ appear }: ContactProps) {
                 plusCorners={['all']}
                 className={cn(
                     // Default styles
-                    'flex  justify-between',
+                    'flex justify-between',
 
                     // Responsive styles
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
@@ -101,7 +71,7 @@ export default function Contact({ appear }: ContactProps) {
 
                         'gap-2',
 
-                        'items-start md:items-end'
+                        'items-start md:items-end',
                     )}
                 >
                     <Curtain
@@ -167,11 +137,6 @@ export default function Contact({ appear }: ContactProps) {
                             showCurtain={!appear}
                             background="background"
                             delay={250}
-                            className={
-                                cn()
-
-                                // Responsive styles
-                            }
                         >
                             <p>
                                 Reach out to talk projects, job offers, or even
@@ -187,7 +152,6 @@ export default function Contact({ appear }: ContactProps) {
                         'border-t border-b border-dashed',
 
                         // Responsive styles
-
                         'px-6 sm:px-8 md:px-10 lg:px-12.5',
                     )}
                 >
@@ -202,11 +166,18 @@ export default function Contact({ appear }: ContactProps) {
                             'gap-4 md:gap-8',
                         )}
                     >
-                        {contactItems.map((item, index) => (
-                            <FadeIn key={index} show={appear} delay={index * 100} className='w-full'> 
-                                <ContactItem item={item} />
-                            </FadeIn>
-                        ))}
+                        {contacts
+                            .sort((a, b) => a.sort_order - b.sort_order)
+                            .map((item, index) => (
+                                <FadeIn
+                                    key={index}
+                                    show={appear}
+                                    delay={index * 100}
+                                    className="w-full"
+                                >
+                                    <ContactItem item={item} />
+                                </FadeIn>
+                            ))}
                     </Delimiter>
                 </div>
 
@@ -222,9 +193,7 @@ export default function Contact({ appear }: ContactProps) {
                             // Default styles
                             'h-32 w-full border-r border-l border-dashed',
                         )}
-                    >
-                        
-                    </div>
+                    ></div>
                 </div>
             </div>
         </section>
@@ -232,7 +201,7 @@ export default function Contact({ appear }: ContactProps) {
 }
 
 interface ContactItemProps {
-    item: ContactItemData;
+    item: ContactType;
 }
 
 function ContactItem({ item }: ContactItemProps) {
@@ -242,9 +211,11 @@ function ContactItem({ item }: ContactItemProps) {
 
     // Récupération de l'icône en utilisant le nom en PascalCase
     const iconName = toPascalCase(item.icon);
-    
+
     // const IconComponent = (LucideIcon as any)[iconName];
-    const IconComponent = LucideIcon[iconName as keyof typeof LucideIcon] as LucideIconType;
+    const IconComponent = LucideIcon[
+        iconName as keyof typeof LucideIcon
+    ] as LucideIconType;
 
     // Vérification de sécurité au cas où l'icône n'existe pas
     if (!IconComponent) {
@@ -253,7 +224,7 @@ function ContactItem({ item }: ContactItemProps) {
     }
 
     return (
-        <Magnet magnetStrength={25} padding={10} wrapperClassName='w-full'>
+        <Magnet magnetStrength={25} padding={10} wrapperClassName="w-full">
             <a
                 className={cn(
                     // Default styles
@@ -290,7 +261,7 @@ function ContactItem({ item }: ContactItemProps) {
                             'group-focus-visible:text-primary-foreground group-focus-visible:duration-1000',
                         )}
                     />
-                    <span className='font-semibold'>{item.label}</span>
+                    <span className="font-semibold">{item.label}</span>
                 </div>
 
                 {/* Content */}
@@ -301,7 +272,7 @@ function ContactItem({ item }: ContactItemProps) {
                         'w-full p-4 underline transition-all duration-500',
 
                         // Hover & Focus styles
-                        'group-hover:border-primary group-hover:bg-card  group-hover:duration-1000',
+                        'group-hover:border-primary group-hover:bg-card group-hover:duration-1000',
                         'group-focus-visible:border-primary group-focus-visible:bg-card group-focus-visible:duration-1000',
                     )}
                 >

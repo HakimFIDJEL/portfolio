@@ -7,13 +7,15 @@ interface UnderlineLinkProps {
     children: React.ReactNode;
     className?: string;
     showUnderline?: boolean;
+    onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export default function UnderlineLink({
     href,
     children,
     className,
-    showUnderline
+    showUnderline,
+    onClick,
 }: UnderlineLinkProps) {
     return (
         <a
@@ -34,6 +36,7 @@ export default function UnderlineLink({
                 showUnderline && 'after:scale-x-100',
                 className,
             )}
+            onClick={onClick}
             href={href}
         >
             {children}

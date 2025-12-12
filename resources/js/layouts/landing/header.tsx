@@ -2,24 +2,34 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
 import { usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 // Components
 import UnderlineLink from '@/components/landing/underline-link';
 
+// Contexts
+import { useLandingContext } from '@/contexts/use-landing-context';
+
 interface HeaderProps {
-    showMenu: boolean;
-    setShowMenu: (open: boolean) => void;
+    showContent: boolean;
     handleMenuToggle: (open: boolean) => void;
 }
 
-export default function Header({
-    showMenu,
-    setShowMenu,
-    handleMenuToggle,
-}: HeaderProps) {
+export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
     const [scrollY, setScrollY] = useState(0);
+    const [showMenu, setShowMenu] = useState(true);
+
+    const { _navigateToPage } = useLandingContext();
+
+    function handleProjectClick(
+        e: React.MouseEvent<HTMLAnchorElement>,
+        href: string,
+        anchor: string = 'top',
+    ) {
+        e.preventDefault();
+        _navigateToPage(href, anchor);
+    }
 
     useEffect(() => {
         let lastScrollY = 0;
@@ -46,7 +56,7 @@ export default function Header({
         };
     }, [setShowMenu]);
 
-    const currentUrl = usePage().url;
+    const currentUrl = usePage().url.split('#')[0];
     const homePath = new URL(route('home')).pathname;
 
     return (
@@ -62,8 +72,11 @@ export default function Header({
                 'grid-cols-2 md:grid-cols-3',
                 'h-[73px] lg:h-[105px]',
 
-                // Conditional styles based on showMenu state
-                !showMenu && 'translate-y-[-100%] duration-500',
+                // Conditional styles based on showContent & showMenu state
+
+                (!showContent || (showContent && !showMenu)) &&
+                    'translate-y-[-100%] duration-500',
+
                 scrollY > 50 &&
                     'border-border bg-background/50 !backdrop-blur-lg',
             )}
@@ -85,8 +98,13 @@ export default function Header({
                     'text-right md:text-center',
                 )}
             >
-                <a 
+                <a
+                    onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'))}
                     href={currentUrl === homePath ? '#top' : route('home')}
+                    className={cn(
+                        // Focus styles
+                        'transition-all focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-primary',
+                    )}
                 >
                     HF
                 </a>
@@ -100,7 +118,12 @@ export default function Header({
                     'hidden md:block',
                 )}
             >
-                <UnderlineLink href="#contact">Contact</UnderlineLink>
+                <UnderlineLink
+                    onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'), 'contact')}
+                    href={currentUrl === homePath ? '#top' : route('home')}
+                >
+                    Contact
+                </UnderlineLink>
             </div>
         </header>
     );

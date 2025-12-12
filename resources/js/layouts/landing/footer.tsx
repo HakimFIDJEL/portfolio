@@ -111,6 +111,10 @@ export default function Footer({ appear }: FooterProps) {
 
                     // Responsive styles
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
+
+                    // Animation styles
+                    'transition-all duration-1000 opacity-0 translate-y-[20%]',
+                    appear && 'opacity-100 translate-y-0',
                 )}
             >
                 {/* Left Panel */}

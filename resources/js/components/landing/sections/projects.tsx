@@ -3,6 +3,9 @@
 // Necessary imports
 import { cn } from '@/lib/utils';
 
+// Contexts
+import { useLandingContext } from '@/contexts/use-landing-context';
+
 // Components
 import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
@@ -12,39 +15,24 @@ import UnderlineLink from '@/components/landing/underline-link';
 // Icons
 import { ArrowDownRight, ArrowRight } from 'lucide-react';
 
-export default function Projects({ appear }: { appear: boolean }) {
-    const projects = [
-        {
-            name: 'Vps Manager',
-            href: '#',
-            sort_order: 1,
-        },
-        {
-            name: 'Vps Hosting & Deployment',
-            href: '#',
-            sort_order: 2,
-        },
-        {
-            name: 'Portfolio',
-            href: '#',
-            sort_order: 3,
-        },
-        {
-            name: 'jCoaching',
-            href: '#',
-            sort_order: 4,
-        },
-        {
-            name: 'GC Trackr',
-            href: '#',
-            sort_order: 5,
-        },
-        {
-            name: 'RSC Wasquehal',
-            href: '#',
-            sort_order: 6,
-        },
-    ];
+// Types
+import { Project } from '@/types';
+
+interface ProjectsProps {
+    appear: boolean;
+    projects: Project[];
+}
+
+export default function Projects({ appear, projects }: ProjectsProps) {
+    const { _navigateToPage } = useLandingContext();
+
+    function handleProjectClick(
+        e: React.MouseEvent<HTMLAnchorElement>,
+        href: string,
+    ) {
+        e.preventDefault();
+        _navigateToPage(href);
+    }
 
     return (
         <section
@@ -95,7 +83,7 @@ export default function Projects({ appear }: { appear: boolean }) {
                         showCurtain={!appear}
                         background="background"
                         delay={250}
-                        className='w-full'
+                        className="w-full"
                     >
                         <p>
                             Take a look at my projects.
@@ -139,76 +127,95 @@ export default function Projects({ appear }: { appear: boolean }) {
                     plusCorners={['all']}
                     className={cn(
                         // Default styles
-                        'flex flex-col transition-all duration-1000 relative',
+                        'relative flex flex-col transition-all duration-1000',
                     )}
                 >
-                    {projects.map((project, index) => (
-                        <FadeIn
-                            show={appear}
-                            key={index}
-                            className="w-full"
-                            delay={250}
-                        >
-                            <a
-                                {...(appear ? { href: project.href } : {})}
-                                tabIndex={appear ? 0 : -1}
-                                className={cn(
-                                    // Default styles
-                                    'group relative flex overflow-hidden transition-all duration-1000',
-                                    'items-center justify-center',
-
-                                    // Focus & hover styles
-                                    'hover:!text-primary-foreground',
-                                    'focus-visible:!text-primary-foreground focus-visible:md:outline-none',
-
-                                    // Responsive styles
-                                    'text-3xl sm:text-5xl',
-                                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                                    'py-8 sm:py-10 md:py-12 lg:py-14',
-
-                                    index !== projects.length - 1 && 'border-b',
-                                )}
+                    {projects
+                        .sort((a, b) => a.sort_order - b.sort_order)
+                        .map((project, index) => (
+                            <FadeIn
+                                show={appear}
+                                key={index}
+                                className="w-full"
+                                delay={250}
                             >
-                                {/* Label */}
-                                <h3
+                                <a
+                                    {...(appear
+                                        ? {
+                                              href: route('project', {
+                                                  slug: project.slug,
+                                              }),
+                                          }
+                                        : {})}
+                                    onClick={(e) =>
+                                        handleProjectClick(
+                                            e,
+                                            route('project', {
+                                                slug: project.slug,
+                                            }),
+                                        )
+                                    }
+                                    tabIndex={appear ? 0 : -1}
                                     className={cn(
                                         // Default styles
-                                        'relative text-center font-light transition-all duration-1000',
+                                        'group relative flex overflow-hidden transition-all duration-1000',
+                                        'items-center justify-center',
 
                                         // Focus & hover styles
-                                        'pl-0',
-                                        'group-hover:pl-4 sm:group-hover:pl-6',
-                                        'group-focus-visible:pl-4 sm:group-focus-visible:pl-6',
+                                        'hover:!text-primary-foreground',
+                                        'focus-visible:!text-primary-foreground focus-visible:md:outline-none',
+
+                                        // Responsive styles
+                                        'text-3xl sm:text-5xl',
+                                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                                        'py-8 sm:py-10 md:py-12 lg:py-14',
+
+                                        'bg-card',
+
+                                        index !== projects.length - 1 &&
+                                            'border-b',
                                     )}
                                 >
-                                    <ArrowRight
+                                    {/* Label */}
+                                    <h3
                                         className={cn(
                                             // Default styles
-                                            'absolute top-1/2 -left-10 -translate-y-1/2',
-                                            'stroke-1 transition-all',
-
-                                            // Responsive styles
-                                            'h-8 w-8 sm:h-12 sm:w-12',
+                                            'relative text-center font-light transition-all duration-1000',
 
                                             // Focus & hover styles
-                                            'translate-x-[-100%] opacity-0 transition-all duration-500',
-                                            'group-hover:translate-x-0 group-hover:opacity-100 group-hover:duration-1000',
-                                            'group-focus-visible:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:duration-1000',
+                                            'pl-0 z-1',
+                                            'group-hover:pl-4 sm:group-hover:pl-6',
+                                            'group-focus-visible:pl-4 sm:group-focus-visible:pl-6',
                                         )}
-                                    />
+                                    >
+                                        <ArrowRight
+                                            className={cn(
+                                                // Default styles
+                                                'absolute top-1/2 -left-10 -translate-y-1/2',
+                                                'stroke-1 transition-all',
 
-                                    {project.name}
-                                </h3>
+                                                // Responsive styles
+                                                'h-8 w-8 sm:h-12 sm:w-12',
 
-                                {/* Background animation */}
-                                <div
-                                    className={cn(
-                                        'absolute inset-0 z-[-1] h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
-                                    )}
-                                ></div>
-                            </a>
-                        </FadeIn>
-                    ))}
+                                                // Focus & hover styles
+                                                'translate-x-[-100%] opacity-0 transition-all duration-500',
+                                                'group-hover:translate-x-0 group-hover:opacity-100 group-hover:duration-1000',
+                                                'group-focus-visible:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:duration-1000',
+                                            )}
+                                        />
+
+                                        {project.title}
+                                    </h3>
+
+                                    {/* Background animation */}
+                                    <div
+                                        className={cn(
+                                            'absolute inset-0 z-[0] h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
+                                        )}
+                                    ></div>
+                                </a>
+                            </FadeIn>
+                        ))}
                 </Delimiter>
             </div>
         </section>

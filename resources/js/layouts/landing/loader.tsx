@@ -44,21 +44,27 @@ export default function Loader({ showLoader, showLoaderContent }: LoaderProps) {
                     delay={0}
                     background="background"
                 >
-                    <h1 className="text-4xl sm:text-5xl font-light">Hi, I'm Hakim</h1>
+                    <h1 className="text-4xl font-light sm:text-5xl">
+                        Hi, I'm Hakim
+                    </h1>
                 </Curtain>
                 <Curtain
                     showCurtain={!showLoaderContent}
                     delay={125}
                     background="background"
                 >
-                    <h1 className="text-4xl sm:text-5xl font-normal">Hi, I'm Hakim</h1>
+                    <h1 className="text-4xl font-normal sm:text-5xl">
+                        Hi, I'm Hakim
+                    </h1>
                 </Curtain>
                 <Curtain
                     showCurtain={!showLoaderContent}
                     delay={250}
                     background="background"
                 >
-                    <h1 className="text-4xl sm:text-5xl font-medium">Hi, I'm Hakim</h1>
+                    <h1 className="text-4xl font-medium sm:text-5xl">
+                        Hi, I'm Hakim
+                    </h1>
                 </Curtain>
             </div>
         </aside>

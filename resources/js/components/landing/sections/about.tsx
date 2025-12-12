@@ -19,11 +19,16 @@ import { TextReveal } from '@/components/ui/text-reveal';
 // Icons
 import { ArrowDownRight, Download, Minus, Plus } from 'lucide-react';
 
+// Types
+import { Stacks as StacksType, Tools as ToolsType } from '@/types';
+
 interface AboutProps {
     appear: boolean;
+    stacks: StacksType[];
+    tools: ToolsType[];
 }
 
-export default function About({ appear }: AboutProps) {
+export default function About({ appear, stacks, tools }: AboutProps) {
     return (
         <section
             className={cn(
@@ -35,13 +40,13 @@ export default function About({ appear }: AboutProps) {
                 'mt-12 md:mt-24 lg:mt-48',
                 'mb-12 md:mb-24 lg:mb-48',
             )}
-            id='about'
+            id="about"
         >
             {/* Panels */}
             <Panels appear={appear} />
 
             {/* Accordion */}
-            <Accordions appear={appear} />
+            <Accordions appear={appear} stacks={stacks} tools={tools} />
         </section>
     );
 }
@@ -50,7 +55,11 @@ export default function About({ appear }: AboutProps) {
 // Panels
 // -------------------------
 
-function Panels({ appear }: AboutProps) {
+interface PanelsProps {
+    appear: boolean;
+}
+
+function Panels({ appear }: PanelsProps) {
     return (
         <div
             className={cn(
@@ -162,7 +171,7 @@ function Panels({ appear }: AboutProps) {
                 {/* Reveal */}
                 <TextReveal
                     text_className="!text-lg sm:!text-xl lg:!text-2xl"
-                    className="h-[200vh] sm:h-[120vh] lg:h-[200vh] hidden lg:block"
+                    className="hidden h-[200vh] sm:h-[120vh] lg:block lg:h-[200vh]"
                 >
                     <strong className="font-semibold">Hi, I’m Hakim.</strong>
                     <br />
@@ -187,7 +196,7 @@ function Panels({ appear }: AboutProps) {
                 </TextReveal>
 
                 {/* Reveal */}
-                <FadeIn className="lg:hidden w-full" delay={500} show={appear}>
+                <FadeIn className="w-full lg:hidden" delay={500} show={appear}>
                     <strong className="font-semibold">Hi, I’m Hakim.</strong>
                     <br />
                     <p className="font-light">
@@ -218,10 +227,8 @@ function Panels({ appear }: AboutProps) {
 // Accordions
 // -------------------------
 
-function Accordions({ appear }: AboutProps) {
+function Accordions({ appear, stacks, tools }: AboutProps) {
     const [openIndex, setOpenIndex] = React.useState<number | null>(null);
-
-    console.log(appear);
 
     return (
         <div
@@ -289,6 +296,7 @@ function Accordions({ appear }: AboutProps) {
                         setOpenIndex(openIndex === index ? null : index)
                     }
                     appear={appear}
+                    stacks={stacks}
                 />
                 <Separator />
                 <AccordionTools
@@ -299,6 +307,7 @@ function Accordions({ appear }: AboutProps) {
                         setOpenIndex(openIndex === index ? null : index)
                     }
                     appear={appear}
+                    tools={tools}
                 />
             </Delimiter>
         </div>
@@ -464,9 +473,9 @@ function AccordionAbout({
                 <div
                     className={cn(
                         // Default styles
-                        'flex  shrink-0 bg-card',
+                        'flex shrink-0 bg-card',
 
-                        ' items-center justify-center',
+                        'items-center justify-center',
 
                         // Responsive styles
                         'aspect-square w-full max-w-[300px] sm:aspect-[9/16] sm:w-1/3 sm:max-w-none',
@@ -845,61 +854,18 @@ function AccordionSchool({
     );
 }
 
+interface AccordionTechStackProps extends AccordionItemProps {
+    stacks: StacksType[];
+}
+
 function AccordionTechStack({
     index,
     title,
     open,
     onChange,
     appear,
-}: AccordionItemProps) {
-    const stack = [
-        {
-            category: 'Frontend',
-            technologies: [
-                'HTML',
-                'CSS',
-                'SCSS',
-                'Tailwind',
-                'JavaScript',
-                'TypeScript',
-                'React',
-                'jQuery',
-                'Next.js',
-            ],
-        },
-        {
-            category: 'Backend',
-            technologies: [
-                'PHP',
-                'Laravel',
-                'OctoberCMS',
-                'Node.js',
-                'NestJS',
-                'Express.js',
-                'Inertia.js',
-            ],
-        },
-        {
-            category: 'Databases',
-            technologies: [
-                'MySQL',
-                'PostgreSQL',
-                'PL/SQL',
-                'NoSQL',
-                'SQLite',
-                'MongoDB',
-            ],
-        },
-        {
-            category: 'Software',
-            technologies: ['C', 'Java', 'Python', 'Bash'],
-        },
-        {
-            category: 'Mobile',
-            technologies: ['React Native', 'Flutter'],
-        },
-    ];
-
+    stacks,
+}: AccordionTechStackProps) {
     return (
         <AccordionItem
             index={index}
@@ -933,61 +899,72 @@ function AccordionTechStack({
                         'gap-6 sm:gap-10',
                     )}
                 >
-                    {stack.map((s, idx) => (
-                        <li
-                            key={`techstack-${idx}`}
-                            className={cn(
-                                // Default styles
-                                'flex items-start justify-between',
-
-                                // Responsive styles
-                                'flex-col gap-4 sm:flex-row sm:gap-0',
-                                'border-b border-border pb-4 sm:border-0 sm:pb-0',
-                                idx === stack.length - 1 && 'border-0',
-                            )}
-                        >
-                            <div
+                    {stacks
+                        .sort((a, b) => a.sort_order - b.sort_order)
+                        .map((s, idx) => (
+                            <li
+                                key={`techstack-${idx}`}
                                 className={cn(
                                     // Default styles
-                                    'flex shrink-0 flex-col',
+                                    'flex items-start justify-between',
 
-                                    'sm:w-[25%]',
+                                    // Responsive styles
+                                    'flex-col gap-4 sm:flex-row sm:gap-0',
+                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
+                                    idx === stacks.length - 1 && 'border-0',
                                 )}
                             >
-                                <h4
+                                <div
                                     className={cn(
                                         // Default styles
-                                        'font-medium',
-                                        'text-lg',
+                                        'flex shrink-0 flex-col',
+
+                                        'sm:w-[25%]',
                                     )}
                                 >
-                                    {s.category}
-                                </h4>
-                            </div>
-                            <div
-                                className={cn(
-                                    // Default styles
-                                    'flex flex-wrap gap-2.5 sm:w-[65%]',
-                                )}
-                            >
-                                {s.technologies.map((tech, techIdx) => (
-                                    <span
-                                        key={`stack-${techIdx}`}
+                                    <h4
                                         className={cn(
                                             // Default styles
-                                            'border border-primary px-2.5 py-1 font-light',
+                                            'font-medium',
+                                            'text-lg',
                                         )}
                                     >
-                                        {tech}
-                                    </span>
-                                ))}
-                            </div>
-                        </li>
-                    ))}
+                                        {s.name}
+                                    </h4>
+                                </div>
+                                <div
+                                    className={cn(
+                                        // Default styles
+                                        'flex flex-wrap gap-2.5 sm:w-[65%]',
+                                    )}
+                                >
+                                    {s.items
+                                        .sort(
+                                            (a, b) =>
+                                                a.sort_order - b.sort_order,
+                                        )
+                                        .map((item, itemIdx) => (
+                                            <span
+                                                key={`stack-${itemIdx}`}
+                                                className={cn(
+                                                    // Default styles
+                                                    'border border-primary px-2.5 py-1 font-light',
+                                                )}
+                                            >
+                                                {item.name}
+                                            </span>
+                                        ))}
+                                </div>
+                            </li>
+                        ))}
                 </ul>
             </div>
         </AccordionItem>
     );
+}
+
+interface AccordionToolsProps extends AccordionItemProps {
+    tools: ToolsType[];
 }
 
 function AccordionTools({
@@ -996,62 +973,8 @@ function AccordionTools({
     open,
     onChange,
     appear,
-}: AccordionItemProps) {
-    const stack = [
-        {
-            category: 'IDE',
-            technologies: [
-                'VS Code',
-                'Visual Studio',
-                'Sublime Text',
-                'Notepad++',
-                'Nano',
-                'Vim',
-                'PhpStorm',
-                'IntelliJ IDEA',
-                'PyCharm',
-            ],
-        },
-        {
-            category: 'DevOps',
-            technologies: [
-                'Docker',
-                'Git',
-                'GitHub Actions',
-                'CI/CD',
-                'Nginx',
-                'Apache',
-                'Kafka',
-                'Nifi',
-            ],
-        },
-        {
-            category: 'Databases',
-            technologies: [
-                'PhpMyAdmin',
-                'PgAdmin',
-                'Datagrip',
-                'MongoDB',
-                'DataBricks',
-            ],
-        },
-        {
-            category: 'Tools',
-            technologies: [
-                'Postman',
-                'Figma',
-                'Docker Desktop',
-                'Docs',
-                'Sheets',
-                'Slides',
-                'Canva',
-                'Trello',
-                'Draw.io',
-                'ClickUp',
-            ],
-        },
-    ];
-
+    tools,
+}: AccordionToolsProps) {
     return (
         <AccordionItem
             index={index}
@@ -1085,57 +1008,64 @@ function AccordionTools({
                         'gap-6 sm:gap-10',
                     )}
                 >
-                    {stack.map((s, idx) => (
-                        <li
-                            key={`tools-${idx}`}
-                            className={cn(
-                                // Default styles
-                                'flex items-start justify-between',
-
-                                // Responsive styles
-                                'flex-col gap-4 sm:flex-row sm:gap-0',
-                                'border-b border-border pb-4 sm:border-0 sm:pb-0',
-                                idx === stack.length - 1 && 'border-0',
-                            )}
-                        >
-                            <div
+                    {tools
+                        .sort((a, b) => a.sort_order - b.sort_order)
+                        .map((t, idx) => (
+                            <li
+                                key={`tools-${idx}`}
                                 className={cn(
                                     // Default styles
-                                    'flex shrink-0 flex-col',
+                                    'flex items-start justify-between',
 
-                                    'sm:w-[25%]',
+                                    // Responsive styles
+                                    'flex-col gap-4 sm:flex-row sm:gap-0',
+                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
+                                    idx === tools.length - 1 && 'border-0',
                                 )}
                             >
-                                <h4
+                                <div
                                     className={cn(
                                         // Default styles
-                                        'font-medium',
-                                        'text-lg',
+                                        'flex shrink-0 flex-col',
+
+                                        'sm:w-[25%]',
                                     )}
                                 >
-                                    {s.category}
-                                </h4>
-                            </div>
-                            <div
-                                className={cn(
-                                    // Default styles
-                                    'flex flex-wrap gap-2.5 sm:w-[65%]',
-                                )}
-                            >
-                                {s.technologies.map((tech, techIdx) => (
-                                    <span
-                                        key={`tool-${techIdx}`}
+                                    <h4
                                         className={cn(
                                             // Default styles
-                                            'border border-primary px-2.5 py-1 font-light',
+                                            'font-medium',
+                                            'text-lg',
                                         )}
                                     >
-                                        {tech}
-                                    </span>
-                                ))}
-                            </div>
-                        </li>
-                    ))}
+                                        {t.name}
+                                    </h4>
+                                </div>
+                                <div
+                                    className={cn(
+                                        // Default styles
+                                        'flex flex-wrap gap-2.5 sm:w-[65%]',
+                                    )}
+                                >
+                                    {t.items
+                                        .sort(
+                                            (a, b) =>
+                                                a.sort_order - b.sort_order,
+                                        )
+                                        .map((item, itemIdx) => (
+                                            <span
+                                                key={`tool-${itemIdx}`}
+                                                className={cn(
+                                                    // Default styles
+                                                    'border border-primary px-2.5 py-1 font-light',
+                                                )}
+                                            >
+                                                {item.name}
+                                            </span>
+                                        ))}
+                                </div>
+                            </li>
+                        ))}
                 </ul>
             </div>
         </AccordionItem>
