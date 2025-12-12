@@ -22,6 +22,7 @@ export default function Content({ project, appear }: ContentProps) {
                 // Default styles
                 'flex flex-col',
             )}
+            id='content'
         >
             {/* Tech Stack */}
             {project.stacks && project.stacks.length > 0 && (

@@ -77,85 +77,129 @@ export default function Hero({ appear, project }: HeroProps) {
                         // Responsive styles
                         'px-6 sm:px-8 md:px-10 lg:px-12.5',
                         'py-4 sm:py-6 md:py-8 lg:py-10',
-                        'flex-col md:flex-row',
-                        'items-start md:items-center',
+                        'flex-col lg:flex-row',
+                        'items-start md:items-start',
+                        'gap-4',
                     )}
                 >
                     <Curtain
                         showCurtain={!appear}
                         background="background"
                         delay={0}
+                        className="w-full"
                     >
                         <h1
                             className={cn(
                                 // Default styles
                                 '!leading-none font-semibold',
-                                'text-[2.65rem] sm:text-8xl',
-                                'whitespace-nowrap',
+                                'text-[2.65rem] md:text-6xl lg:text-7xl xl:text-8xl',
                             )}
                         >
                             {project.title}
                         </h1>
                     </Curtain>
 
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={0}
+                    <div
                         className={cn(
                             // Default styles
-                            'flex items-end gap-2',
+                            'flex',
+
+                            // Responsive styles
+                            'lg:translate-y-[15px]',
+                            'flex-col md:flex-row lg:flex-col',
+                            'items-start md:items-center lg:items-end',
+                            'gap-4 md:gap-4 lg:gap-0',
                         )}
                     >
-                        <h2
-                            className={cn(
-                                // Default styles
-                                '!leading-none font-medium uppercase',
-
-                                // Responsive styles
-                                'text-2xl sm:text-3xl',
-                                'text-left md:text-right',
-                                'ml-0 md:ml-2',
-                                'p-0 sm:pb-1 md:pb-2 lg:pb-2.5 xl:pb-3',
-                            )}
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={0}
                         >
-                            Project
-                        </h2>
-                        <div
-                            className={cn(
-                                // Default styles
-                                'flex items-center justify-end gap-2',
-                            )}
-                        >
-                            {project.tags
-                                .sort((a, b) => a.sort_order - b.sort_order)
-                                .map((tag, index) => (
-                                    <span
-                                        key={`project-${project.id}-tag-${index}`}
-                                        className={cn(
-                                            // Default styles
-                                            'border px-2.5 py-0.5 text-sm font-medium',
-                                            'transition-all duration-1000',
+                            <h2
+                                className={cn(
+                                    // Default styles
+                                    '!leading-none font-medium uppercase',
 
-                                            // Hover & Focus styles
-                                            'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
-                                        )}
-                                    >
-                                        {tag.name}
-                                    </span>
-                                ))}
-                        </div>
-                    </Curtain>
+                                    // Responsive styles
+                                    'text-xl md:text-2xl lg:text-3xl',
+                                    'text-left md:text-right',
+                                    'ml-0 lg:ml-2',
+                                    'p-0 md:pb-1 lg:pb-2.5 xl:pb-3',
+                                )}
+                            >
+                                Project
+                            </h2>
+                        </Curtain>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={0}
+                        >
+                            <div
+                                className={cn(
+                                    // Default styles
+                                    'flex items-center justify-end gap-2',
+                                )}
+                            >
+                                {project.tags
+                                    .sort((a, b) => a.sort_order - b.sort_order)
+                                    .map((tag, index) => (
+                                        <span
+                                            key={`project-${project.id}-tag-${index}`}
+                                            className={cn(
+                                                // Default styles
+                                                'border px-2.5 py-0.5 text-sm font-medium',
+                                                'transition-all duration-1000',
+
+                                                // Hover & Focus styles
+                                                'border-foreground',
+                                            )}
+                                        >
+                                            {tag.name}
+                                        </span>
+                                    ))}
+                                <span
+                                    className={cn(
+                                        // Default styles
+                                        'border px-2.5 py-0.5 text-sm font-medium',
+                                        'transition-all duration-1000',
+
+                                        // Hover & Focus styles
+                                        'border-foreground',
+                                    )}
+                                >
+                                    {project.end_date ? (
+                                        new Date(
+                                            project.end_date,
+                                        ).toLocaleDateString(undefined, {
+                                            year: 'numeric',
+                                            month: 'numeric',
+                                            day: 'numeric',
+                                        })
+                                    ) : (
+                                        <>Ongoing</>
+                                    )}
+                                </span>
+                            </div>
+                        </Curtain>
+                    </div>
                 </Delimiter>
 
+                {/* Subtitle & Actions */}
                 <div
                     className={cn(
                         // Default styles
-                        'flex w-full items-center justify-between gap-5',
+                        'flex w-full',
 
                         // Responsive styles
                         'px-6 sm:px-8 md:px-10 lg:px-12.5',
                         'py-4 sm:py-5 md:py-6 lg:py-8',
+
+                        'flex-col md:flex-row',
+                        'items-start md:items-center',
+                        'justify-start md:justify-between',
+                        'gap-4 md:gap-5'
                     )}
                 >
                     <p
@@ -164,103 +208,114 @@ export default function Hero({ appear, project }: HeroProps) {
                             'text-lg font-medium',
                         )}
                     >
-                        {project.title}
+                        {project.subtitle}
                     </p>
                     <div
                         className={cn(
                             // Default styles
-                            'flex items-center gap-5',
+                            'flex items-center gap-5 flex-wrap',
                         )}
                     >
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={500}
-                        >
-                            <Magnet magnetStrength={3} padding={20}>
-                                <a
-                                    {...(project?.source_code_url && {
-                                        href: project.source_code_url,
-                                    })}
-                                    target="_blank"
-                                    tabIndex={-1}
-                                >
-                                    <RoundedButton
-                                        disabled={!project?.source_code_url}
-                                        tabIndex={
-                                            project?.source_code_url ? 0 : -1
-                                        }
+                        <div className={cn(
+                            // Default styles
+                            'flex items-center gap-5 flex-wrap',
+                        )}>
+                            <Curtain
+                                showCurtain={!appear}
+                                background="background"
+                                delay={500}
+                            >
+                                <Magnet magnetStrength={3} padding={20}>
+                                    <a
+                                        {...(project?.source_code_url && {
+                                            href: project.source_code_url,
+                                        })}
+                                        target="_blank"
+                                        tabIndex={-1}
                                     >
-                                        <Code2 className="stroke-1" />
-                                    </RoundedButton>
-                                </a>
-                            </Magnet>
-                        </Curtain>
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={750}
-                        >
-                            <Magnet magnetStrength={3} padding={20}>
-                                <a
-                                    {...(project?.live_demo_url && {
-                                        href: project.live_demo_url,
-                                    })}
-                                    target="_blank"
-                                    tabIndex={-1}
-                                >
-                                    <RoundedButton
-                                        disabled={!project?.live_demo_url}
-                                        tabIndex={
-                                            project?.live_demo_url ? 0 : -1
-                                        }
-                                    >
-                                        <SquareArrowOutUpRight className="stroke-1" />
-                                    </RoundedButton>
-                                </a>
-                            </Magnet>
-                        </Curtain>
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={1000}
-                        >
-                            <Magnet magnetStrength={3} padding={20}>
-                                <RoundedButton onClick={handleSwitchAppearance}>
-                                    {appearance === 'dark' && (
-                                        <Moon className="stroke-1" />
-                                    )}
-                                    {appearance === 'light' && (
-                                        <Sun className="stroke-1" />
-                                    )}
-                                    {appearance === 'system' && (
-                                        <Monitor className="stroke-1" />
-                                    )}
-                                </RoundedButton>
-                            </Magnet>
-                        </Curtain>
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={1250}
-                        >
-                            <Magnet magnetStrength={3} padding={20}>
-                                <RoundedButton>EN</RoundedButton>
-                            </Magnet>
-                        </Curtain>
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={1500}
-                        >
-                            <Magnet magnetStrength={3} padding={20}>
-                                <RoundedButton>
-                                    <a href="#about" tabIndex={-1}>
-                                        <ArrowDown className="stroke-1" />
+                                        <RoundedButton
+                                            disabled={!project?.source_code_url}
+                                            tabIndex={
+                                                project?.source_code_url ? 0 : -1
+                                            }
+                                        >
+                                            <Code2 className="stroke-1" />
+                                        </RoundedButton>
                                     </a>
-                                </RoundedButton>
-                            </Magnet>
-                        </Curtain>
+                                </Magnet>
+                            </Curtain>
+                            <Curtain
+                                showCurtain={!appear}
+                                background="background"
+                                delay={750}
+                            >
+                                <Magnet magnetStrength={3} padding={20}>
+                                    <a
+                                        {...(project?.live_demo_url && {
+                                            href: project.live_demo_url,
+                                        })}
+                                        target="_blank"
+                                        tabIndex={-1}
+                                    >
+                                        <RoundedButton
+                                            disabled={!project?.live_demo_url}
+                                            tabIndex={
+                                                project?.live_demo_url ? 0 : -1
+                                            }
+                                        >
+                                            <SquareArrowOutUpRight className="stroke-1" />
+                                        </RoundedButton>
+                                    </a>
+                                </Magnet>
+                            </Curtain>
+                        </div>
+                        <div className={cn(
+                            // Default styles
+                            'flex items-center gap-5 flex-wrap',
+                        )}>
+                            <Curtain
+                                showCurtain={!appear}
+                                background="background"
+                                delay={1000}
+                            >
+                                <Magnet magnetStrength={3} padding={20}>
+                                    <RoundedButton onClick={handleSwitchAppearance}>
+                                        {appearance === 'dark' && (
+                                            <Moon className="stroke-1" />
+                                        )}
+                                        {appearance === 'light' && (
+                                            <Sun className="stroke-1" />
+                                        )}
+                                        {appearance === 'system' && (
+                                            <Monitor className="stroke-1" />
+                                        )}
+                                    </RoundedButton>
+                                </Magnet>
+                            </Curtain>
+                            <Curtain
+                                showCurtain={!appear}
+                                background="background"
+                                delay={1250}
+                            >
+                                <Magnet magnetStrength={3} padding={20}>
+                                    <RoundedButton>EN</RoundedButton>
+                                </Magnet>
+                            </Curtain>
+                            <Curtain
+                                showCurtain={!appear}
+                                background="background"
+                                delay={1500}
+                            >
+                                <Magnet magnetStrength={3} padding={20}>
+                                    <RoundedButton>
+                                        <a href="#content" tabIndex={-1}>
+                                            <ArrowDown className="stroke-1" />
+                                        </a>
+                                    </RoundedButton>
+                                </Magnet>
+                            </Curtain>
+                        </div>
+
                     </div>
                 </div>
             </div>

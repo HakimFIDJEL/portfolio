@@ -1,4 +1,11 @@
-import type { Contact, Project, Stacks, Tags, Tools } from '@/types';
+import type {
+    Attachment,
+    Contact,
+    Project,
+    Stacks,
+    Tags,
+    Tools,
+} from '@/types';
 
 // --------------------------------
 // Mocks
@@ -248,12 +255,20 @@ export const mockContacts: Contact[] = [
     },
 ];
 
+export const mockAttachments: Attachment[] = [
+    {
+        file_name: 'My file',
+        file_path: '',
+        url: '',
+    },
+];
+
 export const mockProjects: Project[] = [
     {
         id: '1',
         sort_order: 1,
         slug: 'sample-project',
-        title: 'Sample Project',
+        title: 'Sample project',
         subtitle: 'This is a sample project',
         date: '2024-01-01',
         source_code_url: '',
@@ -261,6 +276,7 @@ export const mockProjects: Project[] = [
         description: 'A brief description of the sample project.',
         feedback: 'Some feedback about the project.',
         what_i_learned: 'Key learnings from the project.',
+        attachments: mockAttachments,
         tags: [mockTag],
         stacks: mockStacks,
         end_date: null,

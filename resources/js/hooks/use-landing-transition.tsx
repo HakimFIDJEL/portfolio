@@ -30,6 +30,7 @@ export function useLandingTransitions(
 
     // Navigation state
     const [targetHref, setTargetHref] = useState<string | null>(null);
+    const [targetAnchor, setTargetAnchor] = useState<string>('top');
 
     // timers ref for cleanup
     const timers = useRef<number[]>([]);
@@ -127,12 +128,18 @@ export function useLandingTransitions(
 
                         onFinish: () => {
                             setTimeout(() => {
-                                window.scrollTo({
-                                    top: 0,
-                                    left: 0,
-                                    behavior: 'instant',
-                                });
-
+                                if(targetAnchor === 'top') {
+                                    window.scrollTo({
+                                        top: 0,
+                                        left: 0,
+                                        behavior: 'instant',
+                                    });
+                                } else {
+                                    const element = document.getElementById(targetAnchor);
+                                    if (element) {
+                                        element.scrollIntoView({ behavior: 'instant' });
+                                    }
+                                }
                                 setCoverScreenActive(false);
 
                                 setTimeout(() => {
@@ -144,7 +151,7 @@ export function useLandingTransitions(
                 } else {
                     setPageNavigationActive(false);
                 }
-            }, 750),
+            }, 1000),
         );
     }
     // Close page sequence
@@ -226,9 +233,11 @@ export function useLandingTransitions(
         setSwitchNavigationActive(show);
     }
 
-    function _navigateToPage(href: string) {
+    function _navigateToPage(href: string, anchor: string = 'top') {
         setTargetHref(href);
+        setTargetAnchor(anchor);
         setPageNavigationActive(true);
+        
     }
 
     // export states + handlers

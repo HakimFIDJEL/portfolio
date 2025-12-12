@@ -25,9 +25,10 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
     function handleProjectClick(
         e: React.MouseEvent<HTMLAnchorElement>,
         href: string,
+        anchor: string = 'top',
     ) {
         e.preventDefault();
-        _navigateToPage(href);
+        _navigateToPage(href, anchor);
     }
 
     useEffect(() => {
@@ -117,7 +118,12 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
                     'hidden md:block',
                 )}
             >
-                <UnderlineLink href="#contact">Contact</UnderlineLink>
+                <UnderlineLink
+                    onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'), 'contact')}
+                    href={currentUrl === homePath ? '#top' : route('home')}
+                >
+                    Contact
+                </UnderlineLink>
             </div>
         </header>
     );

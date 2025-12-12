@@ -179,10 +179,11 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     function handleProjectClick(
         e: React.MouseEvent<HTMLAnchorElement>,
         href: string,
+        anchor: string = 'top',
     ) {
         if (currentUrl !== homePath) {
             e.preventDefault();
-            _navigateToPage(href);
+            _navigateToPage(href, anchor);
         } else {
             handleMenuToggle(false);
         }
@@ -212,6 +213,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
                     handleProjectClick(
                         e,
                         currentUrl === homePath ? href : route('home'),
+                        href.replace('#', '')
                     )
                 }
             >
