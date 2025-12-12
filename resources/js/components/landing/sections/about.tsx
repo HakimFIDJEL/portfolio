@@ -20,15 +20,28 @@ import { TextReveal } from '@/components/ui/text-reveal';
 import { ArrowDownRight, Download, Minus, Plus } from 'lucide-react';
 
 // Types
-import { Stacks as StacksType, Tools as ToolsType } from '@/types';
+import {
+    Education as EducationType,
+    Experience as ExperienceType,
+    Stacks as StacksType,
+    Tools as ToolsType,
+} from '@/types';
 
 interface AboutProps {
     appear: boolean;
     stacks: StacksType[];
     tools: ToolsType[];
+    educations: EducationType[];
+    experiences: ExperienceType[];
 }
 
-export default function About({ appear, stacks, tools }: AboutProps) {
+export default function About({
+    appear,
+    stacks,
+    tools,
+    educations,
+    experiences,
+}: AboutProps) {
     return (
         <section
             className={cn(
@@ -46,7 +59,13 @@ export default function About({ appear, stacks, tools }: AboutProps) {
             <Panels appear={appear} />
 
             {/* Accordion */}
-            <Accordions appear={appear} stacks={stacks} tools={tools} />
+            <Accordions
+                appear={appear}
+                stacks={stacks}
+                tools={tools}
+                educations={educations}
+                experiences={experiences}
+            />
         </section>
     );
 }
@@ -227,7 +246,13 @@ function Panels({ appear }: PanelsProps) {
 // Accordions
 // -------------------------
 
-function Accordions({ appear, stacks, tools }: AboutProps) {
+function Accordions({
+    appear,
+    stacks,
+    tools,
+    educations,
+    experiences,
+}: AboutProps) {
     const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
     return (
@@ -276,6 +301,7 @@ function Accordions({ appear, stacks, tools }: AboutProps) {
                         setOpenIndex(openIndex === index ? null : index)
                     }
                     appear={appear}
+                    experiences={experiences}
                 />
                 <Separator />
                 <AccordionSchool
@@ -286,6 +312,7 @@ function Accordions({ appear, stacks, tools }: AboutProps) {
                         setOpenIndex(openIndex === index ? null : index)
                     }
                     appear={appear}
+                    educations={educations}
                 />
                 <Separator />
                 <AccordionTechStack
@@ -560,37 +587,18 @@ function AccordionAbout({
     );
 }
 
+interface AccordionWorkProps extends AccordionItemProps {
+    experiences: ExperienceType[];
+}
+
 function AccordionWork({
     index,
     title,
     open,
     onChange,
     appear,
-}: AccordionItemProps) {
-    const experiences = [
-        {
-            company: 'Réservoir Digital',
-            status: 'Apprenticeship',
-            duration: '09/23 - Present',
-            description:
-                'I oversee the development of web projects from analysis to production.  My role includes ensuring compliance with business needs, streamlining  workflows, and modernizing internal processes.',
-        },
-        {
-            company: 'Réservoir Digital',
-            status: 'Internship',
-            duration: '05/23 - 08/23',
-            description:
-                'During my internship at Réservoir Digital, I  improved my skills in new technologies while contributing to digital  solution development. Collaborating within a team was a key part of this experience.',
-        },
-        {
-            company: 'Hôpital Maritime de Zuydcoote',
-            status: 'Internship',
-            duration: '06/22 - 08/22',
-            description:
-                'I managed IT  infrastructure to ensure system connectivity and reliability. I also  developed an internal website that optimized patient file management,  replacing outdated Excel processes.',
-        },
-    ];
-
+    experiences,
+}: AccordionWorkProps) {
     return (
         <AccordionItem
             index={index}
@@ -700,51 +708,18 @@ function AccordionWork({
     );
 }
 
+interface AccordionSchoolProps extends AccordionItemProps {
+    educations: EducationType[];
+}
+
 function AccordionSchool({
     index,
     title,
     open,
     onChange,
     appear,
-}: AccordionItemProps) {
-    const experiences = [
-        {
-            title: 'IG2I de Centrale Lille Institut',
-            type: 'School',
-            duration: '09/21 - Present',
-            description:
-                'Currently in my 4th year at IG2I Centrale Lille, I am pursuing an engineering degree specializing in industrial and computer science. The program combines academic excellence with real-world applications through hands-on projects and professional training.',
-        },
-        {
-            title: 'TOEIC',
-            type: 'Diploma',
-            duration: '01/25',
-            description:
-                'Achieved a perfect score on the TOEIC (990/990) in 2025, demonstrating complete mastery of professional English.',
-        },
-        {
-            title: 'Baccaulaureate',
-            type: 'Diploma',
-            duration: '08/21',
-            description:
-                'I completed my high school studies at Lycée Auguste Angellier, earning a Scientific Baccalaureate with Honors in 2021. My specialization in Mathematics and Physics provided a strong analytical foundation, fueling my interest in technology and complex problem-solving.',
-        },
-        {
-            title: 'Cambridge First Certificate',
-            type: 'Diploma',
-            duration: '06/20',
-            description:
-                'Earned the Cambridge First Certificate in 2020,  validating my English proficiency at a B2 level. This certification  reflects my ability to communicate effectively in professional and  academic environments.',
-        },
-        {
-            title: 'Lycée Auguste Angellier',
-            type: 'School',
-            duration: '09/18 - 08/21',
-            description:
-                'I completed my high school studies at Lycée  Auguste Angellier, earning a Scientific Baccalaureate in 2021. This  solid foundation in mathematics and sciences sparked my passion for  technology and problem-solving.',
-        },
-    ];
-
+    educations,
+}: AccordionSchoolProps) {
     return (
         <AccordionItem
             index={index}
@@ -778,7 +753,7 @@ function AccordionSchool({
                         'gap-6 sm:gap-10',
                     )}
                 >
-                    {experiences.map((exp, idx) => (
+                    {educations.map((exp, idx) => (
                         <li
                             key={`school-${idx}`}
                             className={cn(
@@ -805,7 +780,7 @@ function AccordionSchool({
                                         'text-lg',
                                     )}
                                 >
-                                    {exp.title}
+                                    {exp.institution}
                                 </h4>
                                 <p
                                     className={cn(

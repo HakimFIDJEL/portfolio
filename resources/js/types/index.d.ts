@@ -157,3 +157,21 @@ export interface Contact {
     name: string;
     link: string;
 }
+
+export interface Experience {
+    id: number;
+    sort_order: number;
+    company: string;
+    status: string;
+    duration: string;
+    description: string;
+}
+
+export interface Education {
+    id: number;
+    sort_order: number;
+    institution: string;
+    type: string;
+    duration: string;
+    description: string;
+}
