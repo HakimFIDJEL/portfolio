@@ -27,6 +27,6 @@ class Landing extends Controller
 
         // TODO : Fetch project by slug and pass data to the view
 
-        return Inertia::render('project');
+        return Inertia::render('project', ['project' => null]);
     }
 }

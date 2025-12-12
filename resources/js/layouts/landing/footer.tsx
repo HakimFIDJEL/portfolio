@@ -2,6 +2,7 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
+import { usePage } from '@inertiajs/react';
 
 // Hooks
 import { useAppearance } from '@/hooks/use-appearance';
@@ -10,13 +11,16 @@ import { useAppearance } from '@/hooks/use-appearance';
 import Delimiter from '@/components/landing/delimiter';
 import FadeIn from '@/components/landing/fade-in';
 import RoundedButton from '@/components/landing/rounded-button';
+import UnderlineLink from '@/components/landing/underline-link';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
 
 // Icons
-import UnderlineLink from '@/components/landing/underline-link';
 import { ArrowUp, Monitor, Moon, Sun } from 'lucide-react';
+
+// Contexts
+import { useLandingContext } from '@/contexts/use-landing-context';
 
 interface FooterProps {
     appear: boolean;
@@ -58,14 +62,17 @@ const links = [
             {
                 label: 'LinkedIn',
                 href: 'https://www.linkedin.com/in/hakim-fidjel/',
+                target:'_blank',
             },
             {
                 label: 'GitHub',
                 href: 'https://github.com/hakimfidjel',
+                target:'_blank',
             },
             {
                 label: 'GitLab',
                 href: 'https://gitlab.com/hakimfidjel',
+                target:'_blank',
             },
         ],
     },
@@ -74,11 +81,12 @@ const links = [
         items: [
             {
                 label: 'Terms',
-                href: '#',
+                href: route('home'),
             },
             {
                 label: 'Source Code',
-                href: '#',
+                href: 'https://github.com/HakimFIDJEL/portfolio',
+                target:'_blank',
             },
         ],
     },
@@ -98,6 +106,20 @@ export default function Footer({ appear }: FooterProps) {
         updateAppearance(newAppearance);
     }
 
+    const { _navigateToPage } = useLandingContext();
+
+    function handleProjectClick(
+        e: React.MouseEvent<HTMLAnchorElement>,
+        href: string,
+        anchor: string = 'top',
+    ) {
+        e.preventDefault();
+        _navigateToPage(href, anchor);
+    }
+
+    const currentUrl = usePage().url.split('#')[0];
+    const homePath = new URL(route('home')).pathname;
+
     return (
         <>
             <footer
@@ -113,8 +135,8 @@ export default function Footer({ appear }: FooterProps) {
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
 
                     // Animation styles
-                    'transition-all duration-1000 opacity-0 translate-y-[20%]',
-                    appear && 'opacity-100 translate-y-0',
+                    'translate-y-[20%] opacity-0 transition-all duration-1000',
+                    appear && 'translate-y-0 opacity-100',
                 )}
             >
                 {/* Left Panel */}
@@ -189,27 +211,36 @@ export default function Footer({ appear }: FooterProps) {
                                 >
                                     {linkGroup.name}
                                 </li>
-                                {linkGroup.items.map((item, itemIndex) => (
-                                    <li
-                                        key={`footer-link-item-${index}-${itemIndex}`}
-                                        className={
-                                            cn()
-                                            // Default styles
-                                        }
-                                    >
-                                        <UnderlineLink
-                                            href={item.href}
-                                            className={cn(
-                                                // Default styles
-                                                'font-light transition-all',
+                                {linkGroup.items.map((item, itemIndex) => {
+                                    let onClick = null;
 
-                                                'text-muted-foreground hover:text-foreground focus-visible:text-foreground',
-                                            )}
+                                    if(currentUrl !== homePath) {
+                                        if(item.href.startsWith('#')) {
+                                            onClick = (e: React.MouseEvent<HTMLAnchorElement>) => handleProjectClick(e, route('home'), item.href.substring(1));
+                                        }
+                                    }
+
+                                    return (
+                                        <li
+                                            key={`footer-link-item-${index}-${itemIndex}`}
                                         >
-                                            {item.label}
-                                        </UnderlineLink>
-                                    </li>
-                                ))}
+                                            <UnderlineLink
+                                                className={cn(
+                                                    // Default styles
+                                                    'font-light transition-all',
+
+                                                    'text-muted-foreground hover:text-foreground focus-visible:text-foreground',
+                                                )}
+
+                                                {...onClick && { onClick: onClick }}
+                                                href={currentUrl === homePath ? item.href : route('home')}
+                                                {...item.target && { target: item.target }}
+                                            >
+                                                {item.label}
+                                            </UnderlineLink>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         ))}
                     </div>

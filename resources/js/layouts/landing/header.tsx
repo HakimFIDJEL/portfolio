@@ -120,7 +120,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
             >
                 <UnderlineLink
                     onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'), 'contact')}
-                    href={currentUrl === homePath ? '#top' : route('home')}
+                    href={currentUrl === homePath ? '#contact' : route('home')}
                 >
                     Contact
                 </UnderlineLink>
