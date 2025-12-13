@@ -42,6 +42,7 @@ Route::prefix('backoffice/')->name('backoffice.')->middleware(['auth', 'verified
     Route::resource('tags', TagsController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
+    Route::post('tags/sort', [TagsController::class, 'sort'])->name('tags.sort');
     
     // ------------------------------------------------------------------ //
     //                          Education Routes

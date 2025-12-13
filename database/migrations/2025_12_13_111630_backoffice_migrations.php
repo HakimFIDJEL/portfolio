@@ -36,8 +36,7 @@ return new class extends Migration
             $table->foreignId('stack_id')->constrained()->cascadeOnDelete();
             $table->unsignedInteger('sort_order')->default(0);
 
-            $table->string('name_fr');
-            $table->string('name_en');
+            $table->string('name');
 
             $table->timestamps();
         });
@@ -57,8 +56,7 @@ return new class extends Migration
             $table->foreignId('tool_id')->constrained()->cascadeOnDelete();
             $table->unsignedInteger('sort_order')->default(0);
 
-            $table->string('name_fr');
-            $table->string('name_en');
+            $table->string('name');
 
             $table->timestamps();
         });

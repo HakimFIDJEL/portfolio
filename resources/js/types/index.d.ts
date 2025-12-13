@@ -94,7 +94,7 @@ export interface Attachment {
 // Backoffice Interfaces
 // --------------------------------
 
-export interface Tags {
+export interface Tag {
     id: number;
     sort_order: number;
     name: string;
@@ -103,7 +103,7 @@ export interface Tags {
     name_en: string;
 }
 
-export interface Stacks {
+export interface Stack {
     id: number;
     sort_order: number;
     name: string;
@@ -117,12 +117,9 @@ export interface StackItem {
     id: number;
     sort_order: number;
     name: string;
-
-    name_fr: string;
-    name_en: string;
 }
 
-export interface Tools {
+export interface Tool {
     id: number;
     sort_order: number;
     name: string;
@@ -136,9 +133,6 @@ export interface ToolItem {
     id: number;
     sort_order: number;
     name: string;
-
-    name_fr: string;
-    name_en: string;
 }
 
 export interface Project {

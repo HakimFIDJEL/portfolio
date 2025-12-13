@@ -4,16 +4,16 @@ import type {
     Education,
     Experience,
     Project,
-    Stacks,
-    Tags,
-    Tools,
+    Stack,
+    Tag,
+    Tool,
 } from '@/types';
 
 // --------------------------------
 // Mocks
 // --------------------------------
 
-export const mockTags: Tags[] = [
+export const mockTags: Tag[] = [
     {
         id: 1,
         sort_order: 1,
@@ -41,7 +41,7 @@ export const mockTags: Tags[] = [
     }
 ];
 
-export const mockStacks: Stacks[] = [
+export const mockStacks: Stack[] = [
     {
         id: 1,
         sort_order: 1,
@@ -224,7 +224,7 @@ export const mockStacks: Stacks[] = [
     },
 ];
 
-export const mockTools: Tools[] = [
+export const mockTools: Tool[] = [
     {
         id: 1,
         sort_order: 1,
