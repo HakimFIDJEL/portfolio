@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Backoffice;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasLocalizedFields;

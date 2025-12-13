@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Backoffice;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasLocalizedFields;
+
+use App\Models\Attachment;
 
 class Project extends Model
 {

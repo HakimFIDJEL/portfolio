@@ -46,12 +46,17 @@ import type { NavItem, SharedData, User } from '@/types';
 // Icons
 import AppLogoIcon from '@/components/app-logo-icon';
 import {
-    BookOpen,
+    Building2,
     ChevronsUpDown,
-    Folder,
+    FolderKanban,
+    Hammer,
+    Layers,
     LayoutGrid,
     LogOut,
+    Mail,
+    School,
     Settings,
+    Tag,
 } from 'lucide-react';
 
 // Interfaces
@@ -62,27 +67,48 @@ interface UserMenuContentProps {
 export function AppSidebar() {
     const __ = useTrans();
 
+
     // Sidebar menus
     const mainNavItems: NavItem[] = [
         {
-            title: __('app.layout.sidebar.menugroups.platform.items.dashboard'),
+            title: 'Dashboard',
             href: route('dashboard'),
             icon: LayoutGrid,
         },
-    ];
-
-    const footerNavItems: NavItem[] = [
         {
-            title: __('app.layout.sidebar.menugroups.footer.items.repository'),
-            href: 'https://github.com/THYLTECH/Ticketack',
-            icon: Folder,
+            title: 'Projects',
+            href: route('backoffice.projects.index'),
+            icon: FolderKanban,
         },
         {
-            title: __(
-                'app.layout.sidebar.menugroups.footer.items.documentation',
-            ),
-            href: '#',
-            icon: BookOpen,
+            title: 'Stacks',
+            href: route('backoffice.stacks.index'),
+            icon: Layers,
+        },
+        {
+            title: 'Tools',
+            href: route('backoffice.tools.index'),
+            icon: Hammer,
+        },
+        {
+            title: 'Tags',
+            href: route('backoffice.tags.index'),
+            icon: Tag,
+        },
+        {
+            title: 'Educations',
+            href: route('backoffice.educations.index'),
+            icon: School,
+        },
+        {
+            title: 'Experiences',
+            href: route('backoffice.experiences.index'),
+            icon: Building2,
+        },
+        {
+            title: 'Contacts',
+            href: route('backoffice.contacts.index'),
+            icon: Mail,
         },
     ];
 
@@ -105,83 +131,43 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
     );
 }
 
-function NavFooter({
-    items,
-    className,
-    ...props
-}: ComponentPropsWithoutRef<typeof SidebarGroup> & {
-    items: NavItem[];
-}) {
-    return (
-        <SidebarGroup
-            {...props}
-            className={`group-data-[collapsible=icon]:p-0 ${className || ''}`}
-        >
-            <SidebarGroupContent>
-                <SidebarMenu>
-                    {items.map((item) => (
-                        <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton
-                                asChild
-                                className="text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
-                            >
-                                <a
-                                    href={
-                                        typeof item.href === 'string'
-                                            ? item.href
-                                            : item.href.url
-                                    }
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {item.icon && (
-                                        <Icon
-                                            iconNode={item.icon}
-                                            className="h-5 w-5"
-                                        />
-                                    )}
-                                    <span>{item.title}</span>
-                                </a>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    ))}
-                </SidebarMenu>
-            </SidebarGroupContent>
-        </SidebarGroup>
-    );
-}
 
 function NavMain({ items = [] }: { items: NavItem[] }) {
     const page = usePage();
+
     return (
         <SidebarGroup className="px-2 py-0">
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
-                {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton
-                            asChild
-                            isActive={page.url.startsWith(
-                                typeof item.href === 'string'
-                                    ? item.href
-                                    : item.href.url,
-                            )}
-                            tooltip={{ children: item.title }}
-                        >
-                            <Link href={item.href} prefetch>
-                                {item.icon && <item.icon />}
-                                <span>{item.title}</span>
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                ))}
+                {items.map((item) => {
+                    
+                    const linkUrl = typeof item.href === 'string'
+                        ? item.href
+                        : item.href.url;
+                    
+                    const isActive = linkUrl.includes(page.url) || page.url.includes(linkUrl);
+                    
+                    return (
+                        <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton
+                                asChild
+                                isActive={isActive}
+                                tooltip={{ children: item.title }}
+                            >
+                                <Link href={item.href} prefetch>
+                                    {item.icon && <item.icon />}
+                                    <span>{item.title}</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    )
+                })}
             </SidebarMenu>
         </SidebarGroup>
     );
@@ -297,7 +283,6 @@ function UserInfo({ user }: { user: User }) {
         </>
     );
 }
-
 
 function AppLogo() {
     const { name } = usePage<SharedData>().props;

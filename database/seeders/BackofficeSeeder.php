@@ -3,9 +3,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\{
-    Tag, Stack, StackItem, Tool, ToolItem, Project, Contact, Experience, Education, Attachment
+use App\Models\Backoffice\{
+    Tag, Stack, StackItem, Tool, ToolItem, Project, Contact, Experience, Education
 };
+use App\Models\Attachment;
 
 class BackofficeSeeder extends Seeder
 {
