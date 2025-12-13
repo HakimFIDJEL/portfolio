@@ -138,7 +138,7 @@ export default function Create() {
                         </div>
 
                         <div className="grid gap-2">
-                            <h3 className="text-lg font-medium">Relations</h3>
+                            <h3 className="text-lg font-medium">Items</h3>
                             <Separator />
                         </div>
 
@@ -168,7 +168,7 @@ interface ItemsProps {
     setData: (field: string, value: any) => void;
 }
 
-function Items({ data, setData }: ItemsProps) {
+export function Items({ data, setData }: ItemsProps) {
     const [open, setOpen] = React.useState(false);
     const [currentItem, setCurrentItem] = React.useState<ToolItem | null>(null);
     const [name, setName] = React.useState('');
@@ -265,6 +265,7 @@ function Items({ data, setData }: ItemsProps) {
                                 <Input
                                     id="name"
                                     placeholder="Enter the item name"
+                                    autoFocus
                                     required
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}

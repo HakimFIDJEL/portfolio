@@ -27,18 +27,27 @@ class Tools extends Controller
         $validated = $request->validate([
             'name_fr' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
+
+            'items' => 'sometimes|array',
+            'items.*.name' => 'required_with:items|string|max:255',
+            'items.*.sort_order' => 'required_with:items|integer',
         ]);
 
         $validated['sort_order'] = Tool::max('sort_order') + 1;
 
-        Tool::create($validated);
+        $tool = Tool::create($validated);
+
+        foreach ($validated['items'] ?? [] as $itemData) {
+            $itemData['tool_id'] = $tool->id;
+            ToolItem::create($itemData);
+        }
 
         return redirect()->route('backoffice.tools.index')->with('success', 'Tool created successfully.');
     }
 
     public function edit(Tool $tool) {
         return Inertia::render('backoffice/tools/edit', [
-            'tool' => $tool
+            'tool' => $tool->load('items'),
         ]);
     }
 
@@ -46,9 +55,36 @@ class Tools extends Controller
         $validated = $request->validate([
             'name_fr' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
+
+            'items' => 'sometimes|array',
+            'items.*.name' => 'required_with:items|string|max:255',
+            'items.*.sort_order' => 'required_with:items|integer',
         ]);
 
         $tool->update($validated);
+
+        // Sync items
+        $existingItemIds = $tool->items()->pluck('id')->toArray();
+        $submittedItemIds = [];
+
+        foreach ($validated['items'] ?? [] as $itemData) {
+            if (isset($itemData['id']) && in_array($itemData['id'], $existingItemIds)) {
+                // Update existing item
+                $item = ToolItem::find($itemData['id']);
+                $item->update($itemData);
+                $submittedItemIds[] = $itemData['id'];
+            } else {
+                // Create new item
+                $itemData['tool_id'] = $tool->id;
+                $newItem = ToolItem::create($itemData);
+                $submittedItemIds[] = $newItem->id;
+            }
+        }
+
+        // Delete removed items
+        $itemsToDelete = array_diff($existingItemIds, $submittedItemIds);
+        ToolItem::destroy($itemsToDelete);
+
         return redirect()->route('backoffice.tools.index')->with('success', 'Tool updated successfully.');
     }
 

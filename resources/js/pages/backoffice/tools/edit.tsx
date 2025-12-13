@@ -1,7 +1,8 @@
-// resources/js/pages/backoffice/tags/edit.tsx
+// resources/js/pages/backoffice/tools/edit.tsx
 
 // Necessary imports
 import { Head, Link, router, useForm } from '@inertiajs/react';
+import React from 'react';
 import { toast } from 'sonner';
 
 // Layout
@@ -33,44 +34,48 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 
+// Components
+import { Items } from './create';
+
 // Types
-import type { BreadcrumbItem, Tag } from '@/types';
+import type { BreadcrumbItem, Tool, ToolItem } from '@/types';
 
 // Icons
 import { ArrowLeft, Pen, Trash2 } from 'lucide-react';
-import React from 'react';
 
 interface EditProps {
-    tag: Tag;
+    tool: Tool;
 }
 
-export default function Edit({ tag }: EditProps) {
+export default function Edit({ tool }: EditProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Dashboard',
             href: route('dashboard'),
         },
         {
-            title: 'Tags',
-            href: route('backoffice.tags.index'),
+            title: 'Tools',
+            href: route('backoffice.tools.index'),
         },
         {
             title: 'Edit',
-            href: route('backoffice.tags.edit', tag.id),
+            href: route('backoffice.tools.edit', tool.id),
         },
     ];
 
     const { data, setData, processing, put, errors } = useForm<{
         name_fr: string;
         name_en: string;
+        items: ToolItem[];
     }>({
-        name_fr: tag.name_fr,
-        name_en: tag.name_en,
+        name_fr: tool.name_fr,
+        name_en: tool.name_en,
+        items: tool.items,
     });
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        put(route('backoffice.tags.update', tag.id));
+        put(route('backoffice.tools.update', tool.id));
     }
 
     return (
@@ -79,23 +84,23 @@ export default function Edit({ tag }: EditProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Edit a tag</CardTitle>
+                    <CardTitle>Edit a tool</CardTitle>
                     <CardDescription>
-                        Update the form below to edit the tag.
+                        Update the form below to edit the tool.
                     </CardDescription>
                     <CardAction className="space-x-2">
-                        <Link href={route('backoffice.tags.index')}>
+                        <Link href={route('backoffice.tools.index')}>
                             <Button variant={'outline'}>
                                 <ArrowLeft />
                                 Go back
                             </Button>
                         </Link>
-                        <DeleteTag tag={tag}>
+                        <DeleteTool tool={tool}>
                             <Button variant="destructive">
                                 <Trash2 />
-                                Delete tag
+                                Delete tool
                             </Button>
-                        </DeleteTag>
+                        </DeleteTool>
                     </CardAction>
                 </CardHeader>
                 <Separator />
@@ -142,6 +147,13 @@ export default function Edit({ tag }: EditProps) {
                                 />
                             </div>
                         </div>
+
+                        <div className="grid gap-2">
+                            <h3 className="text-lg font-medium">Items</h3>
+                            <Separator />
+                        </div>
+
+                        <Items data={{ items: data.items }} setData={setData} />
                     </CardContent>
                     <Separator className="my-4" />
                     <CardFooter>
@@ -151,7 +163,7 @@ export default function Edit({ tag }: EditProps) {
                             className="w-full"
                         >
                             {processing ? <Spinner /> : <Pen />}
-                            Update Tag
+                            Update Tool
                         </Button>
                     </CardFooter>
                 </form>
@@ -160,18 +172,18 @@ export default function Edit({ tag }: EditProps) {
     );
 }
 
-interface DeleteTagProps {
+interface DeleteToolProps {
     children: React.ReactNode;
-    tag: Tag;
+    tool: Tool;
 }
 
-function DeleteTag({ children, tag }: DeleteTagProps) {
+function DeleteTool({ children, tool }: DeleteToolProps) {
     const [deleting, setDeleting] = React.useState(false);
 
     function handleDelete() {
         setDeleting(true);
-        toast.loading('Deleting tag...', { id: 'delete_tag' });
-        router.delete(route('backoffice.tags.destroy', tag.id), {
+        toast.loading('Deleting tool...', { id: 'delete_tool' });
+        router.delete(route('backoffice.tools.destroy', tool.id), {
             onFinish: () => {
                 setDeleting(false);
             },
@@ -182,9 +194,9 @@ function DeleteTag({ children, tag }: DeleteTagProps) {
             <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Delete Tag</AlertDialogTitle>
+                    <AlertDialogTitle>Delete Tool</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Are you sure you want to delete this tag? This action
+                        Are you sure you want to delete this tool? This action
                         cannot be undone.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
