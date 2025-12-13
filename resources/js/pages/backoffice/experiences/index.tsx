@@ -1,4 +1,4 @@
-// resources/js/pages/backoffice/contacts/index.tsx
+// resources/js/pages/backoffice/experiences/index.tsx
 
 // Necessary imports
 import { getIcon } from '@/lib/render';
@@ -22,62 +22,60 @@ import { Separator } from '@/components/ui/separator';
 import { TableCell } from '@/components/ui/table';
 
 // Types
-import type { BreadcrumbItem, Contact } from '@/types';
+import type { BreadcrumbItem, Contact, Experience } from '@/types';
 
 // Icons
 import { Plus } from 'lucide-react';
 
 interface IndexProps {
-    contacts: Contact[];
+    experiences: Experience[];
 }
 
-export default function Index({ contacts }: IndexProps) {
+export default function Index({ experiences }: IndexProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Dashboard',
             href: route('dashboard'),
         },
         {
-            title: 'Contacts',
-            href: route('backoffice.contacts.index'),
+            title: 'Experiences',
+            href: route('backoffice.experiences.index'),
         },
     ];
 
-    function handleSort(updatedContacts: Contact[]) {
-        toast.loading('Sorting contacts...', { id: 'sort_contacts' });
+    function handleSort(updatedExperiences: Experience[]) {
+        toast.loading('Sorting experiences...', { id: 'sort_experiences' });
 
         router.post(
-            route('backoffice.contacts.sort'),
+            route('backoffice.experiences.sort'),
             {
-                contacts: updatedContacts.map((contact) => ({
-                    id: contact.id,
-                    sort_order: contact.sort_order,
+                experiences: updatedExperiences.map((experience) => ({
+                    id: experience.id,
+                    sort_order: experience.sort_order,
                 })),
             },
             {
                 onFinish: () => {
-                    toast.dismiss('sort_contacts');
+                    toast.dismiss('sort_experiences');
                 },
             },
         );
     }
 
-    function renderCells(contact: Contact) {
+    function renderCells(experience: Experience) {
         return (
             <>
-                <TableCell>
-                    {getIcon(contact.icon, { className: 'h-5 w-5' })}
-                </TableCell>
-                <TableCell>{contact.label}</TableCell>
-                <TableCell>{contact.link}</TableCell>
-                <TableCell>{contact.name}</TableCell>
+                <TableCell>{experience.company}</TableCell>
+                <TableCell>{experience.job}</TableCell>
+                <TableCell>{experience.status}</TableCell>
+                <TableCell>{experience.duration}</TableCell>
             </>
         );
     }
 
-    function handleRowClick(contact: Contact) {
+    function handleRowClick(experience: Experience) {
         router.visit(
-            route('backoffice.contacts.edit', { contact: contact.id }),
+            route('backoffice.experiences.edit', { experience: experience.id }),
         );
     }
 
@@ -87,12 +85,12 @@ export default function Index({ contacts }: IndexProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Contacts</CardTitle>
+                    <CardTitle>Experiences</CardTitle>
                     <CardAction>
-                        <Link href={route('backoffice.contacts.create')}>
+                        <Link href={route('backoffice.experiences.create')}>
                             <Button>
                                 <Plus />
-                                New contact
+                                New experience
                             </Button>
                         </Link>
                     </CardAction>
@@ -100,12 +98,12 @@ export default function Index({ contacts }: IndexProps) {
                 <Separator />
                 <CardContent>
                     <SortableTable
-                        entries={contacts}
+                        entries={experiences}
                         columns={[
-                            'Icon',
-                            'Label',
-                            'Link',
-                            'Name',
+                            'Company',
+                            'Job',
+                            'Status',
+                            'Duration',
                         ]}
                         handleSort={handleSort}
                         renderCells={renderCells}

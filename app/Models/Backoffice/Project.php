@@ -19,7 +19,7 @@ class Project extends Model
         'source_code_url', 'live_demo_url', 'end_date'
     ];
 
-    protected $localized = [
+    protected $appends = [
         'slug', 'title', 'subtitle', 'description', 'feedback', 'what_i_learned'
     ];
 
@@ -36,5 +36,35 @@ class Project extends Model
     public function attachments()
     {
         return $this->belongsToMany(Attachment::class);
+    }
+
+    // Accessor for localized 'slug' field
+    public function getSlugAttribute() {
+        return $this->getLocalizedField('slug');    
+    }
+
+    // Accessor for localized 'title' field
+    public function getTitleAttribute() {
+        return $this->getLocalizedField('title');
+    }
+
+    // Accessor for localized 'subtitle' field
+    public function getSubtitleAttribute() {
+        return $this->getLocalizedField('subtitle');
+    }
+
+    // Accessor for localized 'description' field
+    public function getDescriptionAttribute() {
+        return $this->getLocalizedField('description');
+    }
+
+    // Accessor for localized 'feedback' field
+    public function getFeedbackAttribute() {
+        return $this->getLocalizedField('feedback');
+    }
+
+    // Accessor for localized 'what_i_learned' field
+    public function getWhatILearnedAttribute() {
+        return $this->getLocalizedField('what_i_learned');
     }
 }

@@ -14,5 +14,20 @@ class Experience extends Model
         'status_fr', 'status_en', 'duration', 'description_fr', 'description_en'
     ];
 
-    protected $localized = ['job', 'status', 'description'];
+    protected $appends = ['job', 'status', 'description'];
+
+    // Accessor for localized 'job' field
+    public function getJobAttribute() {
+        return $this->getLocalizedField('job');
+    }
+
+    // Accessor for localized 'status' field
+    public function getStatusAttribute() {
+        return $this->getLocalizedField('status');
+    }
+
+    // Accessor for localized 'description' field
+    public function getDescriptionAttribute() {
+        return $this->getLocalizedField('description');
+    }
 }

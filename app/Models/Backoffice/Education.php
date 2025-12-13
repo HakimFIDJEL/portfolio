@@ -14,5 +14,16 @@ class Education extends Model
         'duration', 'description_fr', 'description_en'
     ];
 
-    protected $localized = ['type', 'description'];
+    protected $appends = ['type', 'description'];
+
+    // Accessor for localized 'type' field
+    public function getTypeAttribute() {
+        return $this->getLocalizedField('type');
+    }
+
+    // Accessor for localized 'description' field
+    public function getDescriptionAttribute() {
+        return $this->getLocalizedField('description');
+    }
+
 }

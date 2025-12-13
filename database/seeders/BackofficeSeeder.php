@@ -126,6 +126,15 @@ class BackofficeSeeder extends Seeder
                 'description_fr'=>'Durant mon stage chez Réservoir Digital, j\'ai amélioré mes compétences dans les nouvelles technologies tout en contribuant au développement de solutions numériques. La collaboration en équipe a été un élément clé de cette expérience.',
                 'description_en'=>'During my internship at Réservoir Digital, I improved my skills in new technologies while contributing to digital solution development. Collaborating within a team was a key part of this experience.',
             ],
+            [
+                'sort_order'=>3,
+                'company'=>'Hôpital Maritime de Zuydcoote',
+                'job_fr'=>'Développeur Web & Technicien Informatique','job_en'=>'Web Developer & IT Technician',
+                'status_fr'=>'Stage','status_en'=>'Internship',
+                'duration'=>'06/22 - 08/22',
+                'description_fr'=>'J\'ai géré l\'infrastructure informatique pour assurer la connectivité et la fiabilité des systèmes. J\'ai également développé un site web interne qui a optimisé la gestion des dossiers patients, remplaçant les processus obsolètes basés sur Excel.',
+                'description_en'=>'I managed IT infrastructure to ensure system connectivity and reliability. I also developed an internal website that optimized patient file management, replacing outdated Excel processes.',
+            ],
         ];
 
         foreach ($mockExperiences as $exp) {

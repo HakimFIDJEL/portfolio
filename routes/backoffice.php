@@ -56,6 +56,7 @@ Route::prefix('backoffice/')->name('backoffice.')->middleware(['auth', 'verified
     Route::resource('experiences', ExperiencesController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
+    Route::post('experiences/sort', [ExperiencesController::class, 'sort'])->name('experiences.sort');
     
     // ------------------------------------------------------------------ //
     //                          Contacts Routes

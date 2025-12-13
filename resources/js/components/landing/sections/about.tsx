@@ -201,7 +201,7 @@ function Panels({ appear }: PanelsProps) {
                 >
                     <strong className="font-semibold">{__('landing.landing.about.p_1', "Hi, I’m Hakim.")}</strong>
                     <br />
-                    <p className="font-light">
+                    <p className="font-normal">
                         <strong className="font-semibold">
                             {__('landing.landing.about.p_2', "I'm a french fullstack engineer")}
                         </strong>{' '}

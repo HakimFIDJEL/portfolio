@@ -39,6 +39,7 @@ import type { BreadcrumbItem, Contact } from '@/types';
 
 // Icons
 import { ArrowLeft, Pen, Trash2 } from 'lucide-react';
+import React from 'react';
 
 interface EditProps {
     contact: Contact;
@@ -227,9 +228,17 @@ interface DeleteContactProps {
 }
 
 function DeleteContact({ children, contact }: DeleteContactProps) {
+
+    const [deleting, setDeleting] = React.useState(false);
+
     function handleDelete() {
+        setDeleting(true);
         toast.loading('Deleting contact...', { id: 'delete_contact' });
-        router.delete(route('backoffice.contacts.destroy', contact.id));
+        router.delete(route('backoffice.contacts.destroy', contact.id), {
+            onFinish: () => {
+                setDeleting(false);
+            }
+        });
     }
     return (
         <AlertDialog>
@@ -243,8 +252,9 @@ function DeleteContact({ children, contact }: DeleteContactProps) {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <Button variant="destructive" onClick={handleDelete}>
+                    <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+                    <Button variant="destructive" onClick={handleDelete} disabled={deleting}>
+                        {deleting ? <Spinner /> : <Trash2 />}
                         Delete
                     </Button>
                 </AlertDialogFooter>
