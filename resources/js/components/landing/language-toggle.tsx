@@ -1,8 +1,7 @@
 // resources/js/components/landing/language-toggle.tsx
 
 // Necessary imports
-import { router, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { usePage } from '@inertiajs/react';
 
 // Components
 import Curtain from '@/components/landing/curtain';

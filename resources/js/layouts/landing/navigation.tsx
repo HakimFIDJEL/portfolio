@@ -126,7 +126,7 @@ function NavigationContent({
             { index: '04', href: '#sandbox', label: __('landing.layout.navigation.sandbox', 'Sandbox'), show: false },
             { index: '05', href: '#contact', label: __('landing.layout.navigation.contact', 'Contact'), show: false },
         ],
-        [],
+        [__],
     );
 
     const DELAY_INCREMENT = 125;

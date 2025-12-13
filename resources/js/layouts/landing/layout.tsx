@@ -96,10 +96,8 @@ export default function AppLanding({
     );
     const [showPanels, setShowPanels] = useRemember(false, 'panels-state');
 
-    // const initialSkipLoader = !hasLoadedInitially;
-    const initialSkipLoader = true;
-    // const showPanelsFinal = initialSkipLoader;
-    const showPanelsFinal = false;
+    const initialSkipLoader = !hasLoadedInitially;
+    const showPanelsFinal = initialSkipLoader;
 
     useEffect(() => {
         setHasLoadedInitially(true);
