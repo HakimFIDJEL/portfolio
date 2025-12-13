@@ -25,7 +25,7 @@ import { TableCell } from '@/components/ui/table';
 import type { BreadcrumbItem, Contact } from '@/types';
 
 // Icons
-import { Plus } from 'lucide-react';
+import { Mail, Plus } from 'lucide-react';
 
 interface IndexProps {
     contacts: Contact[];
@@ -87,7 +87,12 @@ export default function Index({ contacts }: IndexProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Contacts</CardTitle>
+                    <CardTitle className='flex items-center gap-4 text-xl'>
+                        <div className='p-1 rounded-md bg-accent border'>
+                            <Mail className='text-primary'/>
+                        </div>
+                        Contact
+                    </CardTitle>
                     <CardAction>
                         <Link href={route('backoffice.contacts.create')}>
                             <Button>

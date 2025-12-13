@@ -89,7 +89,7 @@ export function AppSidebar() {
             icon: Tag,
         },
         {
-            title: 'Educations',
+            title: 'Education',
             href: route('backoffice.educations.index'),
             icon: School,
         },
@@ -99,7 +99,7 @@ export function AppSidebar() {
             icon: Building2,
         },
         {
-            title: 'Contacts',
+            title: 'Contact',
             href: route('backoffice.contacts.index'),
             icon: Mail,
         },
@@ -144,7 +144,7 @@ function NavMain({ items = [] }: { items: NavItem[] }) {
                         ? item.href
                         : item.href.url;
                     
-                    const isActive = linkUrl.includes(page.url) || page.url.includes(linkUrl);
+                    const isActive = linkUrl.includes(page.url) || page.url.includes(linkUrl) || window.location.href.includes(linkUrl);
                     
                     return (
                         <SidebarMenuItem key={item.title}>
@@ -154,7 +154,7 @@ function NavMain({ items = [] }: { items: NavItem[] }) {
                                 tooltip={{ children: item.title }}
                             >
                                 <Link href={item.href} prefetch>
-                                    {item.icon && <item.icon />}
+                                    {item.icon && <item.icon className='text-primary/70' />}
                                     <span>{item.title}</span>
                                 </Link>
                             </SidebarMenuButton>

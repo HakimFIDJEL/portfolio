@@ -1,7 +1,6 @@
-// resources/js/pages/backoffice/educations/index.tsx
+// resources/js/pages/backoffice/stacks/index.tsx
 
 // Necessary imports
-import { getIcon } from '@/lib/render';
 import { Head, Link, router } from '@inertiajs/react';
 import { toast } from 'sonner';
 
@@ -22,60 +21,58 @@ import { Separator } from '@/components/ui/separator';
 import { TableCell } from '@/components/ui/table';
 
 // Types
-import type { BreadcrumbItem, Contact, Education, Experience } from '@/types';
+import type { BreadcrumbItem, Stack } from '@/types';
 
 // Icons
-import { Plus, School } from 'lucide-react';
+import { Layers, Plus } from 'lucide-react';
 
 interface IndexProps {
-    educations: Education[];
+    stacks: Stack[];
 }
 
-export default function Index({ educations }: IndexProps) {
+export default function Index({ stacks }: IndexProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Dashboard',
             href: route('dashboard'),
         },
         {
-            title: 'Educations',
-            href: route('backoffice.educations.index'),
+            title: 'Stacks',
+            href: route('backoffice.stacks.index'),
         },
     ];
 
-    function handleSort(updatedEducations: Education[]) {
-        toast.loading('Sorting educations...', { id: 'sort_educations' });
+    function handleSort(updatedStacks: Stack[]) {
+        toast.loading('Sorting stacks...', { id: 'sort_stacks' });
 
         router.post(
-            route('backoffice.educations.sort'),
+            route('backoffice.stacks.sort'),
             {
-                educations: updatedEducations.map((education) => ({
-                    id: education.id,
-                    sort_order: education.sort_order,
+                stacks: updatedStacks.map((stack) => ({
+                    id: stack.id,
+                    sort_order: stack.sort_order,
                 })),
             },
             {
                 onFinish: () => {
-                    toast.dismiss('sort_educations');
+                    toast.dismiss('sort_stacks');
                 },
             },
         );
     }
 
-    function renderCells(education: Education) {
+    function renderCells(stack: Stack) {
         return (
             <>
-                <TableCell>{education.institution}</TableCell>
-                <TableCell>{education.type}</TableCell>
-                <TableCell>{education.duration}</TableCell>
+                <TableCell>{stack.name_fr}</TableCell>
+                <TableCell>{stack.name_en}</TableCell>
+                <TableCell>{stack.items.length}</TableCell>
             </>
         );
     }
 
-    function handleRowClick(education: Education) {
-        router.visit(
-            route('backoffice.educations.edit', { education: education.id }),
-        );
+    function handleRowClick(stack: Stack) {
+        router.visit(route('backoffice.stacks.edit', { stack: stack.id }));
     }
 
     return (
@@ -84,17 +81,17 @@ export default function Index({ educations }: IndexProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className='flex items-center gap-4 text-xl'>
-                        <div className='p-1 rounded-md bg-accent border'>
-                            <School className='text-primary'/>
+                    <CardTitle className="flex items-center gap-4 text-xl">
+                        <div className="rounded-md border bg-accent p-1">
+                            <Layers className="text-primary" />
                         </div>
-                        Education
+                        Stacks
                     </CardTitle>
                     <CardAction>
-                        <Link href={route('backoffice.educations.create')}>
+                        <Link href={route('backoffice.stacks.create')}>
                             <Button>
                                 <Plus />
-                                New education
+                                New stack
                             </Button>
                         </Link>
                     </CardAction>
@@ -102,12 +99,8 @@ export default function Index({ educations }: IndexProps) {
                 <Separator />
                 <CardContent>
                     <SortableTable
-                        entries={educations}
-                        columns={[
-                            'Institution',
-                            'Type',
-                            'Duration',
-                        ]}
+                        entries={stacks}
+                        columns={['Value (FR)', 'Value (EN)', 'Items']}
                         handleSort={handleSort}
                         renderCells={renderCells}
                         handleRowClick={handleRowClick}

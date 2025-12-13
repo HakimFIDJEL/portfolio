@@ -28,6 +28,7 @@ Route::prefix('backoffice/')->name('backoffice.')->middleware(['auth', 'verified
     Route::resource('stacks', StacksController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
+    Route::post('stacks/sort', [StacksController::class, 'sort'])->name('stacks.sort');
     
     // ------------------------------------------------------------------ //
     //                          Tools Routes

@@ -24,7 +24,7 @@ import { TableCell } from '@/components/ui/table';
 import type { BreadcrumbItem, Tag } from '@/types';
 
 // Icons
-import { Plus } from 'lucide-react';
+import { Plus, Tag as TagIcon } from 'lucide-react';
 
 interface IndexProps {
     tags: Tag[];
@@ -80,7 +80,12 @@ export default function Index({ tags }: IndexProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Tags</CardTitle>
+                    <CardTitle className="flex items-center gap-4 text-xl">
+                        <div className="rounded-md border bg-accent p-1">
+                            <TagIcon className="text-primary" />
+                        </div>
+                        Tags
+                    </CardTitle>
                     <CardAction>
                         <Link href={route('backoffice.tags.create')}>
                             <Button>

@@ -25,7 +25,7 @@ import { TableCell } from '@/components/ui/table';
 import type { BreadcrumbItem, Contact, Experience } from '@/types';
 
 // Icons
-import { Plus } from 'lucide-react';
+import { Building2, Plus } from 'lucide-react';
 
 interface IndexProps {
     experiences: Experience[];
@@ -85,7 +85,12 @@ export default function Index({ experiences }: IndexProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Experiences</CardTitle>
+                    <CardTitle className='flex items-center gap-4 text-xl'>
+                        <div className='p-1 rounded-md bg-accent border'>
+                            <Building2 className='text-primary'/>
+                        </div>
+                        Experiences
+                    </CardTitle>
                     <CardAction>
                         <Link href={route('backoffice.experiences.create')}>
                             <Button>

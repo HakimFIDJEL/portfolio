@@ -21,10 +21,10 @@ import { Separator } from '@/components/ui/separator';
 import { TableCell } from '@/components/ui/table';
 
 // Types
-import type { BreadcrumbItem, Tag, Tool } from '@/types';
+import type { BreadcrumbItem, Tool } from '@/types';
 
 // Icons
-import { Plus } from 'lucide-react';
+import { Hammer, Plus } from 'lucide-react';
 
 interface IndexProps {
     tools: Tool[];
@@ -81,7 +81,12 @@ export default function Index({ tools }: IndexProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Tools</CardTitle>
+                    <CardTitle className="flex items-center gap-4 text-xl">
+                        <div className="rounded-md border bg-accent p-1">
+                            <Hammer className="text-primary" />
+                        </div>
+                        Tools
+                    </CardTitle>
                     <CardAction>
                         <Link href={route('backoffice.tools.create')}>
                             <Button>
