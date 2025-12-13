@@ -20,15 +20,31 @@ import { TextReveal } from '@/components/ui/text-reveal';
 import { ArrowDownRight, Download, Minus, Plus } from 'lucide-react';
 
 // Types
-import { Stacks as StacksType, Tools as ToolsType } from '@/types';
+import {
+    Education as EducationType,
+    Experience as ExperienceType,
+    Stacks as StacksType,
+    Tools as ToolsType,
+} from '@/types';
+
+// Translation
+import { useTrans } from '@/lib/translation';
 
 interface AboutProps {
     appear: boolean;
     stacks: StacksType[];
     tools: ToolsType[];
+    educations: EducationType[];
+    experiences: ExperienceType[];
 }
 
-export default function About({ appear, stacks, tools }: AboutProps) {
+export default function About({
+    appear,
+    stacks,
+    tools,
+    educations,
+    experiences,
+}: AboutProps) {
     return (
         <section
             className={cn(
@@ -37,8 +53,8 @@ export default function About({ appear, stacks, tools }: AboutProps) {
 
                 // Responsive styles
                 'gap-0 md:gap-12 lg:gap-24',
-                'mt-12 md:mt-24 lg:mt-48',
-                'mb-12 md:mb-24 lg:mb-48',
+                'mt-24 lg:mt-48',
+                'mb-24 lg:mb-48',
             )}
             id="about"
         >
@@ -46,7 +62,13 @@ export default function About({ appear, stacks, tools }: AboutProps) {
             <Panels appear={appear} />
 
             {/* Accordion */}
-            <Accordions appear={appear} stacks={stacks} tools={tools} />
+            <Accordions
+                appear={appear}
+                stacks={stacks}
+                tools={tools}
+                educations={educations}
+                experiences={experiences}
+            />
         </section>
     );
 }
@@ -60,6 +82,9 @@ interface PanelsProps {
 }
 
 function Panels({ appear }: PanelsProps) {
+
+    const __ = useTrans();
+
     return (
         <div
             className={cn(
@@ -82,12 +107,12 @@ function Panels({ appear }: PanelsProps) {
 
                     // Responsive styles
                     'h-auto',
-                    'w-full lg:w-max',
+                    'w-full lg:w-max lg:max-w-[40%]',
 
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
                     'py-4 sm:py-6 md:py-8 lg:py-10',
 
-                    'before:h-12 md:before:h-24 lg:before:h-48',
+                    'before:h-24 lg:before:h-48',
 
                     // Before styles
                     'before:absolute before:inset-0 before:-z-1',
@@ -111,6 +136,7 @@ function Panels({ appear }: PanelsProps) {
                         showCurtain={!appear}
                         background="background"
                         delay={0}
+                        className='w-full'
                     >
                         <h2
                             className={cn(
@@ -120,7 +146,7 @@ function Panels({ appear }: PanelsProps) {
                                 'text-4xl sm:text-7xl',
                             )}
                         >
-                            About me
+                            {__('landing.landing.about.h2', "About me")}
                         </h2>
                     </Curtain>
 
@@ -141,7 +167,7 @@ function Panels({ appear }: PanelsProps) {
                                 'translate-x-[4px]',
                             )}
                         >
-                            Skip
+                            {__('landing.landing.about.skip', 'Skip')}
                             <ArrowDownRight
                                 size={32}
                                 className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
@@ -165,7 +191,7 @@ function Panels({ appear }: PanelsProps) {
 
                     '!text-lg sm:!text-xl md:!text-2xl',
                     'border-t border-r border-l border-dashed border-border lg:border-0',
-                    'w-full lg:w-max lg:max-w-[45%]',
+                    'w-full lg:w-max lg:max-w-[50%]',
                 )}
             >
                 {/* Reveal */}
@@ -173,48 +199,38 @@ function Panels({ appear }: PanelsProps) {
                     text_className="!text-lg sm:!text-xl lg:!text-2xl"
                     className="hidden h-[200vh] sm:h-[120vh] lg:block lg:h-[200vh]"
                 >
-                    <strong className="font-semibold">Hi, I’m Hakim.</strong>
+                    <strong className="font-semibold">{__('landing.landing.about.p_1', "Hi, I’m Hakim.")}</strong>
                     <br />
                     <p className="font-light">
                         <strong className="font-semibold">
-                            I'm a french fullstack engineer
+                            {__('landing.landing.about.p_2', "I'm a french fullstack engineer")}
                         </strong>{' '}
-                        with a strong focus on development, infrastructure, and
-                        automation. I build and manage scalable projects,
-                        ensuring smooth deployments and efficient workflows.
+                        {__('landing.landing.about.p_3', "with a strong focus on development, infrastructure, and automation. I build and manage scalable projects, ensuring smooth deployments and efficient workflows.")}
                     </p>
                     <br />
                     <p className="font-normal">
-                        With a hands-on approach, I handle everything from
-                        backend logic to server administration, always paying
-                        attention to design and usability. I strive to create
-                        solutions that are both{' '}
+                        {__('landing.landing.about.p_4', "With a hands-on approach, I handle everything from backend logic to server administration, always paying attention to design and usability. I strive to create solutions that are both")} {' '}
                         <strong className="font-semibold">
-                            functional and visually refined.
+                            {__('landing.landing.about.p_5', "functional and visually refined.")}
                         </strong>
                     </p>
                 </TextReveal>
 
                 {/* Reveal */}
                 <FadeIn className="w-full lg:hidden" delay={500} show={appear}>
-                    <strong className="font-semibold">Hi, I’m Hakim.</strong>
+                    <strong className="font-semibold">{__('landing.landing.about.p_1', "Hi, I’m Hakim.")}</strong>
                     <br />
                     <p className="font-light">
                         <strong className="font-semibold">
-                            I'm a french fullstack engineer
+                            {__('landing.landing.about.p_2', "I'm a french fullstack engineer")}
                         </strong>{' '}
-                        with a strong focus on development, infrastructure, and
-                        automation. I build and manage scalable projects,
-                        ensuring smooth deployments and efficient workflows.
+                        {__('landing.landing.about.p_3', "with a strong focus on development, infrastructure, and automation. I build and manage scalable projects, ensuring smooth deployments and efficient workflows.")}
                     </p>
                     <br />
                     <p className="font-normal">
-                        With a hands-on approach, I handle everything from
-                        backend logic to server administration, always paying
-                        attention to design and usability. I strive to create
-                        solutions that are both{' '}
+                        {__('landing.landing.about.p_4', "With a hands-on approach, I handle everything from backend logic to server administration, always paying attention to design and usability. I strive to create solutions that are both")} {' '}
                         <strong className="font-semibold">
-                            functional and visually refined.
+                            {__('landing.landing.about.p_5', "functional and visually refined.")}
                         </strong>
                     </p>
                 </FadeIn>
@@ -227,8 +243,15 @@ function Panels({ appear }: PanelsProps) {
 // Accordions
 // -------------------------
 
-function Accordions({ appear, stacks, tools }: AboutProps) {
+function Accordions({
+    appear,
+    stacks,
+    tools,
+    educations,
+    experiences,
+}: AboutProps) {
     const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+    const __ = useTrans();
 
     return (
         <div
@@ -247,7 +270,7 @@ function Accordions({ appear, stacks, tools }: AboutProps) {
 
                     // Responsive styles
                     'max-w-full lg:max-w-[70%]',
-                    'before:h-12 md:before:h-24 lg:before:h-48',
+                    'before:h-24 lg:before:h-48',
 
                     // Before styles
                     'relative',
@@ -260,7 +283,7 @@ function Accordions({ appear, stacks, tools }: AboutProps) {
             >
                 <AccordionAbout
                     index={1}
-                    title={'About me'}
+                    title={__('landing.landing.about.tabs.about.title', 'About me')}
                     open={openIndex === 1}
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
@@ -270,27 +293,29 @@ function Accordions({ appear, stacks, tools }: AboutProps) {
                 <Separator />
                 <AccordionWork
                     index={2}
-                    title={'Work Experience'}
+                    title={__('landing.landing.about.tabs.experience.title', 'Work Experience')}
                     open={openIndex === 2}
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
                     }
                     appear={appear}
+                    experiences={experiences}
                 />
                 <Separator />
                 <AccordionSchool
                     index={3}
-                    title={'School & Diplomas'}
+                    title={__('landing.landing.about.tabs.education.title', 'School & Diplomas')}
                     open={openIndex === 3}
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
                     }
                     appear={appear}
+                    educations={educations}
                 />
                 <Separator />
                 <AccordionTechStack
                     index={4}
-                    title={'Tech Stack'}
+                    title={__('landing.landing.about.tabs.tech_stack.title', 'Tech Stack')}
                     open={openIndex === 4}
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
@@ -301,7 +326,7 @@ function Accordions({ appear, stacks, tools }: AboutProps) {
                 <Separator />
                 <AccordionTools
                     index={5}
-                    title={'Tools & Software'}
+                    title={__('landing.landing.about.tabs.tools.title', 'Tools & Software')}
                     open={openIndex === 5}
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
@@ -441,11 +466,14 @@ function AccordionAbout({
     onChange,
     appear,
 }: AccordionItemProps) {
+
+    const __ = useTrans();
+
     const quotes = [
-        '“Aiming to build the future one line of code at a time.”',
-        "“It's never a bug, it's a feature.”",
-        '“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”',
-        '“If it’s not broken, do not fix it.”',
+        __('landing.landing.about.tabs.about.quote_1', "“Aiming to build the future one line of code at a time.”"),
+        __('landing.landing.about.tabs.about.quote_2', "“It's never a bug, it's a feature.”"),
+        __('landing.landing.about.tabs.about.quote_3', "“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”"),
+        __('landing.landing.about.tabs.about.quote_4', "“If it’s not broken, do not fix it.”"),
     ];
 
     return (
@@ -508,7 +536,7 @@ function AccordionAbout({
                                 'text-xl font-light',
                             )}
                         >
-                            My philosophy
+                            {__('landing.landing.about.tabs.about.my_philosophy', 'My philosophy')}
                         </h4>
                         <ul
                             className={cn(
@@ -544,7 +572,7 @@ function AccordionAbout({
                                 'group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
                             )}
                         >
-                            Download my resume
+                            {__('landing.landing.about.tabs.about.button', 'Download my resume')}
                             <Download className="stroke-1" />
                         </div>
 
@@ -560,36 +588,20 @@ function AccordionAbout({
     );
 }
 
+interface AccordionWorkProps extends AccordionItemProps {
+    experiences: ExperienceType[];
+}
+
 function AccordionWork({
     index,
     title,
     open,
     onChange,
     appear,
-}: AccordionItemProps) {
-    const experiences = [
-        {
-            company: 'Réservoir Digital',
-            status: 'Apprenticeship',
-            duration: '09/23 - Present',
-            description:
-                'I oversee the development of web projects from analysis to production.  My role includes ensuring compliance with business needs, streamlining  workflows, and modernizing internal processes.',
-        },
-        {
-            company: 'Réservoir Digital',
-            status: 'Internship',
-            duration: '05/23 - 08/23',
-            description:
-                'During my internship at Réservoir Digital, I  improved my skills in new technologies while contributing to digital  solution development. Collaborating within a team was a key part of this experience.',
-        },
-        {
-            company: 'Hôpital Maritime de Zuydcoote',
-            status: 'Internship',
-            duration: '06/22 - 08/22',
-            description:
-                'I managed IT  infrastructure to ensure system connectivity and reliability. I also  developed an internal website that optimized patient file management,  replacing outdated Excel processes.',
-        },
-    ];
+    experiences,
+}: AccordionWorkProps) {
+
+    const __ = useTrans();
 
     return (
         <AccordionItem
@@ -691,13 +703,15 @@ function AccordionWork({
                         'text-base font-medium md:text-lg',
                     )}
                 >
-                    These roles have sharpened my ability to deliver efficient,
-                    innovative solutions while adapting to diverse professional
-                    environments.
+                    {__('landing.landing.about.tabs.experience.description', 'These roles have sharpened my ability to deliver efficient, innovative solutions while adapting to diverse professional environments.')}
                 </div>
             </div>
         </AccordionItem>
     );
+}
+
+interface AccordionSchoolProps extends AccordionItemProps {
+    educations: EducationType[];
 }
 
 function AccordionSchool({
@@ -706,44 +720,10 @@ function AccordionSchool({
     open,
     onChange,
     appear,
-}: AccordionItemProps) {
-    const experiences = [
-        {
-            title: 'IG2I de Centrale Lille Institut',
-            type: 'School',
-            duration: '09/21 - Present',
-            description:
-                'Currently in my 4th year at IG2I Centrale Lille, I am pursuing an engineering degree specializing in industrial and computer science. The program combines academic excellence with real-world applications through hands-on projects and professional training.',
-        },
-        {
-            title: 'TOEIC',
-            type: 'Diploma',
-            duration: '01/25',
-            description:
-                'Achieved a perfect score on the TOEIC (990/990) in 2025, demonstrating complete mastery of professional English.',
-        },
-        {
-            title: 'Baccaulaureate',
-            type: 'Diploma',
-            duration: '08/21',
-            description:
-                'I completed my high school studies at Lycée Auguste Angellier, earning a Scientific Baccalaureate with Honors in 2021. My specialization in Mathematics and Physics provided a strong analytical foundation, fueling my interest in technology and complex problem-solving.',
-        },
-        {
-            title: 'Cambridge First Certificate',
-            type: 'Diploma',
-            duration: '06/20',
-            description:
-                'Earned the Cambridge First Certificate in 2020,  validating my English proficiency at a B2 level. This certification  reflects my ability to communicate effectively in professional and  academic environments.',
-        },
-        {
-            title: 'Lycée Auguste Angellier',
-            type: 'School',
-            duration: '09/18 - 08/21',
-            description:
-                'I completed my high school studies at Lycée  Auguste Angellier, earning a Scientific Baccalaureate in 2021. This  solid foundation in mathematics and sciences sparked my passion for  technology and problem-solving.',
-        },
-    ];
+    educations,
+}: AccordionSchoolProps) {
+
+    const __ = useTrans();
 
     return (
         <AccordionItem
@@ -778,7 +758,7 @@ function AccordionSchool({
                         'gap-6 sm:gap-10',
                     )}
                 >
-                    {experiences.map((exp, idx) => (
+                    {educations.map((exp, idx) => (
                         <li
                             key={`school-${idx}`}
                             className={cn(
@@ -805,7 +785,7 @@ function AccordionSchool({
                                         'text-lg',
                                     )}
                                 >
-                                    {exp.title}
+                                    {exp.institution}
                                 </h4>
                                 <p
                                     className={cn(
@@ -845,9 +825,7 @@ function AccordionSchool({
                         'text-base font-medium md:text-lg',
                     )}
                 >
-                    These experiences have shaped my technical and analytical
-                    mindset, preparing me for future challenges in the tech
-                    world.
+                    {__('landing.landing.about.tabs.education.description', 'These experiences have shaped my technical and analytical mindset, preparing me for future challenges in the tech world.')}
                 </div>
             </div>
         </AccordionItem>

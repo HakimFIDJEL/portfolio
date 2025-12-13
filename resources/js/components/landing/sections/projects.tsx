@@ -18,6 +18,9 @@ import { ArrowDownRight, ArrowRight } from 'lucide-react';
 // Types
 import { Project } from '@/types';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface ProjectsProps {
     appear: boolean;
     projects: Project[];
@@ -25,13 +28,14 @@ interface ProjectsProps {
 
 export default function Projects({ appear, projects }: ProjectsProps) {
     const { _navigateToPage } = useLandingContext();
+    const __ = useTrans();
 
     function handleProjectClick(
         e: React.MouseEvent<HTMLAnchorElement>,
         href: string,
     ) {
         e.preventDefault();
-        _navigateToPage(href);
+        _navigateToPage(href, 'top');
     }
 
     return (
@@ -58,7 +62,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                             'py-4 sm:py-6 md:py-8 lg:py-10',
                         )}
                     >
-                        My Projects
+                        {__('landing.landing.projects.h2', 'My Projects')}
                     </h2>
                 </FadeIn>
             </Delimiter>
@@ -86,13 +90,13 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                         className="w-full"
                     >
                         <p>
-                            Take a look at my projects.
+                            {__('landing.landing.projects.p_1', "Take a look at my projects.")}
                             <br />
-                            I've currently worked on{' '}
+                            {__('landing.landing.projects.p_2', "I've currently worked on")}{' '}
                             <strong className="font-semibold">
                                 {projects.length}
                             </strong>{' '}
-                            impactful ones.
+                            {__('landing.landing.projects.p_3', "impactful ones.")}
                         </p>
                     </Curtain>
                     <Curtain
@@ -112,7 +116,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                                 'sm:translate-x-[8px]',
                             )}
                         >
-                            Skip
+                            {__('landing.landing.projects.skip', 'Skip')}
                             <ArrowDownRight
                                 size={32}
                                 className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"

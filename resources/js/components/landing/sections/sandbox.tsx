@@ -28,6 +28,9 @@ import {
     X,
 } from 'lucide-react';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 export default function Sandbox({
     appear,
     projects,
@@ -36,6 +39,7 @@ export default function Sandbox({
     projects: Project[];
 }) {
     const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+    const __ = useTrans();
 
     const cols =
         window.innerWidth >= 1279 ? 3 : window.innerWidth >= 639 ? 2 : 1;
@@ -68,7 +72,7 @@ export default function Sandbox({
                 // Responsive styles
                 'px-6 sm:px-8 md:px-10 lg:px-12.5',
                 'flex-col lg:flex-row',
-                'mt-12 md:mt-24 lg:mt-48',
+                'mt-24 lg:mt-48',
             )}
             id="sandbox"
         >
@@ -111,7 +115,7 @@ export default function Sandbox({
                                 'text-4xl sm:text-7xl',
                             )}
                         >
-                            The Sand box
+                            {__('landing.landing.sandbox.h2', 'The Sand Box')}
                         </h2>
                     </Curtain>
 
@@ -127,10 +131,8 @@ export default function Sandbox({
                                 'text-base sm:text-lg',
                             )}
                         >
-                            My less impactful but still taughtful works, I’ve
-                            currently worked on{' '}
-                            <strong className="font-semibold">13</strong> small
-                            projects.
+                            {__('landing.landing.sandbox.p_1', 'My less impactful but still taughtful works, I’ve currently worked on')}{' '}
+                            <strong className="font-semibold">13</strong> {__('landing.landing.sandbox.p_2', 'small projects here.')}
                         </p>
                     </Curtain>
 
@@ -151,7 +153,7 @@ export default function Sandbox({
                                 'translate-x-[0px]',
                             )}
                         >
-                            Skip
+                            {__('landing.landing.sandbox.skip', 'Skip')}
                             <ArrowDownRight
                                 size={32}
                                 className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
@@ -235,6 +237,9 @@ function SandboxItem({
     handleClick,
     dialog_open,
 }: SandboxItemProps) {
+
+    const __ = useTrans();
+
     return (
         <button
             className={cn(
@@ -313,12 +318,7 @@ function SandboxItem({
             </h4>
 
             {/* Description */}
-            <p
-                className={
-                    cn()
-                    // Default styles
-                }
-            >
+            <p>
                 {project.subtitle}
             </p>
 
@@ -326,12 +326,7 @@ function SandboxItem({
 
             {/* Date */}
             {project.end_date ? (
-                <time
-                    className={
-                        cn()
-                        // Default styles
-                    }
-                >
+                <time>
                     {new Date(project.end_date).toLocaleDateString(undefined, {
                         year: 'numeric',
                         month: 'numeric',
@@ -349,7 +344,7 @@ function SandboxItem({
                         'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
                     )}
                 >
-                    Ongoing
+                    {__('landing.projects.sections.ongoing', 'Ongoing')}
                 </span>
             )}
         </button>
@@ -364,6 +359,7 @@ interface SandboxDialogProps {
 function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
     const [open, setOpen] = React.useState<boolean>(false);
     const [isFullyClosed, setIsFullyClosed] = React.useState<boolean>(true);
+    const __ = useTrans();
 
     React.useEffect(() => {
         if (item) {
@@ -579,7 +575,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                             'text-lg',
                                         )}
                                     >
-                                        Tech Stack
+                                        {__('landing.projects.sections.tech_stack', 'Tech Stack')}
                                     </h4>
                                 </div>
                                 <div
@@ -637,7 +633,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                             'text-lg',
                                         )}
                                     >
-                                        Description
+                                        {__('landing.projects.sections.description', 'Description')}
                                     </h4>
                                 </div>
                                 <p
@@ -674,7 +670,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'text-lg',
                                     )}
                                 >
-                                    Attachments
+                                    {__('landing.projects.sections.attachments', 'Attachments')}
                                 </h4>
 
                                 <Carousel
@@ -688,7 +684,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
 
                     {/* Feedback */}
                     {item?.feedback && (
-                        <FadeIn show={open} className="w-full" delay={250}>
+                        <FadeIn show={open} className="w-full">
                             <div
                                 className={cn(
                                     // Default styles
@@ -714,7 +710,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                             'text-lg',
                                         )}
                                     >
-                                        Feedback
+                                        {__('landing.projects.sections.feedback', 'Feedback')}
                                     </h4>
                                 </div>
                                 <p
@@ -733,7 +729,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
 
                     {/* What I Learned */}
                     {item?.what_i_learned && (
-                        <FadeIn show={open} className="w-full" delay={250}>
+                        <FadeIn show={open} className="w-full">
                             <div
                                 className={cn(
                                     // Default styles
@@ -759,7 +755,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                             'text-lg',
                                         )}
                                     >
-                                        What I Learned
+                                        {__('landing.projects.sections.what_i_learned', 'What I Learned')}
                                     </h4>
                                 </div>
                                 <p

@@ -15,7 +15,11 @@ import { type Project } from '@/types';
 import { mockProjects } from '@/types/data';
 import Content from '@/components/projects/sections/content';
 
-export default function Project({ project }: { project: Project }) {
+interface ProjectProps {
+    project: Project | null;
+}
+
+export default function Project({ project }: ProjectProps) {
 
     // States content
     const [showContent, setShowContent] = useState(false);

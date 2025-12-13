@@ -10,12 +10,18 @@ import FadeIn from '@/components/landing/fade-in';
 // Types
 import { Project } from '@/types';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface ContentProps {
     project: Project;
     appear: boolean;
 }
 
 export default function Content({ project, appear }: ContentProps) {
+
+    const __ = useTrans();
+
     return (
         <section
             className={cn(
@@ -72,7 +78,7 @@ export default function Content({ project, appear }: ContentProps) {
                                         'text-lg',
                                     )}
                                 >
-                                    Tech Stack
+                                    {__('landing.projects.sections.tech_stack', 'Tech Stack')}
                                 </h4>
                             </div>
                             <div
@@ -131,7 +137,7 @@ export default function Content({ project, appear }: ContentProps) {
                                 'text-lg',
                             )}
                         >
-                            Attachments
+                            {__('landing.projects.sections.attachments', 'Attachments')}
                         </h4>
 
                         <Carousel
@@ -196,7 +202,7 @@ export default function Content({ project, appear }: ContentProps) {
                                             'text-lg',
                                         )}
                                     >
-                                        Description
+                                        {__('landing.projects.sections.description', 'Description')}
                                     </h4>
                                 </div>
                                 <p
@@ -243,7 +249,7 @@ export default function Content({ project, appear }: ContentProps) {
                                             'text-lg',
                                         )}
                                     >
-                                        Feedback
+                                        {__('landing.projects.sections.feedback', 'Feedback')}
                                     </h4>
                                 </div>
                                 <p
@@ -289,7 +295,7 @@ export default function Content({ project, appear }: ContentProps) {
                                             'text-lg',
                                         )}
                                     >
-                                        What I Learned
+                                        {__('landing.projects.sections.what_i_learned', 'What I Learned')}
                                     </h4>
                                 </div>
                                 <p

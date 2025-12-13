@@ -13,6 +13,9 @@ import { useLandingContext } from '@/contexts/use-landing-context';
 // Icons
 import { ArrowRight } from 'lucide-react';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface NavigationProps {
     showNavigation: boolean;
     showNavigationContent: boolean;
@@ -112,15 +115,18 @@ function NavigationContent({
     showNavigationContent,
     handleMenuToggle,
 }: NavigationContentProps) {
+
+    const __ = useTrans();
+
     const links: Link[] = useMemo(
         () => [
-            { index: '01', href: '#top', label: 'Home', show: false },
-            { index: '02', href: '#about', label: 'About', show: false },
-            { index: '03', href: '#projects', label: 'Projects', show: false },
-            { index: '04', href: '#sandbox', label: 'Sandbox', show: false },
-            { index: '05', href: '#contact', label: 'Contact', show: false },
+            { index: '01', href: '#top', label: __('landing.layout.navigation.home', 'Home'), show: false },
+            { index: '02', href: '#about', label: __('landing.layout.navigation.about', 'About'), show: false },
+            { index: '03', href: '#projects', label: __('landing.layout.navigation.projects', 'Projects'), show: false },
+            { index: '04', href: '#sandbox', label: __('landing.layout.navigation.sandbox', 'Sandbox'), show: false },
+            { index: '05', href: '#contact', label: __('landing.layout.navigation.contact', 'Contact'), show: false },
         ],
-        [],
+        [__],
     );
 
     const DELAY_INCREMENT = 125;

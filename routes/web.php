@@ -9,8 +9,12 @@ use Illuminate\Http\Request;
 // Controllers
 use App\Http\Controllers\Landing as LandingController;
 
-Route::get('/', [LandingController::class, 'landing'])->name('home');
-Route::get('/{slug}', [LandingController::class, 'project'])->name('project');
+Route::middleware(['web'])->group(function () {
+    Route::get('/', [LandingController::class, 'landing'])->name('home');
+    Route::get('/toggle-language', [LandingController::class, 'toggle_language'])->name('toggle_language');
+    Route::get('/{slug}', [LandingController::class, 'project'])->name('project');
+});
+
 
 Route::middleware(['auth', 'verified:auth.verification.notice'])->group(function () {
     Route::get('/dashboard', function () {

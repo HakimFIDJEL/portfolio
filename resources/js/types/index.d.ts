@@ -53,6 +53,7 @@ export interface SharedData {
     auth: Auth;
     sidebarOpen: boolean;
     unread_notifications: number;
+    locale: string;
     [key: string]: unknown;
 }
 
@@ -142,7 +143,7 @@ export interface Project {
     what_i_learned: string | null;
 
     tags: Tags[];
-    stacks: Stacks[];
+    stacks: StacksItem[];
 
     end_date: string | null;
     created_at: string;
@@ -156,4 +157,22 @@ export interface Contact {
     label: string;
     name: string;
     link: string;
+}
+
+export interface Experience {
+    id: number;
+    sort_order: number;
+    company: string;
+    status: string;
+    duration: string;
+    description: string;
+}
+
+export interface Education {
+    id: number;
+    sort_order: number;
+    institution: string;
+    type: string;
+    duration: string;
+    description: string;
 }

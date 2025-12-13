@@ -27,6 +27,10 @@ import {
 // Types
 import { Project } from '@/types';
 
+// Translation
+import LanguageToggle from '@/components/landing/language-toggle';
+import { useTrans } from '@/lib/translation';
+
 interface HeroProps {
     appear: boolean;
     project: Project;
@@ -34,6 +38,7 @@ interface HeroProps {
 
 export default function Hero({ appear, project }: HeroProps) {
     const { appearance, updateAppearance } = useAppearance();
+    const __ = useTrans();
 
     function handleSwitchAppearance() {
         const newAppearance =
@@ -128,7 +133,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                     'p-0 md:pb-1 lg:pb-2.5 xl:pb-3',
                                 )}
                             >
-                                Project
+                                {__('landing.projects.hero.h2', 'Project')}
                             </h2>
                         </Curtain>
                         <Curtain
@@ -169,17 +174,18 @@ export default function Hero({ appear, project }: HeroProps) {
                                         'border-foreground',
                                     )}
                                 >
-                                    {project.end_date ? (
-                                        new Date(
-                                            project.end_date,
-                                        ).toLocaleDateString(undefined, {
-                                            year: 'numeric',
-                                            month: 'numeric',
-                                            day: 'numeric',
-                                        })
-                                    ) : (
-                                        <>Ongoing</>
-                                    )}
+                                    {project.end_date
+                                        ? new Date(
+                                              project.end_date,
+                                          ).toLocaleDateString(undefined, {
+                                              year: 'numeric',
+                                              month: 'numeric',
+                                              day: 'numeric',
+                                          })
+                                        : __(
+                                              'landing.projects.sections.ongoing',
+                                              'Ongoing',
+                                          )}
                                 </span>
                             </div>
                         </Curtain>
@@ -199,7 +205,7 @@ export default function Hero({ appear, project }: HeroProps) {
                         'flex-col md:flex-row',
                         'items-start md:items-center',
                         'justify-start md:justify-between',
-                        'gap-4 md:gap-5'
+                        'gap-4 md:gap-5',
                     )}
                 >
                     <p
@@ -213,13 +219,15 @@ export default function Hero({ appear, project }: HeroProps) {
                     <div
                         className={cn(
                             // Default styles
-                            'flex items-center gap-5 flex-wrap',
+                            'flex flex-wrap items-center gap-5',
                         )}
                     >
-                        <div className={cn(
-                            // Default styles
-                            'flex items-center gap-5 flex-wrap',
-                        )}>
+                        <div
+                            className={cn(
+                                // Default styles
+                                'flex flex-wrap items-center gap-5',
+                            )}
+                        >
                             <Curtain
                                 showCurtain={!appear}
                                 background="background"
@@ -236,7 +244,9 @@ export default function Hero({ appear, project }: HeroProps) {
                                         <RoundedButton
                                             disabled={!project?.source_code_url}
                                             tabIndex={
-                                                project?.source_code_url ? 0 : -1
+                                                project?.source_code_url
+                                                    ? 0
+                                                    : -1
                                             }
                                         >
                                             <Code2 className="stroke-1" />
@@ -269,17 +279,21 @@ export default function Hero({ appear, project }: HeroProps) {
                                 </Magnet>
                             </Curtain>
                         </div>
-                        <div className={cn(
-                            // Default styles
-                            'flex items-center gap-5 flex-wrap',
-                        )}>
+                        <div
+                            className={cn(
+                                // Default styles
+                                'flex flex-wrap items-center gap-5',
+                            )}
+                        >
                             <Curtain
                                 showCurtain={!appear}
                                 background="background"
                                 delay={1000}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton onClick={handleSwitchAppearance}>
+                                    <RoundedButton
+                                        onClick={handleSwitchAppearance}
+                                    >
                                         {appearance === 'dark' && (
                                             <Moon className="stroke-1" />
                                         )}
@@ -297,9 +311,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                 background="background"
                                 delay={1250}
                             >
-                                <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton>EN</RoundedButton>
-                                </Magnet>
+                                <LanguageToggle />
                             </Curtain>
                             <Curtain
                                 showCurtain={!appear}
@@ -315,7 +327,6 @@ export default function Hero({ appear, project }: HeroProps) {
                                 </Magnet>
                             </Curtain>
                         </div>
-
                     </div>
                 </div>
             </div>

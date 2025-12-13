@@ -11,6 +11,9 @@ import UnderlineLink from '@/components/landing/underline-link';
 // Contexts
 import { useLandingContext } from '@/contexts/use-landing-context';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface HeaderProps {
     showContent: boolean;
     handleMenuToggle: (open: boolean) => void;
@@ -19,6 +22,8 @@ interface HeaderProps {
 export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
     const [scrollY, setScrollY] = useState(0);
     const [showMenu, setShowMenu] = useState(true);
+
+    const __ = useTrans();
 
     const { _navigateToPage } = useLandingContext();
 
@@ -120,9 +125,9 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
             >
                 <UnderlineLink
                     onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'), 'contact')}
-                    href={currentUrl === homePath ? '#top' : route('home')}
+                    href={currentUrl === homePath ? '#contact' : route('home')}
                 >
-                    Contact
+                    {__('landing.layout.header.contact', 'Contact')}
                 </UnderlineLink>
             </div>
         </header>

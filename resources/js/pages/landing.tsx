@@ -15,7 +15,7 @@ import Sandbox from '@/components/landing/sections/sandbox';
 import Contact from '@/components/landing/sections/contact';
 
 // Mocks
-import { mockStacks, mockTools, mockContacts, mockProjects } from '@/types/data';
+import { mockStacks, mockTools, mockContacts, mockProjects, mockEducations, mockExperiences } from '@/types/data';
 
 
 export default function Landing() {
@@ -35,7 +35,7 @@ export default function Landing() {
 
             <main>
                 <Hero appear={showContent} />
-                <About appear={showContent} stacks={mockStacks} tools={mockTools} />
+                <About appear={showContent} stacks={mockStacks} tools={mockTools} educations={mockEducations} experiences={mockExperiences} />
                 <Projects appear={showContent} projects={mockProjects} />
                 <Sandbox appear={showContent} projects={mockProjects} />
                 <Contact appear={showContent} contacts={mockContacts}/>

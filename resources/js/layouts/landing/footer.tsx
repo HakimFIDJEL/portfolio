@@ -2,6 +2,7 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
+import { usePage } from '@inertiajs/react';
 
 // Hooks
 import { useAppearance } from '@/hooks/use-appearance';
@@ -10,82 +11,96 @@ import { useAppearance } from '@/hooks/use-appearance';
 import Delimiter from '@/components/landing/delimiter';
 import FadeIn from '@/components/landing/fade-in';
 import RoundedButton from '@/components/landing/rounded-button';
+import UnderlineLink from '@/components/landing/underline-link';
+import LanguageToggle from '@/components/landing/language-toggle';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
 
 // Icons
-import UnderlineLink from '@/components/landing/underline-link';
 import { ArrowUp, Monitor, Moon, Sun } from 'lucide-react';
+
+// Contexts
+import { useLandingContext } from '@/contexts/use-landing-context';
+
+// Translation
+import { useTrans } from '@/lib/translation';
 
 interface FooterProps {
     appear: boolean;
 }
 
-const links = [
-    {
-        name: 'Sitemap',
-        items: [
-            {
-                label: 'Hero',
-                href: '#hero',
-            },
-            {
-                label: 'About',
-                href: '#about',
-            },
-            {
-                label: 'Projects',
-                href: '#projects',
-            },
-            {
-                label: 'Sandbox',
-                href: '#sandbox',
-            },
-            {
-                label: 'Contact',
-                href: '#contact',
-            },
-        ],
-    },
-    {
-        name: 'Contact',
-        items: [
-            {
-                label: 'Email',
-                href: 'mailto:hakimfidjel.pro@gmail.com',
-            },
-            {
-                label: 'LinkedIn',
-                href: 'https://www.linkedin.com/in/hakim-fidjel/',
-            },
-            {
-                label: 'GitHub',
-                href: 'https://github.com/hakimfidjel',
-            },
-            {
-                label: 'GitLab',
-                href: 'https://gitlab.com/hakimfidjel',
-            },
-        ],
-    },
-    {
-        name: 'Resources',
-        items: [
-            {
-                label: 'Terms',
-                href: '#',
-            },
-            {
-                label: 'Source Code',
-                href: '#',
-            },
-        ],
-    },
-];
 
 export default function Footer({ appear }: FooterProps) {
     const { appearance, updateAppearance } = useAppearance();
+
+    const __ = useTrans();
+    
+    const links = [
+        {
+            name: __('landing.layout.footer.links.sitemap.title', 'Sitemap'),
+            items: [
+                {
+                    label: __('landing.layout.footer.links.sitemap.items.home', 'Home'),
+                    href: '#top',
+                },
+                {
+                    label: __('landing.layout.footer.links.sitemap.items.about', 'About'),
+                    href: '#about',
+                },
+                {
+                    label: __('landing.layout.footer.links.sitemap.items.projects', 'Projects'),
+                    href: '#projects',
+                },
+                {
+                    label: __('landing.layout.footer.links.sitemap.items.sandbox', 'Sandbox'),
+                    href: '#sandbox',
+                },
+                {
+                    label: __('landing.layout.footer.links.sitemap.items.contact', 'Contact'),
+                    href: '#contact',
+                },
+            ],
+        },
+        {
+            name: __('landing.layout.footer.links.contact.title', 'Contact'),
+            items: [
+                {
+                    label: __('landing.layout.footer.links.contact.items.email', 'Email'),
+                    href: 'mailto:hakimfidjel.pro@gmail.com',
+                },
+                {
+                    label: __('landing.layout.footer.links.contact.items.linkedin', 'LinkedIn'),
+                    href: 'https://www.linkedin.com/in/hakim-fidjel/',
+                    target:'_blank',
+                },
+                {
+                    label: __('landing.layout.footer.links.contact.items.github', 'GitHub'),
+                    href: 'https://github.com/hakimfidjel',
+                    target:'_blank',
+                },
+                {
+                    label: __('landing.layout.footer.links.contact.items.gitlab', 'GitLab'),
+                    href: 'https://gitlab.com/hakimfidjel',
+                    target:'_blank',
+                },
+            ],
+        },
+        {
+            name: __('landing.layout.footer.links.resources.title', 'Resources'),
+            items: [
+                {
+                    label: __('landing.layout.footer.links.resources.items.terms', 'Terms'),
+                    href: route('home'),
+                },
+                {
+                    label: __('landing.layout.footer.links.resources.items.source_code', 'Source Code'),
+                    href: 'https://github.com/HakimFIDJEL/portfolio',
+                    target:'_blank',
+                },
+            ],
+        },
+    ];
 
     function handleSwitchAppearance() {
         const newAppearance =
@@ -97,6 +112,20 @@ export default function Footer({ appear }: FooterProps) {
 
         updateAppearance(newAppearance);
     }
+
+    const { _navigateToPage } = useLandingContext();
+
+    function handleProjectClick(
+        e: React.MouseEvent<HTMLAnchorElement>,
+        href: string,
+        anchor: string = 'top',
+    ) {
+        e.preventDefault();
+        _navigateToPage(href, anchor);
+    }
+
+    const currentUrl = usePage().url.split('#')[0];
+    const homePath = new URL(route('home')).pathname;
 
     return (
         <>
@@ -113,8 +142,8 @@ export default function Footer({ appear }: FooterProps) {
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
 
                     // Animation styles
-                    'transition-all duration-1000 opacity-0 translate-y-[20%]',
-                    appear && 'opacity-100 translate-y-0',
+                    'translate-y-[20%] opacity-0 transition-all duration-1000',
+                    appear && 'translate-y-0 opacity-100',
                 )}
             >
                 {/* Left Panel */}
@@ -140,7 +169,7 @@ export default function Footer({ appear }: FooterProps) {
                                 'col-span-1 flex flex-col gap-4',
                             )}
                         >
-                            <FadeIn show={appear} delay={250}>
+                            <FadeIn show={appear} delay={125}>
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton>
                                         <a href="#top" tabIndex={-1}>
@@ -149,7 +178,7 @@ export default function Footer({ appear }: FooterProps) {
                                     </RoundedButton>
                                 </Magnet>
                             </FadeIn>
-                            <FadeIn show={appear} delay={500}>
+                            <FadeIn show={appear} delay={250}>
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
                                         onClick={handleSwitchAppearance}
@@ -166,10 +195,8 @@ export default function Footer({ appear }: FooterProps) {
                                     </RoundedButton>
                                 </Magnet>
                             </FadeIn>
-                            <FadeIn show={appear} delay={750}>
-                                <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton>EN</RoundedButton>
-                                </Magnet>
+                            <FadeIn show={appear} delay={375}>
+                                <LanguageToggle />
                             </FadeIn>
                         </div>
 
@@ -189,27 +216,36 @@ export default function Footer({ appear }: FooterProps) {
                                 >
                                     {linkGroup.name}
                                 </li>
-                                {linkGroup.items.map((item, itemIndex) => (
-                                    <li
-                                        key={`footer-link-item-${index}-${itemIndex}`}
-                                        className={
-                                            cn()
-                                            // Default styles
-                                        }
-                                    >
-                                        <UnderlineLink
-                                            href={item.href}
-                                            className={cn(
-                                                // Default styles
-                                                'font-light transition-all',
+                                {linkGroup.items.map((item, itemIndex) => {
+                                    let onClick = null;
 
-                                                'text-muted-foreground hover:text-foreground focus-visible:text-foreground',
-                                            )}
+                                    if(currentUrl !== homePath) {
+                                        if(item.href.startsWith('#')) {
+                                            onClick = (e: React.MouseEvent<HTMLAnchorElement>) => handleProjectClick(e, route('home'), item.href.substring(1));
+                                        }
+                                    }
+
+                                    return (
+                                        <li
+                                            key={`footer-link-item-${index}-${itemIndex}`}
                                         >
-                                            {item.label}
-                                        </UnderlineLink>
-                                    </li>
-                                ))}
+                                            <UnderlineLink
+                                                className={cn(
+                                                    // Default styles
+                                                    'font-light transition-all',
+
+                                                    'text-muted-foreground hover:text-foreground focus-visible:text-foreground',
+                                                )}
+
+                                                {...onClick && { onClick: onClick }}
+                                                href={currentUrl === homePath ? item.href : route('home')}
+                                                {...item.target && { target: item.target }}
+                                            >
+                                                {item.label}
+                                            </UnderlineLink>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         ))}
                     </div>
@@ -238,7 +274,7 @@ export default function Footer({ appear }: FooterProps) {
                             'translate-x-[0px] sm:translate-x-[2px] md:translate-x-[5px] lg:translate-x-[4px]',
                         )}
                     >
-                        Designed, Developped, Deployed and Hosted by
+                        {__('landing.layout.footer.caption', 'Designed, Developped, Deployed and Hosted by')}
                     </p>
                     <p
                         className={cn(
@@ -261,8 +297,7 @@ export default function Footer({ appear }: FooterProps) {
                             'translate-x-[0px] sm:translate-x-[2px] md:translate-x-[5px] lg:translate-x-[4px]',
                         )}
                     >
-                        © {new Date().getFullYear()} Hakim Fidjel. All rights
-                        reserved.
+                        © {new Date().getFullYear()} Hakim Fidjel. {__('landing.layout.footer.copyright', 'All rights reserved.')}
                     </p>
                 </div>
             </footer>
