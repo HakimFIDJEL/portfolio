@@ -68,7 +68,7 @@ export default function Hero({ appear }: HeroProps) {
                         delay={250}
                     >
                         <CircularText
-                            text={__('landing.hero.circularText', "Welcome to my portfolio ~ ")}
+                            text={__('landing.landing.hero.circularText', "Welcome to my portfolio ~ ")}
                             onHover={'slowDown'}
                             spinDuration={20}
                             className={cn(
@@ -127,7 +127,7 @@ export default function Hero({ appear }: HeroProps) {
                                 'p-0 sm:pb-1 md:pb-2 lg:pb-2.5 xl:pb-3',
                             )}
                         >
-                            {__('landing.hero.h2', 'Fullstack Engineer')}
+                            {__('landing.landing.hero.h2', 'Fullstack Engineer')}
                             
                         </h2>
                     </Curtain>

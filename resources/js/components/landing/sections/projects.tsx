@@ -62,7 +62,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                             'py-4 sm:py-6 md:py-8 lg:py-10',
                         )}
                     >
-                        {__('landing.projects.h2', 'My Projects')}
+                        {__('landing.landing.projects.h2', 'My Projects')}
                     </h2>
                 </FadeIn>
             </Delimiter>
@@ -90,13 +90,13 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                         className="w-full"
                     >
                         <p>
-                            {__('landing.projects.p_1', "Take a look at my projects.")}
+                            {__('landing.landing.projects.p_1', "Take a look at my projects.")}
                             <br />
-                            {__('landing.projects.p_2', "I've currently worked on")}{' '}
+                            {__('landing.landing.projects.p_2', "I've currently worked on")}{' '}
                             <strong className="font-semibold">
                                 {projects.length}
                             </strong>{' '}
-                            {__('landing.projects.p_3', "impactful ones.")}
+                            {__('landing.landing.projects.p_3', "impactful ones.")}
                         </p>
                     </Curtain>
                     <Curtain
@@ -116,7 +116,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                                 'sm:translate-x-[8px]',
                             )}
                         >
-                            {__('landing.projects.skip', 'Skip')}
+                            {__('landing.landing.projects.skip', 'Skip')}
                             <ArrowDownRight
                                 size={32}
                                 className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"

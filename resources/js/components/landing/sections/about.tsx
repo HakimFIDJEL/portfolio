@@ -146,7 +146,7 @@ function Panels({ appear }: PanelsProps) {
                                 'text-4xl sm:text-7xl',
                             )}
                         >
-                            {__('landing.about.h2', "About me")}
+                            {__('landing.landing.about.h2', "About me")}
                         </h2>
                     </Curtain>
 
@@ -167,7 +167,7 @@ function Panels({ appear }: PanelsProps) {
                                 'translate-x-[4px]',
                             )}
                         >
-                            {__('landing.about.skip', 'Skip')}
+                            {__('landing.landing.about.skip', 'Skip')}
                             <ArrowDownRight
                                 size={32}
                                 className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
@@ -199,38 +199,38 @@ function Panels({ appear }: PanelsProps) {
                     text_className="!text-lg sm:!text-xl lg:!text-2xl"
                     className="hidden h-[200vh] sm:h-[120vh] lg:block lg:h-[200vh]"
                 >
-                    <strong className="font-semibold">{__('landing.about.p_1', "Hi, I’m Hakim.")}</strong>
+                    <strong className="font-semibold">{__('landing.landing.about.p_1', "Hi, I’m Hakim.")}</strong>
                     <br />
                     <p className="font-light">
                         <strong className="font-semibold">
-                            {__('landing.about.p_2', "I'm a french fullstack engineer")}
+                            {__('landing.landing.about.p_2', "I'm a french fullstack engineer")}
                         </strong>{' '}
-                        {__('landing.about.p_3', "with a strong focus on development, infrastructure, and automation. I build and manage scalable projects, ensuring smooth deployments and efficient workflows.")}
+                        {__('landing.landing.about.p_3', "with a strong focus on development, infrastructure, and automation. I build and manage scalable projects, ensuring smooth deployments and efficient workflows.")}
                     </p>
                     <br />
                     <p className="font-normal">
-                        {__('landing.about.p_4', "With a hands-on approach, I handle everything from backend logic to server administration, always paying attention to design and usability. I strive to create solutions that are both")} {' '}
+                        {__('landing.landing.about.p_4', "With a hands-on approach, I handle everything from backend logic to server administration, always paying attention to design and usability. I strive to create solutions that are both")} {' '}
                         <strong className="font-semibold">
-                            {__('landing.about.p_5', "functional and visually refined.")}
+                            {__('landing.landing.about.p_5', "functional and visually refined.")}
                         </strong>
                     </p>
                 </TextReveal>
 
                 {/* Reveal */}
                 <FadeIn className="w-full lg:hidden" delay={500} show={appear}>
-                    <strong className="font-semibold">{__('landing.about.p_1', "Hi, I’m Hakim.")}</strong>
+                    <strong className="font-semibold">{__('landing.landing.about.p_1', "Hi, I’m Hakim.")}</strong>
                     <br />
                     <p className="font-light">
                         <strong className="font-semibold">
-                            {__('landing.about.p_2', "I'm a french fullstack engineer")}
+                            {__('landing.landing.about.p_2', "I'm a french fullstack engineer")}
                         </strong>{' '}
-                        {__('landing.about.p_3', "with a strong focus on development, infrastructure, and automation. I build and manage scalable projects, ensuring smooth deployments and efficient workflows.")}
+                        {__('landing.landing.about.p_3', "with a strong focus on development, infrastructure, and automation. I build and manage scalable projects, ensuring smooth deployments and efficient workflows.")}
                     </p>
                     <br />
                     <p className="font-normal">
-                        {__('landing.about.p_4', "With a hands-on approach, I handle everything from backend logic to server administration, always paying attention to design and usability. I strive to create solutions that are both")} {' '}
+                        {__('landing.landing.about.p_4', "With a hands-on approach, I handle everything from backend logic to server administration, always paying attention to design and usability. I strive to create solutions that are both")} {' '}
                         <strong className="font-semibold">
-                            {__('landing.about.p_5', "functional and visually refined.")}
+                            {__('landing.landing.about.p_5', "functional and visually refined.")}
                         </strong>
                     </p>
                 </FadeIn>
@@ -251,6 +251,7 @@ function Accordions({
     experiences,
 }: AboutProps) {
     const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+    const __ = useTrans();
 
     return (
         <div
@@ -282,7 +283,7 @@ function Accordions({
             >
                 <AccordionAbout
                     index={1}
-                    title={'About me'}
+                    title={__('landing.landing.about.tabs.about.title', 'About me')}
                     open={openIndex === 1}
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
@@ -292,7 +293,7 @@ function Accordions({
                 <Separator />
                 <AccordionWork
                     index={2}
-                    title={'Work Experience'}
+                    title={__('landing.landing.about.tabs.experience.title', 'Work Experience')}
                     open={openIndex === 2}
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
@@ -303,7 +304,7 @@ function Accordions({
                 <Separator />
                 <AccordionSchool
                     index={3}
-                    title={'School & Diplomas'}
+                    title={__('landing.landing.about.tabs.education.title', 'School & Diplomas')}
                     open={openIndex === 3}
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
@@ -314,7 +315,7 @@ function Accordions({
                 <Separator />
                 <AccordionTechStack
                     index={4}
-                    title={'Tech Stack'}
+                    title={__('landing.landing.about.tabs.tech_stack.title', 'Tech Stack')}
                     open={openIndex === 4}
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
@@ -325,7 +326,7 @@ function Accordions({
                 <Separator />
                 <AccordionTools
                     index={5}
-                    title={'Tools & Software'}
+                    title={__('landing.landing.about.tabs.tools.title', 'Tools & Software')}
                     open={openIndex === 5}
                     onChange={(index) =>
                         setOpenIndex(openIndex === index ? null : index)
@@ -469,10 +470,10 @@ function AccordionAbout({
     const __ = useTrans();
 
     const quotes = [
-        __('landing.about.tabs.about.quote_1', "“Aiming to build the future one line of code at a time.”"),
-        __('landing.about.tabs.about.quote_2', "“It's never a bug, it's a feature.”"),
-        __('landing.about.tabs.about.quote_3', "“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”"),
-        __('landing.about.tabs.about.quote_4', "“If it’s not broken, do not fix it.”"),
+        __('landing.landing.about.tabs.about.quote_1', "“Aiming to build the future one line of code at a time.”"),
+        __('landing.landing.about.tabs.about.quote_2', "“It's never a bug, it's a feature.”"),
+        __('landing.landing.about.tabs.about.quote_3', "“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”"),
+        __('landing.landing.about.tabs.about.quote_4', "“If it’s not broken, do not fix it.”"),
     ];
 
     return (
@@ -535,7 +536,7 @@ function AccordionAbout({
                                 'text-xl font-light',
                             )}
                         >
-                            {__('landing.about.tabs.about.my_philosophy', 'My philosophy')}
+                            {__('landing.landing.about.tabs.about.my_philosophy', 'My philosophy')}
                         </h4>
                         <ul
                             className={cn(
@@ -571,7 +572,7 @@ function AccordionAbout({
                                 'group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
                             )}
                         >
-                            {__('landing.about.tabs.about.button', 'Download my resume')}
+                            {__('landing.landing.about.tabs.about.button', 'Download my resume')}
                             <Download className="stroke-1" />
                         </div>
 
@@ -702,7 +703,7 @@ function AccordionWork({
                         'text-base font-medium md:text-lg',
                     )}
                 >
-                    {__('landing.about.tabs.experience.description', 'These roles have sharpened my ability to deliver efficient, innovative solutions while adapting to diverse professional environments.')}
+                    {__('landing.landing.about.tabs.experience.description', 'These roles have sharpened my ability to deliver efficient, innovative solutions while adapting to diverse professional environments.')}
                 </div>
             </div>
         </AccordionItem>
@@ -824,7 +825,7 @@ function AccordionSchool({
                         'text-base font-medium md:text-lg',
                     )}
                 >
-                    {__('landing.about.tabs.education.description', 'These experiences have shaped my technical and analytical mindset, preparing me for future challenges in the tech world.')}
+                    {__('landing.landing.about.tabs.education.description', 'These experiences have shaped my technical and analytical mindset, preparing me for future challenges in the tech world.')}
                 </div>
             </div>
         </AccordionItem>

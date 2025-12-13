@@ -38,63 +38,63 @@ export default function Footer({ appear }: FooterProps) {
     
     const links = [
         {
-            name: __('landing.footer.links.sitemap.title', 'Sitemap'),
+            name: __('landing.layout.footer.links.sitemap.title', 'Sitemap'),
             items: [
                 {
-                    label: __('landing.footer.links.sitemap.items.home', 'Home'),
+                    label: __('landing.layout.footer.links.sitemap.items.home', 'Home'),
                     href: '#top',
                 },
                 {
-                    label: __('landing.footer.links.sitemap.items.about', 'About'),
+                    label: __('landing.layout.footer.links.sitemap.items.about', 'About'),
                     href: '#about',
                 },
                 {
-                    label: __('landing.footer.links.sitemap.items.projects', 'Projects'),
+                    label: __('landing.layout.footer.links.sitemap.items.projects', 'Projects'),
                     href: '#projects',
                 },
                 {
-                    label: __('landing.footer.links.sitemap.items.sandbox', 'Sandbox'),
+                    label: __('landing.layout.footer.links.sitemap.items.sandbox', 'Sandbox'),
                     href: '#sandbox',
                 },
                 {
-                    label: __('landing.footer.links.sitemap.items.contact', 'Contact'),
+                    label: __('landing.layout.footer.links.sitemap.items.contact', 'Contact'),
                     href: '#contact',
                 },
             ],
         },
         {
-            name: __('landing.footer.links.contact.title', 'Contact'),
+            name: __('landing.layout.footer.links.contact.title', 'Contact'),
             items: [
                 {
-                    label: __('landing.footer.links.contact.items.email', 'Email'),
+                    label: __('landing.layout.footer.links.contact.items.email', 'Email'),
                     href: 'mailto:hakimfidjel.pro@gmail.com',
                 },
                 {
-                    label: __('landing.footer.links.contact.items.linkedin', 'LinkedIn'),
+                    label: __('landing.layout.footer.links.contact.items.linkedin', 'LinkedIn'),
                     href: 'https://www.linkedin.com/in/hakim-fidjel/',
                     target:'_blank',
                 },
                 {
-                    label: __('landing.footer.links.contact.items.github', 'GitHub'),
+                    label: __('landing.layout.footer.links.contact.items.github', 'GitHub'),
                     href: 'https://github.com/hakimfidjel',
                     target:'_blank',
                 },
                 {
-                    label: __('landing.footer.links.contact.items.gitlab', 'GitLab'),
+                    label: __('landing.layout.footer.links.contact.items.gitlab', 'GitLab'),
                     href: 'https://gitlab.com/hakimfidjel',
                     target:'_blank',
                 },
             ],
         },
         {
-            name: __('landing.footer.links.resources.title', 'Resources'),
+            name: __('landing.layout.footer.links.resources.title', 'Resources'),
             items: [
                 {
-                    label: __('landing.footer.links.resources.items.terms', 'Terms'),
+                    label: __('landing.layout.footer.links.resources.items.terms', 'Terms'),
                     href: route('home'),
                 },
                 {
-                    label: __('landing.footer.links.resources.items.source_code', 'Source Code'),
+                    label: __('landing.layout.footer.links.resources.items.source_code', 'Source Code'),
                     href: 'https://github.com/HakimFIDJEL/portfolio',
                     target:'_blank',
                 },
@@ -272,7 +272,7 @@ export default function Footer({ appear }: FooterProps) {
                             'translate-x-[0px] sm:translate-x-[2px] md:translate-x-[5px] lg:translate-x-[4px]',
                         )}
                     >
-                        {__('landing.footer.caption', 'Designed, Developped, Deployed and Hosted by')}
+                        {__('landing.layout.footer.caption', 'Designed, Developped, Deployed and Hosted by')}
                     </p>
                     <p
                         className={cn(
@@ -295,7 +295,7 @@ export default function Footer({ appear }: FooterProps) {
                             'translate-x-[0px] sm:translate-x-[2px] md:translate-x-[5px] lg:translate-x-[4px]',
                         )}
                     >
-                        © {new Date().getFullYear()} Hakim Fidjel. {__('landing.footer.copyright', 'All rights reserved.')}
+                        © {new Date().getFullYear()} Hakim Fidjel. {__('landing.layout.footer.copyright', 'All rights reserved.')}
                     </p>
                 </div>
             </footer>

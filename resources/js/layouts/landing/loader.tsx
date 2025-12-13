@@ -55,7 +55,7 @@ export default function Loader({ showLoader, showLoaderContent }: LoaderProps) {
                     background="background"
                 >
                     <h1 className="text-4xl font-light sm:text-5xl">
-                        {__('landing.loader.intro', "Hi, I'm Hakim")}
+                        {__('landing.layout.loader.intro', "Hi, I'm Hakim")}
                     </h1>
                 </Curtain>
                 <Curtain
@@ -64,7 +64,7 @@ export default function Loader({ showLoader, showLoaderContent }: LoaderProps) {
                     background="background"
                 >
                     <h1 className="text-4xl font-normal sm:text-5xl">
-                        {__('landing.loader.intro', "Hi, I'm Hakim")}
+                        {__('landing.layout.loader.intro', "Hi, I'm Hakim")}
                     </h1>
                 </Curtain>
                 <Curtain
@@ -73,7 +73,7 @@ export default function Loader({ showLoader, showLoaderContent }: LoaderProps) {
                     background="background"
                 >
                     <h1 className="text-4xl font-medium sm:text-5xl">
-                        {__('landing.loader.intro', "Hi, I'm Hakim")}
+                        {__('landing.layout.loader.intro', "Hi, I'm Hakim")}
                     </h1>
                 </Curtain>
             </div>

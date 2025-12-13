@@ -120,11 +120,11 @@ function NavigationContent({
 
     const links: Link[] = useMemo(
         () => [
-            { index: '01', href: '#top', label: __('landing.navigation.home', 'Home'), show: false },
-            { index: '02', href: '#about', label: __('landing.navigation.about', 'About'), show: false },
-            { index: '03', href: '#projects', label: __('landing.navigation.projects', 'Projects'), show: false },
-            { index: '04', href: '#sandbox', label: __('landing.navigation.sandbox', 'Sandbox'), show: false },
-            { index: '05', href: '#contact', label: __('landing.navigation.contact', 'Contact'), show: false },
+            { index: '01', href: '#top', label: __('landing.layout.navigation.home', 'Home'), show: false },
+            { index: '02', href: '#about', label: __('landing.layout.navigation.about', 'About'), show: false },
+            { index: '03', href: '#projects', label: __('landing.layout.navigation.projects', 'Projects'), show: false },
+            { index: '04', href: '#sandbox', label: __('landing.layout.navigation.sandbox', 'Sandbox'), show: false },
+            { index: '05', href: '#contact', label: __('landing.layout.navigation.contact', 'Contact'), show: false },
         ],
         [],
     );

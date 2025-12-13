@@ -127,7 +127,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
                     onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'), 'contact')}
                     href={currentUrl === homePath ? '#contact' : route('home')}
                 >
-                    {__('landing.header.contact', 'Contact')}
+                    {__('landing.layout.header.contact', 'Contact')}
                 </UnderlineLink>
             </div>
         </header>
