@@ -13,11 +13,33 @@ import type {
 // Mocks
 // --------------------------------
 
-export const mockTag: Tags = {
-    id: 1,
-    sort_order: 1,
-    name: 'JavaScript',
-};
+export const mockTags: Tags[] = [
+    {
+        id: 1,
+        sort_order: 1,
+        name: 'Mobile Application',
+    },
+    {
+        id: 2,
+        sort_order: 2,
+        name: 'Web Application',
+    },
+    {
+        id: 3,
+        sort_order: 3,
+        name: 'Website',
+    },
+    {
+        id: 4,
+        sort_order: 4,
+        name: 'API',
+    },
+    {
+        id: 5,
+        sort_order: 5,
+        name: 'Script',
+    }
+];
 
 export const mockStacks: Stacks[] = [
     {
@@ -523,113 +545,10 @@ export const mockProjects: Project[] = [
         feedback: 'Some feedback about the project.',
         what_i_learned: 'Key learnings from the project.',
         attachments: mockAttachments,
-        tags: [mockTag],
+        tags: mockTags,
         stacks: mockStacks[0].items.concat(mockStacks[1].items),
         end_date: null,
         created_at: '2024-01-01T00:00:00Z',
         updated_at: '2024-01-01T00:00:00Z',
     },
 ];
-
-// const stack = [
-//     {
-//         category: 'Frontend',
-//         technologies: [
-//             'HTML',
-//             'CSS',
-//             'SCSS',
-//             'Tailwind',
-//             'JavaScript',
-//             'TypeScript',
-//             'React',
-//             'jQuery',
-//             'Next.js',
-//         ],
-//     },
-//     {
-//         category: 'Backend',
-//         technologies: [
-//             'PHP',
-//             'Laravel',
-//             'OctoberCMS',
-//             'Node.js',
-//             'NestJS',
-//             'Express.js',
-//             'Inertia.js',
-//         ],
-//     },
-//     {
-//         category: 'Databases',
-//         technologies: [
-//             'MySQL',
-//             'PostgreSQL',
-//             'PL/SQL',
-//             'NoSQL',
-//             'SQLite',
-//             'MongoDB',
-//         ],
-//     },
-//     {
-//         category: 'Software',
-//         technologies: ['C', 'Java', 'Python', 'Bash'],
-//     },
-//     {
-//         category: 'Mobile',
-//         technologies: ['React Native', 'Flutter'],
-//     },
-// ];
-
-// const tools = [
-//     {
-//         category: 'IDE',
-//         technologies: [
-//             'VS Code',
-//             'Visual Studio',
-//             'Sublime Text',
-//             'Notepad++',
-//             'Nano',
-//             'Vim',
-//             'PhpStorm',
-//             'IntelliJ IDEA',
-//             'PyCharm',
-//         ],
-//     },
-//     {
-//         category: 'DevOps',
-//         technologies: [
-//             'Docker',
-//             'Git',
-//             'GitHub Actions',
-//             'CI/CD',
-//             'Nginx',
-//             'Apache',
-//             'Kafka',
-//             'Nifi',
-//         ],
-//     },
-//     {
-//         category: 'Databases',
-//         technologies: [
-//             'PhpMyAdmin',
-//             'PgAdmin',
-//             'Datagrip',
-//             'MongoDB',
-//             'DataBricks',
-//         ],
-//     },
-//     {
-//         category: 'Tools',
-//         technologies: [
-//             'Postman',
-//             'Figma',
-//             'Docker Desktop',
-//             'Docs',
-//             'Sheets',
-//             'Slides',
-//             'Canva',
-//             'Trello',
-//             'Draw.io',
-//             'ClickUp',
-//         ],
-//     },
-// ];
