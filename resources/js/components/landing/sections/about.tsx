@@ -469,10 +469,10 @@ function AccordionAbout({
     const __ = useTrans();
 
     const quotes = [
-        __('landing.about.tabs.about.p_1', "“Aiming to build the future one line of code at a time.”"),
-        __('landing.about.tabs.about.p_2', "“It's never a bug, it's a feature.”"),
-        __('landing.about.tabs.about.p_3', "“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”"),
-        __('landing.about.tabs.about.p_4', "“If it’s not broken, do not fix it.”"),
+        __('landing.about.tabs.about.quote_1', "“Aiming to build the future one line of code at a time.”"),
+        __('landing.about.tabs.about.quote_2', "“It's never a bug, it's a feature.”"),
+        __('landing.about.tabs.about.quote_3', "“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”"),
+        __('landing.about.tabs.about.quote_4', "“If it’s not broken, do not fix it.”"),
     ];
 
     return (
@@ -599,6 +599,9 @@ function AccordionWork({
     appear,
     experiences,
 }: AccordionWorkProps) {
+
+    const __ = useTrans();
+
     return (
         <AccordionItem
             index={index}
@@ -699,9 +702,7 @@ function AccordionWork({
                         'text-base font-medium md:text-lg',
                     )}
                 >
-                    These roles have sharpened my ability to deliver efficient,
-                    innovative solutions while adapting to diverse professional
-                    environments.
+                    {__('landing.about.tabs.experience.description', 'These roles have sharpened my ability to deliver efficient, innovative solutions while adapting to diverse professional environments.')}
                 </div>
             </div>
         </AccordionItem>
@@ -720,6 +721,9 @@ function AccordionSchool({
     appear,
     educations,
 }: AccordionSchoolProps) {
+
+    const __ = useTrans();
+
     return (
         <AccordionItem
             index={index}
@@ -820,9 +824,7 @@ function AccordionSchool({
                         'text-base font-medium md:text-lg',
                     )}
                 >
-                    These experiences have shaped my technical and analytical
-                    mindset, preparing me for future challenges in the tech
-                    world.
+                    {__('landing.about.tabs.education.description', 'These experiences have shaped my technical and analytical mindset, preparing me for future challenges in the tech world.')}
                 </div>
             </div>
         </AccordionItem>

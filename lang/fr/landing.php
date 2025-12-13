@@ -45,11 +45,17 @@ return [
             'about' => [
                 'title' => 'À propos de moi',
                 'my_philosophy' => 'Ma philosophie',
-                'p_1' => "“Viser à construire l'avenir une ligne de code à la fois.”",
-                'p_2' => "“Ce n'est jamais un bug, c'est une fonctionnalité.”",
-                'p_3' => "“Mon parcours équilibre expertise dans les outils que je connais et enthousiasme pour ceux que je n'ai pas encore explorés.”",
-                'p_4' => "“Si ce n'est pas cassé, ne le réparez pas.”",
+                'quote_1' => "“Viser à construire l'avenir une ligne de code à la fois.”",
+                'quote_2' => "“Ce n'est jamais un bug, c'est une fonctionnalité.”",
+                'quote_3' => "“Mon parcours équilibre expertise dans les outils que je connais et enthousiasme pour ceux que je n'ai pas encore explorés.”",
+                'quote_4' => "“Si ce n'est pas cassé, ne le réparez pas.”",
                 'button' => "Télécharger mon CV",
+            ],
+            'experience' => [
+                'description' => "Ces rôles ont affiné ma capacité à fournir des solutions efficaces et innovantes tout en m'adaptant à divers environnements professionnels.",
+            ],
+            'education' => [
+                'description' => "Ces expériences ont façonné mon esprit technique et analytique, me préparant aux défis futurs dans le monde de la technologie.",
             ],
         ],
     ],

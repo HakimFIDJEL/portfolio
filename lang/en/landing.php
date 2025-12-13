@@ -45,12 +45,18 @@ return [
             'about' => [
                 'title' => 'About Me',
                 'my_philosophy' => 'My Philosophy',
-                'p_1' => "“Aiming to build the future one line of code at a time.”",
-                'p_2' => "“It's never a bug, it's a feature.”",
-                'p_3' => "“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”",
-                'p_4' => "“If it’s not broken, do not fix it.”",
+                'quote_1' => "“Aiming to build the future one line of code at a time.”",
+                'quote_2' => "“It's never a bug, it's a feature.”",
+                'quote_3' => "“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”",
+                'quote_4' => "“If it’s not broken, do not fix it.”",
                 'button' => "Download my resume",
+            ], 
+            'experience' => [
+                'description' => 'These roles have sharpened my ability to deliver efficient, innovative solutions while adapting to diverse professional environments.',
             ],
+            'education' => [
+                'description' => 'These experiences have shaped my technical and analytical mindset, preparing me for future challenges in the tech world.',
+            ]
         ],
     ],
 
