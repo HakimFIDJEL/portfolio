@@ -117,6 +117,13 @@ return [
             'p_2' => 'petits projets ici.',
             'skip' => 'Passer',
         ],
+
+        'contact' => [
+            'h2' => 'Contact',
+            'p_1' => "Faisons connaissance, non ?",
+            'p_2' => "Contactez-moi pour parler de projets, d'offres d'emploi, ou même d'une bonne partie de jeu. Je réponds rapidement !",
+            'top' => 'Retour en haut',
+        ],
     ],
 
     'projects' => [

@@ -118,6 +118,13 @@ return [
             'p_2' => 'small projects here.',
             'skip' => 'Skip',
         ],
+
+        'contact' => [
+            'h2' => 'Contact',
+            'p_1' => "Let's get in touch shall we ?",
+            'p_2' => "Reach out to talk projects, job offers, or even a good game. I'm quick to reply!",
+            'top' => 'Back to top',
+        ],
     ],
 
     'projects' => [

@@ -18,11 +18,17 @@ import { ArrowUpRight } from 'lucide-react';
 // Types
 import { type Contact as ContactType } from '@/types';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface ContactProps {
     appear: boolean;
     contacts: ContactType[];
 }
 export default function Contact({ appear, contacts }: ContactProps) {
+
+    const __ = useTrans();
+
     return (
         <section
             className={cn(
@@ -59,7 +65,7 @@ export default function Contact({ appear, contacts }: ContactProps) {
                             'text-4xl sm:text-7xl',
                         )}
                     >
-                        Contact
+                        {__('landing.landing.contact.h2', 'Contact')}
                     </h2>
                 </FadeIn>
 
@@ -79,7 +85,9 @@ export default function Contact({ appear, contacts }: ContactProps) {
                         background="background"
                         delay={250}
                     >
-                        <p>Let's get in touch shall we ?</p>
+                        <p>
+                            {__('landing.landing.contact.p_1', "Let's get in touch shall we ?")}
+                        </p>
                     </Curtain>
                     <Curtain
                         showCurtain={!appear}
@@ -98,7 +106,7 @@ export default function Contact({ appear, contacts }: ContactProps) {
                                 'md:translate-x-[8px]',
                             )}
                         >
-                            Back to top
+                            {__('landing.landing.contact.top', 'Back to top')}
                             <ArrowUpRight
                                 size={32}
                                 className="stroke-1 transition-all group-hover:-rotate-45 group-focus-visible:-rotate-45"
@@ -139,8 +147,7 @@ export default function Contact({ appear, contacts }: ContactProps) {
                             delay={250}
                         >
                             <p>
-                                Reach out to talk projects, job offers, or even
-                                a good game. I'm quick to reply.
+                                {__('landing.landing.contact.p_2', "Reach out to talk projects, job offers, or even a good game. I'm quick to reply.")}
                             </p>
                         </Curtain>
                     </div>
