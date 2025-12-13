@@ -45,7 +45,9 @@ export const mockStacks: Stack[] = [
     {
         id: 1,
         sort_order: 1,
-        name: 'Frontend',
+        name: '',
+        name_fr: 'Frontend',
+        name_en: 'Frontend',
         items: [
             {
                 id: 1,
@@ -97,7 +99,9 @@ export const mockStacks: Stack[] = [
     {
         id: 2,
         sort_order: 2,
-        name: 'Backend',
+        name: '',
+        name_fr: 'Backend',
+        name_en: 'Backend',
         items: [
             {
                 id: 1,
@@ -139,7 +143,9 @@ export const mockStacks: Stack[] = [
     {
         id: 3,
         sort_order: 3,
-        name: 'Databases',
+        name: '',
+        name_en: 'Databases',
+        name_fr: 'Bases de données',
         items: [
             {
                 id: 1,
@@ -176,7 +182,9 @@ export const mockStacks: Stack[] = [
     {
         id: 4,
         sort_order: 4,
-        name: 'Software',
+        name: '',
+        name_en: 'Software',
+        name_fr: 'Logiciel',
         items: [
             {
                 id: 1,
@@ -203,7 +211,9 @@ export const mockStacks: Stack[] = [
     {
         id: 5,
         sort_order: 5,
-        name: 'Mobile',
+        name: '',
+        name_en: 'Mobile',
+        name_fr: 'Mobile',
         items: [
             {
                 id: 1,
@@ -228,7 +238,9 @@ export const mockTools: Tool[] = [
     {
         id: 1,
         sort_order: 1,
-        name: 'IDE',
+        name: '',
+        name_en: 'IDE',
+        name_fr: 'IDE',
         items: [
             {
                 id: 1,
@@ -280,7 +292,9 @@ export const mockTools: Tool[] = [
     {
         id: 2,
         sort_order: 2,
-        name: 'DevOps',
+        name: '',
+        name_en: 'DevOps',
+        name_fr: 'DevOps',
         items: [
             {
                 id: 1,
@@ -327,7 +341,9 @@ export const mockTools: Tool[] = [
     {
         id: 3,
         sort_order: 3,
-        name: 'Databases',
+        name: '',
+        name_en: 'Databases',
+        name_fr: 'Bases de données',
         items: [
             {
                 id: 1,
@@ -359,7 +375,9 @@ export const mockTools: Tool[] = [
     {
         id: 4,
         sort_order: 4,
-        name: 'Tools',
+        name: '',
+        name_en: 'Tools',
+        name_fr: 'Outils',
         items: [
             {
                 id: 1,

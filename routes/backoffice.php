@@ -35,6 +35,7 @@ Route::prefix('backoffice/')->name('backoffice.')->middleware(['auth', 'verified
     Route::resource('tools', ToolsController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
+    Route::post('tools/sort', [ToolsController::class, 'sort'])->name('tools.sort');
     
     // ------------------------------------------------------------------ //
     //                          Tags Routes
