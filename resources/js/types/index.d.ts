@@ -143,7 +143,7 @@ export interface Project {
     what_i_learned: string | null;
 
     tags: Tags[];
-    stacks: Stacks[];
+    stacks: StacksItem[];
 
     end_date: string | null;
     created_at: string;

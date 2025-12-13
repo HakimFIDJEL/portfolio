@@ -62,6 +62,7 @@ export default function RoundedButton({
                     'transition-all flex items-center justify-center',
                     'h-max',
                     'relative z-1',
+                    'w-[24px]',
                     isClicked && 'scale-75 opacity-75',
                 )}
             >

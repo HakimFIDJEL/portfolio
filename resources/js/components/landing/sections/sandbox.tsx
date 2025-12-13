@@ -237,6 +237,9 @@ function SandboxItem({
     handleClick,
     dialog_open,
 }: SandboxItemProps) {
+
+    const __ = useTrans();
+
     return (
         <button
             className={cn(
@@ -315,12 +318,7 @@ function SandboxItem({
             </h4>
 
             {/* Description */}
-            <p
-                className={
-                    cn()
-                    // Default styles
-                }
-            >
+            <p>
                 {project.subtitle}
             </p>
 
@@ -328,12 +326,7 @@ function SandboxItem({
 
             {/* Date */}
             {project.end_date ? (
-                <time
-                    className={
-                        cn()
-                        // Default styles
-                    }
-                >
+                <time>
                     {new Date(project.end_date).toLocaleDateString(undefined, {
                         year: 'numeric',
                         month: 'numeric',
@@ -351,7 +344,7 @@ function SandboxItem({
                         'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
                     )}
                 >
-                    Ongoing
+                    {__('landing.projects.sections.ongoing', 'Ongoing')}
                 </span>
             )}
         </button>

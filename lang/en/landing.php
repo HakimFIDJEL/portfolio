@@ -128,12 +128,18 @@ return [
     ],
 
     'projects' => [
+
+        'hero' => [
+            'h2' => 'Project',
+        ],
+
         'sections' => [
             'tech_stack' => 'Tech Stack',
             'description' => 'Description',
             'attachments' => 'Attachments',
             'feedback' => 'Feedback',
             'what_i_learned' => 'What I Learned',
+            'ongoing' => 'Ongoing',
         ],
     ],
 ];

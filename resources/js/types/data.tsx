@@ -521,7 +521,7 @@ export const mockProjects: Project[] = [
         what_i_learned: 'Key learnings from the project.',
         attachments: mockAttachments,
         tags: [mockTag],
-        stacks: mockStacks,
+        stacks: mockStacks[0].items.concat(mockStacks[1].items),
         end_date: null,
         created_at: '2024-01-01T00:00:00Z',
         updated_at: '2024-01-01T00:00:00Z',

@@ -127,12 +127,18 @@ return [
     ],
 
     'projects' => [
+
+        'hero' => [
+            'h2' => 'Projet',
+        ],
+
         'sections' => [
             'tech_stack' => 'Stack Technologique',
             'description' => 'Description',
             'attachments' => 'Pièces jointes',
             'feedback' => 'Retour',
             'what_i_learned' => "Ce que j'ai appris",
+            'ongoing' => 'En cours'
         ],
     ],
 

@@ -27,6 +27,10 @@ import {
 // Types
 import { Project } from '@/types';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+import LanguageToggle from '@/components/landing/language-toggle';
+
 interface HeroProps {
     appear: boolean;
     project: Project;
@@ -34,6 +38,7 @@ interface HeroProps {
 
 export default function Hero({ appear, project }: HeroProps) {
     const { appearance, updateAppearance } = useAppearance();
+    const __ = useTrans();
 
     function handleSwitchAppearance() {
         const newAppearance =
@@ -128,7 +133,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                     'p-0 md:pb-1 lg:pb-2.5 xl:pb-3',
                                 )}
                             >
-                                Project
+                                {__('landing.projects.hero.h2', 'Project')}
                             </h2>
                         </Curtain>
                         <Curtain
@@ -178,7 +183,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                             day: 'numeric',
                                         })
                                     ) : (
-                                        <>Ongoing</>
+                                        __('landing.projects.sections.ongoing', 'Ongoing')
                                     )}
                                 </span>
                             </div>
@@ -292,15 +297,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                     </RoundedButton>
                                 </Magnet>
                             </Curtain>
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
-                                delay={1250}
-                            >
-                                <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton>EN</RoundedButton>
-                                </Magnet>
-                            </Curtain>
+                            <LanguageToggle appear={appear} delay={1250} />
                             <Curtain
                                 showCurtain={!appear}
                                 background="background"
