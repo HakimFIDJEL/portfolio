@@ -161,11 +161,13 @@ class BackofficeSeeder extends Seeder
         $mockContacts = [
             ['sort_order'=>1,'icon'=>'mail','label'=>'Email','name_fr'=>'hakimfidjel.pro@gmail.com','name_en'=>'hakimfidjel.pro@gmail.com','link'=>'mailto:hakimfidjel.pro@gmail.com'],
             ['sort_order'=>2,'icon'=>'linkedin','label'=>'LinkedIn','name_fr'=>'Hakim Fidjel','name_en'=>'Hakim Fidjel','link'=>'https://www.linkedin.com/in/hakim-fidjel/'],
+            ['sort_order'=>3,'icon'=>'github','label'=>'GitHub','name_fr'=>'HakimFIDJEL','name_en'=>'HakimFIDJEL','link'=>'https://github.com/hakimfidjel'],
+            ['sort_order'=>4,'icon'=>'gitlab','label'=>'GitLab','name_fr'=>'HakimFIDJEL','name_en'=>'HakimFIDJEL','link'=>'https://gitlab.com/hakimfidjel'],
         ];
 
         foreach ($mockContacts as $contact) {
             Contact::firstOrCreate(
-                ['name_fr'=>$contact['name_fr']],
+                ['sort_order'=>$contact['sort_order']],
                 $contact
             );
         }

@@ -61,7 +61,8 @@ Route::prefix('backoffice/')->name('backoffice.')->middleware(['auth', 'verified
     //                          Contacts Routes
     // ------------------------------------------------------------------ //
     Route::resource('contacts', ContactsController::class)->only([
-        'index', 'show', 'destroy'
+        'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
+    Route::post('contacts/sort', [ContactsController::class, 'sort'])->name('contacts.sort');
 
 });

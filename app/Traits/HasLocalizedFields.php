@@ -27,4 +27,11 @@ trait HasLocalizedFields
 
         return parent::setAttribute($key, $value);
     }
+
+    public function getLocalizedField($field)
+    {
+        $locale = Session::get('locale', 'en');
+        $localizedKey = "{$field}_{$locale}";
+        return $this->attributes[$localizedKey] ?? null;
+    }
 }

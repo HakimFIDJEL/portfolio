@@ -4,7 +4,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Backoffice\Contact;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
@@ -22,7 +22,12 @@ class Landing extends Controller
      * 
      */
     public function landing() {
-        return Inertia::render('landing');
+
+        $contacts = Contact::orderBy('sort_order', 'asc')->get();
+
+        return Inertia::render('landing', [
+            'contacts' => $contacts
+        ]);
     }
 
     public function project(string $slug) {

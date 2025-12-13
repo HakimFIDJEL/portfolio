@@ -2,7 +2,6 @@
 
 // Necessary imports
 import { Link, router, usePage } from '@inertiajs/react';
-import { type ComponentPropsWithoutRef } from 'react';
 
 // Hooks
 import { useInitials } from '@/hooks/use-initials';
@@ -28,7 +27,6 @@ import {
     SidebarContent,
     SidebarFooter,
     SidebarGroup,
-    SidebarGroupContent,
     SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
@@ -36,9 +34,6 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-
-// Custom components
-import { Icon } from '@/components/icon';
 
 // Types
 import type { NavItem, SharedData, User } from '@/types';
@@ -65,8 +60,6 @@ interface UserMenuContentProps {
 }
 
 export function AppSidebar() {
-    const __ = useTrans();
-
 
     // Sidebar menus
     const mainNavItems: NavItem[] = [

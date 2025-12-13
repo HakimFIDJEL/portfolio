@@ -15,12 +15,18 @@ import Sandbox from '@/components/landing/sections/sandbox';
 import Contact from '@/components/landing/sections/contact';
 
 // Mocks
-import { mockStacks, mockTools, mockContacts, mockProjects, mockEducations, mockExperiences } from '@/types/data';
+import { mockStacks, mockTools, mockProjects, mockEducations, mockExperiences } from '@/types/data';
+import { Contact as ContactType } from '@/types';
 
+interface LandingProps {
+    contacts: ContactType[];
+}
 
-export default function Landing() {
+export default function Landing({ contacts }: LandingProps) {
     // States content
     const [showContent, setShowContent] = useState(false);
+
+    console.log(contacts);
 
     /**
      * Responsive
@@ -38,7 +44,7 @@ export default function Landing() {
                 <About appear={showContent} stacks={mockStacks} tools={mockTools} educations={mockEducations} experiences={mockExperiences} />
                 <Projects appear={showContent} projects={mockProjects} />
                 <Sandbox appear={showContent} projects={mockProjects} />
-                <Contact appear={showContent} contacts={mockContacts}/>
+                <Contact appear={showContent} contacts={contacts}/>
             </main>
         </AppLanding>
     );

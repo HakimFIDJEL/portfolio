@@ -1,21 +1,38 @@
 // resources/js/pages/backoffice/contacts/index.tsx
 
 // Necessary imports
-import { Head } from "@inertiajs/react";
+import { getIcon } from '@/lib/render';
+import { Head, Link, router } from '@inertiajs/react';
+import { toast } from 'sonner';
 
 // Layout
-import AppLayout from "@/layouts/app/layout";
+import AppLayout from '@/layouts/app/layout';
+
+// Shadcn UI Components
+import { SortableTable } from '@/components/sortable-table';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { TableCell } from '@/components/ui/table';
 
 // Types
-import type { BreadcrumbItem, Contact } from "@/types";
+import type { BreadcrumbItem, Contact } from '@/types';
 
+// Icons
+import { Plus } from 'lucide-react';
 
 interface IndexProps {
     contacts: Contact[];
 }
 
-export default function Index({ contacts } : IndexProps) {
-     const breadcrumbs: BreadcrumbItem[] = [
+export default function Index({ contacts }: IndexProps) {
+    const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Dashboard',
             href: route('dashboard'),
@@ -23,13 +40,81 @@ export default function Index({ contacts } : IndexProps) {
         {
             title: 'Contacts',
             href: route('backoffice.contacts.index'),
-        }
+        },
     ];
+
+    function handleSort(updatedContacts: Contact[]) {
+        toast.loading('Sorting contacts...', { id: 'sort_contacts' });
+
+        router.post(
+            route('backoffice.contacts.sort'),
+            {
+                contacts: updatedContacts.map((contact) => ({
+                    id: contact.id,
+                    sort_order: contact.sort_order,
+                })),
+            },
+            {
+                onFinish: () => {
+                    toast.dismiss('sort_contacts');
+                },
+            },
+        );
+    }
+
+    function renderCells(contact: Contact) {
+        return (
+            <>
+                <TableCell>
+                    {getIcon(contact.icon, { className: 'h-5 w-5' })}
+                </TableCell>
+                <TableCell>{contact.label}</TableCell>
+                <TableCell>{contact.link}</TableCell>
+                <TableCell>{contact.name_fr}</TableCell>
+                <TableCell>{contact.name_en}</TableCell>
+            </>
+        );
+    }
+
+    function handleRowClick(contact: Contact) {
+        router.visit(
+            route('backoffice.contacts.edit', { contact: contact.id }),
+        );
+    }
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Contacts</CardTitle>
+                    <CardAction>
+                        <Link href={route('backoffice.contacts.create')}>
+                            <Button>
+                                <Plus />
+                                New contact
+                            </Button>
+                        </Link>
+                    </CardAction>
+                </CardHeader>
+                <Separator />
+                <CardContent>
+                    <SortableTable
+                        entries={contacts}
+                        columns={[
+                            'Icon',
+                            'Label',
+                            'Link',
+                            'Name (FR)',
+                            'Name (EN)',
+                        ]}
+                        handleSort={handleSort}
+                        renderCells={renderCells}
+                        handleRowClick={handleRowClick}
+                    />
+                </CardContent>
+            </Card>
         </AppLayout>
     );
 }

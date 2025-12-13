@@ -98,6 +98,9 @@ export interface Tags {
     id: number;
     sort_order: number;
     name: string;
+
+    name_fr: string;
+    name_en: string;
 }
 
 export interface Stacks {
@@ -105,12 +108,18 @@ export interface Stacks {
     sort_order: number;
     name: string;
     items: StackItem[];
+
+    name_fr: string;
+    name_en: string;
 }
 
 export interface StackItem {
     id: number;
     sort_order: number;
     name: string;
+
+    name_fr: string;
+    name_en: string;
 }
 
 export interface Tools {
@@ -118,12 +127,18 @@ export interface Tools {
     sort_order: number;
     name: string;
     items: ToolItem[];
+
+    name_fr: string;
+    name_en: string;
 }
 
 export interface ToolItem {
     id: number;
     sort_order: number;
     name: string;
+
+    name_fr: string;
+    name_en: string;
 }
 
 export interface Project {
@@ -148,6 +163,17 @@ export interface Project {
     end_date: string | null;
     created_at: string;
     updated_at: string;
+
+    title_fr: string;
+    title_en: string;
+    subtitle_fr: string;
+    subtitle_en: string;
+    description_fr: string | null;
+    description_en: string | null;
+    feedback_fr: string | null;
+    feedback_en: string | null;
+    what_i_learned_fr: string | null;
+    what_i_learned_en: string | null;
 }
 
 export interface Contact {
@@ -157,6 +183,9 @@ export interface Contact {
     label: string;
     name: string;
     link: string;
+
+    name_fr: string;
+    name_en: string;
 }
 
 export interface Experience {
@@ -167,6 +196,13 @@ export interface Experience {
     status: string;
     duration: string;
     description: string;
+
+    job_fr: string;
+    job_en: string;
+    status_fr: string;
+    status_en: string;
+    description_fr: string;
+    description_en: string;
 }
 
 export interface Education {
@@ -176,4 +212,9 @@ export interface Education {
     type: string;
     duration: string;
     description: string;
+
+    type_fr: string;
+    type_en: string;
+    description_fr: string;
+    description_en: string;
 }
