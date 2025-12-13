@@ -163,6 +163,7 @@ export interface Experience {
     id: number;
     sort_order: number;
     company: string;
+    job: string;
     status: string;
     duration: string;
     description: string;

@@ -672,6 +672,16 @@ function AccordionWork({
                                         'text-base',
                                     )}
                                 >
+                                    {exp.job}
+                                </p>
+                                <Separator className='my-1'/>
+                                <p
+                                    className={cn(
+                                        // Default styles
+                                        'font-light',
+                                        'text-base',
+                                    )}
+                                >
                                     {exp.status}
                                 </p>
                                 <p
