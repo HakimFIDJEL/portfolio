@@ -15,18 +15,20 @@ import Sandbox from '@/components/landing/sections/sandbox';
 import Contact from '@/components/landing/sections/contact';
 
 // Mocks
-import { mockStacks, mockTools, mockProjects, mockEducations } from '@/types/data';
+import { mockStacks, mockTools, mockProjects } from '@/types/data';
 import { 
     Contact as ContactType, 
-    Experience as ExperienceType 
+    Experience as ExperienceType,
+    Education as EducationType
 } from '@/types';
 
 interface LandingProps {
     contacts: ContactType[];
     experiences: ExperienceType[];
+    educations: EducationType[];
 }
 
-export default function Landing({ contacts, experiences }: LandingProps) {
+export default function Landing({ contacts, experiences, educations }: LandingProps) {
     // States content
     const [showContent, setShowContent] = useState(false);
 
@@ -43,7 +45,7 @@ export default function Landing({ contacts, experiences }: LandingProps) {
 
             <main>
                 <Hero appear={showContent} />
-                <About appear={showContent} stacks={mockStacks} tools={mockTools} educations={mockEducations} experiences={experiences} />
+                <About appear={showContent} stacks={mockStacks} tools={mockTools} educations={educations} experiences={experiences} />
                 <Projects appear={showContent} projects={mockProjects} />
                 <Sandbox appear={showContent} projects={mockProjects} />
                 <Contact appear={showContent} contacts={contacts}/>

@@ -149,12 +149,50 @@ class BackofficeSeeder extends Seeder
         // ---------------------------
         $mockEducations = [
             [
-                'sort_order'=>1,'institution'=>'IG2I de Centrale Lille Institut',
-                'type_fr'=>'École','type_en'=>'School',
+                'sort_order'=>1,
+                'institution'=>'IG2I de Centrale Lille Institut',
+                'type_fr'=>'École',
+                'type_en'=>'School',
                 'duration'=>'09/21 - Present',
-                'description_fr'=>'Actuellement en 4e année à l\'IG2I Centrale Lille, je poursuis un diplôme d\'ingénieur spécialisé en informatique et génie industriel.',
-                'description_en'=>'Currently in my 4th year at IG2I Centrale Lille, I am pursuing an engineering degree specializing in industrial and computer science.',
-            ]
+                'description_fr'=>'Actuellement en 4e année à l\'IG2I Centrale Lille, je poursuis un diplôme d\'ingénieur spécialisé en informatique et génie industriel. Le programme combine l\'excellence académique avec des applications concrètes via des projets pratiques et des formations professionnelles.',
+                'description_en'=>'Currently in my 4th year at IG2I Centrale Lille, I am pursuing an engineering degree specializing in industrial and computer science. The program combines academic excellence with real-world applications through hands-on projects and professional training.',
+            ],
+            [
+                'sort_order'=>2,
+                'institution'=>'TOEIC',
+                'type_fr'=>'Diplôme',
+                'type_en'=>'Diploma',
+                'duration'=>'01/25',
+                'description_fr'=>'Obtention du score parfait au TOEIC (990/990) en 2025, démontrant une maîtrise complète de l\'anglais professionnel.',
+                'description_en'=>'Achieved a perfect score on the TOEIC (990/990) in 2025, demonstrating complete mastery of professional English.',
+            ],
+            [
+                'sort_order'=>3,
+                'institution'=>'Baccalauréat Scientifique (Spé. Mathématiques et Physique)',
+                'type_fr'=>'Diplôme',
+                'type_en'=>'Diploma',
+                'duration'=>'07/21',
+                'description_fr'=>'Obtention du Baccalauréat Scientifique avec Mention au Lycée Auguste Angellier en 2021. La spécialisation en Mathématiques et Physique a fourni une base analytique solide, alimentant mon intérêt pour la technologie et la résolution de problèmes complexes.',
+                'description_en'=>'I completed my high school studies at Lycée Auguste Angellier, earning a Scientific Baccalaureate with Honors in 2021. My specialization in Mathematics and Physics provided a strong analytical foundation, fueling my interest in technology and complex problem-solving.',
+            ],
+            [
+                'sort_order'=>4,
+                'institution'=>'Cambridge First Certificate (FCE)',
+                'type_fr'=>'Diplôme',
+                'type_en'=>'Diploma',
+                'duration'=>'06/20',
+                'description_fr'=>'Obtention du Cambridge First Certificate en 2020, validant ma maîtrise de l\'anglais au niveau B2. Cette certification reflète ma capacité à communiquer efficacement dans des environnements professionnels et académiques.',
+                'description_en'=>'Earned the Cambridge First Certificate in 2020, validating my English proficiency at a B2 level. This certification reflects my ability to communicate effectively in professional and academic environments.',
+            ],
+            [
+                'sort_order'=>5,
+                'institution'=>'Lycée Auguste Angellier',
+                'type_fr'=>'École',
+                'type_en'=>'School',
+                'duration'=>'09/18 - 07/21',
+                'description_fr'=>'J\'ai effectué mes études secondaires au Lycée Auguste Angellier, obtenant un Baccalauréat Scientifique en 2021. Cette base solide en mathématiques et sciences a suscité ma passion pour la technologie et la résolution de problèmes.',
+                'description_en'=>'I completed my high school studies at Lycée Auguste Angellier, earning a Scientific Baccalaureate in 2021. This solid foundation in mathematics and sciences sparked my passion for technology and problem-solving.',
+            ],
         ];
 
         foreach ($mockEducations as $edu) {

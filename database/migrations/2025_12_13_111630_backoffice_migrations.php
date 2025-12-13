@@ -93,7 +93,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('attachment_project', function (Blueprint $table) {
+        Schema::create('attachment_projects', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
@@ -102,7 +102,7 @@ return new class extends Migration
             $table->unique(['project_id', 'attachment_id']);
         });
 
-        Schema::create('project_tag', function (Blueprint $table) {
+        Schema::create('project_tags', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
@@ -111,7 +111,7 @@ return new class extends Migration
             $table->unique(['project_id', 'tag_id']);
         });
 
-        Schema::create('project_stack_item', function (Blueprint $table) {
+        Schema::create('project_stack_items', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
@@ -154,7 +154,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('education', function (Blueprint $table) {
+        Schema::create('educations', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('sort_order')->default(0);
 
@@ -177,6 +177,17 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('educations');
+        Schema::dropIfExists('experiences');
+        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('project_stack_items');
+        Schema::dropIfExists('project_tags');
+        Schema::dropIfExists('attachment_projects');
+        Schema::dropIfExists('projects');
+        Schema::dropIfExists('tool_items');
+        Schema::dropIfExists('tools');
+        Schema::dropIfExists('stack_items');
+        Schema::dropIfExists('stacks');
+        Schema::dropIfExists('tags');
     }
 };

@@ -9,6 +9,8 @@ class Education extends Model
 {
     use HasLocalizedFields;
 
+    protected $table = 'educations';
+
     protected $fillable = [
         'sort_order', 'institution', 'type_fr', 'type_en', 
         'duration', 'description_fr', 'description_en'

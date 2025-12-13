@@ -49,6 +49,7 @@ Route::prefix('backoffice/')->name('backoffice.')->middleware(['auth', 'verified
     Route::resource('educations', EducationsController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
+    Route::post('educations/sort', [EducationsController::class, 'sort'])->name('educations.sort');
     
     // ------------------------------------------------------------------ //
     //                          Experience Routes

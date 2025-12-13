@@ -1,4 +1,4 @@
-// resources/js/pages/backoffice/contacts/index.tsx
+// resources/js/pages/backoffice/educations/index.tsx
 
 // Necessary imports
 import { getIcon } from '@/lib/render';
@@ -22,62 +22,59 @@ import { Separator } from '@/components/ui/separator';
 import { TableCell } from '@/components/ui/table';
 
 // Types
-import type { BreadcrumbItem, Contact } from '@/types';
+import type { BreadcrumbItem, Contact, Education, Experience } from '@/types';
 
 // Icons
 import { Plus } from 'lucide-react';
 
 interface IndexProps {
-    contacts: Contact[];
+    educations: Education[];
 }
 
-export default function Index({ contacts }: IndexProps) {
+export default function Index({ educations }: IndexProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Dashboard',
             href: route('dashboard'),
         },
         {
-            title: 'Contacts',
-            href: route('backoffice.contacts.index'),
+            title: 'Educations',
+            href: route('backoffice.educations.index'),
         },
     ];
 
-    function handleSort(updatedContacts: Contact[]) {
-        toast.loading('Sorting contacts...', { id: 'sort_contacts' });
+    function handleSort(updatedEducations: Education[]) {
+        toast.loading('Sorting educations...', { id: 'sort_educations' });
 
         router.post(
-            route('backoffice.contacts.sort'),
+            route('backoffice.educations.sort'),
             {
-                contacts: updatedContacts.map((contact) => ({
-                    id: contact.id,
-                    sort_order: contact.sort_order,
+                educations: updatedEducations.map((education) => ({
+                    id: education.id,
+                    sort_order: education.sort_order,
                 })),
             },
             {
                 onFinish: () => {
-                    toast.dismiss('sort_contacts');
+                    toast.dismiss('sort_educations');
                 },
             },
         );
     }
 
-    function renderCells(contact: Contact) {
+    function renderCells(education: Education) {
         return (
             <>
-                <TableCell>
-                    {getIcon(contact.icon, { className: 'h-5 w-5' })}
-                </TableCell>
-                <TableCell>{contact.label}</TableCell>
-                <TableCell>{contact.link}</TableCell>
-                <TableCell>{contact.name}</TableCell>
+                <TableCell>{education.institution}</TableCell>
+                <TableCell>{education.type}</TableCell>
+                <TableCell>{education.duration}</TableCell>
             </>
         );
     }
 
-    function handleRowClick(contact: Contact) {
+    function handleRowClick(education: Education) {
         router.visit(
-            route('backoffice.contacts.edit', { contact: contact.id }),
+            route('backoffice.educations.edit', { education: education.id }),
         );
     }
 
@@ -87,12 +84,12 @@ export default function Index({ contacts }: IndexProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Contacts</CardTitle>
+                    <CardTitle>Educations</CardTitle>
                     <CardAction>
-                        <Link href={route('backoffice.contacts.create')}>
+                        <Link href={route('backoffice.educations.create')}>
                             <Button>
                                 <Plus />
-                                New contact
+                                New education
                             </Button>
                         </Link>
                     </CardAction>
@@ -100,12 +97,11 @@ export default function Index({ contacts }: IndexProps) {
                 <Separator />
                 <CardContent>
                     <SortableTable
-                        entries={contacts}
+                        entries={educations}
                         columns={[
-                            'Icon',
-                            'Label',
-                            'Link',
-                            'Value',
+                            'Institution',
+                            'Type',
+                            'Duration',
                         ]}
                         handleSort={handleSort}
                         renderCells={renderCells}

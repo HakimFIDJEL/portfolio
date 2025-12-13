@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 // Models
 use App\Models\Backoffice\Contact;
 use App\Models\Backoffice\Experience;
+use App\Models\Backoffice\Education;
 
 /**
  * Landing Page Controller
@@ -28,10 +29,12 @@ class Landing extends Controller
 
         $contacts = Contact::orderBy('sort_order', 'asc')->get();
         $experiences = Experience::orderBy('sort_order', 'asc')->get();
+        $educations = Education::orderBy('sort_order', 'asc')->get();
 
         return Inertia::render('landing', [
             'contacts' => $contacts,
-            'experiences' => $experiences
+            'experiences' => $experiences,
+            'educations' => $educations
         ]);
     }
 
