@@ -11,8 +11,8 @@ import { useTrans } from '@/lib/translation';
 import CircularText from '@/components/landing/circular-text';
 import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
-import RoundedButton from '@/components/landing/rounded-button';
 import LanguageToggle from '@/components/landing/language-toggle';
+import RoundedButton from '@/components/landing/rounded-button';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
@@ -40,7 +40,10 @@ export default function Hero({ appear }: HeroProps) {
     }
 
     return (
-        <section className="flex h-[calc(100vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]" id='hero'>
+        <section
+            className="flex h-[calc(100vh-73px)] flex-col justify-between lg:h-[calc(100vh-105px)]"
+            id="hero"
+        >
             <Delimiter
                 dashedBorders={['top', 'bottom']}
                 plusCorners={['top-left', 'top-right']}
@@ -59,7 +62,7 @@ export default function Hero({ appear }: HeroProps) {
                 <div
                     className={cn(
                         // Responsive styles
-                        'px-4 sm:px-8 md:px-10 lg:px-12.5 overflow-hidden',
+                        'overflow-hidden px-4 sm:px-8 md:px-10 lg:px-12.5',
                     )}
                 >
                     <Curtain
@@ -68,7 +71,10 @@ export default function Hero({ appear }: HeroProps) {
                         delay={250}
                     >
                         <CircularText
-                            text={__('landing.landing.hero.circularText', "Welcome to my portfolio ~ ")}
+                            text={__(
+                                'landing.landing.hero.circularText',
+                                'Welcome to my portfolio ~ ',
+                            )}
                             onHover={'slowDown'}
                             spinDuration={20}
                             className={cn(
@@ -127,8 +133,10 @@ export default function Hero({ appear }: HeroProps) {
                                 'p-0 sm:pb-1 md:pb-2 lg:pb-2.5 xl:pb-3',
                             )}
                         >
-                            {__('landing.landing.hero.h2', 'Fullstack Engineer')}
-                            
+                            {__(
+                                'landing.landing.hero.h2',
+                                'Fullstack Engineer',
+                            )}
                         </h2>
                     </Curtain>
                 </div>
@@ -177,7 +185,13 @@ export default function Hero({ appear }: HeroProps) {
                             </RoundedButton>
                         </Magnet>
                     </Curtain>
-                    <LanguageToggle appear={appear} delay={1000} />
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={1000}
+                    >
+                        <LanguageToggle />
+                    </Curtain>
                 </Delimiter>
             </div>
         </section>

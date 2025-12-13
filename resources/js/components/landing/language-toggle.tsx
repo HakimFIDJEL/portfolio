@@ -14,12 +14,7 @@ import { useLandingContext } from '@/contexts/use-landing-context';
 // Types
 import { SharedData } from '@/types';
 
-interface LanguageToggleProps {
-    appear?: boolean;
-    delay?: number;
-}
-
-export default function LanguageToggle({ appear, delay }: LanguageToggleProps) {
+export default function LanguageToggle() {
 
     const locale = usePage<SharedData>().props.locale;  
 
@@ -35,14 +30,12 @@ export default function LanguageToggle({ appear, delay }: LanguageToggleProps) {
     }
 
     return (
-        <Curtain showCurtain={!appear} background="background" delay={delay}>
-            <Magnet magnetStrength={3} padding={20}>
-                <a onClick={(e) => handleProjectClick(e, route('toggle_language'))} tabIndex={-1}>
-                    <RoundedButton>
-                        {locale.toUpperCase()}
-                    </RoundedButton>
-                </a>
-            </Magnet>
-        </Curtain>
+        <Magnet magnetStrength={3} padding={20}>
+            <a onClick={(e) => handleProjectClick(e, route('toggle_language'))} tabIndex={-1}>
+                <RoundedButton>
+                    {locale.toUpperCase()}
+                </RoundedButton>
+            </a>
+        </Magnet>
     );
 }

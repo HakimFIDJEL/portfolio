@@ -169,7 +169,7 @@ export default function Footer({ appear }: FooterProps) {
                                 'col-span-1 flex flex-col gap-4',
                             )}
                         >
-                            <FadeIn show={appear} delay={250}>
+                            <FadeIn show={appear} delay={125}>
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton>
                                         <a href="#top" tabIndex={-1}>
@@ -178,7 +178,7 @@ export default function Footer({ appear }: FooterProps) {
                                     </RoundedButton>
                                 </Magnet>
                             </FadeIn>
-                            <FadeIn show={appear} delay={500}>
+                            <FadeIn show={appear} delay={250}>
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
                                         onClick={handleSwitchAppearance}
@@ -195,7 +195,9 @@ export default function Footer({ appear }: FooterProps) {
                                     </RoundedButton>
                                 </Magnet>
                             </FadeIn>
-                            <LanguageToggle appear={appear} delay={750} />
+                            <FadeIn show={appear} delay={375}>
+                                <LanguageToggle />
+                            </FadeIn>
                         </div>
 
                         {links.map((linkGroup, index) => (

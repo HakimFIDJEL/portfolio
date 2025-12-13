@@ -52,51 +52,54 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
+import { cubicBezier, useInView } from 'framer-motion';
 import React from 'react';
-import { cubicBezier, motion, useInView } from "framer-motion"
 
 interface CurtainProps {
-  showCurtain: boolean
-  children: React.ReactNode
-  className?: string
-  background?: string
-  delay?: number
+    showCurtain: boolean;
+    children: React.ReactNode;
+    className?: string;
+    background?: string;
+    delay?: number;
 }
 
 export default function Curtain({
-  showCurtain,
-  children,
-  className,
-  background,
-  delay = 0,
+    showCurtain,
+    children,
+    className,
+    background,
+    delay = 0,
 }: CurtainProps) {
-  const ref = React.useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { amount: 0.1, once: true })
+    const ref = React.useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, { amount: 0.1, once: true });
 
-  const easing = cubicBezier(0.25, 0.38, 0, 0.99);
+    const show = !showCurtain;
 
-  const show = !showCurtain;
-//   const show = true;
+    return (
+        <div
+            ref={ref}
+            className={cn('relative', className)}
+        >
+            <div
+                className={cn(
+                    'relative transition-transform duration-1000',
+                    isInView && show ? 'translate-y-0' : '-translate-y-1/2',
+                )}
+                style={{ transitionDelay: isInView ? `${delay}ms` : '0ms' }}
+            >
+                {children}
+            </div>
 
-  return (
-    <div ref={ref} className={cn("relative w-max", className)}>
-      {/* Contenu */}
-      <motion.div
-        initial={{ y: "-50%" }}
-        animate={isInView && show ? { y: "0%" } : { y: "-50%" }}
-        transition={{ duration:  1, ease: easing, delay: isInView ? (delay / 1000) : 0 }}
-        className="relative"
-      >
-        {children}
-      </motion.div>
-
-      {/* Rideau */}
-      <motion.div
-        initial={{ top: "-55%", bottom: 0 }}
-        animate={isInView && show ? { top: "0%", bottom: "100%" } : { top: "-55%", bottom: 0 }}
-        transition={{ duration: 1,  ease: easing, delay: isInView ? delay / 1000 : 0 }}
-        className={cn("absolute right-[-1px] left-[-1px] top-[-55%] bottom-0", background ? `bg-${background}` : "bg-card")}
-      ></motion.div>
-    </div>
-  )
+            <div
+                className={cn(
+                    'absolute inset-x-[-1px] transition-all duration-1500',
+                    isInView && show
+                        ? 'top-0 bottom-full'
+                        : 'top-[-55%] bottom-0',
+                    background ? `bg-${background}` : 'bg-card',
+                )}
+                style={{ transitionDelay: isInView ? `${delay}ms` : '0ms' }}
+            />
+        </div>
+    );
 }
