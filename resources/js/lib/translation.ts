@@ -1,10 +1,11 @@
 import { usePage } from '@inertiajs/react'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
-interface TranslationValue {
+export interface TranslationValue {
   [key: string]: string | TranslationValue
 }
-type Translations = Record<string, TranslationValue>
+
+export type Translations = Record<string, TranslationValue>
 
 export function useTrans() {
   const { props } = usePage<{
@@ -14,8 +15,15 @@ export function useTrans() {
     fallback_locale: string
   }>()
 
-  const translations = props.translations || {}
-  const translationsFallback = props.translations_fallback || {}
+  const translations = useMemo(
+    () => props.translations ?? {},
+    [props.translations],
+  )
+
+  const translationsFallback = useMemo(
+    () => props.translations_fallback ?? {},
+    [props.translations_fallback],
+  )
 
   const findKey = useCallback(
     (source: TranslationValue, parts: string[]): string | undefined => {
@@ -32,11 +40,7 @@ export function useTrans() {
   )
 
   const __ = useCallback(
-    (
-      key: string,
-      fallback?: string,
-      replacements?: Record<string, string | number>,
-    ): string => {
+    (key: string, fallback?: string, replacements?: Record<string, string | number>) => {
       const parts = key.split('.')
 
       let value = findKey(translations, parts)

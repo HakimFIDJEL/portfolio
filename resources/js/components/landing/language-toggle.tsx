@@ -4,7 +4,6 @@
 import { usePage } from '@inertiajs/react';
 
 // Components
-import Curtain from '@/components/landing/curtain';
 import RoundedButton from '@/components/landing/rounded-button';
 import Magnet from '@/components/ui/magnet';
 

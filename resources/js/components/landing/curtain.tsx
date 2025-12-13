@@ -1,58 +1,6 @@
-// // resources/js/components/landing/curtain.tsx
-
-// // Necessary imports
-// import { cn } from '@/lib/utils';
-// import React from 'react';
-
-// interface CurtainProps {
-//     showCurtain: boolean;
-//     children: React.ReactNode;
-//     className?: string;
-//     background?: string;
-//     delay?: number;
-// }
-
-// export default function Curtain({
-//     showCurtain,
-//     children,
-//     className,
-//     background,
-//     delay = 0,
-// }: CurtainProps) {
-
-//     return (
-//         <div className={cn('relative w-max', className)}>
-//             {/* Contenu */}
-//             <div
-//                 className={cn(
-//                     // Default styles
-//                     'transition-all duration-500',
-//                     'translate-y-[-50%]',
-//                     !showCurtain && 'translate-y-0 duration-1000',
-//                 )}
-//                 style={{ transitionDelay: `${delay}ms` }}
-//             >
-//                 {children}
-//             </div>
-
-//             {/* Rideau */}
-//             <div
-//                 className={cn(
-//                     'absolute top-[-50%] right-[-1px] bottom-0 left-[-1px] transition-all',
-//                     background ? `bg-${background}` : 'bg-card',
-//                     !showCurtain && 'top-0 bottom-full duration-1500',
-//                 )}
-//                 style={{ transitionDelay: `${delay}ms` }}
-//             ></div>
-//         </div>
-//     );
-// }
-
-// resources/js/components/landing/curtain.tsx
-
 // Necessary imports
 import { cn } from '@/lib/utils';
-import { cubicBezier, useInView } from 'framer-motion';
+import { useInView } from 'framer-motion';
 import React from 'react';
 
 interface CurtainProps {
@@ -82,8 +30,8 @@ export default function Curtain({
         >
             <div
                 className={cn(
-                    'relative transition-transform duration-1000',
-                    isInView && show ? 'translate-y-0' : '-translate-y-1/2',
+                    'relative transition-all duration-1500',
+                    isInView && show ? 'translate-y-0 opacity-100' : '-translate-y-1/2 opacity-0',
                 )}
                 style={{ transitionDelay: isInView ? `${delay}ms` : '0ms' }}
             >
