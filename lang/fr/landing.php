@@ -60,6 +60,14 @@ return [
         ],
     ],
 
+    'projects' => [
+        'h2' => 'Mes Projets',
+        'p_1' => "Jetez un œil à mes projets.",
+        'p_2' => "J'ai actuellement travaillé sur",
+        'p_3' => "projets impactants.",
+        'skip' => 'Passer',
+    ],
+
     'footer' => [
         'links' => [
             'sitemap' => [
