@@ -35,7 +35,7 @@ export default function Contact({ appear, contacts }: ContactProps) {
                 // Default styles
                 'flex flex-col',
 
-                'mt-0 sm:mt-12 md:mt-24',
+                'mt-24',
             )}
             id="contact"
         >

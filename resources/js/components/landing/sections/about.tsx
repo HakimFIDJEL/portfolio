@@ -53,8 +53,8 @@ export default function About({
 
                 // Responsive styles
                 'gap-0 md:gap-12 lg:gap-24',
-                'mt-12 md:mt-24 lg:mt-48',
-                'mb-12 md:mb-24 lg:mb-48',
+                'mt-24 lg:mt-48',
+                'mb-24 lg:mb-48',
             )}
             id="about"
         >
@@ -112,7 +112,7 @@ function Panels({ appear }: PanelsProps) {
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
                     'py-4 sm:py-6 md:py-8 lg:py-10',
 
-                    'before:h-12 md:before:h-24 lg:before:h-48',
+                    'before:h-24 lg:before:h-48',
 
                     // Before styles
                     'before:absolute before:inset-0 before:-z-1',
@@ -270,7 +270,7 @@ function Accordions({
 
                     // Responsive styles
                     'max-w-full lg:max-w-[70%]',
-                    'before:h-12 md:before:h-24 lg:before:h-48',
+                    'before:h-24 lg:before:h-48',
 
                     // Before styles
                     'relative',

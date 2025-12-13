@@ -72,7 +72,7 @@ export default function Sandbox({
                 // Responsive styles
                 'px-6 sm:px-8 md:px-10 lg:px-12.5',
                 'flex-col lg:flex-row',
-                'mt-12 md:mt-24 lg:mt-48',
+                'mt-24 lg:mt-48',
             )}
             id="sandbox"
         >
