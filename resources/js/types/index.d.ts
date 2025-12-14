@@ -54,6 +54,10 @@ export interface SharedData {
     sidebarOpen: boolean;
     unread_notifications: number;
     locale: string;
+
+    avatar_url: string | null;
+    resume_url: string | null;
+    
     [key: string]: unknown;
 }
 

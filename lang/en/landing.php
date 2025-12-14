@@ -143,4 +143,30 @@ return [
             'new' => 'New',
         ],
     ],
+
+    'terms' => [
+        'h1' => 'Terms of Use',
+        'last_updated' => 'last Updated: December 14, 2025',
+        'sections' => [
+            'introduction' => [
+                'h2' => 'Introduction',
+                'p_1' => 'Welcome to Hakim Fidjel\'s portfolio. By accessing this website, you agree to be bound by these Terms of Use. If you disagree with any part of the terms, please do not use this website.',
+                'p_2' => 'This site is a showcase of my work and skills as a Fullstack engineer.',
+            ],
+            'intellectual_property' => [
+                'h2' => 'Intellectual Property',
+                'p_1' => 'All content on this portfolio (texts, images, projects, visible source code, etc.) is the exclusive property of Hakim Fidjel, unless otherwise indicated.',
+                'p_2' => 'The use, reproduction, or distribution of any content without prior written permission is strictly prohibited.',
+                'p_3' => 'The source code of the portfolio itself is available on GitHub as an example and technical reference. However, this does not grant rights for commercial use or republication without explicit authorization.',
+            ],
+            'limitation_of_liability' => [
+                'h2' => 'Limitation of Liability',
+                'p_1' => 'This website is provided "as is", without any warranties of any kind. I shall not be held responsible for any direct, indirect, or consequential damages arising from the use of this site or the information it contains.',
+            ],
+            'contact' => [
+                'h2' => 'Contact',
+                'p_1' => 'For any questions regarding these Terms, you can contact me through the methods listed on the Contact section of the Landing Page.',
+            ],
+        ],
+    ],
 ];

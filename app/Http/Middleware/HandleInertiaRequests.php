@@ -4,6 +4,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
@@ -45,7 +46,6 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-
         $user = $request->user()?->load([
             'avatar',
             'resume',
@@ -95,6 +95,9 @@ class HandleInertiaRequests extends Middleware
                 ->toArray(),
 
             'timezone' => date_default_timezone_get(),
+
+            'avatar_url' => User::first()->avatar->url ?? null,
+            'resume_url' => User::first()->resume->url ?? null,
         ]);
     }
 }

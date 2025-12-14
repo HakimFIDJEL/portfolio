@@ -80,4 +80,9 @@ class Landing extends Controller
 
         return redirect()->back();
     }
+
+    public function terms()
+    {
+        return Inertia::render('terms');
+    }
 }

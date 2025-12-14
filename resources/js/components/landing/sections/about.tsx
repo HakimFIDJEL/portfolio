@@ -3,6 +3,7 @@
 // Necessary imports
 import { cn } from '@/lib/utils';
 import React, { useEffect, useRef, useState } from 'react';
+import { usePage } from '@inertiajs/react';
 
 // Components
 import Delimiter from '@/components/landing/delimiter';
@@ -23,13 +24,13 @@ import { ArrowDownRight, Download, Minus, Plus } from 'lucide-react';
 import {
     Education as EducationType,
     Experience as ExperienceType,
+    SharedData,
     Stack as StacksType,
     Tool as ToolsType,
 } from '@/types';
 
 // Translation
 import { useTrans } from '@/lib/translation';
-
 interface AboutProps {
     appear: boolean;
     stacks: StacksType[];
@@ -468,6 +469,9 @@ function AccordionAbout({
 }: AccordionItemProps) {
 
     const __ = useTrans();
+    const { avatar_url, resume_url } = usePage<SharedData>().props;
+
+    console.log(avatar_url);
 
     const quotes = [
         __('landing.landing.about.tabs.about.quote_1', "“Aiming to build the future one line of code at a time.”"),
@@ -498,19 +502,28 @@ function AccordionAbout({
                 )}
             >
                 {/* Left Panel - Photo */}
-                <div
-                    className={cn(
-                        // Default styles
-                        'flex shrink-0 bg-card',
+                {avatar_url && (
+                    <div
+                        className={cn(
+                            // Default styles
+                            'flex shrink-0 bg-card',
 
-                        'items-center justify-center',
+                            'items-center justify-center',
 
-                        // Responsive styles
-                        'aspect-square w-full max-w-[300px] sm:aspect-[9/16] sm:w-1/3 sm:max-w-none',
-                    )}
-                >
-                    Photo
-                </div>
+                            // Responsive styles
+                            'aspect-square w-full max-w-[300px] sm:aspect-[9/16] sm:w-1/3 sm:max-w-none',
+                        )}
+                    >
+                            <img
+                                src={avatar_url}
+                                alt={__('landing.landing.about.tabs.about.photo_alt', "Hakim's Photo")}
+                                className={cn(
+                                    // Default styles
+                                    'h-full w-full object-cover',
+                                )}
+                            />
+                    </div>
+                )}
 
                 {/* Right Panel - Text + Button */}
                 <div
@@ -552,36 +565,41 @@ function AccordionAbout({
                     </div>
 
                     {/* Temp Button */}
-                    <button
-                        className={cn(
-                            'group relative w-full cursor-pointer bg-secondary text-xl',
-
-                            // Hover styles
-                            'border-t border-border',
-                            'focus-visible:outline-none',
-
-                            // Responsive styles
-                            'p-2 text-lg sm:p-4 sm:text-xl',
-                        )}
-                        tabIndex={open ? 0 : -1}
-                    >
-                        <div
+                    {resume_url && (
+                        <a
                             className={cn(
-                                'flex items-center justify-center gap-4 transition-all',
-                                'relative z-1',
-                                'group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
+                                'group relative w-full cursor-pointer bg-secondary text-xl',
+
+                                // Hover styles
+                                'border-t border-border',
+                                'focus-visible:outline-none',
+
+                                // Responsive styles
+                                'p-2 text-lg sm:p-4 sm:text-xl',
                             )}
+                            href={resume_url}
+                            tabIndex={open ? 0 : -1}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
-                            {__('landing.landing.about.tabs.about.button', 'Download my resume')}
-                            <Download className="stroke-1" />
-                        </div>
+                            <div
+                                className={cn(
+                                    'flex items-center justify-center gap-4 transition-all',
+                                    'relative z-1',
+                                    'group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
+                                )}
+                            >
+                                {__('landing.landing.about.tabs.about.button', 'Download my resume')}
+                                <Download className="stroke-1" />
+                            </div>
 
-                        <div
-                            className={cn(
-                                'absolute inset-0 z-0 h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
-                            )}
-                        ></div>
-                    </button>
+                            <div
+                                className={cn(
+                                    'absolute inset-0 z-0 h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
+                                )}
+                            ></div>
+                        </a>
+                    )}
                 </div>
             </div>
         </AccordionItem>
