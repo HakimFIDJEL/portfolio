@@ -4,15 +4,15 @@ import {
     type FileMetadata,
     type FileWithPreview,
 } from '@/hooks/use-file-upload';
-import * as React from 'react';
-import { toast } from 'sonner';
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
 import {
     SortableContext,
-    verticalListSortingStrategy,
     useSortable,
+    verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import * as React from 'react';
+import { toast } from 'sonner';
 
 // UI Components
 import { Button } from '@/components/ui/button';
@@ -25,7 +25,6 @@ import {
     EmptyTitle,
 } from '@/components/ui/empty';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
     Tooltip,
     TooltipContent,
@@ -137,7 +136,6 @@ function getFileIcon(file: FileWithPreview['file']): LucideIcon {
 
 // --- SUB-COMPONENT: FILE CARD ---
 
-
 interface SortableFileCardProps {
     fileWrapper: FileWithPreview;
     onRemove: () => void;
@@ -146,8 +144,21 @@ interface SortableFileCardProps {
     disabled?: boolean;
 }
 
-function SortableFileCard({ fileWrapper, onRemove, onRename, texts, disabled = false }: SortableFileCardProps) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: fileWrapper.id });
+function SortableFileCard({
+    fileWrapper,
+    onRemove,
+    onRename,
+    texts,
+    disabled = false,
+}: SortableFileCardProps) {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: fileWrapper.id });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -169,7 +180,6 @@ function SortableFileCard({ fileWrapper, onRemove, onRename, texts, disabled = f
         </div>
     );
 }
-
 
 interface FileCardProps {
     fileWrapper: FileWithPreview;
@@ -203,6 +213,10 @@ function FileCard({
         }
     }, [isRenaming, fileName]);
 
+    React.useEffect(() => {
+        onRename(fileName);
+    }, [fileWrapper.title, fileWrapper.file.name]);
+
     const handleSaveRename = () => {
         if (!fileName.trim()) {
             inputRef.current?.focus();
@@ -232,7 +246,6 @@ function FileCard({
                     >
                         <GripVertical />
                     </Button>
-
 
                     <div className="flex aspect-square size-10 shrink-0 items-center justify-center rounded border">
                         <Icon className="size-5 text-muted-foreground" />
@@ -355,35 +368,62 @@ function FileCard({
 }
 
 function FileUploadInner(
-    { value, onValueChange, maxFiles = 6, maxSizeMB = 5, texts, accept, multiple = true, disabled = false, className, ...rest }: FileUploadProps,
-    ref: React.ForwardedRef<HTMLInputElement>
+    {
+        value,
+        onValueChange,
+        maxFiles = 6,
+        maxSizeMB = 5,
+        texts,
+        accept,
+        multiple = true,
+        disabled = false,
+        className,
+        ...rest
+    }: FileUploadProps,
+    ref: React.ForwardedRef<HTMLInputElement>,
 ) {
     const maxSize = maxSizeMB * 1024 * 1024;
 
-    const finalTexts = React.useMemo(() => ({
-        dropAreaTitle: 'Upload files',
-        dropAreaHeader: 'Drag & drop or browse files.',
-        dropAreaSubtext: `Max ${maxFiles} files ∙ Up to ${maxSizeMB}MB ∙ Accepted types: ${accept || 'any'}`,
-        selectButton: 'Browse files',
-        filesHeader: `Files uploaded`,
-        removeAllButton: 'Remove all',
-        removeFileAriaLabel: 'Remove file',
-        renameFileAriaLabel: 'Rename file',
-        previewFileAriaLabel: 'Preview file',
-        errorPrefix: 'An error occured',
-        FileUploadLabel: 'File Upload',
-        AttachmentsLabel: 'Attachments',
-        emptyAttachmentsText: 'No attachments uploaded yet.',
-        ...texts,
-    }), [texts, maxFiles, maxSizeMB, accept]);
+    const finalTexts = React.useMemo(
+        () => ({
+            dropAreaTitle: 'Upload files',
+            dropAreaHeader: 'Drag & drop or browse files.',
+            dropAreaSubtext: `Max ${maxFiles} files ∙ Up to ${maxSizeMB}MB ∙ Accepted types: ${accept || 'any'}`,
+            selectButton: 'Browse files',
+            filesHeader: `Files uploaded`,
+            removeAllButton: 'Remove all',
+            removeFileAriaLabel: 'Remove file',
+            renameFileAriaLabel: 'Rename file',
+            previewFileAriaLabel: 'Preview file',
+            errorPrefix: 'An error occured',
+            FileUploadLabel: 'File Upload',
+            AttachmentsLabel: 'Attachments',
+            emptyAttachmentsText: 'No attachments uploaded yet.',
+            ...texts,
+        }),
+        [texts, maxFiles, maxSizeMB, accept],
+    );
 
     const handleFilesChange = React.useCallback(
         (newFiles: FileWithPreview[]) => {
+            const valueMap = new Map(value.map((f) => [f.id, f]));
+            const updatedFiles = newFiles.map((newFile) => {
+                const existingFile = valueMap.get(newFile.id);
+                if (existingFile) {
+                    return {
+                        ...newFile,
+                        title: existingFile.title,
+                        description: existingFile.description,
+                    };
+                }
+                return newFile;
+            });
+
             requestAnimationFrame(() => {
-                onValueChange(newFiles);
+                onValueChange(updatedFiles);
             });
         },
-        [onValueChange],
+        [onValueChange, value],
     );
 
     const initialFilesForHook = React.useMemo(() => {
@@ -401,7 +441,8 @@ function FileUploadInner(
         onFilesChange: handleFilesChange,
     });
 
-    const [localFiles, setLocalFiles] = React.useState<FileWithPreview[]>(value);
+    const [localFiles, setLocalFiles] =
+        React.useState<FileWithPreview[]>(value);
 
     // Sync parent updates to localFiles
     React.useEffect(() => {
@@ -411,23 +452,29 @@ function FileUploadInner(
     React.useEffect(() => {
         if (state.errors.length > 0) {
             toast.error(finalTexts.errorPrefix, {
-                description: state.errors[0] || 'An error occurred during upload',
+                description:
+                    state.errors[0] || 'An error occurred during upload',
             });
         }
     }, [state.errors, finalTexts.errorPrefix]);
 
     const handleRename = (id: string, newName: string) => {
-        const updated = localFiles.map(f => f.id === id ? { ...f, title: newName } : f);
-        setLocalFiles(updated);
-        onValueChange(updated);
+        const updatedFiles = value.map((fileWrapper) => {
+            if (fileWrapper.id === id) {
+                return { ...fileWrapper, title: newName };
+            }
+            return fileWrapper;
+        });
+        setLocalFiles(updatedFiles);
+        onValueChange(updatedFiles);
     };
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
 
-        const oldIndex = localFiles.findIndex(f => f.id === active.id);
-        const newIndex = localFiles.findIndex(f => f.id === over.id);
+        const oldIndex = localFiles.findIndex((f) => f.id === active.id);
+        const newIndex = localFiles.findIndex((f) => f.id === over.id);
 
         const updated = [...localFiles];
         const [moved] = updated.splice(oldIndex, 1);
@@ -460,10 +507,17 @@ function FileUploadInner(
                             {...rest}
                             className="sr-only"
                             ref={(el) => {
-                                const internalRef = inputProps.ref as { current: HTMLInputElement | null; };
+                                const internalRef = inputProps.ref as {
+                                    current: HTMLInputElement | null;
+                                };
                                 if (internalRef) internalRef.current = el;
                                 if (typeof ref === 'function') ref(el);
-                                else if (ref) (ref as { current: HTMLInputElement | null; }).current = el;
+                                else if (ref)
+                                    (
+                                        ref as {
+                                            current: HTMLInputElement | null;
+                                        }
+                                    ).current = el;
                             }}
                         />
 
@@ -473,14 +527,21 @@ function FileUploadInner(
                                 <EmptyMedia variant={'icon'}>
                                     <Paperclip />
                                 </EmptyMedia>
-                                <EmptyTitle>{finalTexts.dropAreaTitle}</EmptyTitle>
+                                <EmptyTitle>
+                                    {finalTexts.dropAreaTitle}
+                                </EmptyTitle>
                                 <EmptyDescription className="flex flex-col">
                                     <span>{finalTexts.dropAreaHeader}</span>
                                     <span>{finalTexts.dropAreaSubtext}</span>
                                 </EmptyDescription>
                             </EmptyHeader>
                             <EmptyContent>
-                                <Button onClick={actions.openFileDialog} variant="outline" type="button" size={'sm'}>
+                                <Button
+                                    onClick={actions.openFileDialog}
+                                    variant="outline"
+                                    type="button"
+                                    size={'sm'}
+                                >
                                     {finalTexts.selectButton}
                                 </Button>
                             </EmptyContent>
@@ -489,18 +550,28 @@ function FileUploadInner(
                 </div>
             )}
 
-            <Separator className="my-4"/>
+            <Separator className="my-4" />
 
-            <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                <SortableContext items={localFiles.map(f => f.id)} strategy={verticalListSortingStrategy}>
+            <DndContext
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+            >
+                <SortableContext
+                    items={localFiles.map((f) => f.id)}
+                    strategy={verticalListSortingStrategy}
+                >
                     {localFiles.length !== 0 ? (
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center justify-between">
                                 <h3 className="text-sm font-medium text-foreground/80">
-                                    {finalTexts.filesHeader} ({localFiles.length} {maxFiles ? `/ ${maxFiles}` : ''})
+                                    {finalTexts.filesHeader} (
+                                    {localFiles.length}{' '}
+                                    {maxFiles ? `/ ${maxFiles}` : ''})
                                 </h3>
                                 <Button
-                                    onClick={() => { actions.clearFiles(); }}
+                                    onClick={() => {
+                                        actions.clearFiles();
+                                    }}
                                     variant="ghost"
                                     size="sm"
                                     className="text-destructive hover:bg-destructive/10 hover:text-destructive"
@@ -512,12 +583,19 @@ function FileUploadInner(
                                 </Button>
                             </div>
                             <div className="grid gap-2">
-                                {localFiles.map(fileWrapper => (
+                                {localFiles.map((fileWrapper) => (
                                     <SortableFileCard
                                         key={fileWrapper.id}
                                         fileWrapper={fileWrapper}
-                                        onRemove={() => actions.removeFile(fileWrapper.id)}
-                                        onRename={(newName) => handleRename(fileWrapper.id, newName)}
+                                        onRemove={() =>
+                                            actions.removeFile(fileWrapper.id)
+                                        }
+                                        onRename={(newName) =>
+                                            handleRename(
+                                                fileWrapper.id,
+                                                newName,
+                                            )
+                                        }
                                         texts={finalTexts}
                                         disabled={disabled}
                                     />

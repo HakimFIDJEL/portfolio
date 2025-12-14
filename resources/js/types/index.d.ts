@@ -82,6 +82,8 @@ export interface PaginationProps {
 // --------------------------------
 
 export interface Attachment {
+    id: number;
+    title?: string;
     file_path: string;
     file_name?: string;
     mime_type?: string;
@@ -151,10 +153,11 @@ export interface Project {
     what_i_learned: string | null;
 
     tags: Tag[];
-    stackItems: StackItem[];
+    stack_items: StackItem[];
 
     is_new: boolean;
     end_date: string | null;
+    type: 'project' | 'sandbox' | null;
     created_at: string;
     updated_at: string;
 

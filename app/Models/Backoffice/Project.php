@@ -25,17 +25,19 @@ class Project extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class, 'project_tags');
     }
 
     public function stackItems()
     {
-        return $this->belongsToMany(StackItem::class);
+        return $this->belongsToMany(StackItem::class, 'project_stack_items');
     }
 
     public function attachments()
     {
-        return $this->belongsToMany(Attachment::class);
+        return $this->belongsToMany(Attachment::class, 'attachment_projects')
+                    ->withPivot('sort_order')
+                    ->orderBy('pivot_sort_order', 'asc');
     }
 
     // Accessor for localized 'slug' field

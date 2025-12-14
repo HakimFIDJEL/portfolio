@@ -1,4 +1,4 @@
-// resources/js/pages/backoffice/tools/edit.tsx
+// resources/js/pages/backoffice/projects/edit.tsx
 
 // Necessary imports
 import { Head, Link, router, useForm } from '@inertiajs/react';
@@ -33,49 +33,116 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+    Select, 
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { DatePicker } from '@/components/ui/date-picker';
+import { MinimalTiptap } from '@/components/ui/tiptap';
+
 
 // Components
-import { Items } from './create';
+import { Tags, StackItems } from './create';
 
 // Types
-import type { BreadcrumbItem, Tool, ToolItem } from '@/types';
+import type { BreadcrumbItem, Project, Stack, StackItem, Tag, } from '@/types';
 
 // Icons
 import { ArrowLeft, Pen, Trash2 } from 'lucide-react';
+import { FileWithPreview } from '@/hooks/use-file-upload';
+import { convertAttachmentsToFileWithPreview } from '@/lib/utils';
+import { FileUpload } from '@/components/image-upload';
 
 interface EditProps {
-    tool: Tool;
+    project: Project;
+    tags: Tag[];
+    stacks: Stack[];
 }
 
-export default function Edit({ tool }: EditProps) {
+export default function Edit({ project, tags, stacks }: EditProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Dashboard',
             href: route('dashboard'),
         },
         {
-            title: 'Tools',
-            href: route('backoffice.tools.index'),
+            title: 'Projects',
+            href: route('backoffice.projects.index'),
         },
         {
             title: 'Edit',
-            href: route('backoffice.tools.edit', tool.id),
+            href: route('backoffice.projects.edit', project.id),
         },
     ];
+    
+    console.log(project);
 
-    const { data, setData, processing, put, errors } = useForm<{
-        name_fr: string;
-        name_en: string;
-        items: ToolItem[];
+    const { data, setData, processing, post, errors } = useForm<{
+        title_fr: string;
+        title_en: string;
+        slug_fr: string;
+        slug_en: string;
+        subtitle_fr: string;
+        subtitle_en: string;
+        description_fr: string;
+        description_en: string;
+        feedback_fr: string;
+        feedback_en: string;
+        what_i_learned_fr: string;
+        what_i_learned_en: string;
+
+        is_new: boolean;
+        type: 'project' | 'sandbox' | null;
+        end_date: string | null;
+        source_code_url: string;
+        live_demo_url: string;
+
+        tags: Tag[];
+        stackItems: StackItem[];
+        attachments: FileWithPreview[];
     }>({
-        name_fr: tool.name_fr,
-        name_en: tool.name_en,
-        items: tool.items,
+        title_fr: project.title_fr,
+        title_en: project.title_en,
+        subtitle_fr: project.subtitle_fr,
+        subtitle_en: project.subtitle_en,
+        slug_fr: project.slug_fr,
+        slug_en: project.slug_en,
+        description_fr: project.description_fr || '',
+        description_en: project.description_en || '',
+        feedback_fr: project.feedback_fr || '',
+        feedback_en: project.feedback_en || '',
+        what_i_learned_fr: project.what_i_learned_fr || '',
+        what_i_learned_en: project.what_i_learned_en || '',
+        is_new: project.is_new,
+        type: project.type,
+        end_date: project.end_date,
+        source_code_url: project.source_code_url || '',
+        live_demo_url: project.live_demo_url || '',
+        tags: project.tags || [],
+        stackItems: project.stack_items || [],
+        attachments: convertAttachmentsToFileWithPreview({ attachments: project.attachments || [] }),
     });
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        put(route('backoffice.tools.update', tool.id));
+        post(route('backoffice.projects.update', project.id));
+    }
+
+    function generateSlug(title: string) {
+        return title
+            .toLowerCase()
+            .trim()
+            .replace(/[\s\W-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+
+    function handleAttachmentsChange(files: FileWithPreview[]) {
+        setData('attachments', files);
     }
 
     return (
@@ -84,76 +151,567 @@ export default function Edit({ tool }: EditProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Edit a tool</CardTitle>
+                    <CardTitle>Edit a project</CardTitle>
                     <CardDescription>
-                        Update the form below to edit the tool.
+                        Update the form below to edit the project.
                     </CardDescription>
                     <CardAction className="space-x-2">
-                        <Link href={route('backoffice.tools.index')}>
+                        <Link href={route('backoffice.projects.index')}>
                             <Button variant={'outline'}>
                                 <ArrowLeft />
                                 Go back
                             </Button>
                         </Link>
-                        <DeleteTool tool={tool}>
+                        <DeleteProject project={project}>
                             <Button variant="destructive">
                                 <Trash2 />
-                                Delete tool
+                                Delete project
                             </Button>
-                        </DeleteTool>
+                        </DeleteProject>
                     </CardAction>
                 </CardHeader>
                 <Separator />
                 <form onSubmit={handleSubmit} className="grid gap-4">
-                    <CardContent className="grid gap-4">
-                        <div className="grid gap-2">
-                            <h3 className="text-lg font-medium">
-                                Localized Fields
-                            </h3>
-                            <Separator />
-                        </div>
+                    <CardContent className="grid gap-12">
+                        <Tabs defaultValue="details">
+                            <TabsList className="w-full">
+                                <TabsTrigger value="details">
+                                    Project Details
+                                </TabsTrigger>
+                                <TabsTrigger value="tags">Tags</TabsTrigger>
+                                <TabsTrigger value="stack">Stack</TabsTrigger>
+                                <TabsTrigger value="attachments">
+                                    Attachments
+                                </TabsTrigger>
+                            </TabsList>
 
-                        <div className="grid gap-3 md:grid-cols-2">
-                            <div className="grid gap-2">
-                                <Label htmlFor="name_en">Value (EN)</Label>
-                                <Input
-                                    id="name_en"
-                                    value={data.name_en || ''}
-                                    placeholder="Enter a value (EN)"
-                                    onChange={(e) =>
-                                        setData('name_en', e.target.value)
-                                    }
-                                    aria-invalid={
-                                        errors.name_en ? 'true' : 'false'
-                                    }
-                                    disabled={processing}
-                                    required
+                            <TabsContent
+                                value="details"
+                                className="grid gap-4 py-4"
+                            >
+                                <div className="grid gap-2">
+                                    <h3 className="text-lg font-medium">
+                                        Localized Fields
+                                    </h3>
+                                    <Separator />
+                                </div>
+
+                                <Tabs
+                                    defaultValue="french"
+                                    className="grid gap-4"
+                                >
+                                    {/* Fields */}
+                                    <TabsList className="w-full">
+                                        <TabsTrigger value="french">
+                                            French (FR)
+                                        </TabsTrigger>
+                                        <TabsTrigger value="english">
+                                            English (EN)
+                                        </TabsTrigger>
+                                    </TabsList>
+                                    <TabsContent
+                                        value="french"
+                                        className="grid gap-4 md:grid-cols-2"
+                                    >
+                                        {/* Title */}
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="title_fr">
+                                                Titre
+                                            </Label>
+                                            <Input
+                                                id="title_fr"
+                                                value={data.title_fr || ''}
+                                                placeholder="Entrer un titre"
+                                                onChange={(e) => {
+                                                    setData(
+                                                        'title_fr',
+                                                        e.target.value,
+                                                    );
+                                                    setData(
+                                                        'slug_fr',
+                                                        generateSlug(
+                                                            e.target.value,
+                                                        ),
+                                                    );
+                                                }}
+                                                aria-invalid={
+                                                    errors.title_fr
+                                                        ? 'true'
+                                                        : 'false'
+                                                }
+                                                disabled={processing}
+                                                required
+                                            />
+                                        </div>
+
+                                        {/* Slug */}
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="slug_fr">
+                                                Slug
+                                            </Label>
+                                            <Input
+                                                id="slug_fr"
+                                                value={data.slug_fr || ''}
+                                                readOnly
+                                                placeholder="Slug généré automatiquement"
+                                                aria-invalid={
+                                                    errors.title_fr
+                                                        ? 'true'
+                                                        : 'false'
+                                                }
+                                                disabled={processing}
+                                                required
+                                            />
+                                        </div>
+
+                                        {/* Subtitle */}
+                                        <div className="grid gap-2 md:col-span-2">
+                                            <Label htmlFor="subtitle_fr">
+                                                Sous-titre
+                                            </Label>
+                                            <Input
+                                                id="subtitle_fr"
+                                                value={data.subtitle_fr || ''}
+                                                placeholder="Entrer un sous-titre"
+                                                onChange={(e) =>
+                                                    setData(
+                                                        'subtitle_fr',
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                aria-invalid={
+                                                    errors.subtitle_fr
+                                                        ? 'true'
+                                                        : 'false'
+                                                }
+                                                disabled={processing}
+                                                required
+                                            />
+                                        </div>
+
+                                        {/* Description */}
+                                        <div className="grid gap-2 md:col-span-2">
+                                            <Label htmlFor="description_fr">
+                                                Description
+                                            </Label>
+                                            <MinimalTiptap
+                                                content={
+                                                    data.description_fr || ''
+                                                }
+                                                onChange={(content) =>
+                                                    setData(
+                                                        'description_fr',
+                                                        content,
+                                                    )
+                                                }
+                                                placeholder="Enter a description"
+                                            />
+                                        </div>
+
+                                        {/* Feedback */}
+                                        <div className="grid gap-2 md:col-span-2">
+                                            <Label htmlFor="feedback_fr">
+                                                Retour d'expérience
+                                            </Label>
+                                            <MinimalTiptap
+                                                content={data.feedback_fr || ''}
+                                                onChange={(content) =>
+                                                    setData(
+                                                        'feedback_fr',
+                                                        content,
+                                                    )
+                                                }
+                                                placeholder="Entrer un retour d'expérience"
+                                            />
+                                        </div>
+
+                                        {/* What I Learned */}
+                                        <div className="grid gap-2 md:col-span-2">
+                                            <Label htmlFor="what_i_learned_fr">
+                                                Ce que j'ai appris
+                                            </Label>
+                                            <MinimalTiptap
+                                                content={
+                                                    data.what_i_learned_fr || ''
+                                                }
+                                                onChange={(content) =>
+                                                    setData(
+                                                        'what_i_learned_fr',
+                                                        content,
+                                                    )
+                                                }
+                                                placeholder="Entrer ce que vous avez appris"
+                                            />
+                                        </div>
+                                    </TabsContent>
+                                    <TabsContent
+                                        value="english"
+                                        className="grid gap-4 md:grid-cols-2"
+                                    >
+                                        {/* Title */}
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="title_fr">
+                                                Title
+                                            </Label>
+                                            <Input
+                                                id="title_en"
+                                                value={data.title_en || ''}
+                                                placeholder="Enter a title"
+                                                onChange={(e) => {
+                                                    setData(
+                                                        'title_en',
+                                                        e.target.value,
+                                                    );
+                                                    setData(
+                                                        'slug_en',
+                                                        generateSlug(
+                                                            e.target.value,
+                                                        ),
+                                                    );
+                                                }}
+                                                aria-invalid={
+                                                    errors.title_en
+                                                        ? 'true'
+                                                        : 'false'
+                                                }
+                                                disabled={processing}
+                                                required
+                                            />
+                                        </div>
+
+                                        {/* Slug */}
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="slug_en">
+                                                Slug
+                                            </Label>
+                                            <Input
+                                                id="slug_en"
+                                                value={data.slug_en || ''}
+                                                readOnly
+                                                placeholder="Auto-generated slug"
+                                                aria-invalid={
+                                                    errors.title_en
+                                                        ? 'true'
+                                                        : 'false'
+                                                }
+                                                disabled={processing}
+                                                required
+                                            />
+                                        </div>
+
+                                        {/* Subtitle */}
+                                        <div className="grid gap-2 md:col-span-2">
+                                            <Label htmlFor="subtitle_en">
+                                                Subtitle
+                                            </Label>
+                                            <Input
+                                                id="subtitle_en"
+                                                value={data.subtitle_en || ''}
+                                                placeholder="Enter a subtitle"
+                                                onChange={(e) =>
+                                                    setData(
+                                                        'subtitle_en',
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                aria-invalid={
+                                                    errors.subtitle_en
+                                                        ? 'true'
+                                                        : 'false'
+                                                }
+                                                disabled={processing}
+                                                required
+                                            />
+                                        </div>
+
+                                        {/* Description */}
+                                        <div className="grid gap-2 md:col-span-2">
+                                            <Label htmlFor="description_en">
+                                                Description
+                                            </Label>
+                                            <MinimalTiptap
+                                                content={
+                                                    data.description_en || ''
+                                                }
+                                                onChange={(content) =>
+                                                    setData(
+                                                        'description_en',
+                                                        content,
+                                                    )
+                                                }
+                                                placeholder="Enter a description"
+                                            />
+                                        </div>
+
+                                        {/* Feedback */}
+                                        <div className="grid gap-2 md:col-span-2">
+                                            <Label htmlFor="feedback_en">
+                                                Feedback
+                                            </Label>
+                                            <MinimalTiptap
+                                                content={data.feedback_en || ''}
+                                                onChange={(content) =>
+                                                    setData(
+                                                        'feedback_en',
+                                                        content,
+                                                    )
+                                                }
+                                                placeholder="Enter a feedback"
+                                            />
+                                        </div>
+
+                                        {/* What I Learned */}
+                                        <div className="grid gap-2 md:col-span-2">
+                                            <Label htmlFor="what_i_learned_en">
+                                                What I Learned
+                                            </Label>
+                                            <MinimalTiptap
+                                                content={
+                                                    data.what_i_learned_en || ''
+                                                }
+                                                onChange={(content) =>
+                                                    setData(
+                                                        'what_i_learned_en',
+                                                        content,
+                                                    )
+                                                }
+                                                placeholder="Enter what you learned"
+                                            />
+                                        </div>
+                                    </TabsContent>
+                                </Tabs>
+
+                                <div className="grid gap-2">
+                                    <h3 className="text-lg font-medium">
+                                        Other Details
+                                    </h3>
+                                    <Separator />
+                                </div>
+
+                                <div className="grid gap-4 md:grid-cols-3">
+                                    {/* New */}
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="is_new">New</Label>
+                                        <Select
+                                            value={
+                                                data.is_new ? 'true' : 'false'
+                                            }
+                                            required
+                                            onValueChange={(value) =>
+                                                setData(
+                                                    'is_new',
+                                                    value === 'true',
+                                                )
+                                            }
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Is the project new?" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="true">
+                                                        Yes
+                                                    </SelectItem>
+                                                    <SelectItem value="false">
+                                                        No
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    {/* Type */}
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="type">Type</Label>
+                                        <Select
+                                            value={data.type || ''}
+                                            required
+                                            onValueChange={(value) =>
+                                                setData(
+                                                    'type',
+                                                    value as
+                                                        | 'project'
+                                                        | 'sandbox',
+                                                )
+                                            }
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="What's the project type?" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="project">
+                                                        Project
+                                                    </SelectItem>
+                                                    <SelectItem value="sandbox">
+                                                        Sandbox
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    {/* End date */}
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="end_date">
+                                            End date
+                                        </Label>
+                                        <DatePicker
+                                            required
+                                            ariaInvalid={!!errors.end_date}
+                                            date={
+                                                data.end_date
+                                                    ? new Date(data.end_date)
+                                                    : undefined
+                                            }
+                                            onDateChange={(date) =>
+                                                setData(
+                                                    'end_date',
+                                                    date
+                                                        ? [
+                                                              date.getFullYear(),
+                                                              String(
+                                                                  date.getMonth() +
+                                                                      1,
+                                                              ).padStart(
+                                                                  2,
+                                                                  '0',
+                                                              ),
+                                                              String(
+                                                                  date.getDate(),
+                                                              ).padStart(
+                                                                  2,
+                                                                  '0',
+                                                              ),
+                                                          ].join('-')
+                                                        : null,
+                                                )
+                                            }
+                                            placeholder="Select an end date"
+                                            className="w-full"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    {/* Source Code URL */}
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="source_code_url">
+                                            Source Code URL
+                                        </Label>
+                                        <Input
+                                            id="source_code_url"
+                                            type="url"
+                                            value={data.source_code_url || ''}
+                                            placeholder="Enter the source code URL"
+                                            onChange={(e) =>
+                                                setData(
+                                                    'source_code_url',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            aria-invalid={
+                                                errors.source_code_url
+                                                    ? 'true'
+                                                    : 'false'
+                                            }
+                                            disabled={processing}
+                                        />
+                                    </div>
+
+                                    {/* Live Demo URL */}
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="live_demo_url">
+                                            Live Demo URL
+                                        </Label>
+                                        <Input
+                                            id="live_demo_url"
+                                            type="url"
+                                            value={data.live_demo_url || ''}
+                                            placeholder="Enter the live demo URL"
+                                            onChange={(e) =>
+                                                setData(
+                                                    'live_demo_url',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            aria-invalid={
+                                                errors.live_demo_url
+                                                    ? 'true'
+                                                    : 'false'
+                                            }
+                                            disabled={processing}
+                                        />
+                                    </div>
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent
+                                value="tags"
+                                className="grid gap-4 py-4"
+                            >
+                                <div className="grid">
+                                    <h3 className="text-lg font-medium">
+                                        Tags
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Select the tags associated with this
+                                        project.
+                                    </p>
+                                    <Separator className="mt-2" />
+                                </div>
+
+                                <Tags
+                                    tags={tags}
+                                    data={data}
+                                    setData={setData}
                                 />
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="name_fr">Value (FR)</Label>
-                                <Input
-                                    id="name_fr"
-                                    value={data.name_fr || ''}
-                                    placeholder="Enter a value (FR)"
-                                    onChange={(e) =>
-                                        setData('name_fr', e.target.value)
-                                    }
-                                    aria-invalid={
-                                        errors.name_fr ? 'true' : 'false'
-                                    }
-                                    disabled={processing}
-                                    required
+
+                                {/*  */}
+                            </TabsContent>
+
+                            <TabsContent
+                                value="stack"
+                                className="grid gap-4 py-4"
+                            >
+                                <div className="grid">
+                                    <h3 className="text-lg font-medium">
+                                        Stacks
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Select the stack items associated with
+                                        this project.
+                                    </p>
+                                    <Separator className="mt-2" />
+                                </div>
+
+                                <StackItems
+                                    stacks={stacks}
+                                    data={data}
+                                    setData={setData}
                                 />
-                            </div>
-                        </div>
+                            </TabsContent>
 
-                        <div className="grid gap-2">
-                            <h3 className="text-lg font-medium">Items</h3>
-                            <Separator />
-                        </div>
+                            <TabsContent
+                                value="attachments"
+                                className="grid gap-4 py-4"
+                            >
+                                <div className="grid">
+                                    <h3 className="text-lg font-medium">
+                                        Attachments
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Attach files related to this project.
+                                    </p>
+                                    <Separator className="mt-2" />
+                                </div>
 
-                        <Items data={{ items: data.items }} setData={setData} />
+                                <FileUpload
+                                    value={data.attachments}
+                                    onValueChange={handleAttachmentsChange}
+                                />
+                            </TabsContent>
+                        </Tabs>
                     </CardContent>
                     <Separator className="my-4" />
                     <CardFooter>
@@ -163,7 +721,7 @@ export default function Edit({ tool }: EditProps) {
                             className="w-full"
                         >
                             {processing ? <Spinner /> : <Pen />}
-                            Update Tool
+                            Update Project
                         </Button>
                     </CardFooter>
                 </form>
@@ -172,18 +730,18 @@ export default function Edit({ tool }: EditProps) {
     );
 }
 
-interface DeleteToolProps {
+interface DeleteProjectProps {
     children: React.ReactNode;
-    tool: Tool;
+    project: Project;
 }
 
-function DeleteTool({ children, tool }: DeleteToolProps) {
+function DeleteProject({ children, project }: DeleteProjectProps) {
     const [deleting, setDeleting] = React.useState(false);
 
     function handleDelete() {
         setDeleting(true);
-        toast.loading('Deleting tool...', { id: 'delete_tool' });
-        router.delete(route('backoffice.tools.destroy', tool.id), {
+        toast.loading('Deleting project...', { id: 'delete_project' });
+        router.delete(route('backoffice.projects.destroy', project.id), {
             onFinish: () => {
                 setDeleting(false);
             },
@@ -194,9 +752,9 @@ function DeleteTool({ children, tool }: DeleteToolProps) {
             <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Delete Tool</AlertDialogTitle>
+                    <AlertDialogTitle>Delete Project</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Are you sure you want to delete this tool? This action
+                        Are you sure you want to delete this project? This action
                         cannot be undone.
                     </AlertDialogDescription>
                 </AlertDialogHeader>

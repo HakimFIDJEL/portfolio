@@ -86,8 +86,8 @@ return new class extends Migration
             $table->string('source_code_url')->nullable();
             $table->string('live_demo_url')->nullable();
 
-            $table->boolean('is_new')->default(false);    
-            $table->date('end_date')->nullable();
+            $table->datetime('is_new')->default(false);    
+            $table->timestamp('end_date')->nullable();
 
             $table->timestamps();
         });

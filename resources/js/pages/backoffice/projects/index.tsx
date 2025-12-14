@@ -80,7 +80,11 @@ export default function Index({ projects }: IndexProps) {
                 <TableCell>
                     {project.end_date ? (
                         <Badge>
-                            {new Date(project.end_date).getFullYear()}
+                            {new Date(project.end_date).toLocaleDateString('en-EN', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            })}
                         </Badge>
                     ) : (
                         <Badge variant="secondary">Ongoing</Badge>

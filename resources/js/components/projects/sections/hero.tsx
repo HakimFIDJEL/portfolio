@@ -145,6 +145,9 @@ export default function Hero({ appear, project }: HeroProps) {
                                 className={cn(
                                     // Default styles
                                     'flex items-center justify-end gap-2',
+
+                                    // 'max-w-1/3',
+                                    'flex-wrap',
                                 )}
                             >
                                 {project.is_new && (
@@ -155,7 +158,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                             'transition-all duration-1000',
 
                                             // Hover & Focus styles
-                                            'border-foreground',
+                                            'border-primary',
                                             'whitespace-nowrap',
                                         )}
                                     >

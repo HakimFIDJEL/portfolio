@@ -562,7 +562,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                     )}
                 >
                     {/* Tech Stack */}
-                    {item?.stackItems && item?.stackItems.length > 0 && (
+                    {item?.stack_items && item?.stack_items.length > 0 && (
                         <FadeIn show={open} className="w-full" delay={250}>
                             <div
                                 className={cn(
@@ -598,7 +598,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'flex flex-wrap gap-2.5 sm:w-[65%]',
                                     )}
                                 >
-                                    {item.stackItems
+                                    {item.stack_items
                                         .sort(
                                             (a, b) =>
                                                 a.sort_order - b.sort_order,

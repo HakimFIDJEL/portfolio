@@ -18,9 +18,17 @@ Route::prefix('backoffice/')->name('backoffice.')->middleware(['auth', 'verified
     // ------------------------------------------------------------------ //
     //                          Projects Routes
     // ------------------------------------------------------------------ //
-    Route::resource('projects', ProjectsController::class)->only([
-        'index', 'create', 'store', 'edit', 'update', 'destroy'
+    Route::resource('projects', ProjectsController::class)->except([
+        'update'
     ]);
+
+    Route::post('projects/{project}', [ProjectsController::class, 'update'])
+        ->name('projects.update');
+
+    Route::resource('projects', ProjectsController::class)->only([
+        'index', 'create', 'store', 'edit', 'destroy'
+    ]);
+    Route::post('projects/sort', [ProjectsController::class, 'sort'])->name('projects.sort');
     
     // ------------------------------------------------------------------ //
     //                          Stacks Routes

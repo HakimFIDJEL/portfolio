@@ -19,6 +19,14 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import { MinimalTiptap } from '@/components/ui/tiptap';
@@ -27,20 +35,21 @@ import { MinimalTiptap } from '@/components/ui/tiptap';
 import { FileUpload } from '@/components/image-upload';
 
 // Types
-import type { BreadcrumbItem, StackItem, Tag } from '@/types';
+import type { BreadcrumbItem, Stack, StackItem, Tag } from '@/types';
 
 // Icons
+import { DatePicker } from '@/components/ui/date-picker';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Plus } from 'lucide-react';
-import React, { useEffect } from 'react';
 import { FileWithPreview } from '@/hooks/use-file-upload';
+import { ArrowLeft, Plus } from 'lucide-react';
+import React from 'react';
 
 interface CreateProps {
     tags: Tag[];
-    stack_items: StackItem[];
+    stacks: Stack[];
 }
 
-export default function Create({ tags, stack_items }: CreateProps) {
+export default function Create({ tags, stacks }: CreateProps) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Dashboard',
@@ -71,7 +80,10 @@ export default function Create({ tags, stack_items }: CreateProps) {
         what_i_learned_en: string;
 
         is_new: boolean;
+        type: 'project' | 'sandbox' | null;
         end_date: string | null;
+        source_code_url: string;
+        live_demo_url: string;
 
         tags: Tag[];
         stackItems: StackItem[];
@@ -90,7 +102,10 @@ export default function Create({ tags, stack_items }: CreateProps) {
         what_i_learned_fr: '',
         what_i_learned_en: '',
         is_new: false,
+        type: null,
         end_date: null,
+        source_code_url: '',
+        live_demo_url: '',
         tags: [],
         stackItems: [],
         attachments: [],
@@ -110,7 +125,6 @@ export default function Create({ tags, stack_items }: CreateProps) {
     }
 
     function handleAttachmentsChange(files: FileWithPreview[]) {
-        console.log('Attachments changed:', files);
         setData('attachments', files);
     }
 
@@ -136,7 +150,7 @@ export default function Create({ tags, stack_items }: CreateProps) {
                 <Separator />
                 <form onSubmit={handleSubmit} className="grid gap-4">
                     <CardContent className="grid gap-12">
-                        <Tabs defaultValue="attachments">
+                        <Tabs defaultValue="details">
                             <TabsList className="w-full">
                                 <TabsTrigger value="details">
                                     Project Details
@@ -148,7 +162,10 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                 </TabsTrigger>
                             </TabsList>
 
-                            <TabsContent value="details" className="grid gap-4 py-4">
+                            <TabsContent
+                                value="details"
+                                className="grid gap-4 py-4"
+                            >
                                 <div className="grid gap-2">
                                     <h3 className="text-lg font-medium">
                                         Localized Fields
@@ -176,12 +193,12 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                         {/* Title */}
                                         <div className="grid gap-2">
                                             <Label htmlFor="title_fr">
-                                                Title
+                                                Titre
                                             </Label>
                                             <Input
                                                 id="title_fr"
                                                 value={data.title_fr || ''}
-                                                placeholder="Enter a title"
+                                                placeholder="Entrer un titre"
                                                 onChange={(e) => {
                                                     setData(
                                                         'title_fr',
@@ -213,7 +230,7 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                                 id="slug_fr"
                                                 value={data.slug_fr || ''}
                                                 readOnly
-                                                placeholder="Auto-generated slug"
+                                                placeholder="Slug généré automatiquement"
                                                 aria-invalid={
                                                     errors.title_fr
                                                         ? 'true'
@@ -227,12 +244,12 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                         {/* Subtitle */}
                                         <div className="grid gap-2 md:col-span-2">
                                             <Label htmlFor="subtitle_fr">
-                                                Subtitle
+                                                Sous-titre
                                             </Label>
                                             <Input
                                                 id="subtitle_fr"
                                                 value={data.subtitle_fr || ''}
-                                                placeholder="Enter a subtitle"
+                                                placeholder="Entrer un sous-titre"
                                                 onChange={(e) =>
                                                     setData(
                                                         'subtitle_fr',
@@ -264,14 +281,14 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                                         content,
                                                     )
                                                 }
-                                                placeholder='Enter a description'
+                                                placeholder="Enter a description"
                                             />
                                         </div>
 
                                         {/* Feedback */}
                                         <div className="grid gap-2 md:col-span-2">
                                             <Label htmlFor="feedback_fr">
-                                                Feedback
+                                                Retour d'expérience
                                             </Label>
                                             <MinimalTiptap
                                                 content={data.feedback_fr || ''}
@@ -281,14 +298,14 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                                         content,
                                                     )
                                                 }
-                                                placeholder='Enter a feedback'
+                                                placeholder="Entrer un retour d'expérience"
                                             />
                                         </div>
 
                                         {/* What I Learned */}
                                         <div className="grid gap-2 md:col-span-2">
                                             <Label htmlFor="what_i_learned_fr">
-                                                What I Learned
+                                                Ce que j'ai appris
                                             </Label>
                                             <MinimalTiptap
                                                 content={
@@ -300,7 +317,7 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                                         content,
                                                     )
                                                 }
-                                                placeholder='Enter what you learned'
+                                                placeholder="Entrer ce que vous avez appris"
                                             />
                                         </div>
                                     </TabsContent>
@@ -399,7 +416,7 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                                         content,
                                                     )
                                                 }
-                                                placeholder='Enter a description'
+                                                placeholder="Enter a description"
                                             />
                                         </div>
 
@@ -416,7 +433,7 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                                         content,
                                                     )
                                                 }
-                                                placeholder='Enter a feedback'
+                                                placeholder="Enter a feedback"
                                             />
                                         </div>
 
@@ -435,14 +452,181 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                                         content,
                                                     )
                                                 }
-                                                placeholder='Enter what you learned'
+                                                placeholder="Enter what you learned"
                                             />
                                         </div>
                                     </TabsContent>
                                 </Tabs>
+
+                                <div className="grid gap-2">
+                                    <h3 className="text-lg font-medium">
+                                        Other Details
+                                    </h3>
+                                    <Separator />
+                                </div>
+
+                                <div className="grid gap-4 md:grid-cols-3">
+                                    {/* New */}
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="is_new">New</Label>
+                                        <Select
+                                            value={
+                                                data.is_new ? 'true' : 'false'
+                                            }
+                                            required
+                                            onValueChange={(value) =>
+                                                setData(
+                                                    'is_new',
+                                                    value === 'true',
+                                                )
+                                            }
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Is the project new?" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="true">
+                                                        Yes
+                                                    </SelectItem>
+                                                    <SelectItem value="false">
+                                                        No
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    {/* Type */}
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="type">Type</Label>
+                                        <Select
+                                            value={data.type || ''}
+                                            required
+                                            onValueChange={(value) =>
+                                                setData(
+                                                    'type',
+                                                    value as
+                                                        | 'project'
+                                                        | 'sandbox',
+                                                )
+                                            }
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="What's the project type?" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="project">
+                                                        Project
+                                                    </SelectItem>
+                                                    <SelectItem value="sandbox">
+                                                        Sandbox
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    {/* End date */}
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="end_date">
+                                            End date
+                                        </Label>
+                                        <DatePicker
+                                            required
+                                            ariaInvalid={!!errors.end_date}
+                                            date={
+                                                data.end_date
+                                                    ? new Date(data.end_date)
+                                                    : undefined
+                                            }
+                                            onDateChange={(date) =>
+                                                setData(
+                                                    'end_date',
+                                                    date
+                                                        ? [
+                                                              date.getFullYear(),
+                                                              String(
+                                                                  date.getMonth() +
+                                                                      1,
+                                                              ).padStart(
+                                                                  2,
+                                                                  '0',
+                                                              ),
+                                                              String(
+                                                                  date.getDate(),
+                                                              ).padStart(
+                                                                  2,
+                                                                  '0',
+                                                              ),
+                                                          ].join('-')
+                                                        : null,
+                                                )
+                                            }
+                                            placeholder="Select an end date"
+                                            className="w-full"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    {/* Source Code URL */}
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="source_code_url">
+                                            Source Code URL
+                                        </Label>
+                                        <Input
+                                            id="source_code_url"
+                                            type="url"
+                                            value={data.source_code_url || ''}
+                                            placeholder="Enter the source code URL"
+                                            onChange={(e) =>
+                                                setData(
+                                                    'source_code_url',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            aria-invalid={
+                                                errors.source_code_url
+                                                    ? 'true'
+                                                    : 'false'
+                                            }
+                                            disabled={processing}
+                                        />
+                                    </div>
+
+                                    {/* Live Demo URL */}
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="live_demo_url">
+                                            Live Demo URL
+                                        </Label>
+                                        <Input
+                                            id="live_demo_url"
+                                            type="url"
+                                            value={data.live_demo_url || ''}
+                                            placeholder="Enter the live demo URL"
+                                            onChange={(e) =>
+                                                setData(
+                                                    'live_demo_url',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            aria-invalid={
+                                                errors.live_demo_url
+                                                    ? 'true'
+                                                    : 'false'
+                                            }
+                                            disabled={processing}
+                                        />
+                                    </div>
+                                </div>
                             </TabsContent>
 
-                            <TabsContent value="tags" className="grid gap-4 py-4">
+                            <TabsContent
+                                value="tags"
+                                className="grid gap-4 py-4"
+                            >
                                 <div className="grid">
                                     <h3 className="text-lg font-medium">
                                         Tags
@@ -463,7 +647,10 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                 {/*  */}
                             </TabsContent>
 
-                            <TabsContent value="stack" className="grid gap-4 py-4">
+                            <TabsContent
+                                value="stack"
+                                className="grid gap-4 py-4"
+                            >
                                 <div className="grid">
                                     <h3 className="text-lg font-medium">
                                         Stacks
@@ -476,7 +663,7 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                 </div>
 
                                 <StackItems
-                                    stack_items={stack_items}
+                                    stacks={stacks}
                                     data={data}
                                     setData={setData}
                                 />
@@ -500,7 +687,6 @@ export default function Create({ tags, stack_items }: CreateProps) {
                                     value={data.attachments}
                                     onValueChange={handleAttachmentsChange}
                                 />
-
                             </TabsContent>
                         </Tabs>
                     </CardContent>
@@ -567,14 +753,14 @@ export function Tags({ tags, data, setData }: TagsProps) {
 }
 
 interface StackItemProps {
-    stack_items: StackItem[];
+    stacks: Stack[];
     data: {
         stackItems: StackItem[];
     };
     setData: (field: string, value: any) => void;
 }
 
-export function StackItems({ stack_items, data, setData }: StackItemProps) {
+export function StackItems({ stacks, data, setData }: StackItemProps) {
     function toggleStackItem(stack_item: StackItem) {
         const exists = data.stackItems.find((t) => t.id === stack_item.id);
         if (exists) {
@@ -588,25 +774,43 @@ export function StackItems({ stack_items, data, setData }: StackItemProps) {
     }
 
     return (
-        <div className="flex flex-wrap gap-2">
-            {stack_items && stack_items.length > 0 ? (
-                stack_items.map((stack_item) => (
-                    <Button
-                        key={stack_item.id}
-                        type="button"
-                        variant={
-                            data.stackItems.find((t) => t.id === stack_item.id)
-                                ? 'default'
-                                : 'secondary'
-                        }
-                        onClick={() => toggleStackItem(stack_item)}
-                    >
-                        {stack_item.name}
-                    </Button>
+        <div className="grid gap-6">
+            {stacks && stacks.length > 0 ? (
+                stacks.map((stack) => (
+                    <div key={stack.name} className="grid gap-3">
+                        <h4 className="text-lg font-semibold">{stack.name}</h4>
+
+                        <div className="flex flex-wrap gap-2">
+                            {stack.items && stack.items.length > 0 ? (
+                                stack.items.map((stack_item) => (
+                                    <Button
+                                        key={stack_item.id}
+                                        type="button"
+                                        variant={
+                                            data.stackItems.find(
+                                                (t) => t.id === stack_item.id,
+                                            )
+                                                ? 'default'
+                                                : 'secondary'
+                                        }
+                                        onClick={() =>
+                                            toggleStackItem(stack_item)
+                                        }
+                                    >
+                                        {stack_item.name}
+                                    </Button>
+                                ))
+                            ) : (
+                                <p className="text-sm text-muted-foreground">
+                                    No stack items available in this group.
+                                </p>
+                            )}
+                        </div>
+                    </div>
                 ))
             ) : (
-                <p>
-                    No stack items available. Please create stack items first.
+                <p className="text-sm text-muted-foreground">
+                    No stacks available. Please create stacks first.
                 </p>
             )}
         </div>
