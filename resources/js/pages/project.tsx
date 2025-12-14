@@ -12,11 +12,10 @@ import Hero from '@/components/projects/sections/hero';
 
 // Types
 import { type Project } from '@/types';
-import { mockProjects } from '@/types/data';
 import Content from '@/components/projects/sections/content';
 
 interface ProjectProps {
-    project: Project | null;
+    project: Project;
 }
 
 export default function Project({ project }: ProjectProps) {
@@ -24,15 +23,14 @@ export default function Project({ project }: ProjectProps) {
     // States content
     const [showContent, setShowContent] = useState(false);
 
-    const temp = project || mockProjects[0];
-
     return (
         <AppLanding showContent={showContent} setShowContent={setShowContent}>
-            <Head title="Project" />
+            <Head title={project.title} />
+            
 
             <main>
-                <Hero appear={showContent} project={temp}/>
-                <Content appear={showContent} project={temp} />
+                <Hero appear={showContent} project={project}/>
+                <Content appear={showContent} project={project} />
             </main>
         </AppLanding>
     );

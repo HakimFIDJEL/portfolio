@@ -147,7 +147,7 @@ export default function Edit({ project, tags, stacks }: EditProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Edit Project" />
 
             <Card>
                 <CardHeader className='flex flex-col md:items-center justify-between md:flex-row'>

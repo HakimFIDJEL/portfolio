@@ -130,7 +130,7 @@ export default function Create({ tags, stacks }: CreateProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Create Project" />
 
             <Card>
                 <CardHeader className="flex flex-col md:items-center justify-between md:flex-row">

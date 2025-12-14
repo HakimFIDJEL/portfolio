@@ -83,7 +83,7 @@ export default function Index({ contacts }: IndexProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Contacts" />
 
             <Card>
                 <CardHeader >

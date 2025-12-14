@@ -79,7 +79,7 @@ export default function Index({ educations }: IndexProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Educations" />
 
             <Card>
                 <CardHeader>

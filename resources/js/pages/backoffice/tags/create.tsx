@@ -59,7 +59,7 @@ export default function Create() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Create Tag" />
 
             <Card>
                 <CardHeader className="flex flex-col md:items-center justify-between md:flex-row">

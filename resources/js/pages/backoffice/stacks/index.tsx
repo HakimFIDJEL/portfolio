@@ -77,7 +77,7 @@ export default function Index({ stacks }: IndexProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Stacks" />
 
             <Card>
                 <CardHeader>

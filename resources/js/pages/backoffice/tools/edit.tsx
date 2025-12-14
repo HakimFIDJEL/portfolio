@@ -80,7 +80,7 @@ export default function Edit({ tool }: EditProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Edit Tool" />
 
             <Card>
                 <CardHeader>

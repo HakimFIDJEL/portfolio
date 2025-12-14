@@ -80,7 +80,7 @@ export default function Index({ experiences }: IndexProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Experiences" />
 
             <Card>
                 <CardHeader>
