@@ -21,7 +21,10 @@ export type FileWithPreview = {
   file: File | FileMetadata
   id: string
   preview?: string
+  title?: string 
+  description?: string
 }
+
 
 export type FileUploadOptions = {
   maxFiles?: number // Only used when multiple is true, defaults to Infinity

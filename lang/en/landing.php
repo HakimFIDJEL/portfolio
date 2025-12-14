@@ -140,6 +140,7 @@ return [
             'feedback' => 'Feedback',
             'what_i_learned' => 'What I Learned',
             'ongoing' => 'Ongoing',
+            'new' => 'New',
         ],
     ],
 ];

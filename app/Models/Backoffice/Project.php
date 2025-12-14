@@ -16,7 +16,7 @@ class Project extends Model
         'title_fr', 'title_en', 'subtitle_fr', 'subtitle_en',
         'description_fr', 'description_en', 'feedback_fr', 'feedback_en',
         'what_i_learned_fr', 'what_i_learned_en',
-        'source_code_url', 'live_demo_url', 'end_date'
+        'source_code_url', 'live_demo_url', 'end_date', 'is_new',
     ];
 
     protected $appends = [

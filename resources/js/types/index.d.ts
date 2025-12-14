@@ -136,12 +136,11 @@ export interface ToolItem {
 }
 
 export interface Project {
-    id: string;
+    id: number;
     sort_order: number;
     slug: string;
     title: string;
     subtitle: string;
-    date: string;
 
     attachments?: Attachment[];
 
@@ -151,9 +150,10 @@ export interface Project {
     feedback: string | null;
     what_i_learned: string | null;
 
-    tags: Tags[];
-    stacks: StacksItem[];
+    tags: Tag[];
+    stackItems: StackItem[];
 
+    is_new: boolean;
     end_date: string | null;
     created_at: string;
     updated_at: string;
@@ -162,6 +162,8 @@ export interface Project {
     title_en: string;
     subtitle_fr: string;
     subtitle_en: string;
+    slug_fr: string;
+    slug_en: string;
     description_fr: string | null;
     description_en: string | null;
     feedback_fr: string | null;

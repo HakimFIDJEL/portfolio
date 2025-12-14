@@ -86,6 +86,7 @@ return new class extends Migration
             $table->string('source_code_url')->nullable();
             $table->string('live_demo_url')->nullable();
 
+            $table->boolean('is_new')->default(false);    
             $table->date('end_date')->nullable();
 
             $table->timestamps();
@@ -97,7 +98,9 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->foreignId('attachment_id')->constrained()->cascadeOnDelete();
 
-            $table->unique(['project_id', 'attachment_id']);
+            $table->unsignedInteger('sort_order')->default(0);
+
+            $table->unique(['project_id', 'attachment_id', 'sort_order']);
         });
 
         Schema::create('project_tags', function (Blueprint $table) {

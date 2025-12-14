@@ -147,6 +147,21 @@ export default function Hero({ appear, project }: HeroProps) {
                                     'flex items-center justify-end gap-2',
                                 )}
                             >
+                                {project.is_new && (
+                                    <span
+                                        className={cn(
+                                        // Default styles
+                                            'border px-2.5 py-0.5 text-sm font-medium',
+                                            'transition-all duration-1000',
+
+                                            // Hover & Focus styles
+                                            'border-foreground',
+                                            'whitespace-nowrap',
+                                        )}
+                                    >
+                                        {__('landing.projects.sections.new', 'New')}
+                                    </span>
+                                )}
                                 {project.tags
                                     .sort((a, b) => a.sort_order - b.sort_order)
                                     .map((tag, index) => (
@@ -159,6 +174,7 @@ export default function Hero({ appear, project }: HeroProps) {
 
                                                 // Hover & Focus styles
                                                 'border-foreground',
+                                                'whitespace-nowrap',
                                             )}
                                         >
                                             {tag.name}
@@ -172,6 +188,7 @@ export default function Hero({ appear, project }: HeroProps) {
 
                                         // Hover & Focus styles
                                         'border-foreground',
+                                        'whitespace-nowrap',
                                     )}
                                 >
                                     {project.end_date

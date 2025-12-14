@@ -31,7 +31,7 @@ export default function Content({ project, appear }: ContentProps) {
             id='content'
         >
             {/* Tech Stack */}
-            {project.stacks && project.stacks.length > 0 && (
+            {project.stackItems && project.stackItems.length > 0 && (
                 <Delimiter
                     dashedBorders={
                         project.attachments && project.attachments.length > 0 
@@ -87,7 +87,7 @@ export default function Content({ project, appear }: ContentProps) {
                                     'flex flex-wrap gap-2.5 sm:w-[65%]',
                                 )}
                             >
-                                {project.stacks
+                                {project.stackItems
                                     .sort((a, b) => a.sort_order - b.sort_order)
                                     .map((tech, techIdx) => (
                                         <span

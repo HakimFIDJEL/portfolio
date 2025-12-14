@@ -23,8 +23,8 @@ import { ArrowDownRight, Download, Minus, Plus } from 'lucide-react';
 import {
     Education as EducationType,
     Experience as ExperienceType,
-    Stacks as StacksType,
-    Tools as ToolsType,
+    Stack as StacksType,
+    Tool as ToolsType,
 } from '@/types';
 
 // Translation
