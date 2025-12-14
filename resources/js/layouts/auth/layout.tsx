@@ -1,7 +1,7 @@
 // layouts/auth-layout.tsx
 
 // Necessary imports
-import { Link, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 
 // Translation Hook
 import { useTrans } from '@/lib/translation';
@@ -10,7 +10,6 @@ import { useTrans } from '@/lib/translation';
 import { AuthHeader } from '@/layouts/auth/header';
 
 // Custom components
-import AppLogoIcon from '@/components/app-logo-icon';
 import { CustomToaster } from '@/components/custom-toaster';
 
 // Types
@@ -33,7 +32,6 @@ export default function AuthLayout({
     }>();
 
     const { name } = usePage<SharedData>().props;
-    const __ = useTrans();
 
     return (
         <main className="flex min-h-dvh flex-col">
