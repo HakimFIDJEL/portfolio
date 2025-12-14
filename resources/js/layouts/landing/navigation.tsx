@@ -89,8 +89,12 @@ interface NavigationButtonProps {
 }
 
 function NavigationButton({ show, handleClick }: NavigationButtonProps) {
+
+    const __ = useTrans();
+
     return (
         <button
+            aria-label={__('landing.seo.toggle_menu', 'Toggle menu')}
             tabIndex={show ? 0 : -1}
             onClick={() => handleClick(false)}
             className={cn(
@@ -181,6 +185,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     const homePath = new URL(route('home')).pathname;
 
     const { _navigateToPage } = useLandingContext();
+    const __ = useTrans();
 
     function handleProjectClick(
         e: React.MouseEvent<HTMLAnchorElement>,
@@ -198,6 +203,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     return (
         <Curtain showCurtain={!show} className='w-max'>
             <a
+                aria-label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: label.toLowerCase() })}
                 {...(show
                     ? { href: currentUrl === homePath ? href : route('home') }
                     : {})}

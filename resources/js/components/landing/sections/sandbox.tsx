@@ -142,6 +142,7 @@ export default function Sandbox({
                         delay={500}
                     >
                         <UnderlineLink
+                            aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'contact' })}
                             href="#contact"
                             showUnderline
                             className={cn(
@@ -263,6 +264,7 @@ function SandboxItem({
             )}
             tabIndex={dialog_open ? -1 : 0}
             onClick={handleClick}
+            aria-label={__('landing.seo.open_dialog', 'Open dialog for project :title', { title: project.title })}
         >
             {/* Button */}
             <ArrowUpRight
@@ -320,7 +322,7 @@ function SandboxItem({
             </div>
 
             {/* Title */}
-            <h4
+            <h3
                 className={cn(
                     // Default styles
                     'font-medium',
@@ -329,7 +331,7 @@ function SandboxItem({
                 )}
             >
                 {project.title}
-            </h4>
+            </h3>
 
             {/* Description */}
             <p>
@@ -495,6 +497,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Code source */}
                         <RoundedButton
                             disabled={!item?.source_code_url}
+                            aria_label={__('landing.seo.view_source_code', 'View source code for project :title', { title: item?.title || '' })}
                             className="p-2.5"
                             tabIndex={
                                 open && item && item.source_code_url ? 0 : -1
@@ -518,6 +521,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Live demo */}
                         <RoundedButton
                             disabled={!item?.live_demo_url}
+                            aria_label={__('landing.seo.view_live_demo', 'View live demo for project :title', { title: item?.title || '' })}
                             className="p-2.5"
                             tabIndex={
                                 open && item && item.live_demo_url ? 0 : -1
@@ -539,6 +543,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Code source */}
                         <RoundedButton
                             onClick={() => setOpen(false)}
+                            aria_label={__('landing.seo.close_dialog', 'Close dialog for project :title', { title: item?.title || '' })}
                             className="p-2.5"
                             tabIndex={open ? 0 : -1}
                         >

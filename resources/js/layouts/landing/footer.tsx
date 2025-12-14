@@ -171,8 +171,8 @@ export default function Footer({ appear }: FooterProps) {
                         >
                             <FadeIn show={appear} delay={125}>
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton>
-                                        <a href="#top" tabIndex={-1}>
+                                    <RoundedButton aria_label={__('landing.seo.scroll_to_top', 'Scroll to top')}>
+                                        <a href="#top" tabIndex={-1} aria-label={__('landing.seo.scroll_to_top', 'Scroll to top')}>
                                             <ArrowUp className="stroke-1" />
                                         </a>
                                     </RoundedButton>
@@ -182,6 +182,7 @@ export default function Footer({ appear }: FooterProps) {
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
                                         onClick={handleSwitchAppearance}
+                                        aria_label={__('landing.seo.toggle_appearance', 'Toggle appearance mode')}
                                     >
                                         {appearance === 'dark' && (
                                             <Moon className="stroke-1" />
@@ -234,6 +235,7 @@ export default function Footer({ appear }: FooterProps) {
                                             key={`footer-link-item-${index}-${itemIndex}`}
                                         >
                                             <UnderlineLink
+                                                aria_label={__('landing.seo.go_to_link', 'Go to :link link', { link: item.label })}
                                                 className={cn(
                                                     // Default styles
                                                     'font-light transition-all',

@@ -95,6 +95,7 @@ export default function Contact({ appear, contacts }: ContactProps) {
                         delay={250}
                     >
                         <UnderlineLink
+                            aria_label={__('landing.seo.scroll_to_top', 'Scroll to top of the page')}
                             showUnderline
                             href="#top"
                             className={cn(

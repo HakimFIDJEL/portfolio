@@ -105,6 +105,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                         delay={250}
                     >
                         <UnderlineLink
+                            aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'sandbox' })}
                             href="#sandbox"
                             showUnderline
                             className={cn(

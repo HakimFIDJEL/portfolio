@@ -110,6 +110,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
                 )}
             >
                 <a
+                    aria-label={__('landing.seo.go_to_home', 'Go to home page')}
                     onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'))}
                     href={currentUrl === homePath ? '#top' : route('home')}
                     className={cn(
@@ -131,6 +132,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
                 )}
             >
                 <UnderlineLink
+                    aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'contact' })}
                     onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'), 'contact')}
                     href={currentUrl === homePath ? '#contact' : route('home')}
                 >
@@ -139,6 +141,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
 
                 {user && (
                     <UnderlineLink
+                        aria_label={__('landing.seo.go_to_dashboard', 'Go to dashboard')}
                         href={route('dashboard')}
                     >
                         {__('landing.layout.header.dashboard', 'Dashboard')}
@@ -153,8 +156,12 @@ interface MenuButtonProps {
     handleClick: (open: boolean) => void;
 }
 function MenuButton({ handleClick }: MenuButtonProps) {
+
+    const __ = useTrans();
+
     return (
         <button
+            aria-label={__('landing.seo.toggle_menu', 'Toggle menu')}
             onClick={() => handleClick(true)}
             className={cn(
                 'group flex h-full cursor-pointer flex-col justify-center gap-[8px]',

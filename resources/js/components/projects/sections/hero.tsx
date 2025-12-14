@@ -263,6 +263,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                         })}
                                         target="_blank"
                                         tabIndex={-1}
+                                        aria-label={__('landing.seo.view_source_code', 'View source code for :project project', { project: project.title })}
                                     >
                                         <RoundedButton
                                             disabled={!project?.source_code_url}
@@ -271,6 +272,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                                     ? 0
                                                     : -1
                                             }
+                                            aria_label={__('landing.seo.view_source_code', 'View source code for :project project', { project: project.title })}
                                         >
                                             <Code2 className="stroke-1" />
                                         </RoundedButton>
@@ -289,12 +291,14 @@ export default function Hero({ appear, project }: HeroProps) {
                                         })}
                                         target="_blank"
                                         tabIndex={-1}
+                                        aria-label={__('landing.seo.view_live_demo', 'View live demo for :project project', { project: project.title })}
                                     >
                                         <RoundedButton
                                             disabled={!project?.live_demo_url}
                                             tabIndex={
                                                 project?.live_demo_url ? 0 : -1
                                             }
+                                            aria_label={__('landing.seo.view_live_demo', 'View live demo for :project project', { project: project.title })}
                                         >
                                             <SquareArrowOutUpRight className="stroke-1" />
                                         </RoundedButton>
@@ -316,6 +320,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
                                         onClick={handleSwitchAppearance}
+                                        aria_label={__('landing.seo.toggle_appearance', 'Toggle appearance mode')}
                                     >
                                         {appearance === 'dark' && (
                                             <Moon className="stroke-1" />
@@ -342,8 +347,8 @@ export default function Hero({ appear, project }: HeroProps) {
                                 delay={1500}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton>
-                                        <a href="#content" tabIndex={-1}>
+                                    <RoundedButton aria_label={__('landing.seo.scroll_to_content', 'Scroll to content')}>
+                                        <a href="#content" tabIndex={-1} aria-label={__('landing.seo.scroll_to_content', 'Scroll to content')}>
                                             <ArrowDown className="stroke-1" />
                                         </a>
                                     </RoundedButton>

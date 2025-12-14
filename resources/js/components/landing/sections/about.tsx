@@ -157,6 +157,7 @@ function Panels({ appear }: PanelsProps) {
                         delay={250}
                     >
                         <UnderlineLink
+                            aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'projects' })}
                             href="#projects"
                             showUnderline
                             className={cn(
@@ -369,6 +370,8 @@ function AccordionItem({
         }
     }, [open]);
 
+    const __ = useTrans();
+
     return (
         <FadeIn className="w-full" delay={index * 150} show={appear ?? false}>
             <div className={cn('flex flex-col')}>
@@ -431,6 +434,7 @@ function AccordionItem({
                                     'border-primary-foreground !text-primary-foreground',
                             )}
                             onClick={() => onChange && onChange(index)}
+                            aria_label={__('landing.seo.toggle_accordion', 'Toggle accordion for :section section', { section: title })}
                         >
                             {open ? <Minus /> : <Plus />}
                         </RoundedButton>
@@ -581,6 +585,7 @@ function AccordionAbout({
                             tabIndex={open ? 0 : -1}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-label={__('landing.seo.download_resume', 'Download my resume')}
                         >
                             <div
                                 className={cn(

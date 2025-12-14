@@ -159,8 +159,8 @@ export default function Hero({ appear }: HeroProps) {
                         delay={500}
                     >
                         <Magnet magnetStrength={3} padding={20}>
-                            <RoundedButton>
-                                <a href="#about" tabIndex={-1}>
+                            <RoundedButton aria_label={__('landing.seo.discover_more_about_me', 'Discover more about me')}>
+                                <a href="#about" tabIndex={-1} aria-label={__('landing.seo.discover_more_about_me', 'Discover more about me')}>
                                     <ArrowDown className="stroke-1" />
                                 </a>
                             </RoundedButton>
@@ -172,7 +172,7 @@ export default function Hero({ appear }: HeroProps) {
                         delay={750}
                     >
                         <Magnet magnetStrength={3} padding={20}>
-                            <RoundedButton onClick={handleSwitchAppearance}>
+                            <RoundedButton onClick={handleSwitchAppearance} aria_label={__('landing.seo.toggle_appearance', 'Toggle appearance mode')}>
                                 {appearance === 'dark' && (
                                     <Moon className="stroke-1" />
                                 )}

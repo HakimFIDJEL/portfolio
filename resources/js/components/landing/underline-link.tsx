@@ -9,6 +9,7 @@ interface UnderlineLinkProps {
     showUnderline?: boolean;
     onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void | boolean;
     target?: string;
+    aria_label?: string;
 }
 
 export default function UnderlineLink({
@@ -18,9 +19,11 @@ export default function UnderlineLink({
     showUnderline,
     onClick,
     target,
+    aria_label,
 }: UnderlineLinkProps) {
     return (
         <a
+            aria-label={aria_label}
             className={cn(
                 // Underline styles
                 'after:absolute after:-bottom-1 after:left-0 after:h-[1px] after:w-full after:bg-foreground',
