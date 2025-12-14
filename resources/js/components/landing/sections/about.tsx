@@ -575,7 +575,7 @@ function AccordionAbout({
                                 'focus-visible:outline-none',
 
                                 // Responsive styles
-                                'p-2 text-lg sm:p-4 sm:text-xl',
+                                'px-2 py-4 text-lg sm:p-4 sm:text-xl',
                             )}
                             href={resume_url}
                             tabIndex={open ? 0 : -1}
