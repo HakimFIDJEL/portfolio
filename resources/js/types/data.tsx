@@ -4,26 +4,50 @@ import type {
     Education,
     Experience,
     Project,
-    Stacks,
-    Tags,
-    Tools,
+    Stack,
+    Tag,
+    Tool,
 } from '@/types';
 
 // --------------------------------
 // Mocks
 // --------------------------------
 
-export const mockTag: Tags = {
-    id: 1,
-    sort_order: 1,
-    name: 'JavaScript',
-};
-
-export const mockStacks: Stacks[] = [
+export const mockTags: Tag[] = [
     {
         id: 1,
         sort_order: 1,
-        name: 'Frontend',
+        name: 'Mobile Application',
+    },
+    {
+        id: 2,
+        sort_order: 2,
+        name: 'Web Application',
+    },
+    {
+        id: 3,
+        sort_order: 3,
+        name: 'Website',
+    },
+    {
+        id: 4,
+        sort_order: 4,
+        name: 'API',
+    },
+    {
+        id: 5,
+        sort_order: 5,
+        name: 'Script',
+    }
+];
+
+export const mockStacks: Stack[] = [
+    {
+        id: 1,
+        sort_order: 1,
+        name: '',
+        name_fr: 'Frontend',
+        name_en: 'Frontend',
         items: [
             {
                 id: 1,
@@ -75,7 +99,9 @@ export const mockStacks: Stacks[] = [
     {
         id: 2,
         sort_order: 2,
-        name: 'Backend',
+        name: '',
+        name_fr: 'Backend',
+        name_en: 'Backend',
         items: [
             {
                 id: 1,
@@ -117,7 +143,9 @@ export const mockStacks: Stacks[] = [
     {
         id: 3,
         sort_order: 3,
-        name: 'Databases',
+        name: '',
+        name_en: 'Databases',
+        name_fr: 'Bases de données',
         items: [
             {
                 id: 1,
@@ -154,7 +182,9 @@ export const mockStacks: Stacks[] = [
     {
         id: 4,
         sort_order: 4,
-        name: 'Software',
+        name: '',
+        name_en: 'Software',
+        name_fr: 'Logiciel',
         items: [
             {
                 id: 1,
@@ -181,7 +211,9 @@ export const mockStacks: Stacks[] = [
     {
         id: 5,
         sort_order: 5,
-        name: 'Mobile',
+        name: '',
+        name_en: 'Mobile',
+        name_fr: 'Mobile',
         items: [
             {
                 id: 1,
@@ -202,11 +234,13 @@ export const mockStacks: Stacks[] = [
     },
 ];
 
-export const mockTools: Tools[] = [
+export const mockTools: Tool[] = [
     {
         id: 1,
         sort_order: 1,
-        name: 'IDE',
+        name: '',
+        name_en: 'IDE',
+        name_fr: 'IDE',
         items: [
             {
                 id: 1,
@@ -258,7 +292,9 @@ export const mockTools: Tools[] = [
     {
         id: 2,
         sort_order: 2,
-        name: 'DevOps',
+        name: '',
+        name_en: 'DevOps',
+        name_fr: 'DevOps',
         items: [
             {
                 id: 1,
@@ -305,7 +341,9 @@ export const mockTools: Tools[] = [
     {
         id: 3,
         sort_order: 3,
-        name: 'Databases',
+        name: '',
+        name_en: 'Databases',
+        name_fr: 'Bases de données',
         items: [
             {
                 id: 1,
@@ -337,7 +375,9 @@ export const mockTools: Tools[] = [
     {
         id: 4,
         sort_order: 4,
-        name: 'Tools',
+        name: '',
+        name_en: 'Tools',
+        name_fr: 'Outils',
         items: [
             {
                 id: 1,
@@ -398,6 +438,7 @@ export const mockExperiences: Experience[] = [
         id: 1,
         sort_order: 1,
         company: 'Réservoir Digital',
+        job: 'Fullstack Engineer',
         status: 'Apprenticeship',
         duration: '09/23 - Present',
         description: 'I oversee the development of web projects from analysis to production. My role includes ensuring compliance with business needs, streamlining workflows, and modernizing internal processes.',
@@ -406,6 +447,7 @@ export const mockExperiences: Experience[] = [
         id: 2,
         sort_order: 2,
         company: 'Réservoir Digital',
+        job: 'Fullstack Developer',
         status: 'Internship',
         duration: '05/23 - 08/23',
         description: 'During my internship at Réservoir Digital, I improved my skills in new technologies while contributing to digital solution development. Collaborating within a team was a key part of this experience.',
@@ -414,6 +456,7 @@ export const mockExperiences: Experience[] = [
         id: 3,
         sort_order: 3,
         company: 'Hôpital Maritime de Zuydcoote',
+        job: 'Web Developer & IT Technician',
         status: 'Internship',
         duration: '06/22 - 08/22',
         description: 'I managed IT infrastructure to ensure system connectivity and reliability. I also developed an internal website that optimized patient file management, replacing outdated Excel processes.',
@@ -520,113 +563,10 @@ export const mockProjects: Project[] = [
         feedback: 'Some feedback about the project.',
         what_i_learned: 'Key learnings from the project.',
         attachments: mockAttachments,
-        tags: [mockTag],
+        tags: mockTags,
         stacks: mockStacks[0].items.concat(mockStacks[1].items),
         end_date: null,
         created_at: '2024-01-01T00:00:00Z',
         updated_at: '2024-01-01T00:00:00Z',
     },
 ];
-
-// const stack = [
-//     {
-//         category: 'Frontend',
-//         technologies: [
-//             'HTML',
-//             'CSS',
-//             'SCSS',
-//             'Tailwind',
-//             'JavaScript',
-//             'TypeScript',
-//             'React',
-//             'jQuery',
-//             'Next.js',
-//         ],
-//     },
-//     {
-//         category: 'Backend',
-//         technologies: [
-//             'PHP',
-//             'Laravel',
-//             'OctoberCMS',
-//             'Node.js',
-//             'NestJS',
-//             'Express.js',
-//             'Inertia.js',
-//         ],
-//     },
-//     {
-//         category: 'Databases',
-//         technologies: [
-//             'MySQL',
-//             'PostgreSQL',
-//             'PL/SQL',
-//             'NoSQL',
-//             'SQLite',
-//             'MongoDB',
-//         ],
-//     },
-//     {
-//         category: 'Software',
-//         technologies: ['C', 'Java', 'Python', 'Bash'],
-//     },
-//     {
-//         category: 'Mobile',
-//         technologies: ['React Native', 'Flutter'],
-//     },
-// ];
-
-// const tools = [
-//     {
-//         category: 'IDE',
-//         technologies: [
-//             'VS Code',
-//             'Visual Studio',
-//             'Sublime Text',
-//             'Notepad++',
-//             'Nano',
-//             'Vim',
-//             'PhpStorm',
-//             'IntelliJ IDEA',
-//             'PyCharm',
-//         ],
-//     },
-//     {
-//         category: 'DevOps',
-//         technologies: [
-//             'Docker',
-//             'Git',
-//             'GitHub Actions',
-//             'CI/CD',
-//             'Nginx',
-//             'Apache',
-//             'Kafka',
-//             'Nifi',
-//         ],
-//     },
-//     {
-//         category: 'Databases',
-//         technologies: [
-//             'PhpMyAdmin',
-//             'PgAdmin',
-//             'Datagrip',
-//             'MongoDB',
-//             'DataBricks',
-//         ],
-//     },
-//     {
-//         category: 'Tools',
-//         technologies: [
-//             'Postman',
-//             'Figma',
-//             'Docker Desktop',
-//             'Docs',
-//             'Sheets',
-//             'Slides',
-//             'Canva',
-//             'Trello',
-//             'Draw.io',
-//             'ClickUp',
-//         ],
-//     },
-// ];

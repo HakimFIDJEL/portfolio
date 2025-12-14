@@ -145,8 +145,26 @@ export default function Hero({ appear, project }: HeroProps) {
                                 className={cn(
                                     // Default styles
                                     'flex items-center justify-end gap-2',
+
+                                    // 'max-w-1/3',
+                                    'flex-wrap',
                                 )}
                             >
+                                {project.is_new && (
+                                    <span
+                                        className={cn(
+                                        // Default styles
+                                            'border px-2.5 py-0.5 text-sm font-medium',
+                                            'transition-all duration-1000',
+
+                                            // Hover & Focus styles
+                                            'border-primary',
+                                            'whitespace-nowrap',
+                                        )}
+                                    >
+                                        {__('landing.projects.sections.new', 'New')}
+                                    </span>
+                                )}
                                 {project.tags
                                     .sort((a, b) => a.sort_order - b.sort_order)
                                     .map((tag, index) => (
@@ -159,6 +177,7 @@ export default function Hero({ appear, project }: HeroProps) {
 
                                                 // Hover & Focus styles
                                                 'border-foreground',
+                                                'whitespace-nowrap',
                                             )}
                                         >
                                             {tag.name}
@@ -172,6 +191,7 @@ export default function Hero({ appear, project }: HeroProps) {
 
                                         // Hover & Focus styles
                                         'border-foreground',
+                                        'whitespace-nowrap',
                                     )}
                                 >
                                     {project.end_date
@@ -220,12 +240,15 @@ export default function Hero({ appear, project }: HeroProps) {
                         className={cn(
                             // Default styles
                             'flex flex-wrap items-center gap-5',
+                            
+                            'shrink-1 md:shrink-0',
                         )}
                     >
                         <div
                             className={cn(
                                 // Default styles
                                 'flex flex-wrap items-center gap-5',
+
                             )}
                         >
                             <Curtain

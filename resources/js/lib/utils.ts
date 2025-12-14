@@ -1,3 +1,5 @@
+import { FileWithPreview } from '@/hooks/use-file-upload';
+import { Attachment } from '@/types';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -35,5 +37,29 @@ export function formatNotificationDate(dateString: string): string {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
+  });
+}
+
+export function convertAttachmentsToFileWithPreview({
+  attachments,
+}: {
+  attachments: Attachment[];
+}): FileWithPreview[] {
+
+  return attachments.map((attachment) => {
+    const fileMetadata = {
+      name: attachment.file_name || attachment.title || String(attachment.id),
+      url: attachment.url,
+      type: attachment.mime_type || '',
+      size: attachment.file_size || 0,
+      id: String(attachment.id),
+    };
+
+    return {
+      id: String(attachment.id),
+      file: fileMetadata,
+      preview: attachment.url,
+      title: attachment.title,
+    };
   });
 }

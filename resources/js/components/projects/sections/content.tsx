@@ -31,7 +31,7 @@ export default function Content({ project, appear }: ContentProps) {
             id='content'
         >
             {/* Tech Stack */}
-            {project.stacks && project.stacks.length > 0 && (
+            {project.stack_items && project.stack_items.length > 0 && (
                 <Delimiter
                     dashedBorders={
                         project.attachments && project.attachments.length > 0 
@@ -87,7 +87,7 @@ export default function Content({ project, appear }: ContentProps) {
                                     'flex flex-wrap gap-2.5 sm:w-[65%]',
                                 )}
                             >
-                                {project.stacks
+                                {project.stack_items
                                     .sort((a, b) => a.sort_order - b.sort_order)
                                     .map((tech, techIdx) => (
                                         <span
@@ -211,9 +211,12 @@ export default function Content({ project, appear }: ContentProps) {
                                         'font-light',
                                         'text-base',
                                         'shrink-0 sm:w-[65%]',
+
+                                        'flex flex-col gap-2',
                                     )}
+
+                                    dangerouslySetInnerHTML={{ __html: project.description }}
                                 >
-                                    {project.description}
                                 </p>
                             </div>
                         </FadeIn>
@@ -258,9 +261,12 @@ export default function Content({ project, appear }: ContentProps) {
                                         'font-light',
                                         'text-base',
                                         'shrink-0 sm:w-[65%]',
+
+                                        'flex flex-col gap-2',
                                     )}
+
+                                    dangerouslySetInnerHTML={{ __html: project.feedback }}
                                 >
-                                    {project.feedback}
                                 </p>
                             </div>
                         </FadeIn>
@@ -304,9 +310,11 @@ export default function Content({ project, appear }: ContentProps) {
                                         'font-light',
                                         'text-base',
                                         'shrink-0 sm:w-[65%]',
+
+                                        'flex flex-col gap-2',
                                     )}
+                                    dangerouslySetInnerHTML={{ __html: project.what_i_learned }}
                                 >
-                                    {project.what_i_learned}
                                 </p>
                             </div>
                         </FadeIn>

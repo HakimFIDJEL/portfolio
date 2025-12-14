@@ -1,0 +1,81 @@
+<?php
+
+// routes/backoffice.php
+
+// Necessary imports
+use Illuminate\Support\Facades\Route;
+
+// Controllers
+use App\Http\Controllers\Backoffice\Projects as ProjectsController;
+use App\Http\Controllers\Backoffice\Stacks as StacksController;
+use App\Http\Controllers\Backoffice\Tools as ToolsController;
+use App\Http\Controllers\Backoffice\Tags as TagsController;
+use App\Http\Controllers\Backoffice\Educations as EducationsController;
+use App\Http\Controllers\Backoffice\Experiences as ExperiencesController;
+use App\Http\Controllers\Backoffice\Contacts as ContactsController;
+
+Route::prefix('backoffice/')->name('backoffice.')->middleware(['auth', 'verified:auth.verification.notice'])->group(function() {
+    // ------------------------------------------------------------------ //
+    //                          Projects Routes
+    // ------------------------------------------------------------------ //
+    Route::resource('projects', ProjectsController::class)->except([
+        'update'
+    ]);
+
+    Route::post('projects/{project}', [ProjectsController::class, 'update'])
+        ->name('projects.update');
+
+    Route::resource('projects', ProjectsController::class)->only([
+        'index', 'create', 'store', 'edit', 'destroy'
+    ]);
+    Route::post('projects/sort', [ProjectsController::class, 'sort'])->name('projects.sort');
+    
+    // ------------------------------------------------------------------ //
+    //                          Stacks Routes
+    // ------------------------------------------------------------------ //
+    Route::resource('stacks', StacksController::class)->only([
+        'index', 'create', 'store', 'edit', 'update', 'destroy'
+    ]);
+    Route::post('stacks/sort', [StacksController::class, 'sort'])->name('stacks.sort');
+    
+    // ------------------------------------------------------------------ //
+    //                          Tools Routes
+    // ------------------------------------------------------------------ //
+    Route::resource('tools', ToolsController::class)->only([
+        'index', 'create', 'store', 'edit', 'update', 'destroy'
+    ]);
+    Route::post('tools/sort', [ToolsController::class, 'sort'])->name('tools.sort');
+    
+    // ------------------------------------------------------------------ //
+    //                          Tags Routes
+    // ------------------------------------------------------------------ //
+    Route::resource('tags', TagsController::class)->only([
+        'index', 'create', 'store', 'edit', 'update', 'destroy'
+    ]);
+    Route::post('tags/sort', [TagsController::class, 'sort'])->name('tags.sort');
+    
+    // ------------------------------------------------------------------ //
+    //                          Education Routes
+    // ------------------------------------------------------------------ //
+    Route::resource('educations', EducationsController::class)->only([
+        'index', 'create', 'store', 'edit', 'update', 'destroy'
+    ]);
+    Route::post('educations/sort', [EducationsController::class, 'sort'])->name('educations.sort');
+    
+    // ------------------------------------------------------------------ //
+    //                          Experience Routes
+    // ------------------------------------------------------------------ //
+    Route::resource('experiences', ExperiencesController::class)->only([
+        'index', 'create', 'store', 'edit', 'update', 'destroy'
+    ]);
+    Route::post('experiences/sort', [ExperiencesController::class, 'sort'])->name('experiences.sort');
+    
+    // ------------------------------------------------------------------ //
+    //                          Contacts Routes
+    // ------------------------------------------------------------------ //
+    Route::resource('contacts', ContactsController::class)->only([
+        'index', 'create', 'store', 'edit', 'update', 'destroy'
+    ]);
+    Route::post('contacts/sort', [ContactsController::class, 'sort'])->name('contacts.sort');
+
+});

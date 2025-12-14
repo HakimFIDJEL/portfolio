@@ -23,8 +23,8 @@ import { ArrowDownRight, Download, Minus, Plus } from 'lucide-react';
 import {
     Education as EducationType,
     Experience as ExperienceType,
-    Stacks as StacksType,
-    Tools as ToolsType,
+    Stack as StacksType,
+    Tool as ToolsType,
 } from '@/types';
 
 // Translation
@@ -201,7 +201,7 @@ function Panels({ appear }: PanelsProps) {
                 >
                     <strong className="font-semibold">{__('landing.landing.about.p_1', "Hi, I’m Hakim.")}</strong>
                     <br />
-                    <p className="font-light">
+                    <p className="font-normal">
                         <strong className="font-semibold">
                             {__('landing.landing.about.p_2', "I'm a french fullstack engineer")}
                         </strong>{' '}
@@ -665,6 +665,16 @@ function AccordionWork({
                                 >
                                     {exp.company}
                                 </h4>
+                                <p
+                                    className={cn(
+                                        // Default styles
+                                        'font-light',
+                                        'text-base',
+                                    )}
+                                >
+                                    {exp.job}
+                                </p>
+                                <Separator className='my-1'/>
                                 <p
                                     className={cn(
                                         // Default styles

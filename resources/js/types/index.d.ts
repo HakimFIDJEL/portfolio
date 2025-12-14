@@ -82,6 +82,8 @@ export interface PaginationProps {
 // --------------------------------
 
 export interface Attachment {
+    id: number;
+    title?: string;
     file_path: string;
     file_name?: string;
     mime_type?: string;
@@ -94,17 +96,23 @@ export interface Attachment {
 // Backoffice Interfaces
 // --------------------------------
 
-export interface Tags {
+export interface Tag {
     id: number;
     sort_order: number;
     name: string;
+
+    name_fr: string;
+    name_en: string;
 }
 
-export interface Stacks {
+export interface Stack {
     id: number;
     sort_order: number;
     name: string;
     items: StackItem[];
+
+    name_fr: string;
+    name_en: string;
 }
 
 export interface StackItem {
@@ -113,11 +121,14 @@ export interface StackItem {
     name: string;
 }
 
-export interface Tools {
+export interface Tool {
     id: number;
     sort_order: number;
     name: string;
     items: ToolItem[];
+
+    name_fr: string;
+    name_en: string;
 }
 
 export interface ToolItem {
@@ -127,12 +138,11 @@ export interface ToolItem {
 }
 
 export interface Project {
-    id: string;
+    id: number;
     sort_order: number;
     slug: string;
     title: string;
     subtitle: string;
-    date: string;
 
     attachments?: Attachment[];
 
@@ -142,12 +152,27 @@ export interface Project {
     feedback: string | null;
     what_i_learned: string | null;
 
-    tags: Tags[];
-    stacks: StacksItem[];
+    tags: Tag[];
+    stack_items: StackItem[];
 
+    is_new: boolean;
     end_date: string | null;
+    type: 'project' | 'sandbox' | null;
     created_at: string;
     updated_at: string;
+
+    title_fr: string;
+    title_en: string;
+    subtitle_fr: string;
+    subtitle_en: string;
+    slug_fr: string;
+    slug_en: string;
+    description_fr: string | null;
+    description_en: string | null;
+    feedback_fr: string | null;
+    feedback_en: string | null;
+    what_i_learned_fr: string | null;
+    what_i_learned_en: string | null;
 }
 
 export interface Contact {
@@ -157,15 +182,26 @@ export interface Contact {
     label: string;
     name: string;
     link: string;
+
+    name_fr: string;
+    name_en: string;
 }
 
 export interface Experience {
     id: number;
     sort_order: number;
     company: string;
+    job: string;
     status: string;
     duration: string;
     description: string;
+
+    job_fr: string;
+    job_en: string;
+    status_fr: string;
+    status_en: string;
+    description_fr: string;
+    description_en: string;
 }
 
 export interface Education {
@@ -175,4 +211,9 @@ export interface Education {
     type: string;
     duration: string;
     description: string;
+
+    type_fr: string;
+    type_en: string;
+    description_fr: string;
+    description_en: string;
 }

@@ -196,7 +196,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     }
 
     return (
-        <Curtain showCurtain={!show}>
+        <Curtain showCurtain={!show} className='w-max'>
             <a
                 {...(show
                     ? { href: currentUrl === homePath ? href : route('home') }

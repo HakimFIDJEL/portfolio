@@ -132,7 +132,7 @@ export default function Sandbox({
                             )}
                         >
                             {__('landing.landing.sandbox.p_1', 'My less impactful but still taughtful works, I’ve currently worked on')}{' '}
-                            <strong className="font-semibold">13</strong> {__('landing.landing.sandbox.p_2', 'small projects here.')}
+                            <strong className="font-semibold">{projects.length}{' '}</strong> {__('landing.landing.sandbox.p_2', 'small projects here.')}
                         </p>
                     </Curtain>
 
@@ -286,6 +286,20 @@ function SandboxItem({
                     'flex flex-wrap gap-2',
                 )}
             >
+                {project.is_new && (
+                    <span
+                        className={cn(
+                            // Default styles
+                            'border px-1.5 py-0.5 text-sm font-light',
+                            'transition-all duration-1000',
+
+                            // Hover & Focus styles
+                            'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
+                        )}
+                    >
+                        {__('landing.projects.sections.new', 'New')}
+                    </span>
+                )}
                 {project.tags
                     .sort((a, b) => a.sort_order - b.sort_order)
                     .map((tag, index) => (
@@ -548,7 +562,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                     )}
                 >
                     {/* Tech Stack */}
-                    {item?.stacks && item?.stacks.length > 0 && (
+                    {item?.stack_items && item?.stack_items.length > 0 && (
                         <FadeIn show={open} className="w-full" delay={250}>
                             <div
                                 className={cn(
@@ -584,7 +598,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'flex flex-wrap gap-2.5 sm:w-[65%]',
                                     )}
                                 >
-                                    {item.stacks
+                                    {item.stack_items
                                         .sort(
                                             (a, b) =>
                                                 a.sort_order - b.sort_order,
@@ -642,9 +656,11 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'font-light',
                                         'text-base',
                                         'shrink-0 sm:w-[65%]',
+
+                                        'flex flex-col gap-2',
                                     )}
+                                    dangerouslySetInnerHTML={{ __html: item.description }}
                                 >
-                                    {item.description}
                                 </p>
                             </div>
                         </FadeIn>
@@ -719,9 +735,12 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'font-light',
                                         'text-base',
                                         'shrink-0 sm:w-[65%]',
+
+                                        'flex flex-col gap-2',
                                     )}
+
+                                    dangerouslySetInnerHTML={{ __html: item.feedback }}
                                 >
-                                    {item.feedback}
                                 </p>
                             </div>
                         </FadeIn>
@@ -764,9 +783,12 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'font-light',
                                         'text-base',
                                         'shrink-0 sm:w-[65%]',
+
+                                        'flex flex-col gap-2',
                                     )}
+
+                                    dangerouslySetInnerHTML={{ __html: item.what_i_learned }}
                                 >
-                                    {item.what_i_learned}
                                 </p>
                             </div>
                         </FadeIn>
