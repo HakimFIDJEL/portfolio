@@ -1,7 +1,6 @@
 // resources/js/pages/backoffice/experiences/index.tsx
 
 // Necessary imports
-import { getIcon } from '@/lib/render';
 import { Head, Link, router } from '@inertiajs/react';
 import { toast } from 'sonner';
 
@@ -22,7 +21,7 @@ import { Separator } from '@/components/ui/separator';
 import { TableCell } from '@/components/ui/table';
 
 // Types
-import type { BreadcrumbItem, Contact, Experience } from '@/types';
+import type { BreadcrumbItem, Experience } from '@/types';
 
 // Icons
 import { Building2, Plus } from 'lucide-react';

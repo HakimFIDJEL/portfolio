@@ -165,7 +165,7 @@ interface ItemsProps {
     data: {
         items: ToolItem[];
     };
-    setData: (field: string, value: any) => void;
+    setData: (field: string, value: ToolItem[]) => void;
 }
 
 export function Items({ data, setData }: ItemsProps) {

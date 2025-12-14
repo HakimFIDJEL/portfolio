@@ -187,7 +187,7 @@ interface FileCardProps {
     onRename: (newName: string) => void;
     texts: FileUploadTexts;
     disabled?: boolean;
-    dragHandleProps?: any;
+    dragHandleProps?: React.HTMLAttributes<HTMLElement>;
 }
 
 function FileCard({
@@ -212,10 +212,6 @@ function FileCard({
             inputRef.current.focus();
         }
     }, [isRenaming, fileName]);
-
-    React.useEffect(() => {
-        onRename(fileName);
-    }, [fileWrapper.title, fileWrapper.file.name]);
 
     const handleSaveRename = () => {
         if (!fileName.trim()) {

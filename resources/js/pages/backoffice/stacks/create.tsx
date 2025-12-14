@@ -2,6 +2,7 @@
 
 // Necessary imports
 import { Head, Link, useForm } from '@inertiajs/react';
+import React from 'react';
 
 // Layout
 import AppLayout from '@/layouts/app/layout';
@@ -32,15 +33,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
+import { TableCell } from '@/components/ui/table';
+
+// Custom Components
+import { SortableTable } from '@/components/sortable-table';
 
 // Types
 import type { BreadcrumbItem, StackItem } from '@/types';
 
 // Icons
-import { SortableTable } from '@/components/sortable-table';
-import { TableCell } from '@/components/ui/table';
 import { ArrowLeft, Pen, Plus, Trash2 } from 'lucide-react';
-import React from 'react';
 
 export default function Create() {
     const breadcrumbs: BreadcrumbItem[] = [
@@ -165,7 +167,7 @@ interface ItemsProps {
     data: {
         items: StackItem[];
     };
-    setData: (field: string, value: any) => void;
+    setData: (field: string, value: StackItem[]) => void;
 }
 
 export function Items({ data, setData }: ItemsProps) {

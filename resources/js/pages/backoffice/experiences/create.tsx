@@ -17,18 +17,17 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { IconName, IconPicker } from '@/components/ui/icon-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
+import { Textarea } from '@/components/ui/textarea';
 
 // Types
 import type { BreadcrumbItem } from '@/types';
 
 // Icons
 import { ArrowLeft, Plus } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
 
 export default function Create() {
     const breadcrumbs: BreadcrumbItem[] = [

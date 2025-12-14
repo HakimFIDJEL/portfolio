@@ -2,6 +2,7 @@
 
 // Necessary imports
 import { Head, Link, useForm } from '@inertiajs/react';
+import React from 'react';
 
 // Layout
 import AppLayout from '@/layouts/app/layout';
@@ -30,19 +31,18 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import { MinimalTiptap } from '@/components/ui/tiptap';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Custom Components
 import { FileUpload } from '@/components/image-upload';
 
 // Types
 import type { BreadcrumbItem, Stack, StackItem, Tag } from '@/types';
+import type { FileWithPreview } from '@/hooks/use-file-upload';
 
 // Icons
-import { DatePicker } from '@/components/ui/date-picker';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileWithPreview } from '@/hooks/use-file-upload';
 import { ArrowLeft, Plus } from 'lucide-react';
-import React from 'react';
 
 interface CreateProps {
     tags: Tag[];
@@ -712,7 +712,7 @@ interface TagsProps {
     data: {
         tags: Tag[];
     };
-    setData: (field: string, value: any) => void;
+    setData: (field: string, value: Tag[]) => void;
 }
 
 export function Tags({ tags, data, setData }: TagsProps) {
@@ -757,7 +757,7 @@ interface StackItemProps {
     data: {
         stackItems: StackItem[];
     };
-    setData: (field: string, value: any) => void;
+    setData: (field: string, value: StackItem[]) => void;
 }
 
 export function StackItems({ stacks, data, setData }: StackItemProps) {

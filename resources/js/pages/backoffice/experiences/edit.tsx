@@ -3,6 +3,7 @@
 // Necessary imports
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import { toast } from 'sonner';
+import React from 'react';
 
 // Layout
 import AppLayout from '@/layouts/app/layout';
@@ -28,20 +29,17 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { IconName, IconPicker } from '@/components/ui/icon-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
+import { Textarea } from '@/components/ui/textarea';
 
 // Types
-import type { BreadcrumbItem, Contact, Experience } from '@/types';
+import type { BreadcrumbItem, Experience } from '@/types';
 
 // Icons
 import { ArrowLeft, Pen, Trash2 } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
-import React from 'react';
-import { set } from 'date-fns';
 
 interface EditProps {
     experience: Experience;

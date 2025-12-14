@@ -61,7 +61,7 @@ class Projects extends Controller
             foreach($validated['attachments'] as $attachmentData) {
 
                 $file = $attachmentData['file'];
-                $filePath = $file->store('attachments');
+                $filePath = $file->store('attachments', 'public');
 
                 $attachment = Attachment::create([
                     'title' => $attachmentData['title'] ?? null,
@@ -141,7 +141,7 @@ class Projects extends Controller
                     }
 
                     $file = $attachment['file'];
-                    $filePath = $file->store('attachments');
+                    $filePath = $file->store('attachments', 'public');
 
                     $newAttachment = Attachment::create([
                         'title' => $attachment['title'] ?? null,
