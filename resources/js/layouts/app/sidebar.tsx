@@ -47,7 +47,6 @@ import {
     Hammer,
     Home,
     Layers,
-    LayoutGrid,
     LogOut,
     Mail,
     School,
