@@ -45,6 +45,7 @@ import {
     ChevronsUpDown,
     FolderKanban,
     Hammer,
+    Home,
     Layers,
     LayoutGrid,
     LogOut,
@@ -232,7 +233,19 @@ function UserMenuContent({ user }: UserMenuContentProps) {
                         onClick={cleanup}
                     >
                         <Settings />
-                        {__('app.layout.sidebar.usermenu.items.settings')}
+                        Settings
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link
+                        className="block w-full"
+                        href={route('home')}
+                        as="button"
+                        prefetch
+                        onClick={cleanup}
+                    >
+                        <Home />
+                        View Website
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>

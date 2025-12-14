@@ -4,48 +4,75 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use App\Models\Backoffice\Contact;
+use App\Models\Backoffice\Education;
+use App\Models\Backoffice\Experience;
+// Models
+use App\Models\Backoffice\Project;
+use App\Models\Backoffice\Stack;
+use App\Models\Backoffice\Tool;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
-
-// Models
-use App\Models\Backoffice\Contact;
-use App\Models\Backoffice\Experience;
-use App\Models\Backoffice\Education;
+use Inertia\Inertia;
 
 /**
  * Landing Page Controller
- * 
+ *
  * Handles requests related to the landing page.
- * 
- * @package App\Http\Controllers
  */
 class Landing extends Controller
 {
-    /**
-     * 
-     */
-    public function landing() {
+    public function landing()
+    {
 
         $contacts = Contact::orderBy('sort_order', 'asc')->get();
         $experiences = Experience::orderBy('sort_order', 'asc')->get();
         $educations = Education::orderBy('sort_order', 'asc')->get();
+        $stacks = Stack::orderBy('sort_order', 'asc')->with('items')->get();
+        $tools = Tool::orderBy('sort_order', 'asc')->with('items')->get();
+        $projects = Project::where('type', 'project')->orderBy('sort_order', 'asc')->get();
+        $sandbox = Project::where('type', 'sandbox')->orderBy('sort_order', 'asc')->with(['tags', 'stackItems', 'attachments'])->get();
 
         return Inertia::render('landing', [
             'contacts' => $contacts,
             'experiences' => $experiences,
-            'educations' => $educations
+            'educations' => $educations,
+            'stacks' => $stacks,
+            'tools' => $tools,
+            'projects' => $projects,
+            'sandbox' => $sandbox,
         ]);
     }
 
-    public function project(string $slug) {
+    public function project(string $slug)
+    {
+        $locale = Session::get('locale', App::getLocale());
 
-        // TODO : Fetch project by slug and pass data to the view
+        $project = Project::where('slug_'.$locale, $slug)->with(['tags', 'stackItems', 'attachments'])->first();
 
-        return Inertia::render('project', ['project' => null]);
+        if (!$project) {
+
+            if($locale === 'en') {
+                $alternateLocale = 'fr';
+            } else {
+                $alternateLocale = 'en';
+            }
+
+            $project = Project::where('slug_'.$alternateLocale, $slug)->with(['tags', 'stackItems', 'attachments'])->first();
+
+            if ($project) {
+                return redirect()->route('project', ['slug' => $project->{'slug_'.$locale}]);
+            }
+
+
+            abort(404);
+        }
+
+        return Inertia::render('project', ['project' => $project]);
     }
 
-    public function toggle_language() {
+    public function toggle_language()
+    {
         $newLocale = App::getLocale() === 'en' ? 'fr' : 'en';
 
         Session::put('locale', $newLocale);
@@ -53,5 +80,4 @@ class Landing extends Controller
 
         return redirect()->back();
     }
-
 }

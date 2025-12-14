@@ -211,9 +211,12 @@ export default function Content({ project, appear }: ContentProps) {
                                         'font-light',
                                         'text-base',
                                         'shrink-0 sm:w-[65%]',
+
+                                        'flex flex-col gap-2',
                                     )}
+
+                                    dangerouslySetInnerHTML={{ __html: project.description }}
                                 >
-                                    {project.description}
                                 </p>
                             </div>
                         </FadeIn>
@@ -258,9 +261,12 @@ export default function Content({ project, appear }: ContentProps) {
                                         'font-light',
                                         'text-base',
                                         'shrink-0 sm:w-[65%]',
+
+                                        'flex flex-col gap-2',
                                     )}
+
+                                    dangerouslySetInnerHTML={{ __html: project.feedback }}
                                 >
-                                    {project.feedback}
                                 </p>
                             </div>
                         </FadeIn>
@@ -304,9 +310,11 @@ export default function Content({ project, appear }: ContentProps) {
                                         'font-light',
                                         'text-base',
                                         'shrink-0 sm:w-[65%]',
+
+                                        'flex flex-col gap-2',
                                     )}
+                                    dangerouslySetInnerHTML={{ __html: project.what_i_learned }}
                                 >
-                                    {project.what_i_learned}
                                 </p>
                             </div>
                         </FadeIn>

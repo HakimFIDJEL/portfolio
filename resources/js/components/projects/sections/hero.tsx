@@ -240,12 +240,15 @@ export default function Hero({ appear, project }: HeroProps) {
                         className={cn(
                             // Default styles
                             'flex flex-wrap items-center gap-5',
+                            
+                            'shrink-1 md:shrink-0',
                         )}
                     >
                         <div
                             className={cn(
                                 // Default styles
                                 'flex flex-wrap items-center gap-5',
+
                             )}
                         >
                             <Curtain
