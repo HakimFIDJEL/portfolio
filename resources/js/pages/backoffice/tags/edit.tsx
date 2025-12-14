@@ -78,20 +78,22 @@ export default function Edit({ tag }: EditProps) {
             <Head title="Dashboard" />
 
             <Card>
-                <CardHeader>
-                    <CardTitle>Edit a tag</CardTitle>
-                    <CardDescription>
-                        Update the form below to edit the tag.
-                    </CardDescription>
-                    <CardAction className="space-x-2">
+                <CardHeader className='flex flex-col md:items-center justify-between md:flex-row'>
+                    <div className="flex flex-col">
+                        <CardTitle>Edit a tag</CardTitle>
+                        <CardDescription>
+                            Update the form below to edit the tag.
+                        </CardDescription>
+                    </div>
+                    <CardAction className="flex flex-col md:items-center justify-between md:flex-row gap-2 w-full md:w-auto">
                         <Link href={route('backoffice.tags.index')}>
-                            <Button variant={'outline'}>
+                            <Button variant={'outline'} className="w-full md:w-auto">
                                 <ArrowLeft />
                                 Go back
                             </Button>
                         </Link>
                         <DeleteTag tag={tag}>
-                            <Button variant="destructive">
+                            <Button variant="destructive" className="w-full md:w-auto">
                                 <Trash2 />
                                 Delete tag
                             </Button>

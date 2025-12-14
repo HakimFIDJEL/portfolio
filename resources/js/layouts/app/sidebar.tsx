@@ -64,11 +64,11 @@ export function AppSidebar() {
 
     // Sidebar menus
     const mainNavItems: NavItem[] = [
-        {
-            title: 'Dashboard',
-            href: route('dashboard'),
-            icon: LayoutGrid,
-        },
+        // {
+        //     title: 'Dashboard',
+        //     href: route('dashboard'),
+        //     icon: LayoutGrid,
+        // },
         {
             title: 'Projects',
             href: route('backoffice.projects.index'),

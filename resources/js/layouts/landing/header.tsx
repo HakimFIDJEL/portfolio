@@ -14,6 +14,9 @@ import { useLandingContext } from '@/contexts/use-landing-context';
 // Translation
 import { useTrans } from '@/lib/translation';
 
+// Types
+import { SharedData } from '@/types';
+
 interface HeaderProps {
     showContent: boolean;
     handleMenuToggle: (open: boolean) => void;
@@ -63,6 +66,9 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
 
     const currentUrl = usePage().url.split('#')[0];
     const homePath = new URL(route('home')).pathname;
+
+    const { auth } = usePage<SharedData>().props;
+    const user = auth ? auth.user : null;
 
     return (
         <header
@@ -120,7 +126,8 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
                     'col-span-1 text-right',
 
                     // Responsive styles
-                    'hidden md:block',
+                    'hidden md:flex',
+                    'items-center justify-end gap-8',
                 )}
             >
                 <UnderlineLink
@@ -129,6 +136,14 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
                 >
                     {__('landing.layout.header.contact', 'Contact')}
                 </UnderlineLink>
+
+                {user && (
+                    <UnderlineLink
+                        href={route('dashboard')}
+                    >
+                        {__('landing.layout.header.dashboard', 'Dashboard')}
+                    </UnderlineLink>
+                )}
             </div>
         </header>
     );

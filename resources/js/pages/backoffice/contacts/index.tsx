@@ -86,7 +86,7 @@ export default function Index({ contacts }: IndexProps) {
             <Head title="Dashboard" />
 
             <Card>
-                <CardHeader>
+                <CardHeader >
                     <CardTitle className='flex items-center gap-4 text-xl'>
                         <div className='p-1 rounded-md bg-accent border'>
                             <Mail className='text-primary'/>

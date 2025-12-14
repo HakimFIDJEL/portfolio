@@ -16,7 +16,8 @@ Route::middleware(['web'])->group(function () {
 
 Route::middleware(['auth', 'verified:auth.verification.notice'])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('dashboard');
+        // return Inertia::render('dashboard');
+        return redirect()->route('backoffice.projects.index');
     })->name('dashboard');
 });
 

@@ -26,11 +26,10 @@ export default function ErrorPage({
 }) {
 
     const __ = useTrans();
+    
     const { auth } = usePage<SharedData>().props;
-
     const user = auth ? auth.user : null;
 
-    console.log(title);
 
     return (
         <main className="flex h-[100vh] w-[100vw] items-center justify-center overflow-hidden">
