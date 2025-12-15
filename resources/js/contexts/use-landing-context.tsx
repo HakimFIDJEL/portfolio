@@ -10,6 +10,7 @@ interface LandingTransitionsProviderProps {
     setShowContentExternal: (v: boolean) => void;
     skipLoader: boolean;
     showPanels: boolean;
+    fetchingData?: boolean;
 }
 
 const LandingTransitionsContext = createContext<
@@ -22,12 +23,14 @@ export function LandingTransitionsProvider({
     setShowContentExternal,
     skipLoader,
     showPanels,
+    fetchingData,
 }: LandingTransitionsProviderProps) {
     const transitions = useLandingTransitions(
         initialShowContent,
         setShowContentExternal,
         skipLoader,
         showPanels,
+        fetchingData,
     );
 
     const contextValue = useMemo(() => transitions, [transitions]);

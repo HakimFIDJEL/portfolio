@@ -11,6 +11,7 @@ export function useLandingTransitions(
     setShowContentExternal: (v: boolean) => void,
     skipLoader: boolean,
     showPanels: boolean,
+    fetchingData?: boolean,
 ) {
     // Main states
     const [loaderActive, setLoaderActive] = useState(skipLoader ? false : true);

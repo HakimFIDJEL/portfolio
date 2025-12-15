@@ -2,7 +2,7 @@
 
 // Necessary imports
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
@@ -24,7 +24,7 @@ import {
     Project
 } from '@/types';
 
-interface LandingProps {
+interface LandingData {
     contacts: ContactType[];
     experiences: ExperienceType[];
     educations: EducationType[];
@@ -34,19 +34,50 @@ interface LandingProps {
     sandbox: Project[];
 }
 
-export default function Landing({ contacts, experiences, educations, stacks, tools, projects, sandbox }: LandingProps) {
+export default function Landing() {
+
+    const [data, setData] = useState<LandingData | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [showContent, setShowContent] = useState(false);
 
+    // useEffect(() => {
+    //     fetch(route('landing.data'))
+    //         .then(response => response.json())
+    //         .then((data: LandingData) => {
+    //             setData(data);
+    //             setIsLoading(false);
+    //             setTimeout(() => {
+    //                 setShowContent(true);
+    //             }, 100); // Delay to trigger animations
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching landing data:', error);
+    //             setIsLoading(false);
+    //         });
+    // }, []);
+
+    if(isLoading || !data) {
+        return (
+            <AppLanding showContent={false} setShowContent={() => {}}>
+                <Head title="Porfolio" />
+                <main>
+                    <p>Loading...</p>
+                </main>
+            </AppLanding>
+        );
+    }
+    
+
     return (
-        <AppLanding showContent={showContent} setShowContent={setShowContent}>
+        <AppLanding showContent={showContent} setShowContent={setShowContent} fetchingData={isLoading}>
             <Head title="Porfolio" />
 
             <main>
                 <Hero appear={showContent} />
-                <About appear={showContent} stacks={stacks} tools={tools} educations={educations} experiences={experiences} />
-                <Projects appear={showContent} projects={projects} />
-                <Sandbox appear={showContent} projects={sandbox} />
-                <Contact appear={showContent} contacts={contacts}/>
+                <About appear={showContent} stacks={data.stacks} tools={data.tools} educations={data.educations} experiences={data.experiences} />
+                <Projects appear={showContent} projects={data.projects} />
+                <Sandbox appear={showContent} projects={data.sandbox} />
+                <Contact appear={showContent} contacts={data.contacts}/>
             </main>
         </AppLanding>
     );

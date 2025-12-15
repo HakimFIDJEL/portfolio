@@ -28,6 +28,7 @@ interface AppLayoutProps {
     children: ReactNode;
     showContent: boolean;
     setShowContent: (show: boolean) => void;
+    fetchingData?: boolean;
 }
 
 function AppLandingContent({ children, showContent }: AppLayoutProps) {
@@ -89,6 +90,7 @@ export default function AppLanding({
     children,
     showContent,
     setShowContent,
+    fetchingData,
 }: AppLayoutProps) {
     const [hasLoadedInitially, setHasLoadedInitially] = useRemember(
         false,
@@ -110,6 +112,7 @@ export default function AppLanding({
             setShowContentExternal={setShowContent}
             skipLoader={initialSkipLoader}
             showPanels={showPanelsFinal}
+            fetchingData={fetchingData}
         >
             <AppLandingContent
                 showContent={showContent}
