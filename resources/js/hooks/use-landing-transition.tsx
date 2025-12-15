@@ -321,6 +321,7 @@
 
 // resources/js/hooks/use-landing-transition.ts
 
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
 // Définir le type de retour pour le Context
@@ -338,20 +339,31 @@ export function useLandingTransitions(
     // -----------------------------------
     // Main states
     const [navigationActive, setNavigationActive] = useState(false);
-    const [navigationWrapperActive, setNavigationWrapperActive] = useState(false);
-    const [navigationContentActive, setNavigationContentActive] = useState(false);
+    const [navigationWrapperActive, setNavigationWrapperActive] =
+        useState(false);
+    const [navigationContentActive, setNavigationContentActive] =
+        useState(false);
 
-    const [transitionPanelsActive, setTransitionPanelsActive] = useState(initialLoaderState === 'transition' ? true : false);
+    // Transition panels state
+    interface TransitionPanelsProps {
+        active: boolean;
+        mode: 'instant' | 'staggered';
+    }
+    const [transitionPanelsActive, setTransitionPanelsActive] =
+        useState<TransitionPanelsProps>({
+            active: initialLoaderState === 'transition' ? true : false,
+            mode: initialLoaderState === 'transition' ? 'instant' : 'staggered',
+        });
 
     // Loader states
     const [introLoaderWrapperActive, setIntroLoaderWrapperActive] = useState(
         initialLoaderState === 'intro' ? true : false,
     );
-    const [introLoaderContentActive, setIntroLoaderContentActive] = useState(false);
+    const [introLoaderContentActive, setIntroLoaderContentActive] =
+        useState(false);
 
-    const [transitionLoaderWrapperActive, setTransitionLoaderWrapperActive] = useState(
-        initialLoaderState === 'transition' ? true : false,
-    );
+    const [transitionLoaderWrapperActive, setTransitionLoaderWrapperActive] =
+        useState(initialLoaderState === 'transition' ? true : false);
     const [transitionLoaderContentActive, setTransitionLoaderContentActive] =
         useState(false);
 
@@ -361,7 +373,7 @@ export function useLandingTransitions(
 
     // Navigation open sequence - DONE
     function _openNavigationSequence() {
-        setTransitionPanelsActive(true);
+        setTransitionPanelsActive({ active: true, mode: 'staggered' });
         setContentActive(false);
 
         setTimeout(() => {
@@ -380,7 +392,7 @@ export function useLandingTransitions(
             setNavigationWrapperActive(false);
 
             setTimeout(() => {
-                setTransitionPanelsActive(false);
+                setTransitionPanelsActive({ active: false, mode: 'staggered' });
 
                 setTimeout(() => {
                     setContentActive(true);
@@ -425,18 +437,86 @@ export function useLandingTransitions(
         }, 500);
     }
 
-    // Transition loader show sequence - TODO
+    // Transition loader show sequence - DONE
     function _showTransitionLoaderSequence() {
-        
+        // Kill switch to avoid displaying the intro loader
+        if (initialLoaderState !== 'transition') {
+            setTransitionLoaderWrapperActive(false);
+            setTransitionLoaderContentActive(false);
+            setContentActive(true);
+            return;
+        }
+
+        setTransitionPanelsActive({ active: true, mode: 'instant' });
+        setTransitionLoaderWrapperActive(true);
+        setTransitionLoaderContentActive(true);
+        window.scrollTo(0, 0);
     }
 
-    // Transition loader close sequence - TODO
+    // Transition loader close sequence - DONE
     function _closeTransitionLoaderSequence() {
+        // Kill switch to avoid displaying the intro loader
+        if (initialLoaderState !== 'transition') {
+            setTransitionLoaderWrapperActive(false);
+            setTransitionLoaderContentActive(false);
+            setContentActive(true);
+            return;
+        }
 
+        setTransitionLoaderContentActive(false);
+
+        setTimeout(() => {
+            setTransitionLoaderWrapperActive(false);
+            setTransitionPanelsActive({ active: false, mode: 'staggered' });
+
+            setTimeout(() => {
+                setContentActive(true);
+            }, 500);
+        }, 500);
     }
 
-    // Navigation to page sequence - TODO
-    function _navigateToPage(href: string, anchor: string | null) {}
+    // Navigation to page sequence - DONE
+    function _navigateToPage(href: string, anchor: string | null) {
+        setTransitionPanelsActive({ active: true, mode: 'staggered' });
+        setContentActive(false);
+        setTimeout(() => {
+            router.visit(href, {
+                preserveScroll: true,
+                preserveState: true,
+
+                onFinish: () => {
+                    setTimeout(() => {
+                        _navigateToAnchor(anchor ?? '');
+                        _closeTransitionLoaderSequence();
+                    }, 0);
+                },
+            });
+        }, 1000);
+    }
+
+    // Navigate to anchor helper - DONE
+    function _navigateToAnchor(anchor: string) {
+        if (anchor === '' || !anchor) {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth',
+            });
+        } else {
+            if (anchor === 'top') {
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth',
+                });
+            } else {
+                const element = document.getElementById(anchor);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+    }
 
     // -----------------------------------
     // Use Effects
@@ -453,35 +533,34 @@ export function useLandingTransitions(
         }
     }, [navigationActive]);
 
-    // Control data fetching effect, show content when fetching is over - DOING
+    // Control data fetching effect, show content when fetching is over - DONE
     useEffect(() => {
         if (fetchingData) {
-            switch(initialLoaderState) {
-                case 'intro' :
+            switch (initialLoaderState) {
+                case 'intro':
                     _showIntroLoaderSequence();
-                break;
+                    break;
                 case 'transition':
-                    // TODO
-                break;
-                default :
+                    _showTransitionLoaderSequence();
+                    break;
+                default:
                     setContentActive(false);
-                break;
+                    break;
             }
             return;
         }
 
-        switch(initialLoaderState) {
-            case 'intro' :
+        switch (initialLoaderState) {
+            case 'intro':
                 _closeIntroLoaderSequence();
-            break;
+                break;
             case 'transition':
-                // TODO
-            break;
-            default :
+                _closeTransitionLoaderSequence();
+                break;
+            default:
                 setContentActive(true);
-            break;
+                break;
         }
-
     }, [fetchingData]);
 
     // -----------------------------------
@@ -497,7 +576,6 @@ export function useLandingTransitions(
         navigationWrapperActive,
         navigationContentActive,
         transitionPanelsActive,
-
 
         // Loader states
         introLoaderWrapperActive,

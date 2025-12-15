@@ -10,7 +10,8 @@ import Delimiter from '@/components/landing/delimiter';
 
 // Translation
 import { useTrans } from '@/lib/translation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import FadeIn from '@/components/landing/fade-in';
 
 export default function Terms() {
     const __ = useTrans();
@@ -48,34 +49,36 @@ export default function Terms() {
     ];
 
     return (
-        <AppLanding showContent={showContent} setShowContent={setShowContent}>
+        <AppLanding contentActive={showContent} setContentActive={setShowContent} >
             <Head title={__('landing.terms.h1', 'Terms of Use')} />
             <div className="min-h-screen bg-background">
-                <Delimiter plusCorners={['all']}>
-                    <div className="px-6 py-12 sm:px-8 md:px-10 lg:px-12.5 lg:py-24">
-                        <h1 className="text-4xl font-bold md:text-5xl lg:text-7xl">
-                            {__('landing.terms.h1', 'Terms of Use')}
-                        </h1>
-                        <p className="mt-2 text-muted-foreground">
-                            {__('landing.terms.last_updated', 'Last Updated: December 14, 2025')}
-                        </p>
+                <FadeIn show={showContent} className='w-full' >
+                    <Delimiter plusCorners={['all']}>
+                        <div className="px-6 py-12 sm:px-8 md:px-10 lg:px-12.5 lg:py-24">
+                            <h1 className="text-4xl font-bold md:text-5xl lg:text-7xl">
+                                {__('landing.terms.h1', 'Terms of Use')}
+                            </h1>
+                            <p className="mt-2 text-muted-foreground">
+                                {__('landing.terms.last_updated', 'Last Updated: December 14, 2025')}
+                            </p>
 
-                        <div className="mt-12 space-y-12">
-                            {sections.map((section, index) => (
-                                <section key={index} className="space-y-4">
-                                    <h2 className="text-2xl font-semibold md:text-3xl">
-                                        {section.title}
-                                    </h2>
-                                    <div className="space-y-4 text-muted-foreground">
-                                        {section.content.map((p, pIndex) => (
-                                            <p key={pIndex}>{p}</p>
-                                        ))}
-                                    </div>
-                                </section>
-                            ))}
+                            <div className="mt-12 space-y-12">
+                                {sections.map((section, index) => (
+                                    <section key={index} className="space-y-4">
+                                        <h2 className="text-2xl font-semibold md:text-3xl">
+                                            {section.title}
+                                        </h2>
+                                        <div className="space-y-4 text-muted-foreground">
+                                            {section.content.map((p, pIndex) => (
+                                                <p key={pIndex}>{p}</p>
+                                            ))}
+                                        </div>
+                                    </section>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                </Delimiter>
+                    </Delimiter>
+                </FadeIn>
             </div>
         </AppLanding>
     );

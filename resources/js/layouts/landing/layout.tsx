@@ -44,7 +44,8 @@ function AppLandingContent({ children }: AppLandingProps) {
         introLoaderWrapperActive,
         introLoaderContentActive,
 
-        
+        transitionLoaderWrapperActive,
+        transitionLoaderContentActive,
 
         // handlers
         setNavigationActive,
@@ -66,11 +67,11 @@ function AppLandingContent({ children }: AppLandingProps) {
                 />
 
                 <TransitionScreen 
-                    active={transitionPanelsActive} 
-                    mode={initialLoaderState === 'transition' ? 'instant' : 'staggered'} 
+                    active={transitionPanelsActive.active} 
+                    mode={transitionPanelsActive.mode} 
                 />
 
-                {/* <CoverScreen active={coverScreenActive} /> */}
+                <CoverScreen showWrapper={transitionLoaderWrapperActive} showContent={transitionLoaderContentActive} />
 
                 <Navigation
                     showNavigation={navigationWrapperActive}

@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { useEffect, useMemo, useState } from 'react';
 
 const DELAY_INCREMENT = 75;
+const PANEL_INDICES = [0, 1, 2, 3];
 
 interface TransitionScreenProps {
     active: boolean;
@@ -12,24 +13,27 @@ interface TransitionScreenProps {
 }
 
 export default function TransitionScreen({ active, mode = 'staggered' }: TransitionScreenProps) {
-    const panelIndices = useMemo(() => [0, 1, 2, 3], []);
+    const panelIndices = useMemo(() => PANEL_INDICES, []);
     const [visiblePanels, setVisiblePanels] = useState<number[]>([]);
 
-    console.log('TransitionScreen active:', active);
-
     useEffect(() => {
+        if (mode === 'instant') {
+            setVisiblePanels(active ? panelIndices : []);
+            return;
+        }
+
         if (active) {
             setVisiblePanels([]);
             panelIndices.forEach((index) => {
                 setTimeout(() => {
                     setVisiblePanels((prev) => [...prev, index]);
-                }, mode === 'instant' ? 0 : index * DELAY_INCREMENT);
+                }, index * DELAY_INCREMENT);
             });
         } else {
             panelIndices.forEach((index) => {
                 setTimeout(() => {
                     setVisiblePanels((prev) => prev.filter((i) => i !== index));
-                }, mode === 'instant' ? 0 : index * DELAY_INCREMENT);
+                }, index * DELAY_INCREMENT);
             });
         }
     }, [active, panelIndices, mode]);
@@ -61,12 +65,8 @@ function TransitionPanel({ active, mode }: TransitionPanelProps) {
     return (
         <div
             className={cn(
-                // Default styles
                 'h-[25vh] w-full bg-card transition-all',
-
                 mode === 'instant' ? 'duration-0' : 'duration-1000',
-
-                // Active styles
                 !active && 'w-0',
             )}
         ></div>

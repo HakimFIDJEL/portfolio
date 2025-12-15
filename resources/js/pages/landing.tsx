@@ -58,7 +58,7 @@ export default function Landing() {
     if(isFetching || !data) {
         return (
             <AppLanding contentActive={contentActive} setContentActive={() => {}} fetchingData={isFetching} >
-                <Head title="Portfolio" />
+                <Head title="Fetching" />
                 <main>
                     <p>Loading...</p>
                 </main>
@@ -69,7 +69,7 @@ export default function Landing() {
 
     return (
         <AppLanding contentActive={contentActive} setContentActive={setContentActive} fetchingData={isFetching}>
-            <Head title="Porfolio" />
+            <Head title="Portfolio" />
 
             <main>
                 <Hero appear={contentActive} />
