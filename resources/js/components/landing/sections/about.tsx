@@ -475,8 +475,6 @@ function AccordionAbout({
     const __ = useTrans();
     const { avatar_url, resume_url } = usePage<SharedData>().props;
 
-    console.log(avatar_url);
-
     const quotes = [
         __('landing.landing.about.tabs.about.quote_1', "“Aiming to build the future one line of code at a time.”"),
         __('landing.landing.about.tabs.about.quote_2', "“It's never a bug, it's a feature.”"),

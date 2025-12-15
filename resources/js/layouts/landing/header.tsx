@@ -26,6 +26,12 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
     const [scrollY, setScrollY] = useState(0);
     const [showMenu, setShowMenu] = useState(true);
 
+    useEffect(() => {
+        console.log('-------------------');
+        console.log('showMenu:', showMenu);
+        console.log('showContent:', showContent);
+    }, [showMenu, showContent]);
+
     const __ = useTrans();
 
     const { _navigateToPage } = useLandingContext();

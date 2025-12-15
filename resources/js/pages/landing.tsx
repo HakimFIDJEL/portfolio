@@ -40,26 +40,25 @@ export default function Landing() {
     const [isLoading, setIsLoading] = useState(true);
     const [showContent, setShowContent] = useState(false);
 
-    // useEffect(() => {
-    //     fetch(route('landing.data'))
-    //         .then(response => response.json())
-    //         .then((data: LandingData) => {
-    //             setData(data);
-    //             setIsLoading(false);
-    //             setTimeout(() => {
-    //                 setShowContent(true);
-    //             }, 100); // Delay to trigger animations
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching landing data:', error);
-    //             setIsLoading(false);
-    //         });
-    // }, []);
+    useEffect(() => {
+        fetch(route('landing.data'))
+            .then(response => response.json())
+            .then((data: LandingData) => {
+                setData(data);
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 500);
+            })
+            .catch(error => {
+                console.error('Error fetching landing data:', error);
+                setIsLoading(false);
+            });
+    }, []);
 
     if(isLoading || !data) {
         return (
-            <AppLanding showContent={false} setShowContent={() => {}}>
-                <Head title="Porfolio" />
+            <AppLanding showContent={showContent} setShowContent={() => {}}>
+                <Head title="Portfolio" />
                 <main>
                     <p>Loading...</p>
                 </main>

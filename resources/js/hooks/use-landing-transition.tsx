@@ -71,6 +71,34 @@ export function useLandingTransitions(
         );
     }
 
+    function startLoaderExitSequence() {
+        if (!loaderActive) return;
+
+        setLoaderContentActive(false);
+        
+        const DURATION_CONTENT_FADE = 500;
+        const DURATION_LOADER_FADE = 500;
+
+        timers.current.push(
+            window.setTimeout(() => {
+                setLoaderActive(false);
+                
+                timers.current.push(
+                    window.setTimeout(() => {
+                        setContentActive(true);
+                        setShowContentExternal(true);
+                    }, DURATION_LOADER_FADE)
+                );
+            }, DURATION_CONTENT_FADE)
+        );
+    }
+    
+    function initLoaderDisplay() {
+        if (!loaderActive) return;
+        setLoaderContentActive(true); 
+        window.scrollTo(0, 0);
+    }
+
     // Navigation open/close sequences
     function openNavigationSequence() {
         setTransitionPanelsActive(true);
@@ -198,13 +226,29 @@ export function useLandingTransitions(
             return;
         }
 
-        if (loaderActive) {
-            startLoaderSequence();
+        // clearTimers();
+
+        if (fetchingData === undefined) {
+            initLoaderDisplay();
         }
+
+        if (fetchingData === false) {
+            const MIN_LOAD_TIME = 500; 
+            
+            timers.current.push(
+                window.setTimeout(() => {
+                    startLoaderExitSequence();
+                }, MIN_LOAD_TIME)
+            );
+        }
+
+        // if (loaderActive) {
+        //     startLoaderSequence();
+        // }
 
         return () => clearTimers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [fetchingData, skipLoader]);
 
     // Navigation open/close effect
     useEffect(() => {
