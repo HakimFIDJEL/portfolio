@@ -70,7 +70,7 @@ export default function Landing() {
     if (fetchingData || !data) {
         return (
             <>
-                <Head title="Fetching" />
+                <Head title="Portfolio" />
                 <main>
                     <p>Loading...</p>
                 </main>
