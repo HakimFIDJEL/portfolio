@@ -295,8 +295,11 @@ function SandboxItem({
                             'border px-1.5 py-0.5 text-sm font-light',
                             'transition-all duration-1000',
 
+                            
                             // Hover & Focus styles
                             'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
+                            'text-primary-foreground group-hover:text-foreground group-focus-visible:text-foreground',
+                            'bg-primary group-hover:bg-transparent group-focus-visible:bg-transparent',
                         )}
                     >
                         {__('landing.projects.sections.new', 'New')}

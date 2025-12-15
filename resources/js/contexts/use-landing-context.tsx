@@ -2,13 +2,10 @@ import {
     LandingTransitionsHook,
     useLandingTransitions,
 } from '@/hooks/use-landing-transition';
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 interface LandingTransitionsProviderProps {
     children: React.ReactNode;
-    contentActive: boolean;
-    setContentActive: (v: boolean) => void;
-    fetchingData?: boolean;
 }
 
 const LandingTransitionsContext = createContext<
@@ -17,15 +14,10 @@ const LandingTransitionsContext = createContext<
 
 export function LandingTransitionsProvider({
     children,
-    fetchingData,
-    contentActive,
-    setContentActive,
 }: LandingTransitionsProviderProps) {
-    const transitions = useLandingTransitions(
-        fetchingData || false,
-        contentActive,
-        setContentActive,
-    );
+
+
+    const transitions = useLandingTransitions();
 
     const contextValue = useMemo(() => transitions, [transitions]);
 

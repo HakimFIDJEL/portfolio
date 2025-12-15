@@ -2,36 +2,37 @@
 
 // Necessary imports
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
 
 // Sections
+import Content from '@/components/projects/sections/content';
 import Hero from '@/components/projects/sections/hero';
 
 // Types
 import { type Project } from '@/types';
-import Content from '@/components/projects/sections/content';
+
+// Context
+import { useLandingContext } from '@/contexts/use-landing-context';
 
 interface ProjectProps {
     project: Project;
 }
 
 export default function Project({ project }: ProjectProps) {
-
-    // States content
-    const [showContent, setShowContent] = useState(false);
+    const { contentActive } = useLandingContext();
 
     return (
-        <AppLanding showContent={showContent} setShowContent={setShowContent}>
+        <>
             <Head title={project.title} />
-            
 
             <main>
-                <Hero appear={showContent} project={project}/>
-                <Content appear={showContent} project={project} />
+                <Hero appear={contentActive} project={project} />
+                <Content appear={contentActive} project={project} />
             </main>
-        </AppLanding>
+        </>
     );
 }
+
+Project.layout = (page: React.ReactNode) => <AppLanding>{page}</AppLanding>;

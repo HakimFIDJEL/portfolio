@@ -31,10 +31,8 @@ function AppLandingContent({ children }: AppLandingProps) {
     const {
         // Params
         contentActive,
-        initialLoaderState,
 
         // states
-        navigationActive,
         navigationWrapperActive,
         navigationContentActive,
         transitionPanelsActive,
@@ -97,40 +95,13 @@ function AppLandingContent({ children }: AppLandingProps) {
 
 interface AppLayoutProps {
     children: ReactNode;
-
-    contentActive: boolean;
-    setContentActive: (show: boolean) => void;
-    fetchingData?: boolean;
 }
 
 export default function AppLanding({
     children,
-    contentActive,
-    setContentActive,
-    fetchingData,
 }: AppLayoutProps) {
-
-    // TO REMOVE
-    // const [hasLoadedInitially, setHasLoadedInitially] = useRemember(
-    //     false,
-    //     'loader-state',
-    // );
-    // const [showPanels, setShowPanels] = useRemember(false, 'panels-state');
-
-    // const initialSkipLoader = !hasLoadedInitially;
-    // const showPanelsFinal = initialSkipLoader;
-
-    // useEffect(() => {
-    //     setHasLoadedInitially(true);
-    //     setShowPanels(true);
-    // }, [showPanels, setHasLoadedInitially, setShowPanels]);
-
     return (
-        <LandingTransitionsProvider
-            fetchingData={fetchingData}
-            contentActive={contentActive}
-            setContentActive={setContentActive}
-        >
+        <LandingTransitionsProvider>
             <AppLandingContent>
                 {children}
             </AppLandingContent>

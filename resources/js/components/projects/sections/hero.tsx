@@ -159,6 +159,8 @@ export default function Hero({ appear, project }: HeroProps) {
 
                                             // Hover & Focus styles
                                             'border-primary',
+                                            'bg-primary',
+                                            'text-primary-foreground',
                                             'whitespace-nowrap',
                                         )}
                                     >

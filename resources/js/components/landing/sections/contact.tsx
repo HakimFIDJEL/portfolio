@@ -212,7 +212,7 @@ interface ContactItemProps {
 }
 
 function ContactItem({ item }: ContactItemProps) {
-    const IconComponent = getIcon({ icon: item.icon, props: { className: 'h-6 w-6 stroke-2 text-primary transition-all duration-500' } });
+    const IconComponent = getIcon({ icon: item.icon, props: { className: 'h-6 w-6 stroke-2 text-primary transition-all duration-500 group-hover:text-primary-foreground group-focus-visible:text-primary-foreground' } });
 
     return (
         <Magnet magnetStrength={25} padding={10} wrapperClassName="w-full">

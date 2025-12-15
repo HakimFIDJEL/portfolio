@@ -45,5 +45,9 @@ if php artisan list | grep -q sitemap:generate; then
     php artisan sitemap:generate
 fi
 
+# Permissions pour le dossier database
+chown -R www-data:www-data /var/www/html/database
+chmod -R 775 /var/www/html/database
+
 # Lancer Apache en premier plan
 exec apache2-foreground

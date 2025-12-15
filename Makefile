@@ -1,20 +1,19 @@
-# Variables
 IMAGE_NAME=hakimfidjel/portfolio
 TAG=latest
+SUDO=sudo
 
-# Build l'image Docker
 build:
-	sudo docker build -t $(IMAGE_NAME):$(TAG) .
+	$(SUDO) docker build -t $(IMAGE_NAME):$(TAG) .
 
 run:
-	sudo docker run -d -p 8000:80 --name portfolio_container $(IMAGE_NAME):$(TAG)
+	$(SUDO) docker run -d -p 8000:80 --name portfolio_container $(IMAGE_NAME):$(TAG)
 
-# Se connecter à Docker Hub
 login:
-	sudo docker login
+	$(SUDO) docker login
 
-# Pousser l'image sur Docker Hub
 push:
-	sudo docker push $(IMAGE_NAME):$(TAG)
-# Combinaison build + push
+	$(SUDO) docker push $(IMAGE_NAME):$(TAG)
+
 release: build push
+
+# Lancer sans sudo : make release SUDO=
