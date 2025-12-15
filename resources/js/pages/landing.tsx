@@ -55,7 +55,6 @@ export default function Landing() {
             .then((data: LandingData) => {
                 setData(data);
                 timer = setTimeout(() => {
-                    // window.scrollTo(0, 0);
                     setFetchingData(false);
                 }, 1000);
             })

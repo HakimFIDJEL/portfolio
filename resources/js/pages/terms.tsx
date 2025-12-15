@@ -26,7 +26,6 @@ export default function Terms() {
         if (!fetchingData) setFetchingData(true);
 
         const timer = setTimeout(() => {
-            // window.scrollTo(0, 0);
             setFetchingData(false);
         }, 1000);
 

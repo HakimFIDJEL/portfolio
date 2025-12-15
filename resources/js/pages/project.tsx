@@ -2,6 +2,7 @@
 
 // Necessary imports
 import { Head } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
@@ -21,7 +22,18 @@ interface ProjectProps {
 }
 
 export default function Project({ project }: ProjectProps) {
-    const { contentActive } = useLandingContext();
+    const { contentActive, fetchingData, setFetchingData } =
+        useLandingContext();
+
+    useEffect(() => {
+        if (!fetchingData) setFetchingData(true);
+
+        const timer = setTimeout(() => {
+            setFetchingData(false);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <>

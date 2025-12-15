@@ -41,7 +41,7 @@ export default function Header({ showContent, handleMenuToggle, navigateToPage }
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
 
-            if (currentScrollY > lastScrollY) {
+            if (currentScrollY > lastScrollY + 20) {
                 // Down
                 setShowMenu(false);
             } else if (currentScrollY < lastScrollY - 10) {
