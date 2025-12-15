@@ -20,21 +20,14 @@ import { SharedData } from '@/types';
 interface HeaderProps {
     showContent: boolean;
     handleMenuToggle: (open: boolean) => void;
+    navigateToPage: (href: string, anchor: string | null) => void;
 }
 
-export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
+export default function Header({ showContent, handleMenuToggle, navigateToPage }: HeaderProps) {
     const [scrollY, setScrollY] = useState(0);
     const [showMenu, setShowMenu] = useState(true);
 
-    useEffect(() => {
-        console.log('-------------------');
-        console.log('showMenu:', showMenu);
-        console.log('showContent:', showContent);
-    }, [showMenu, showContent]);
-
     const __ = useTrans();
-
-    const { _navigateToPage } = useLandingContext();
 
     function handleProjectClick(
         e: React.MouseEvent<HTMLAnchorElement>,
@@ -42,7 +35,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
         anchor: string = 'top',
     ) {
         e.preventDefault();
-        _navigateToPage(href, anchor);
+        navigateToPage(href, anchor);
     }
 
     useEffect(() => {

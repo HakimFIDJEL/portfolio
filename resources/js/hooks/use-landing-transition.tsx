@@ -1,321 +1,513 @@
+// // resources/js/hooks/use-landing-transition.ts
+
+// import { router } from '@inertiajs/react';
+// import { useEffect, useRef, useState } from 'react';
+
+// // Définir le type de retour pour le Context
+// export type LandingTransitionsHook = ReturnType<typeof useLandingTransitions>;
+
+// export function useLandingTransitions(
+//     initialShowContent: boolean,
+//     setShowContentExternal: (v: boolean) => void,
+//     skipLoader: boolean,
+//     showPanels: boolean,
+//     fetchingData?: boolean,
+// ) {
+//     // Main states
+//     const [loaderActive, setLoaderActive] = useState(skipLoader ? false : true);
+//     const [navigationActive, setNavigationActive] = useState(false);
+//     const [contentActive, setContentActive] = useState(initialShowContent);
+//     const [transitionPanelsActive, setTransitionPanelsActive] = useState(() => {
+//         return skipLoader ? showPanels : false;
+//     });
+//     const [coverScreenActive, setCoverScreenActive] = useState(showPanels);
+
+//     // Sub states for animations
+//     const [pageNavigationActive, setPageNavigationActive] = useState(false);
+//     const [switchNavigationActive, setSwitchNavigationActive] = useState(false);
+//     const [navigationContentActive, setNavigationContentActive] =
+//         useState(false);
+//     const [loaderContentActive, setLoaderContentActive] = useState(false);
+
+//     // Navigation state
+//     const [targetHref, setTargetHref] = useState<string | null>(null);
+//     const [targetAnchor, setTargetAnchor] = useState<string>();
+
+//     // timers ref for cleanup
+//     const timers = useRef<number[]>([]);
+
+//     const clearTimers = () => {
+//         timers.current.forEach((id) => clearTimeout(id));
+//         timers.current = [];
+//     };
+
+//     /**
+//      * SEQUENCES
+//      */
+
+//     // Loader sequence
+//     function startLoaderSequence() {
+//         if (!loaderActive) return;
+//         setLoaderContentActive(true);
+//         window.scrollTo(0, 0);
+
+//         timers.current.push(
+//             window.setTimeout(() => {
+//                 setLoaderContentActive(false);
+
+//                 timers.current.push(
+//                     window.setTimeout(() => {
+//                         setLoaderActive(false);
+
+//                         timers.current.push(
+//                             window.setTimeout(() => {
+//                                 setContentActive(true);
+//                                 setShowContentExternal(true);
+//                             }, 500),
+//                         );
+//                     }, 500),
+//                 );
+//             }, 1500),
+//         );
+//     }
+
+//     function startLoaderExitSequence() {
+//         if (!loaderActive) return;
+
+//         setLoaderContentActive(false);
+
+//         const DURATION_CONTENT_FADE = 500;
+//         const DURATION_LOADER_FADE = 500;
+
+//         timers.current.push(
+//             window.setTimeout(() => {
+//                 setLoaderActive(false);
+
+//                 timers.current.push(
+//                     window.setTimeout(() => {
+//                         setContentActive(true);
+//                         setShowContentExternal(true);
+//                     }, DURATION_LOADER_FADE)
+//                 );
+//             }, DURATION_CONTENT_FADE)
+//         );
+//     }
+
+//     function initLoaderDisplay() {
+//         if (!loaderActive) return;
+//         setLoaderContentActive(true);
+//         window.scrollTo(0, 0);
+//     }
+
+//     // Navigation open/close sequences
+//     function openNavigationSequence() {
+//         setTransitionPanelsActive(true);
+//         setContentActive(false);
+//         setShowContentExternal(false);
+
+//         timers.current.push(
+//             window.setTimeout(() => {
+//                 setNavigationActive(true);
+//                 timers.current.push(
+//                     window.setTimeout(
+//                         () => setNavigationContentActive(true),
+//                         0,
+//                     ),
+//                 );
+//             }, 500),
+//         );
+//     }
+
+//     // Close navigation sequence
+//     function closeNavigationSequence() {
+//         setNavigationContentActive(false);
+
+//         timers.current.push(
+//             window.setTimeout(() => {
+//                 setNavigationActive(false);
+
+//                 timers.current.push(
+//                     window.setTimeout(() => {
+//                         setTransitionPanelsActive(false);
+
+//                         timers.current.push(
+//                             window.setTimeout(() => {
+//                                 setContentActive(true);
+//                                 setShowContentExternal(true);
+//                             }, 500),
+//                         );
+//                     }, 0),
+//                 );
+//             }, 750),
+//         );
+//     }
+
+//     // Page navigation sequences
+//     function openPageSequence() {
+//         setTransitionPanelsActive(true);
+//         setContentActive(false);
+//         setShowContentExternal(false);
+
+//         timers.current.push(
+//             window.setTimeout(() => {
+//                 if (targetHref) {
+//                     setCoverScreenActive(true);
+//                     router.visit(targetHref, {
+//                         preserveState: true,
+//                         preserveScroll: false,
+
+//                         onFinish: () => {
+//                             setTimeout(() => {
+
+//                                 if(targetAnchor === '' || !targetAnchor) {
+//                                     window.scrollTo({
+//                                         top: 0,
+//                                         left: 0,
+//                                         behavior: 'instant',
+//                                     });
+//                                 } else {
+//                                     if(targetAnchor === 'top') {
+//                                         window.scrollTo({
+//                                             top: 0,
+//                                             left: 0,
+//                                             behavior: 'instant',
+//                                         });
+//                                     } else {
+//                                         const element = document.getElementById(targetAnchor);
+//                                         if (element) {
+//                                             element.scrollIntoView({ behavior: 'instant' });
+//                                         }
+//                                     }
+//                                 }
+
+//                                 // setCoverScreenActive(false);
+
+//                                 setTimeout(() => {
+//                                     setPageNavigationActive(false);
+//                                 }, 500);
+//                             }, 100);
+//                         },
+//                     });
+//                 } else {
+//                     setPageNavigationActive(false);
+//                 }
+//             }, 1000),
+//         );
+//     }
+//     // Close page sequence
+//     function closePageSequence() {
+//         setTargetHref(null);
+
+//         setTimeout(() => {
+//             setCoverScreenActive(false);
+//             setTimeout(() => {
+//                 setTransitionPanelsActive(false);
+//                 setTimeout(() => {
+//                     setContentActive(true);
+//                     setShowContentExternal(true);
+//                 }, 500);
+//             }, 250);
+//         }, 1000);
+//     }
+
+//     /**
+//      * EFFECTS
+//      */
+
+//     // Initial load effect
+//     useEffect(() => {
+//         if (skipLoader) {
+//             if (!transitionPanelsActive) {
+//                 setLoaderActive(false);
+//                 setContentActive(true);
+//                 setShowContentExternal(true);
+//             }
+//             return;
+//         }
+
+//         // clearTimers();
+
+//         if (fetchingData === undefined) {
+//             initLoaderDisplay();
+//         }
+
+//         if (fetchingData === false) {
+//             const MIN_LOAD_TIME = 500;
+
+//             timers.current.push(
+//                 window.setTimeout(() => {
+//                     startLoaderExitSequence();
+//                 }, MIN_LOAD_TIME)
+//             );
+//         }
+
+//         // if (loaderActive) {
+//         //     startLoaderSequence();
+//         // }
+
+//         return () => clearTimers();
+//         // eslint-disable-next-line react-hooks/exhaustive-deps
+//     }, [fetchingData, skipLoader]);
+
+//     // Navigation open/close effect
+//     useEffect(() => {
+//         if (loaderActive) return;
+
+//         clearTimers();
+//         if (!pageNavigationActive) {
+//             if (switchNavigationActive) openNavigationSequence();
+//             else closeNavigationSequence();
+//         }
+
+//         return () => clearTimers();
+//         // eslint-disable-next-line react-hooks/exhaustive-deps
+//     }, [switchNavigationActive]);
+
+//     // Page navigation effect
+//     useEffect(() => {
+//         if (loaderActive) return;
+
+//         clearTimers();
+//         if (pageNavigationActive) {
+//             if (targetHref) {
+//                 openPageSequence();
+//             } else {
+//                 setPageNavigationActive(false);
+//             }
+//         } else {
+//             closePageSequence();
+//         }
+//         return () => clearTimers();
+//         // eslint-disable-next-line react-hooks/exhaustive-deps
+//     }, [pageNavigationActive]);
+
+//     // Cleanup on unmount
+//     useEffect(() => {
+//         return () => clearTimers();
+//     }, []);
+
+//     // PUBLIC API: functions to expose
+//     function _toggleNavigation(show: boolean) {
+//         setSwitchNavigationActive(show);
+//     }
+
+//     function _navigateToPage(href: string, anchor: string | null) {
+//         setTargetHref(href);
+//         setTargetAnchor(anchor ?? '');
+//         setPageNavigationActive(true);
+
+//     }
+
+//     // export states + handlers
+//     return {
+//         // states
+//         loaderActive,
+//         loaderContentActive,
+//         navigationActive,
+//         navigationContentActive,
+//         contentActive,
+//         transitionPanelsActive,
+//         coverScreenActive,
+
+//         // handlers
+//         _toggleNavigation,
+//         _navigateToPage,
+//         // low-level setters if needed
+//         setNavigationActive,
+//         setTransitionPanelsActive,
+//         setContentActive,
+//     };
+// }
+
 // resources/js/hooks/use-landing-transition.ts
 
-import { router } from '@inertiajs/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Définir le type de retour pour le Context
 export type LandingTransitionsHook = ReturnType<typeof useLandingTransitions>;
 
 export function useLandingTransitions(
-    initialShowContent: boolean,
-    setShowContentExternal: (v: boolean) => void,
-    skipLoader: boolean,
-    showPanels: boolean,
-    fetchingData?: boolean,
+    fetchingData: boolean,
+    contentActive: boolean,
+    setContentActive: (v: boolean) => void,
+
+    initialLoaderState: 'intro' | 'transition' | 'none' = 'transition',
 ) {
+    // -----------------------------------
+    // States
+    // -----------------------------------
     // Main states
-    const [loaderActive, setLoaderActive] = useState(skipLoader ? false : true);
     const [navigationActive, setNavigationActive] = useState(false);
-    const [contentActive, setContentActive] = useState(initialShowContent);
-    const [transitionPanelsActive, setTransitionPanelsActive] = useState(() => {
-        return skipLoader ? showPanels : false;
-    });
-    const [coverScreenActive, setCoverScreenActive] = useState(showPanels);
+    const [navigationWrapperActive, setNavigationWrapperActive] = useState(false);
+    const [navigationContentActive, setNavigationContentActive] = useState(false);
 
-    // Sub states for animations
-    const [pageNavigationActive, setPageNavigationActive] = useState(false);
-    const [switchNavigationActive, setSwitchNavigationActive] = useState(false);
-    const [navigationContentActive, setNavigationContentActive] =
+    const [transitionPanelsActive, setTransitionPanelsActive] = useState(initialLoaderState === 'transition' ? true : false);
+
+    // Loader states
+    const [introLoaderWrapperActive, setIntroLoaderWrapperActive] = useState(
+        initialLoaderState === 'intro' ? true : false,
+    );
+    const [introLoaderContentActive, setIntroLoaderContentActive] = useState(false);
+
+    const [transitionLoaderWrapperActive, setTransitionLoaderWrapperActive] = useState(
+        initialLoaderState === 'transition' ? true : false,
+    );
+    const [transitionLoaderContentActive, setTransitionLoaderContentActive] =
         useState(false);
-    const [loaderContentActive, setLoaderContentActive] = useState(false);
 
-    // Navigation state
-    const [targetHref, setTargetHref] = useState<string | null>(null);
-    const [targetAnchor, setTargetAnchor] = useState<string>();
+    // -----------------------------------
+    // Functions
+    // -----------------------------------
 
-    // timers ref for cleanup
-    const timers = useRef<number[]>([]);
-
-    const clearTimers = () => {
-        timers.current.forEach((id) => clearTimeout(id));
-        timers.current = [];
-    };
-
-    /**
-     * SEQUENCES
-     */
-
-    // Loader sequence
-    function startLoaderSequence() {
-        if (!loaderActive) return;
-        setLoaderContentActive(true);
-        window.scrollTo(0, 0);
-
-        timers.current.push(
-            window.setTimeout(() => {
-                setLoaderContentActive(false);
-
-                timers.current.push(
-                    window.setTimeout(() => {
-                        setLoaderActive(false);
-
-                        timers.current.push(
-                            window.setTimeout(() => {
-                                setContentActive(true);
-                                setShowContentExternal(true);
-                            }, 500),
-                        );
-                    }, 500),
-                );
-            }, 1500),
-        );
-    }
-
-    function startLoaderExitSequence() {
-        if (!loaderActive) return;
-
-        setLoaderContentActive(false);
-        
-        const DURATION_CONTENT_FADE = 500;
-        const DURATION_LOADER_FADE = 500;
-
-        timers.current.push(
-            window.setTimeout(() => {
-                setLoaderActive(false);
-                
-                timers.current.push(
-                    window.setTimeout(() => {
-                        setContentActive(true);
-                        setShowContentExternal(true);
-                    }, DURATION_LOADER_FADE)
-                );
-            }, DURATION_CONTENT_FADE)
-        );
-    }
-    
-    function initLoaderDisplay() {
-        if (!loaderActive) return;
-        setLoaderContentActive(true); 
-        window.scrollTo(0, 0);
-    }
-
-    // Navigation open/close sequences
-    function openNavigationSequence() {
+    // Navigation open sequence - DONE
+    function _openNavigationSequence() {
         setTransitionPanelsActive(true);
         setContentActive(false);
-        setShowContentExternal(false);
-
-        timers.current.push(
-            window.setTimeout(() => {
-                setNavigationActive(true);
-                timers.current.push(
-                    window.setTimeout(
-                        () => setNavigationContentActive(true),
-                        0,
-                    ),
-                );
-            }, 500),
-        );
-    }
-
-    // Close navigation sequence
-    function closeNavigationSequence() {
-        setNavigationContentActive(false);
-
-        timers.current.push(
-            window.setTimeout(() => {
-                setNavigationActive(false);
-
-                timers.current.push(
-                    window.setTimeout(() => {
-                        setTransitionPanelsActive(false);
-
-                        timers.current.push(
-                            window.setTimeout(() => {
-                                setContentActive(true);
-                                setShowContentExternal(true);
-                            }, 500),
-                        );
-                    }, 0),
-                );
-            }, 750),
-        );
-    }
-
-    // Page navigation sequences
-    function openPageSequence() {
-        setTransitionPanelsActive(true);
-        setContentActive(false);
-        setShowContentExternal(false);
-
-        timers.current.push(
-            window.setTimeout(() => {
-                if (targetHref) {
-                    setCoverScreenActive(true);
-                    router.visit(targetHref, {
-                        preserveState: true,
-                        preserveScroll: false,
-
-                        onFinish: () => {
-                            setTimeout(() => {
-
-                                if(targetAnchor === '' || !targetAnchor) {
-                                    window.scrollTo({
-                                        top: 0,
-                                        left: 0,
-                                        behavior: 'instant',
-                                    });
-                                } else {
-                                    if(targetAnchor === 'top') {
-                                        window.scrollTo({
-                                            top: 0,
-                                            left: 0,
-                                            behavior: 'instant',
-                                        });
-                                    } else {
-                                        const element = document.getElementById(targetAnchor);
-                                        if (element) {
-                                            element.scrollIntoView({ behavior: 'instant' });
-                                        }
-                                    }
-                                }
-
-                                
-                                // setCoverScreenActive(false);
-
-                                setTimeout(() => {
-                                    setPageNavigationActive(false);
-                                }, 500);
-                            }, 100);
-                        },
-                    });
-                } else {
-                    setPageNavigationActive(false);
-                }
-            }, 1000),
-        );
-    }
-    // Close page sequence
-    function closePageSequence() {
-        setTargetHref(null);
 
         setTimeout(() => {
-            setCoverScreenActive(false);
+            setNavigationWrapperActive(true);
             setTimeout(() => {
-                setTransitionPanelsActive(false);
-                setTimeout(() => {
-                    setContentActive(true);
-                    setShowContentExternal(true);
-                }, 500);
-            }, 250);
-        }, 1000);
+                setNavigationContentActive(true);
+            }, 0);
+        }, 500);
     }
 
-    /**
-     * EFFECTS
-     */
+    // Navigation close sequence - DONE
+    function _closeNavigationSequence() {
+        setNavigationContentActive(false);
 
-    // Initial load effect
-    useEffect(() => {
-        if (skipLoader) {
-            if (!transitionPanelsActive) {
-                setLoaderActive(false);
+        setTimeout(() => {
+            setNavigationWrapperActive(false);
+
+            setTimeout(() => {
+                setTransitionPanelsActive(false);
+
+                setTimeout(() => {
+                    setContentActive(true);
+                }, 500);
+            }, 0);
+        }, 750);
+    }
+
+    // Loader show sequence - DONE
+    function _showIntroLoaderSequence() {
+        // Kill switch to avoid displaying the intro loader
+        if (initialLoaderState !== 'intro') {
+            setIntroLoaderWrapperActive(false);
+            setIntroLoaderContentActive(false);
+            setContentActive(true);
+            return;
+        }
+
+        setIntroLoaderWrapperActive(true);
+        setIntroLoaderContentActive(true);
+        window.scrollTo(0, 0);
+    }
+
+    // Loader close sequence - DONE
+    function _closeIntroLoaderSequence() {
+        // Kill switch to avoid displaying the intro loader
+        if (initialLoaderState !== 'intro') {
+            setIntroLoaderWrapperActive(false);
+            setIntroLoaderContentActive(false);
+            setContentActive(true);
+            return;
+        }
+
+        setIntroLoaderContentActive(false);
+
+        setTimeout(() => {
+            setIntroLoaderWrapperActive(false);
+
+            setTimeout(() => {
                 setContentActive(true);
-                setShowContentExternal(true);
+            }, 500);
+        }, 500);
+    }
+
+    // Transition loader show sequence - TODO
+    function _showTransitionLoaderSequence() {
+        
+    }
+
+    // Transition loader close sequence - TODO
+    function _closeTransitionLoaderSequence() {
+
+    }
+
+    // Navigation to page sequence - TODO
+    function _navigateToPage(href: string, anchor: string | null) {}
+
+    // -----------------------------------
+    // Use Effects
+    // -----------------------------------
+
+    // Control navigation open/close effect - DONE
+    useEffect(() => {
+        if (fetchingData) return;
+
+        if (navigationActive) {
+            _openNavigationSequence();
+        } else {
+            _closeNavigationSequence();
+        }
+    }, [navigationActive]);
+
+    // Control data fetching effect, show content when fetching is over - DOING
+    useEffect(() => {
+        if (fetchingData) {
+            switch(initialLoaderState) {
+                case 'intro' :
+                    _showIntroLoaderSequence();
+                break;
+                case 'transition':
+                    // TODO
+                break;
+                default :
+                    setContentActive(false);
+                break;
             }
             return;
         }
 
-        // clearTimers();
-
-        if (fetchingData === undefined) {
-            initLoaderDisplay();
+        switch(initialLoaderState) {
+            case 'intro' :
+                _closeIntroLoaderSequence();
+            break;
+            case 'transition':
+                // TODO
+            break;
+            default :
+                setContentActive(true);
+            break;
         }
 
-        if (fetchingData === false) {
-            const MIN_LOAD_TIME = 500; 
-            
-            timers.current.push(
-                window.setTimeout(() => {
-                    startLoaderExitSequence();
-                }, MIN_LOAD_TIME)
-            );
-        }
+    }, [fetchingData]);
 
-        // if (loaderActive) {
-        //     startLoaderSequence();
-        // }
-
-        return () => clearTimers();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetchingData, skipLoader]);
-
-    // Navigation open/close effect
-    useEffect(() => {
-        if (loaderActive) return;
-
-        clearTimers();
-        if (!pageNavigationActive) {
-            if (switchNavigationActive) openNavigationSequence();
-            else closeNavigationSequence();
-        }
-
-        return () => clearTimers();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [switchNavigationActive]);
-
-    // Page navigation effect
-    useEffect(() => {
-        if (loaderActive) return;
-
-        clearTimers();
-        if (pageNavigationActive) {
-            if (targetHref) {
-                openPageSequence();
-            } else {
-                setPageNavigationActive(false);
-            }
-        } else {
-            closePageSequence();
-        }
-        return () => clearTimers();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pageNavigationActive]);
-
-    // Cleanup on unmount
-    useEffect(() => {
-        return () => clearTimers();
-    }, []);
-
-    // PUBLIC API: functions to expose
-    function _toggleNavigation(show: boolean) {
-        setSwitchNavigationActive(show);
-    }
-
-    function _navigateToPage(href: string, anchor: string | null) {
-        setTargetHref(href);
-        setTargetAnchor(anchor ?? '');
-        setPageNavigationActive(true);
-        
-    }
-
-    // export states + handlers
+    // -----------------------------------
+    // Return states and handlers
+    // -----------------------------------
     return {
-        // states
-        loaderActive,
-        loaderContentActive,
-        navigationActive,
-        navigationContentActive,
+        // Params
         contentActive,
+        initialLoaderState,
+
+        // states
+        navigationActive,
+        navigationWrapperActive,
+        navigationContentActive,
         transitionPanelsActive,
-        coverScreenActive,
+
+
+        // Loader states
+        introLoaderWrapperActive,
+        introLoaderContentActive,
+
+        transitionLoaderWrapperActive,
+        transitionLoaderContentActive,
 
         // handlers
-        _toggleNavigation,
-        _navigateToPage,
-        // low-level setters if needed
         setNavigationActive,
-        setTransitionPanelsActive,
-        setContentActive,
+        _navigateToPage,
     };
 }

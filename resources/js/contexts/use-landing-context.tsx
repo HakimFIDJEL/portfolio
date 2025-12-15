@@ -6,10 +6,8 @@ import { createContext, useContext, useMemo } from 'react';
 
 interface LandingTransitionsProviderProps {
     children: React.ReactNode;
-    initialShowContent: boolean;
-    setShowContentExternal: (v: boolean) => void;
-    skipLoader: boolean;
-    showPanels: boolean;
+    contentActive: boolean;
+    setContentActive: (v: boolean) => void;
     fetchingData?: boolean;
 }
 
@@ -19,18 +17,14 @@ const LandingTransitionsContext = createContext<
 
 export function LandingTransitionsProvider({
     children,
-    initialShowContent,
-    setShowContentExternal,
-    skipLoader,
-    showPanels,
     fetchingData,
+    contentActive,
+    setContentActive,
 }: LandingTransitionsProviderProps) {
     const transitions = useLandingTransitions(
-        initialShowContent,
-        setShowContentExternal,
-        skipLoader,
-        showPanels,
-        fetchingData,
+        fetchingData || false,
+        contentActive,
+        setContentActive,
     );
 
     const contextValue = useMemo(() => transitions, [transitions]);

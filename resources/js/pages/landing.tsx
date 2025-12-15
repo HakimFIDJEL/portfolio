@@ -37,8 +37,8 @@ interface LandingData {
 export default function Landing() {
 
     const [data, setData] = useState<LandingData | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [showContent, setShowContent] = useState(false);
+    const [isFetching, setIsFetching] = useState(true);
+    const [contentActive, setContentActive] = useState(false);
 
     useEffect(() => {
         fetch(route('landing.data'))
@@ -46,18 +46,18 @@ export default function Landing() {
             .then((data: LandingData) => {
                 setData(data);
                 setTimeout(() => {
-                    setIsLoading(false);
-                }, 500);
+                    setIsFetching(false);
+                }, 1000);
             })
             .catch(error => {
-                console.error('Error fetching landing data:', error);
-                setIsLoading(false);
+                console.error('Error fetching data:', error);
+                setIsFetching(false);
             });
-    }, []);
+    }, [isFetching]);
 
-    if(isLoading || !data) {
+    if(isFetching || !data) {
         return (
-            <AppLanding showContent={showContent} setShowContent={() => {}}>
+            <AppLanding contentActive={contentActive} setContentActive={() => {}} fetchingData={isFetching} >
                 <Head title="Portfolio" />
                 <main>
                     <p>Loading...</p>
@@ -68,15 +68,15 @@ export default function Landing() {
     
 
     return (
-        <AppLanding showContent={showContent} setShowContent={setShowContent} fetchingData={isLoading}>
+        <AppLanding contentActive={contentActive} setContentActive={setContentActive} fetchingData={isFetching}>
             <Head title="Porfolio" />
 
             <main>
-                <Hero appear={showContent} />
-                <About appear={showContent} stacks={data.stacks} tools={data.tools} educations={data.educations} experiences={data.experiences} />
-                <Projects appear={showContent} projects={data.projects} />
-                <Sandbox appear={showContent} projects={data.sandbox} />
-                <Contact appear={showContent} contacts={data.contacts}/>
+                <Hero appear={contentActive} />
+                <About appear={contentActive} stacks={data.stacks} tools={data.tools} educations={data.educations} experiences={data.experiences} />
+                <Projects appear={contentActive} projects={data.projects} />
+                <Sandbox appear={contentActive} projects={data.sandbox} />
+                <Contact appear={contentActive} contacts={data.contacts}/>
             </main>
         </AppLanding>
     );

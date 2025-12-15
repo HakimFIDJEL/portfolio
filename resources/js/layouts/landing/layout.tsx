@@ -24,26 +24,31 @@ import {
     useLandingContext,
 } from '@/contexts/use-landing-context';
 
-interface AppLayoutProps {
+interface AppLandingProps {
     children: ReactNode;
-    showContent: boolean;
-    setShowContent: (show: boolean) => void;
-    fetchingData?: boolean;
 }
 
-function AppLandingContent({ children, showContent }: AppLayoutProps) {
+function AppLandingContent({ children }: AppLandingProps) {
     const {
-        // states
-        loaderActive,
-        loaderContentActive,
-        navigationActive,
-        navigationContentActive,
+        // Params
         contentActive,
+        initialLoaderState,
+
+        // states
+        navigationActive,
+        navigationWrapperActive,
+        navigationContentActive,
         transitionPanelsActive,
-        coverScreenActive,
+
+        // Loader states
+        introLoaderWrapperActive,
+        introLoaderContentActive,
+
+        
 
         // handlers
-        _toggleNavigation,
+        setNavigationActive,
+        _navigateToPage,
     } = useLandingContext();
 
     return (
@@ -56,68 +61,77 @@ function AppLandingContent({ children, showContent }: AppLayoutProps) {
                 <BreakpointIndicator className="fixed bottom-5 left-6" />
 
                 <Loader
-                    showLoader={loaderActive}
-                    showLoaderContent={loaderContentActive}
+                    showLoader={introLoaderWrapperActive}
+                    showLoaderContent={introLoaderContentActive}
                 />
 
-                <TransitionScreen active={transitionPanelsActive} />
+                <TransitionScreen 
+                    active={transitionPanelsActive} 
+                    mode={initialLoaderState === 'transition' ? 'instant' : 'staggered'} 
+                />
 
-                <CoverScreen active={coverScreenActive} />
+                {/* <CoverScreen active={coverScreenActive} /> */}
 
                 <Navigation
-                    showNavigation={navigationActive}
+                    showNavigation={navigationWrapperActive}
                     showNavigationContent={navigationContentActive}
-                    handleMenuToggle={() => _toggleNavigation(false)}
+                    handleMenuToggle={() => setNavigationActive(false)}
                 />
 
                 <Header
                     showContent={contentActive}
-                    handleMenuToggle={() => _toggleNavigation(true)}
+                    handleMenuToggle={() => setNavigationActive(true)}
+                    navigateToPage={_navigateToPage}
                 />
 
                 {children}
 
-                <Footer appear={showContent} />
+                <Footer appear={contentActive} />
 
-                <ScrollTopButton appear={showContent} />
+                <ScrollTopButton appear={contentActive} />
             </div>
             <PlaceholderPattern className="fixed inset-0 z-0 size-full h-[100vh] w-[100vw] stroke-neutral-900/20 dark:stroke-neutral-100/20" />
         </>
     );
 }
 
+interface AppLayoutProps {
+    children: ReactNode;
+
+    contentActive: boolean;
+    setContentActive: (show: boolean) => void;
+    fetchingData?: boolean;
+}
+
 export default function AppLanding({
     children,
-    showContent,
-    setShowContent,
+    contentActive,
+    setContentActive,
     fetchingData,
 }: AppLayoutProps) {
-    const [hasLoadedInitially, setHasLoadedInitially] = useRemember(
-        false,
-        'loader-state',
-    );
-    const [showPanels, setShowPanels] = useRemember(false, 'panels-state');
 
-    const initialSkipLoader = !hasLoadedInitially;
-    const showPanelsFinal = initialSkipLoader;
+    // TO REMOVE
+    // const [hasLoadedInitially, setHasLoadedInitially] = useRemember(
+    //     false,
+    //     'loader-state',
+    // );
+    // const [showPanels, setShowPanels] = useRemember(false, 'panels-state');
 
-    useEffect(() => {
-        setHasLoadedInitially(true);
-        setShowPanels(true);
-    }, [showPanels, setHasLoadedInitially, setShowPanels]);
+    // const initialSkipLoader = !hasLoadedInitially;
+    // const showPanelsFinal = initialSkipLoader;
+
+    // useEffect(() => {
+    //     setHasLoadedInitially(true);
+    //     setShowPanels(true);
+    // }, [showPanels, setHasLoadedInitially, setShowPanels]);
 
     return (
         <LandingTransitionsProvider
-            initialShowContent={showContent}
-            setShowContentExternal={setShowContent}
-            skipLoader={initialSkipLoader}
-            showPanels={showPanelsFinal}
             fetchingData={fetchingData}
+            contentActive={contentActive}
+            setContentActive={setContentActive}
         >
-            <AppLandingContent
-                showContent={showContent}
-                setShowContent={setShowContent}
-            >
+            <AppLandingContent>
                 {children}
             </AppLandingContent>
         </LandingTransitionsProvider>
