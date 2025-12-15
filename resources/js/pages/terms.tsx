@@ -10,7 +10,7 @@ import Delimiter from '@/components/landing/delimiter';
 
 // Translation
 import { useTrans } from '@/lib/translation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import FadeIn from '@/components/landing/fade-in';
 
 export default function Terms() {

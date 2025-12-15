@@ -11,8 +11,6 @@ import UnderlineLink from '@/components/landing/underline-link';
 import Magnet from '@/components/ui/magnet';
 
 // Icons
-import type { LucideIcon as LucideIconType } from 'lucide-react';
-import * as LucideIcon from 'lucide-react';
 import { ArrowUpRight } from 'lucide-react';
 
 // Types
@@ -20,6 +18,7 @@ import { type Contact as ContactType } from '@/types';
 
 // Translation
 import { useTrans } from '@/lib/translation';
+import { getIcon } from '@/lib/render';
 
 interface ContactProps {
     appear: boolean;
@@ -213,77 +212,26 @@ interface ContactItemProps {
 }
 
 function ContactItem({ item }: ContactItemProps) {
-    // Fonction utilitaire pour convertir 'mail' en 'Mail'
-    const toPascalCase = (str: string) =>
-        str.charAt(0).toUpperCase() + str.slice(1);
-
-    // Récupération de l'icône en utilisant le nom en PascalCase
-    const iconName = toPascalCase(item.icon);
-
-    // const IconComponent = (LucideIcon as any)[iconName];
-    const IconComponent = LucideIcon[
-        iconName as keyof typeof LucideIcon
-    ] as LucideIconType;
-
-    // Vérification de sécurité au cas où l'icône n'existe pas
-    if (!IconComponent) {
-        console.error(`Icône Lucide introuvable pour: ${item.icon}`);
-        return null;
-    }
+    const IconComponent = getIcon({ icon: item.icon, props: { className: 'h-6 w-6 stroke-2 text-primary transition-all duration-500' } });
 
     return (
         <Magnet magnetStrength={25} padding={10} wrapperClassName="w-full">
             <a
                 className={cn(
-                    // Default styles
                     'flex flex-col items-center justify-between',
-
                     'group border transition-all duration-500',
-
-                    // Hover & Focus styles
                     'hover:border-primary hover:bg-primary hover:duration-1000',
-                    'focus-visible:border-primary focus-visible:bg-primary focus-visible:duration-1000 focus-visible:outline-none',
+                    'focus-visible:border-primary focus-visible:bg-primary focus-visible:duration-1000 focus-visible:outline-none'
                 )}
                 href={item.link}
                 target="_blank"
             >
-                {/* Header */}
-                <div
-                    className={cn(
-                        // Default styles
-                        'flex items-center justify-center gap-2 border-b bg-card',
-                        'w-full p-4 transition-all duration-500',
-
-                        // Hover & Focus styles
-                        'group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:duration-1000',
-                        'group-focus-visible:border-primary group-focus-visible:bg-primary group-focus-visible:text-primary-foreground group-focus-visible:duration-1000',
-                    )}
-                >
-                    <IconComponent
-                        className={cn(
-                            // Default styles
-                            'h-6 w-6 stroke-2 text-primary transition-all duration-500',
-
-                            // Hover & Focus styles
-                            'group-hover:text-primary-foreground group-hover:duration-1000',
-                            'group-focus-visible:text-primary-foreground group-focus-visible:duration-1000',
-                        )}
-                    />
+                <div className={cn('flex items-center justify-center gap-2 border-b bg-card', 'w-full p-4 transition-all duration-500', 'group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:duration-1000', 'group-focus-visible:border-primary group-focus-visible:bg-primary group-focus-visible:text-primary-foreground group-focus-visible:duration-1000')}>
+                    {IconComponent}
                     <span className="font-semibold">{item.label}</span>
                 </div>
 
-                {/* Content */}
-                <div
-                    className={cn(
-                        // Default styles
-                        'flex items-center justify-center gap-2 bg-background',
-                        'w-full p-4 underline transition-all duration-500',
-
-                        // Hover & Focus styles
-                        'group-hover:border-primary group-hover:bg-card group-hover:duration-1000',
-                        'group-focus-visible:border-primary group-focus-visible:bg-card group-focus-visible:duration-1000',
-                    )}
-                >
+                <div className={cn('flex items-center justify-center gap-2 bg-background', 'w-full p-4 underline transition-all duration-500', 'group-hover:border-primary group-hover:bg-card group-hover:duration-1000', 'group-focus-visible:border-primary group-focus-visible:bg-card group-focus-visible:duration-1000')}>
                     {item.name}
                 </div>
             </a>

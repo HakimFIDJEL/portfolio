@@ -2,8 +2,7 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import { useRemember } from '@inertiajs/react';
-import { useEffect, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 // Shadcn UI Components
 import { BreakpointIndicator } from '@/components/ui/breakpoint-indicator';

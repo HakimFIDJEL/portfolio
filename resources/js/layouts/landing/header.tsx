@@ -8,9 +8,6 @@ import { useEffect, useState } from 'react';
 // Components
 import UnderlineLink from '@/components/landing/underline-link';
 
-// Contexts
-import { useLandingContext } from '@/contexts/use-landing-context';
-
 // Translation
 import { useTrans } from '@/lib/translation';
 

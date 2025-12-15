@@ -3,9 +3,6 @@
 // Necessary imports
 import { usePage } from '@inertiajs/react';
 
-// Translation Hook
-import { useTrans } from '@/lib/translation';
-
 // Layout
 import { AuthHeader } from '@/layouts/auth/header';
 
