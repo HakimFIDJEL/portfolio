@@ -55,7 +55,7 @@ export default function Landing() {
             .then((data: LandingData) => {
                 setData(data);
                 timer = setTimeout(() => {
-                    window.scrollTo(0, 0);
+                    // window.scrollTo(0, 0);
                     setFetchingData(false);
                 }, 1000);
             })
@@ -67,17 +67,6 @@ export default function Landing() {
         return () => clearTimeout(timer);
     }, [locale]);
 
-    if (fetchingData || !data) {
-        return (
-            <>
-                <Head title="Portfolio" />
-                <main>
-                    <p>Loading...</p>
-                </main>
-            </>
-        );
-    }
-
     return (
         <>
             <Head title="Portfolio" />
@@ -86,14 +75,14 @@ export default function Landing() {
                 <Hero appear={contentActive} />
                 <About
                     appear={contentActive}
-                    stacks={data.stacks}
-                    tools={data.tools}
-                    educations={data.educations}
-                    experiences={data.experiences}
+                    stacks={(fetchingData || !data) ? [] : data.stacks}
+                    tools={(fetchingData || !data) ? [] : data.tools}
+                    educations={(fetchingData || !data) ? [] : data.educations}
+                    experiences={(fetchingData || !data) ? [] : data.experiences}
                 />
-                <Projects appear={contentActive} projects={data.projects} />
-                <Sandbox appear={contentActive} projects={data.sandbox} />
-                <Contact appear={contentActive} contacts={data.contacts} />
+                <Projects appear={contentActive} projects={(fetchingData || !data) ? [] : data.projects} />
+                <Sandbox appear={contentActive} projects={(fetchingData || !data) ? [] : data.sandbox} />
+                <Contact appear={contentActive} contacts={(fetchingData || !data) ? [] : data.contacts} />
             </main>
         </>
     );

@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import { type ReactNode } from 'react';
 
 // Shadcn UI Components
-import { BreakpointIndicator } from '@/components/ui/breakpoint-indicator';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 
 // Components
@@ -56,7 +55,7 @@ function AppLandingContent({ children }: AppLandingProps) {
                     'landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased',
                 )}
             >
-                <BreakpointIndicator className="fixed bottom-5 left-6" />
+                {/* <BreakpointIndicator className="fixed bottom-5 left-6" /> */}
 
                 <Loader
                     showLoader={introLoaderWrapperActive}

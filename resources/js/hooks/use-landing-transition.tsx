@@ -21,6 +21,7 @@ export function useLandingTransitions() {
         useState(false);
     const [navigationContentActive, setNavigationContentActive] =
         useState(false);
+    const [targetAnchor, setTargetAnchor] = useState<string | null>(null);
 
     // Transition panels state
     interface TransitionPanelsProps {
@@ -170,20 +171,30 @@ export function useLandingTransitions() {
         }, 750);
     }
 
-    // Navigation to page sequence - DOING
+    // Navigation to page sequence - DONE
     function _navigateToPage(href: string, anchor: string | null) {
         setTransitionPanelsActive({ active: true, mode: 'staggered' });
         setContentActive(false);
+
+        if(navigationActive) {
+            setNavigationContentActive(false);
+        }
+
+        setTargetAnchor(anchor);
+        
         safeTimeout(() => {
+            if(navigationActive) {
+                setNavigationWrapperActive(false);
+            }
             setLoaderState('transition');
+            setFetchingData(true);
             router.visit(href, {
                 preserveScroll: true,
                 preserveState: true,
                 
                 onFinish: () => {
                     safeTimeout(() => {
-                        _navigateToAnchor(anchor ?? '');
-                        // _closeTransitionLoaderSequence();
+                        setNavigationActive(false);
                     }, 0);
                 },
             });
@@ -228,6 +239,14 @@ export function useLandingTransitions() {
             _closeNavigationSequence();
         }
     }, [navigationActive]);
+
+    // Control anchor navigation effect - DONE
+    useEffect(() => {
+        if (contentActive && targetAnchor) {
+            _navigateToAnchor(targetAnchor);
+            setTargetAnchor(null);
+        }
+    }, [contentActive, targetAnchor]);
 
     // Control data fetching effect, show content when fetching is over - DONE
     useEffect(() => {
@@ -288,6 +307,7 @@ export function useLandingTransitions() {
 
         // handlers
         setNavigationActive,
+        setNavigationContentActive,
         _navigateToPage,
     };
 }
