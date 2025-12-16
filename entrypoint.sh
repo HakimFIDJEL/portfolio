@@ -2,75 +2,72 @@
 set -e
 
 # --- 1. ATTENTE DE LA BASE DE DONNÉES MYSQL ---
-
-DB_HOST=${DB_HOST:-portfolio-mysql} # Utilise 'portfolio-mysql' comme host par défaut si non défini
-DB_DATABASE=${DB_DATABASE:-portfolio} 
+DB_HOST=${DB_HOST:-portfolio-mysql}
+DB_DATABASE=${DB_DATABASE:-portfolio}
 DB_USERNAME=${DB_USERNAME:-root}
 DB_PASSWORD=${DB_PASSWORD:-root}
+DB_CONNECTION=${DB_CONNECTION:-mysql}
 
-echo "Waiting for database '$DB_DATABASE' on host '$DB_HOST' to be ready..."
+# If connection is not mysql, skip the wait
+if [ "$DB_CONNECTION" != "mysql" ]; then
+    echo "Database connection is not MySQL. Skipping wait."
+else
+    echo "Waiting for database '$DB_DATABASE' on host '$DB_HOST' to be ready..."
 
+    until echo "SELECT 1" | mysql -h "$DB_HOST" -u "root" -p"$DB_PASSWORD" "$DB_DATABASE"; do
+    echo "MySQL is unavailable - sleeping"
+    sleep 3
+    done
 
-until echo "SELECT 1" | mysql -h "$DB_HOST" -u "root" -p"$DB_PASSWORD" "$DB_DATABASE" 2>/dev/null; do
-  echo "MySQL is unavailable or database not yet created - sleeping"
-  sleep 3
-done
-
-echo "MySQL database is up and reachable! Continuing startup."
-
-# --- 2. LOGIQUE LARAVEL SÛRE (APRÈS L'ATTENTE DB) ---
-
-# Copier .env si absent
-if [ ! -f .env ]; then
-    cp .env.example .env
+    echo "MySQL database is up and reachable! Continuing startup."
 fi
 
-# Générer la clé d'application si non présente (utilise APP_KEY du .env monté si présente)
-if ! grep -q APP_KEY=.*[a-zA-Z0-9].* .env; then
-    echo "Generating application key..."
+if ! grep -q "APP_KEY=base64" .env; then
+    echo "Generating Application Key..."
     php artisan key:generate
+else
+    echo "Application Key already exists. Skipping generation."
 fi
 
-# Nettoyage des caches existants
 php artisan config:clear
+
+# Migrations
+echo "Running migrations..."
+php artisan migrate --force
+php artisan db:seed --force
+
+# Cache
+echo "Clearing and caching configuration..."
 php artisan cache:clear
 php artisan route:clear
 php artisan view:clear
 
-# Migrations & seeders
-if [ "$RUN_MIGRATIONS" = "true" ]; then
-    echo "Running migrations and seeders..."
-    php artisan migrate --force
-    php artisan db:seed --force
-fi
-
-# Rebuild caches
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Génération sitemap si existant
+# Sitemap
 if php artisan list | grep -q sitemap:generate; then
-    echo "Generating sitemap..."
     php artisan sitemap:generate
 fi
 
-# --- 3. LOGIQUE FRONTEND ET FINALISATION ---
+# --- 3. FRONTEND ET FIN ---
 
 echo "Building frontend assets..."
 npm install
 npm run build
 
-# Création fichier sqlite si nécessaire
-if [ ! -f database/database.sqlite ]; then
-    touch database/database.sqlite
+
+# Permissions (Crucial pour Laravel)
+echo "Fixing permissions..."
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+
+if [ -f .env ]; then
+    echo "Fixing .env permissions..."
+    chown www-data:www-data .env
+    chmod 664 .env
 fi
 
-# Permissions pour le dossier storage et database
-chown -R www-data:www-data /var/www/html/storage
-chown -R www-data:www-data /var/www/html/database
-chmod -R 775 /var/www/html/database
-
-
-# Lancer Apache en premier plan
+echo "Starting Apache..."
 exec apache2-foreground
