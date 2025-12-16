@@ -92,23 +92,36 @@ function CarouselContent({
             <UI_CarouselContent>
                 {attachments.map((item, index) => (
                     <UI_CarouselItem key={index}>
-                        <div className="p-1">
-                            <Card className='rounded-none shadow-none border'>
-                                <CardContent className="flex aspect-[16/9] cursor-grab items-center justify-center p-6 rounded-none">
-                                    {item.url ? (
-                                        <img
-                                            src={item.url}
-                                            alt={item.file_name}
-                                            className="max-h-full max-w-full object-contain"
-                                        />
-                                    ) : (
-                                        <span className="text-xl">
-                                            {item.file_name || 'No Preview'}
-                                        </span>
-                                    )}
-                                </CardContent>
-                            </Card>
-                        </div>
+                        <Card
+                            className={cn(
+                                // Default styles
+                                'rounded-none border shadow-none',
+
+                                'p-2 md:py-6',
+                            )}
+                        >
+                            <CardContent
+                                className={cn(
+                                    // Default styles
+                                    'flex aspect-[16/9] cursor-grab items-center justify-center rounded-none',
+
+                                    // Responsive styles
+                                    'p-0 md:p-6',
+                                )}
+                            >
+                                {item.url ? (
+                                    <img
+                                        src={item.url}
+                                        alt={item.file_name}
+                                        className="max-h-full max-w-full object-contain"
+                                    />
+                                ) : (
+                                    <span className="text-xl">
+                                        {item.file_name || 'No Preview'}
+                                    </span>
+                                )}
+                            </CardContent>
+                        </Card>
                     </UI_CarouselItem>
                 ))}
             </UI_CarouselContent>
@@ -131,7 +144,13 @@ function CarouselNavigation() {
                 className={cn(!canScrollPrev && 'pointer-events-none')}
                 tabIndex={canScrollPrev ? 0 : -1}
             >
-                <RoundedButton disabled={!canScrollPrev} aria-label={__('landing.seo.carousel_previous', 'Go to previous slide')}>
+                <RoundedButton
+                    disabled={!canScrollPrev}
+                    aria-label={__(
+                        'landing.seo.carousel_previous',
+                        'Go to previous slide',
+                    )}
+                >
                     <ArrowLeft />
                 </RoundedButton>
             </UI_CarouselPrevious>
@@ -142,7 +161,13 @@ function CarouselNavigation() {
                 className={cn(!canScrollNext && 'pointer-events-none')}
                 tabIndex={canScrollNext ? 0 : -1}
             >
-                <RoundedButton disabled={!canScrollNext} aria-label={__('landing.seo.carousel_next', 'Go to next slide')}>
+                <RoundedButton
+                    disabled={!canScrollNext}
+                    aria-label={__(
+                        'landing.seo.carousel_next',
+                        'Go to next slide',
+                    )}
+                >
                     <ArrowRight />
                 </RoundedButton>
             </UI_CarouselNext>
@@ -178,7 +203,11 @@ function CarouselPagination() {
                             ? 'w-8 bg-primary duration-1000'
                             : 'w-4 bg-muted duration-1000 hover:bg-accent',
                     )}
-                    aria-label={__(`landing.seo.carousel_pagination`, `Go to slide :slide_number`, { slide_number: index + 1 })}
+                    aria-label={__(
+                        `landing.seo.carousel_pagination`,
+                        `Go to slide :slide_number`,
+                        { slide_number: index + 1 },
+                    )}
                     aria-current={index === currentIndex ? 'true' : 'false'}
                 ></button>
             ))}

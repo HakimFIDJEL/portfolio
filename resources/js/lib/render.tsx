@@ -7,7 +7,7 @@ interface IconProps {
     props?: LucideProps;
 }
 
-export function getIcon({ icon, props }: IconProps) {
+export function GetIcon({ icon, props }: IconProps) {
     const validIcon = icon as keyof typeof dynamicIconImports;
 
     const LucideIcon = useMemo(() => {

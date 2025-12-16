@@ -18,7 +18,7 @@ import { type Contact as ContactType } from '@/types';
 
 // Translation
 import { useTrans } from '@/lib/translation';
-import { getIcon } from '@/lib/render';
+import { GetIcon } from '@/lib/render';
 
 interface ContactProps {
     appear: boolean;
@@ -242,7 +242,7 @@ interface ContactItemProps {
 }
 
 function ContactItem({ item }: ContactItemProps) {
-    const IconComponent = getIcon({ icon: item.icon, props: { className: 'h-6 w-6 stroke-2 text-primary transition-all duration-500 group-hover:text-primary-foreground group-focus-visible:text-primary-foreground' } });
+    const IconComponent = <GetIcon icon={item.icon} props={{ className: 'h-6 w-6 stroke-2 text-primary transition-all duration-500 group-hover:text-primary-foreground group-focus-visible:text-primary-foreground' }} />;
 
     return (
         <Magnet magnetStrength={25} padding={10} wrapperClassName="w-full">

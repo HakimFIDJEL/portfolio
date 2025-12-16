@@ -67,7 +67,18 @@ export default function Index({ projects }: IndexProps) {
             <>
                 <TableCell>{project.is_new === true && <Badge>New</Badge>}</TableCell>
                 <TableCell>{project.title}</TableCell>
-                {/* <TableCell>{project.subtitle}</TableCell> */}
+                <TableCell>
+                    {project.type === 'project' ? (
+                        <Badge>
+                            Project
+                        </Badge>
+                    ) : (
+                        <Badge variant="secondary">
+                            Sandbox
+                        </Badge>
+                    )}
+                </TableCell>
+                
                 <TableCell className='space-x-2'>
                     {(project.tags && project.tags.length > 0) ? (
                         project.tags.map((tag) => (
@@ -123,7 +134,7 @@ export default function Index({ projects }: IndexProps) {
                 <CardContent>
                     <SortableTable
                         entries={projects}
-                        columns={['', 'Title', 'Tags', 'End Date']}
+                        columns={['', 'Type', 'Title', 'Tags', 'End Date']}
                         handleSort={handleSort}
                         renderCells={renderCells}
                         handleRowClick={handleRowClick}

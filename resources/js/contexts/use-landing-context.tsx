@@ -2,7 +2,7 @@ import {
     LandingTransitionsHook,
     useLandingTransitions,
 } from '@/hooks/use-landing-transition';
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 
 interface LandingTransitionsProviderProps {
     children: React.ReactNode;
