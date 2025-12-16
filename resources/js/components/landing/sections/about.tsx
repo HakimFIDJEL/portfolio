@@ -53,9 +53,9 @@ export default function About({
                 'mt-48 flex flex-col',
 
                 // Responsive styles
-                'gap-0 md:gap-12 lg:gap-24',
-                'mt-24 lg:mt-48',
-                'mb-24 lg:mb-48',
+                'gap-0 md:gap-12 lg:gap-36',
+                'mt-36 lg:mt-48',
+                'mb-36 lg:mb-48',
             )}
             id="about"
         >
@@ -111,9 +111,9 @@ function Panels({ appear }: PanelsProps) {
                     'w-full lg:w-max lg:max-w-[40%]',
 
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                    'py-4 sm:py-6 md:py-8 lg:py-10',
+                    'py-8 sm:py-6 md:py-8 lg:py-10',
 
-                    'before:h-24 lg:before:h-48',
+                    'before:h-36 lg:before:h-48',
 
                     // Before styles
                     'before:absolute before:inset-0 before:-z-1',
@@ -272,7 +272,7 @@ function Accordions({
 
                     // Responsive styles
                     'max-w-full lg:max-w-[70%]',
-                    'before:h-24 lg:before:h-48',
+                    'before:h-36 lg:before:h-48',
 
                     // Before styles
                     'relative',

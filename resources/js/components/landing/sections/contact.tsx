@@ -33,88 +33,118 @@ export default function Contact({ appear, contacts }: ContactProps) {
             className={cn(
                 // Default styles
                 'flex flex-col',
-
-                'mt-24',
+                'mt-0 sm:mt-36',
             )}
             id="contact"
         >
-            {/* Title */}
-            <Delimiter
-                dashedBorders={['all']}
-                plusCorners={['all']}
+
+
+            {/* Borders */}
+            <div
                 className={cn(
-                    // Default styles
-                    'flex justify-between',
+                    // Before pseudo-element styles
+                    'relative',
 
-                    // Responsive styles
-                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                    'py-8 sm:py-6 md:py-8 lg:py-10',
-
-                    'flex-col md:flex-row',
-                    'items-start md:items-center',
-
-                    'gap-4 md:gap-0',
+                    'px-6',
                 )}
             >
-                <FadeIn show={appear}>
-                    <h2
-                        className={cn(
-                            // Default styles
-                            'font-medium transition-all',
-                            'text-4xl sm:text-7xl',
-                        )}
-                    >
-                        {__('landing.landing.contact.h2', 'Contact')}
-                    </h2>
-                </FadeIn>
-
-                {/* Text */}
                 <div
                     className={cn(
+                        // Before pseudo-element styles
+                        'relative',
+
+                        'h-36 sm:h-0',
+                        'border-r border-l border-dashed',
+                    )}
+                ></div>
+            </div>
+
+            <div className={cn(
+                // Responsive styles
+                'px-6 sm:px-0',
+                'border-t border-b border-dashed',
+                'sm:border-0',
+            )}>
+                {/* Title */}
+                <Delimiter
+                    dashedBorders={['all']}
+                    plusCorners={['all']}
+                    className={cn(
                         // Default styles
-                        'flex flex-col',
+                        'flex justify-between',
 
-                        'gap-2',
+                        // Responsive styles
+                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                        'py-8 sm:py-6 md:py-8 lg:py-10',
 
-                        'items-start md:items-end',
+                        'flex-col md:flex-row',
+                        'items-start md:items-center',
+
+                        'border-t-0 border-b-0 sm:border-t sm:border-b',
+
+                        'gap-4 md:gap-0',
                     )}
                 >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={250}
-                    >
-                        <p>
-                            {__('landing.landing.contact.p_1', "Let's get in touch shall we ?")}
-                        </p>
-                    </Curtain>
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={250}
-                    >
-                        <UnderlineLink
-                            aria_label={__('landing.seo.scroll_to_top', 'Scroll to top of the page')}
-                            showUnderline
-                            href="#top"
+                    <FadeIn show={appear}>
+                        <h2
                             className={cn(
                                 // Default styles
-                                'group flex w-max items-center gap-2',
-
-                                // Responsive styles
-                                'font-normal',
-                                'md:translate-x-[8px]',
+                                'font-medium transition-all',
+                                'text-4xl sm:text-7xl',
                             )}
                         >
-                            {__('landing.landing.contact.top', 'Back to top')}
-                            <ArrowUpRight
-                                size={32}
-                                className="stroke-1 transition-all group-hover:-rotate-45 group-focus-visible:-rotate-45"
-                            />
-                        </UnderlineLink>
-                    </Curtain>
-                </div>
-            </Delimiter>
+                            {__('landing.landing.contact.h2', 'Contact')}
+                        </h2>
+                    </FadeIn>
+
+                    {/* Text */}
+                    <div
+                        className={cn(
+                            // Default styles
+                            'flex flex-col',
+
+                            'gap-2',
+
+                            'items-start md:items-end',
+                        )}
+                    >
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={250}
+                        >
+                            <p>
+                                {__('landing.landing.contact.p_1', "Let's get in touch shall we ?")}
+                            </p>
+                        </Curtain>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={250}
+                        >
+                            <UnderlineLink
+                                aria_label={__('landing.seo.scroll_to_top', 'Scroll to top of the page')}
+                                showUnderline
+                                href="#top"
+                                className={cn(
+                                    // Default styles
+                                    'group flex w-max items-center gap-2',
+
+                                    // Responsive styles
+                                    'font-normal',
+                                    'md:translate-x-[8px]',
+                                )}
+                            >
+                                {__('landing.landing.contact.top', 'Back to top')}
+                                <ArrowUpRight
+                                    size={32}
+                                    className="stroke-1 transition-all group-hover:-rotate-45 group-focus-visible:-rotate-45"
+                                />
+                            </UnderlineLink>
+                        </Curtain>
+                    </div>
+                </Delimiter>
+            </div>
 
             <div className="flex flex-col">
                 {/* Subtitle */}

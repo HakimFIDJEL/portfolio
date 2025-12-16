@@ -136,7 +136,7 @@ return [
             'tech_stack' => 'Stack Technologique',
             'description' => 'Description',
             'attachments' => 'Pièces jointes',
-            'feedback' => 'Retour',
+            'feedback' => "Retour d'expérience",
             'what_i_learned' => "Ce que j'ai appris",
             'ongoing' => 'En cours'
         ],

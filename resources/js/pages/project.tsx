@@ -1,7 +1,7 @@
 // resources/js/pages/project.tsx
 
 // Necessary imports
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 
 // Layout
@@ -12,7 +12,7 @@ import Content from '@/components/projects/sections/content';
 import Hero from '@/components/projects/sections/hero';
 
 // Types
-import { type Project } from '@/types';
+import { SharedData, type Project } from '@/types';
 
 // Context
 import { useLandingContext } from '@/contexts/use-landing-context';
@@ -25,6 +25,8 @@ export default function Project({ project }: ProjectProps) {
     const { contentActive, fetchingData, setFetchingData } =
         useLandingContext();
 
+    const { locale } = usePage<SharedData>().props;
+
     useEffect(() => {
         if (!fetchingData) setFetchingData(true);
 
@@ -33,7 +35,7 @@ export default function Project({ project }: ProjectProps) {
         }, 1000);
 
         return () => clearTimeout(timer);
-    }, []);
+    }, [locale]);
 
     return (
         <>

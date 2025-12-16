@@ -1,6 +1,6 @@
 // resources/js/pages/landing.terms.tsx
 
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
@@ -15,9 +15,12 @@ import { useTrans } from '@/lib/translation';
 // Context
 import { useLandingContext } from '@/contexts/use-landing-context';
 import { useEffect } from 'react';
+import { SharedData } from '@/types';
 
 export default function Terms() {
     const __ = useTrans();
+
+    const { locale } = usePage<SharedData>().props;
 
     const { contentActive, fetchingData, setFetchingData } =
         useLandingContext();
@@ -30,7 +33,7 @@ export default function Terms() {
         }, 1000);
 
         return () => clearTimeout(timer);
-    }, []);
+    }, [locale]);
 
     const sections = [
         {

@@ -24,7 +24,8 @@ export default function CoverScreen({ showWrapper, showContent }: CoverScreenPro
                 'pointer-events-none fixed inset-0 z-1000 flex flex-col bg-transparent opacity-0',
                 'p-12',
 
-                'flex flex-col items-center justify-center gap-8',
+                'flex flex-col items-center justify-center',
+                'gap-4 sm:gap-8',
 
                 showWrapper && 'pointer-events-auto bg-card opacity-100',
             )}

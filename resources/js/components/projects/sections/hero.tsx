@@ -10,6 +10,8 @@ import { useAppearance } from '@/hooks/use-appearance';
 import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import RoundedButton from '@/components/landing/rounded-button';
+import FadeIn from '@/components/landing/fade-in';
+import LanguageToggle from '@/components/landing/language-toggle';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
@@ -28,7 +30,6 @@ import {
 import { Project } from '@/types';
 
 // Translation
-import LanguageToggle from '@/components/landing/language-toggle';
 import { useTrans } from '@/lib/translation';
 
 interface HeroProps {
@@ -230,14 +231,16 @@ export default function Hero({ appear, project }: HeroProps) {
                         'gap-4 md:gap-5',
                     )}
                 >
-                    <p
-                        className={cn(
-                            // Default styles
-                            'text-lg font-medium',
-                        )}
-                    >
-                        {project.subtitle}
-                    </p>
+                    <FadeIn className='w-auto' show={appear} delay={250}>
+                        <p
+                            className={cn(
+                                // Default styles
+                                'text-lg font-medium',
+                            )}
+                        >
+                            {project.subtitle}
+                        </p>
+                    </FadeIn>
                     <div
                         className={cn(
                             // Default styles

@@ -70,14 +70,14 @@ export default function Sandbox({
                 'relative w-full border-t border-b border-dashed',
 
                 // Responsive styles
-                'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                'px-0 sm:px-8 md:px-10 lg:px-12.5',
                 'flex-col lg:flex-row',
-                'mt-24 lg:mt-48',
+                // 'mt-36 lg:mt-48',
             )}
             id="sandbox"
         >
-            {/* Left Panel */}
-            <Delimiter
+            {/* Left Panel - Desktop */}
+            <div
                 className={cn(
                     // Default styles
 
@@ -89,6 +89,8 @@ export default function Sandbox({
 
                     'border-r border-b border-l border-dashed',
                     'lg:border-0',
+
+                    'hidden lg:block'
                 )}
             >
                 <div
@@ -162,7 +164,96 @@ export default function Sandbox({
                         </UnderlineLink>
                     </Curtain>
                 </div>
-            </Delimiter>
+            </div>
+
+            {/* Left Panel - Mobile */}
+            <div className={cn(
+                // Responsive styles
+                'px-6 sm:px-0',
+                'border-b border-dashed',
+                'sm:border-0',
+                'block lg:hidden',
+            )}>
+                <Delimiter
+                    plusCorners={['top-left', 'top-right']}
+                    className={cn(
+                        // Default styles
+
+                        // Responsive styles
+                        'w-full lg:w-[25%] lg:min-w-[285px]',
+
+                        'px-6 lg:pr-12.5 lg:pl-0',
+                        'py-8 sm:py-6 md:py-8 lg:py-10',
+
+                        'border-r border-l border-dashed',
+                        'lg:border-0',
+
+                        'flex flex-col',
+                        'gap-4 sm:gap-8',
+                    )}
+                >
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        className="w-full"
+                        delay={0}
+                    >
+                        <h2
+                            className={cn(
+                                // Default styles
+                                'font-medium transition-all',
+
+                                'text-4xl sm:text-7xl',
+                            )}
+                        >
+                            {__('landing.landing.sandbox.h2', 'The Sand Box')}
+                        </h2>
+                    </Curtain>
+
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        className="w-full"
+                        delay={250}
+                    >
+                        <p
+                            className={cn(
+                                // Default styles
+                                'text-base sm:text-lg',
+                            )}
+                        >
+                            {__('landing.landing.sandbox.p_1', 'My less impactful but still taughtful works, I’ve currently worked on')}{' '}
+                            <strong className="font-semibold">{projects.length}{' '}</strong> {__('landing.landing.sandbox.p_2', 'small projects here.')}
+                        </p>
+                    </Curtain>
+
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={500}
+                    >
+                        <UnderlineLink
+                            aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'contact' })}
+                            href="#contact"
+                            showUnderline
+                            className={cn(
+                                // Default styles
+                                'group flex w-max items-center gap-2',
+
+                                // Responsive styles
+                                'font-normal',
+                                'translate-x-[0px]',
+                            )}
+                        >
+                            {__('landing.landing.sandbox.skip', 'Skip')}
+                            <ArrowDownRight
+                                size={32}
+                                className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
+                            />
+                        </UnderlineLink>
+                    </Curtain>
+                </Delimiter>
+            </div>
 
             {/* Right Panel */}
             <Delimiter
@@ -178,7 +269,9 @@ export default function Sandbox({
                     'py-12 md:py-10',
                     'gap-4 md:gap-8',
 
-                    'w-full',
+                    'mx-6 sm:mx-0',
+
+                    'w-auto sm:w-full',
                     'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
                 )}
             >
@@ -221,6 +314,7 @@ export default function Sandbox({
                 item={projects[activeIndex ?? -1] || null}
                 handleClose={() => handleClick(null)}
             />
+
         </section>
     );
 }
