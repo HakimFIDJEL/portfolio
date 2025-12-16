@@ -1,7 +1,7 @@
 // resources/js/pages/backoffice/contacts/index.tsx
 
 // Necessary imports
-import { getIcon } from '@/lib/render';
+import { GetIcon } from '@/lib/render';
 import { Head, Link, router } from '@inertiajs/react';
 import { toast } from 'sonner';
 
