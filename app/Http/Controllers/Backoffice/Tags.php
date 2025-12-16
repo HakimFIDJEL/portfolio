@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Inertia\Inertia;
-use App\Models\Backoffice\Tag;
+use app\Models\Backoffice\Tag;
 
 class Tags extends Controller
 {

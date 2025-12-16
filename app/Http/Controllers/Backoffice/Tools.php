@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 // Models
-use App\Models\Backoffice\Tool;
-use App\Models\Backoffice\ToolItem;
+use app\Models\Backoffice\Tool;
+use app\Models\Backoffice\ToolItem;
 
 class Tools extends Controller
 {

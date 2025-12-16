@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Inertia\Inertia;
-use App\Models\Backoffice\Experience;
+use app\Models\Backoffice\Experience;
 
 class Experiences extends Controller
 {

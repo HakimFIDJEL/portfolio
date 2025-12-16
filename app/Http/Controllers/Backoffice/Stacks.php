@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 // Models
-use App\Models\Backoffice\Stack;
-use App\Models\Backoffice\StackItem;
+use app\Models\Backoffice\Stack;
+use app\Models\Backoffice\StackItem;
 
 class Stacks extends Controller
 {

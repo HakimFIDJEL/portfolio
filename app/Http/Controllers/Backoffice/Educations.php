@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 // Models
-use App\Models\Backoffice\Education;
+use app\Models\Backoffice\Education;
 
 class Educations extends Controller
 {

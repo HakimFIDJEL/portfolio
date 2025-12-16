@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 // Models
-use App\Models\Backoffice\Project;
-use App\Models\Backoffice\StackItem;
-use App\Models\Backoffice\Stack;
-use App\Models\Backoffice\Tag;
+use app\Models\Backoffice\Project;
+use app\Models\Backoffice\StackItem;
+use app\Models\Backoffice\Stack;
+use app\Models\Backoffice\Tag;
 
 // Requests
-use App\Http\Requests\Projects\Store as RequestStore;
-use App\Http\Requests\Projects\Update as RequestUpdate;
+use app\Http\Requests\Projects\Store as RequestStore;
+use app\Http\Requests\Projects\Update as RequestUpdate;
 
 class Projects extends Controller
 {

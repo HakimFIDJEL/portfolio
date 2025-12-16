@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-use App\Models\Backoffice\Contact;
+use app\Models\Backoffice\Contact;
 
 class Contacts extends Controller
 {

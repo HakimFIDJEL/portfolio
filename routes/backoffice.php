@@ -22,60 +22,59 @@ Route::prefix('backoffice/')->name('backoffice.')->middleware(['auth', 'verified
         'update'
     ]);
 
+    Route::post('projects/sort', [ProjectsController::class, 'sort'])->name('projects.sort');
     Route::post('projects/{project}', [ProjectsController::class, 'update'])
         ->name('projects.update');
-
     Route::resource('projects', ProjectsController::class)->only([
         'index', 'create', 'store', 'edit', 'destroy'
     ]);
-    Route::post('projects/sort', [ProjectsController::class, 'sort'])->name('projects.sort');
     
     // ------------------------------------------------------------------ //
     //                          Stacks Routes
     // ------------------------------------------------------------------ //
+    Route::post('stacks/sort', [StacksController::class, 'sort'])->name('stacks.sort');
     Route::resource('stacks', StacksController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
-    Route::post('stacks/sort', [StacksController::class, 'sort'])->name('stacks.sort');
     
     // ------------------------------------------------------------------ //
     //                          Tools Routes
     // ------------------------------------------------------------------ //
+    Route::post('tools/sort', [ToolsController::class, 'sort'])->name('tools.sort');
     Route::resource('tools', ToolsController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
-    Route::post('tools/sort', [ToolsController::class, 'sort'])->name('tools.sort');
     
     // ------------------------------------------------------------------ //
     //                          Tags Routes
     // ------------------------------------------------------------------ //
+    Route::post('tags/sort', [TagsController::class, 'sort'])->name('tags.sort');
     Route::resource('tags', TagsController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
-    Route::post('tags/sort', [TagsController::class, 'sort'])->name('tags.sort');
     
     // ------------------------------------------------------------------ //
     //                          Education Routes
     // ------------------------------------------------------------------ //
+    Route::post('educations/sort', [EducationsController::class, 'sort'])->name('educations.sort');
     Route::resource('educations', EducationsController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
-    Route::post('educations/sort', [EducationsController::class, 'sort'])->name('educations.sort');
     
     // ------------------------------------------------------------------ //
     //                          Experience Routes
     // ------------------------------------------------------------------ //
+    Route::post('experiences/sort', [ExperiencesController::class, 'sort'])->name('experiences.sort');
     Route::resource('experiences', ExperiencesController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
-    Route::post('experiences/sort', [ExperiencesController::class, 'sort'])->name('experiences.sort');
     
     // ------------------------------------------------------------------ //
     //                          Contacts Routes
     // ------------------------------------------------------------------ //
+    Route::post('contacts/sort', [ContactsController::class, 'sort'])->name('contacts.sort');
     Route::resource('contacts', ContactsController::class)->only([
         'index', 'create', 'store', 'edit', 'update', 'destroy'
     ]);
-    Route::post('contacts/sort', [ContactsController::class, 'sort'])->name('contacts.sort');
 
 });

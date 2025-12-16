@@ -22,6 +22,16 @@ else
     echo "MySQL database is up and reachable! Continuing startup."
 fi
 
+if [ ! -f .env ]; then
+    echo ".env not found, creating from .env.example"
+    cp .env.example .env
+    chown www-data:www-data .env
+    chmod 664 .env
+else
+    echo ".env already exists, skipping creation"
+fi
+
+
 if ! grep -q "APP_KEY=base64" .env; then
     echo "Generating Application Key..."
     php artisan key:generate

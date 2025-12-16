@@ -382,7 +382,7 @@ function SandboxItem({
                     'flex flex-wrap gap-2',
                 )}
             >
-                {project.is_new && (
+                {project.is_new === true && (
                     <span
                         className={cn(
                             // Default styles

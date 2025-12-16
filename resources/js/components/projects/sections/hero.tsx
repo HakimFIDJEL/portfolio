@@ -151,7 +151,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                     'flex-wrap',
                                 )}
                             >
-                                {project.is_new && (
+                                {project.is_new === true && (
                                     <span
                                         className={cn(
                                         // Default styles
