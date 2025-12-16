@@ -249,7 +249,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
             >
                 {/* Content */}
                 <Delimiter
-                    // dashedBorders={['all']}
+                    dashedBorders={['right', 'left']}
                     plusCorners={['all']}
                     className={cn(
                         // Default styles

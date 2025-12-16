@@ -286,7 +286,7 @@ export default function Sandbox({
                                 key={item.id}
                                 className="w-full"
                                 // Ajuster le délai pour la séquence dans la colonne
-                                delay={(colIndex + itemIndex * cols) * 100}
+                                delay={250}
                             >
                                 <Magnet magnetStrength={5} padding={10}>
                                     <SandboxItem
@@ -382,7 +382,7 @@ function SandboxItem({
                     'flex flex-wrap gap-2',
                 )}
             >
-                {project.is_new === true && (
+                {project.is_new == true && (
                     <span
                         className={cn(
                             // Default styles
@@ -688,7 +688,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.tech_stack', 'Tech Stack')}
@@ -746,7 +746,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.description', 'Description')}
@@ -760,6 +760,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'shrink-0 sm:w-[65%]',
 
                                         'flex flex-col gap-2',
+
+                                        '[&_ul]:space-y-4',
+                                        '[&_strong]:font-medium [&_strong]:text-foreground',
+                                        'text-foreground/70',
                                     )}
                                     dangerouslySetInnerHTML={{ __html: item.description }}
                                 >
@@ -785,7 +789,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                     className={cn(
                                         // Default styles
                                         'font-medium',
-                                        'text-lg',
+                                        'text-xl',
                                     )}
                                 >
                                     {__('landing.projects.sections.attachments', 'Attachments')}
@@ -825,7 +829,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.feedback', 'Feedback')}
@@ -839,6 +843,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'shrink-0 sm:w-[65%]',
 
                                         'flex flex-col gap-2',
+
+                                        '[&_ul]:space-y-4',
+                                        '[&_strong]:font-medium [&_strong]:text-foreground',
+                                        'text-foreground/70',
                                     )}
 
                                     dangerouslySetInnerHTML={{ __html: item.feedback }}
@@ -873,7 +881,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.what_i_learned', 'What I Learned')}
@@ -887,6 +895,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'shrink-0 sm:w-[65%]',
 
                                         'flex flex-col gap-2',
+
+                                        '[&_ul]:space-y-4',
+                                        '[&_strong]:font-medium [&_strong]:text-foreground',
+                                        'text-foreground/70',
                                     )}
 
                                     dangerouslySetInnerHTML={{ __html: item.what_i_learned }}

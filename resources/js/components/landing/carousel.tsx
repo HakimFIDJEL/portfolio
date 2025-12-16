@@ -97,16 +97,16 @@ function CarouselContent({
                                 // Default styles
                                 'rounded-none border shadow-none',
 
-                                'p-2 md:py-6',
+                                'p-0',
                             )}
                         >
                             <CardContent
                                 className={cn(
                                     // Default styles
-                                    'flex aspect-[16/9] cursor-grab items-center justify-center rounded-none',
+                                    'flex cursor-grab items-center justify-center rounded-none',
 
                                     // Responsive styles
-                                    'p-0 md:p-6',
+                                    'p-0',
                                 )}
                             >
                                 {item.url ? (

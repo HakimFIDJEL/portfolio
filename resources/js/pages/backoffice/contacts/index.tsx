@@ -66,7 +66,7 @@ export default function Index({ contacts }: IndexProps) {
         return (
             <>
                 <TableCell>
-                    {getIcon(contact.icon, { className: 'h-5 w-5' })}
+                    <GetIcon icon={contact.icon} props={{ className: "h-5 w-5" }} />
                 </TableCell>
                 <TableCell>{contact.label}</TableCell>
                 <TableCell>{contact.link}</TableCell>

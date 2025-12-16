@@ -199,7 +199,7 @@ export default function Content({ project, appear }: ContentProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.description', 'Description')}
@@ -213,6 +213,10 @@ export default function Content({ project, appear }: ContentProps) {
                                         'shrink-0 sm:w-[65%]',
 
                                         'flex flex-col gap-2',
+
+                                        '[&_ul]:space-y-4',
+                                        '[&_strong]:font-medium [&_strong]:text-foreground',
+                                        'text-foreground/70',
                                     )}
 
                                     dangerouslySetInnerHTML={{ __html: project.description }}
@@ -249,7 +253,7 @@ export default function Content({ project, appear }: ContentProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.feedback', 'Feedback')}
@@ -263,6 +267,10 @@ export default function Content({ project, appear }: ContentProps) {
                                         'shrink-0 sm:w-[65%]',
 
                                         'flex flex-col gap-2',
+
+                                        '[&_ul]:space-y-4',
+                                        '[&_strong]:font-medium [&_strong]:text-foreground',
+                                        'text-foreground/70',
                                     )}
 
                                     dangerouslySetInnerHTML={{ __html: project.feedback }}
@@ -298,7 +306,7 @@ export default function Content({ project, appear }: ContentProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.what_i_learned', 'What I Learned')}
@@ -312,6 +320,10 @@ export default function Content({ project, appear }: ContentProps) {
                                         'shrink-0 sm:w-[65%]',
 
                                         'flex flex-col gap-2',
+
+                                        '[&_ul]:space-y-4',
+                                        '[&_strong]:font-medium [&_strong]:text-foreground',
+                                        'text-foreground/70',
                                     )}
                                     dangerouslySetInnerHTML={{ __html: project.what_i_learned }}
                                 >

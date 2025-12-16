@@ -46,6 +46,14 @@ echo "Running migrations..."
 php artisan migrate --force
 php artisan db:seed --force
 
+# Storage link
+if [ ! -L public/storage ]; then
+    echo "Creating storage symlink..."
+    php artisan storage:link
+else
+    echo "Storage symlink already exists."
+fi
+
 # Cache
 echo "Clearing and caching configuration..."
 php artisan cache:clear

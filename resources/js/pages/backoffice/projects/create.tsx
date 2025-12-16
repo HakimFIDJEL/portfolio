@@ -18,6 +18,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -30,16 +31,15 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
-import { MinimalTiptap } from '@/components/ui/tiptap';
-import { DatePicker } from '@/components/ui/date-picker';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { MinimalTiptap } from '@/components/ui/tiptap';
 
 // Custom Components
 import { FileUpload } from '@/components/image-upload';
 
 // Types
-import type { BreadcrumbItem, Stack, StackItem, Tag } from '@/types';
 import type { FileWithPreview } from '@/hooks/use-file-upload';
+import type { BreadcrumbItem, Stack, StackItem, Tag } from '@/types';
 
 // Icons
 import { ArrowLeft, Plus } from 'lucide-react';
@@ -133,16 +133,19 @@ export default function Create({ tags, stacks }: CreateProps) {
             <Head title="Create Project" />
 
             <Card>
-                <CardHeader className="flex flex-col md:items-center justify-between md:flex-row">
+                <CardHeader className="flex flex-col justify-between md:flex-row md:items-center">
                     <div className="flex flex-col">
                         <CardTitle>Create a project</CardTitle>
                         <CardDescription>
                             Fill in the form below to create a new project.
                         </CardDescription>
                     </div>
-                    <CardAction className="flex flex-col md:items-center justify-between md:flex-row gap-2 w-full md:w-auto">
+                    <CardAction className="flex w-full flex-col justify-between gap-2 md:w-auto md:flex-row md:items-center">
                         <Link href={route('backoffice.projects.index')}>
-                            <Button variant={'outline'} className="w-full md:w-auto">
+                            <Button
+                                variant={'outline'}
+                                className="w-full md:w-auto"
+                            >
                                 <ArrowLeft />
                                 Go back
                             </Button>
@@ -153,13 +156,29 @@ export default function Create({ tags, stacks }: CreateProps) {
                 <form onSubmit={handleSubmit} className="grid gap-4">
                     <CardContent className="grid gap-12">
                         <Tabs defaultValue="details">
-                            <TabsList className="w-full">
-                                <TabsTrigger value="details">
+                            <TabsList className="flex h-auto w-full flex-col gap-2 md:h-9 md:flex-row md:gap-4">
+                                <TabsTrigger
+                                    value="details"
+                                    className="w-full md:w-auto"
+                                >
                                     Project Details
                                 </TabsTrigger>
-                                <TabsTrigger value="tags">Tags</TabsTrigger>
-                                <TabsTrigger value="stack">Stack</TabsTrigger>
-                                <TabsTrigger value="attachments">
+                                <TabsTrigger
+                                    value="tags"
+                                    className="w-full md:w-auto"
+                                >
+                                    Tags
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    value="stack"
+                                    className="w-full md:w-auto"
+                                >
+                                    Stack
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    value="attachments"
+                                    className="w-full md:w-auto"
+                                >
                                     Attachments
                                 </TabsTrigger>
                             </TabsList>

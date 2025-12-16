@@ -220,7 +220,9 @@ function Panels({ appear }: PanelsProps) {
 
                 {/* Reveal */}
                 <FadeIn className="w-full lg:hidden" delay={500} show={appear}>
-                    <strong className="font-semibold">{__('landing.landing.about.p_1', "Hi, I’m Hakim.")}</strong>
+                    <p>
+                        <strong className="font-semibold">{__('landing.landing.about.p_1', "Hi, I’m Hakim.")}</strong>
+                    </p>
                     <br />
                     <p className="font-light">
                         <strong className="font-semibold">

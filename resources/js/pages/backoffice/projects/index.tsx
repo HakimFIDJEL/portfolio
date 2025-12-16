@@ -63,10 +63,12 @@ export default function Index({ projects }: IndexProps) {
     }
 
     function renderCells(project: Project) {
+
+        console.log(project.is_new)
+
         return (
             <>
-                <TableCell>{project.is_new === true && <Badge>New</Badge>}</TableCell>
-                <TableCell>{project.title}</TableCell>
+                <TableCell>{project.is_new == true && <Badge>New</Badge>}</TableCell>
                 <TableCell>
                     {project.type === 'project' ? (
                         <Badge>
@@ -78,6 +80,7 @@ export default function Index({ projects }: IndexProps) {
                         </Badge>
                     )}
                 </TableCell>
+                <TableCell>{project.title}</TableCell>
                 
                 <TableCell className='space-x-2'>
                     {(project.tags && project.tags.length > 0) ? (
