@@ -47,11 +47,11 @@ php artisan migrate --force
 php artisan db:seed --force
 
 # Storage link
-if [ ! -L public/storage ]; then
+if [ ! -L public/storage ] || [ ! -e public/storage ]; then
     echo "Creating storage symlink..."
     php artisan storage:link
 else
-    echo "Storage symlink already exists."
+    echo "Storage symlink already exists and is valid."
 fi
 
 # Cache

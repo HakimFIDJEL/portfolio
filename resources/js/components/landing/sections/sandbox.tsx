@@ -391,7 +391,7 @@ function SandboxItem({
 
                             
                             // Hover & Focus styles
-                            'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
+                            'border-primary group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
                             'text-primary-foreground group-hover:text-foreground group-focus-visible:text-foreground',
                             'bg-primary group-hover:bg-transparent group-focus-visible:bg-transparent',
                         )}
