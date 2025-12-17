@@ -26,7 +26,10 @@ export default function ErrorPage({
 }) {
 
     const __ = useTrans();
+    
     const { auth } = usePage<SharedData>().props;
+    const user = auth ? auth.user : null;
+
 
     return (
         <main className="flex h-[100vh] w-[100vw] items-center justify-center overflow-hidden">
@@ -38,14 +41,14 @@ export default function ErrorPage({
                     </h4>
                     <Separator orientation='vertical' className='!h-8 !w-0.5 bg-foreground' />
                     <p>
-                        {title ?? __(`common.errors.${statusCode}.title`, __('common.errors.default.title'))}
+                        {__(`common.errors.${statusCode}.title`, __('common.errors.default.title'))}
                     </p>
                 </div>
                 <p className='text-center max-w-lg text-muted-foreground'>
-                    {__(`common.errors.${statusCode}.message`, __('common.errors.default.message'))}
+                    {title || __(`common.errors.${statusCode}.message`, __('common.errors.default.message'))}
                 </p>
                 <Button asChild variant='secondary' className='mt-4'>
-                    <Link href={auth.user ? route('dashboard') : route('home')}>
+                    <Link href={user ? route('dashboard') : route('home')}>
                         <ArrowLeft />
                         {__('common.errors.button_back')}
                     </Link>

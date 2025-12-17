@@ -4,23 +4,22 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\App;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
+// Controllers
+use App\Http\Controllers\Landing as LandingController;
 
-Route::get('/', function () {
-    // abort(404);
-    return Inertia::render('landing');
-})->name('home');
+Route::middleware(['web'])->group(function () {
+    Route::get('/', [LandingController::class, 'landing'])->name('home');
+    Route::get('/data', [LandingController::class, 'data'])->name('landing.data');
+    Route::get('/toggle-language', [LandingController::class, 'toggle_language'])->name('toggle_language');
+    Route::get('/terms', [LandingController::class, 'terms'])->name('terms');
+});
 
 Route::middleware(['auth', 'verified:auth.verification.notice'])->group(function () {
     Route::get('/dashboard', function () {
-
-        // Notification::send(Auth::user(), new \App\Notifications\Example());
-
-        return Inertia::render('dashboard');
+        // return Inertia::render('dashboard');
+        return redirect()->route('backoffice.projects.index');
     })->name('dashboard');
 });
 
@@ -29,7 +28,7 @@ Route::get('/errors', function(Request $request) {
         'statusCode' => 'required|integer',
         'title' => 'nullable|string',
     ]);
-
+    
     return Inertia::render('errors/show', [
         'statusCode' => $data['statusCode'],
         'title' => $data['title'] ?? null,
@@ -42,8 +41,13 @@ require __DIR__.'/auth.php';
 // Settings routes
 require __DIR__.'/settings.php';
 
+// Backoffice routes
+require __DIR__.'/backoffice.php';
 
 
+Route::middleware(['web'])->group(function () {
+    Route::get('/{slug}', [LandingController::class, 'project'])->name('project');
+});
 
 
 

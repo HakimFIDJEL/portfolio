@@ -1,14 +1,12 @@
 import { usePage } from '@inertiajs/react'
+import { useCallback, useMemo } from 'react'
 
-interface TranslationValue {
+export interface TranslationValue {
   [key: string]: string | TranslationValue
 }
-type Translations = Record<string, TranslationValue>
 
-/**
- * useTrans - translation hook with fallback support
- * @example const __ = useTrans(); __('settings.pages.profile.delete_account.title')
- */
+export type Translations = Record<string, TranslationValue>
+
 export function useTrans() {
   const { props } = usePage<{
     translations: Translations
@@ -17,38 +15,50 @@ export function useTrans() {
     fallback_locale: string
   }>()
 
-  const translations = props.translations || {}
-  const translationsFallback = props.translations_fallback || {}
+  const translations = useMemo(
+    () => props.translations ?? {},
+    [props.translations],
+  )
 
-  const findKey = (source: TranslationValue, parts: string[]): string | undefined => {
-    let value: TranslationValue | undefined = source
-    for (const part of parts) {
-      if (typeof value === 'object' && value !== null && part in value)
-        value = (value as Record<string, TranslationValue>)[part]
-      else
-        return undefined
-    }
-    return typeof value === 'string' ? value : undefined
-  }
+  const translationsFallback = useMemo(
+    () => props.translations_fallback ?? {},
+    [props.translations_fallback],
+  )
 
-  const __ = (key: string, fallback?: string, replacements?: Record<string, string | number>): string => {
-  const parts = key.split('.')
+  const findKey = useCallback(
+    (source: TranslationValue, parts: string[]): string | undefined => {
+      let value: TranslationValue | undefined = source
+      for (const part of parts) {
+        if (typeof value === 'object' && value !== null && part in value)
+          value = (value as Record<string, TranslationValue>)[part]
+        else
+          return undefined
+      }
+      return typeof value === 'string' ? value : undefined
+    },
+    [],
+  )
 
-  let value = findKey(translations, parts)
-  if (value === undefined)
-    value = findKey(translationsFallback, parts)
+  const __ = useCallback(
+    (key: string, fallback?: string, replacements?: Record<string, string | number>) => {
+      const parts = key.split('.')
 
-  let text = value ?? fallback ?? key
+      let value = findKey(translations, parts)
+      if (value === undefined)
+        value = findKey(translationsFallback, parts)
 
-  if (replacements) {
-    for (const [k, v] of Object.entries(replacements)) {
-      text = text.replace(`:${k}`, String(v))
-    }
-  }
+      let text = value ?? fallback ?? key
 
-  return text
-}
+      if (replacements) {
+        for (const [k, v] of Object.entries(replacements)) {
+          text = text.replace(`:${k}`, String(v))
+        }
+      }
 
+      return text
+    },
+    [translations, translationsFallback, findKey],
+  )
 
   return __
 }

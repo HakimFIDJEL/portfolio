@@ -1,0 +1,299 @@
+// resources/js/layouts/landing/navigation.tsx
+
+import { cn } from '@/lib/utils';
+import { usePage } from '@inertiajs/react';
+import { useEffect, useMemo, useState } from 'react';
+
+// Components
+import Curtain from '@/components/landing/curtain';
+
+// Contexts
+import { useLandingContext } from '@/contexts/use-landing-context';
+
+// Icons
+import { ArrowRight } from 'lucide-react';
+
+// Translation
+import { useTrans } from '@/lib/translation';
+
+interface NavigationProps {
+    showNavigation: boolean;
+    showNavigationContent: boolean;
+    handleMenuToggle: (show: boolean) => void;
+}
+
+export default function Navigation({
+    showNavigation,
+    showNavigationContent,
+    handleMenuToggle,
+}: NavigationProps) {
+    return (
+        <nav
+            className={cn(
+                'pointer-events-none fixed inset-0 z-2000 translate-y-[-100%] opacity-0',
+                'flex items-end justify-start',
+                // 'bg-card',
+                showNavigation &&
+                    'pointer-events-auto translate-y-0 opacity-100',
+            )}
+        >
+            <NavigationHeader
+                showNavigationContent={showNavigationContent}
+                handleMenuToggle={handleMenuToggle}
+            />
+            <NavigationContent
+                showNavigationContent={showNavigationContent}
+                handleMenuToggle={handleMenuToggle}
+            />
+        </nav>
+    );
+}
+
+interface NavigationHeaderProps {
+    showNavigationContent: boolean;
+    handleMenuToggle: (show: boolean) => void;
+}
+
+function NavigationHeader({
+    showNavigationContent,
+    handleMenuToggle,
+}: NavigationHeaderProps) {
+    return (
+        <Curtain
+            showCurtain={!showNavigationContent}
+            className="fixed top-0 right-0 left-0 z-10 mx-auto w-[90%] max-w-7xl"
+        >
+            <div
+                className={cn(
+                    'grid grid-cols-2',
+                    'px-8 py-6 lg:px-12.5 lg:py-10',
+                )}
+            >
+                <div className="col-span-1 text-left">
+                    <NavigationButton
+                        show={showNavigationContent}
+                        handleClick={() => handleMenuToggle(false)}
+                    />
+                </div>
+                <div className="col-span-1 text-right text-base font-medium italic">
+                    HF
+                </div>
+            </div>
+        </Curtain>
+    );
+}
+
+interface NavigationButtonProps {
+    show: boolean;
+    handleClick: (open: boolean) => void;
+}
+
+function NavigationButton({ show, handleClick }: NavigationButtonProps) {
+
+    const __ = useTrans();
+
+    return (
+        <button
+            aria-label={__('landing.seo.toggle_menu', 'Toggle menu')}
+            tabIndex={show ? 0 : -1}
+            onClick={() => handleClick(false)}
+            className={cn(
+                'relative flex h-full cursor-pointer flex-col items-center justify-center pt-[6px]',
+                'transition-all focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-primary',
+                'hover:rotate-90',
+            )}
+        >
+            <span className="block h-[2px] w-[25px] -translate-y-[3px] rotate-45 bg-foreground transition-all duration-300" />
+            <span className="block h-[2px] w-[25px] -translate-y-[5px] -rotate-45 bg-foreground transition-all duration-300" />
+        </button>
+    );
+}
+
+interface NavigationContentProps {
+    showNavigationContent: boolean;
+    handleMenuToggle: (show: boolean) => void;
+}
+type Link = { index: string; href: string; label: string; show: boolean };
+
+function NavigationContent({
+    showNavigationContent,
+    handleMenuToggle,
+}: NavigationContentProps) {
+
+    const __ = useTrans();
+
+    const links: Link[] = useMemo(
+        () => [
+            { index: '01', href: '#top', label: __('landing.layout.navigation.home', 'Home'), show: false },
+            { index: '02', href: '#about', label: __('landing.layout.navigation.about', 'About'), show: false },
+            { index: '03', href: '#projects', label: __('landing.layout.navigation.projects', 'Projects'), show: false },
+            { index: '04', href: '#sandbox', label: __('landing.layout.navigation.sandbox', 'Sandbox'), show: false },
+            { index: '05', href: '#contact', label: __('landing.layout.navigation.contact', 'Contact'), show: false },
+        ],
+        [__],
+    );
+
+    const DELAY_INCREMENT = 125;
+    const [visibleLinks, setVisibleLinks] = useState<Link[]>([]);
+
+    useEffect(() => {
+        const initialLinks = links.map((l) => ({ ...l, show: false }));
+        setVisibleLinks(initialLinks);
+    }, [links]);
+
+    useEffect(() => {
+        function handleLinksVisibility(show: boolean) {
+            links.forEach((link, index) => {
+                setTimeout(() => {
+                    setVisibleLinks((prev) =>
+                        prev.map((l) =>
+                            l.label === link.label ? { ...l, show } : l,
+                        ),
+                    );
+                }, index * DELAY_INCREMENT);
+            });
+        }
+
+        if (showNavigationContent) {
+            handleLinksVisibility(true);
+        } else {
+            handleLinksVisibility(false);
+        }
+    }, [showNavigationContent, links]);
+
+    return (
+        <div className="mx-auto flex w-[90%] max-w-7xl flex-col px-8 py-6 lg:px-12.5 lg:py-10">
+            {visibleLinks.map((link, index) => (
+                <NavigationLink
+                    link={link}
+                    key={index}
+                    handleMenuToggle={handleMenuToggle}
+                />
+            ))}
+        </div>
+    );
+}
+
+interface NavigationLinkProps {
+    link: Link;
+    handleMenuToggle: (show: boolean) => void;
+}
+function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
+    const { href, index, label, show } = link;
+
+    const currentUrl = usePage().url.split('#')[0];
+    const homePath = new URL(route('home')).pathname;
+
+    const { _navigateToPage } = useLandingContext();
+    const __ = useTrans();
+
+    function handleProjectClick(
+        e: React.MouseEvent<HTMLAnchorElement>,
+        href: string,
+        anchor: string = 'top',
+    ) {
+        if (currentUrl !== homePath) {
+            e.preventDefault();
+            _navigateToPage(href, anchor);
+        } else {
+            handleMenuToggle(false);
+        }
+    }
+
+    return (
+        <Curtain showCurtain={!show} className='w-max'>
+            <a
+                aria-label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: label.toLowerCase() })}
+                {...(show
+                    ? { href: currentUrl === homePath ? href : route('home') }
+                    : {})}
+                tabIndex={show ? 0 : -1}
+                className={cn(
+                    // Default styles
+                    'group relative flex overflow-hidden py-4 pr-12 transition-all duration-1000',
+
+                    // Focus & hover styles
+                    'hover:!text-primary-foreground hover:md:gap-[80px] hover:md:pl-[30px]',
+                    'focus-visible:!text-primary-foreground focus-visible:md:gap-[80px] focus-visible:md:pl-[30px] focus-visible:md:outline-none',
+
+                    // Responsive styles
+                    'gap-[0px] sm:gap-[50px] md:gap-[120px]',
+                    'flex-col sm:flex-row',
+                    'items-start sm:items-center',
+                )}
+                onClick={(e) =>
+                    handleProjectClick(
+                        e,
+                        currentUrl === homePath ? href : route('home'),
+                        href.replace('#', '')
+                    )
+                }
+            >
+                {/* Index with arrow */}
+                <div
+                    className={cn(
+                        // Default styles
+                        'relative flex items-center gap-0 overflow-hidden transition-all duration-1000',
+                    )}
+                >
+                    {/* Arrow */}
+                    <div
+                        className={cn(
+                            // Default styles
+                            'absolute translate-x-[-100%] transition-all duration-1000',
+
+                            // Focus & hover styles
+                            'group-hover:translate-x-0 group-focus-visible:translate-x-0',
+
+                            // Responsive styles
+                            'hidden md:block',
+                        )}
+                    >
+                        <ArrowRight
+                            className={cn(
+                                'h-12 w-12 stroke-1 transition-all duration-500 group-focus-visible:w-12',
+                            )}
+                        />
+                    </div>
+                    {/* Index */}
+                    <span
+                        className={cn(
+                            // Default styles
+                            'col-span-1 w-[150px] font-semibold transition-all duration-1000',
+
+                            // Focus & hover styles
+                            'group-hover:md:pl-18 group-focus-visible:md:pl-18',
+
+                            // Reponsive styles
+                            'text-2xl sm:text-6xl',
+                        )}
+                    >
+                        {index}
+                    </span>
+                </div>
+
+                {/* Label */}
+                <span
+                    className={cn(
+                        // Default styles
+                        'col-span-1 font-normal uppercase',
+
+                        // Reponsive styles
+                        'text-3xl sm:text-6xl',
+
+                        'transition-all duration-1000',
+                    )}
+                >
+                    {label}
+                </span>
+
+                {/* Background animation */}
+                <div
+                    className={cn(
+                        'absolute inset-0 z-[-1] h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
+                    )}
+                ></div>
+            </a>
+        </Curtain>
+    );
+}

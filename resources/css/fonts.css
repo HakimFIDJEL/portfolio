@@ -1,0 +1,52 @@
+/* -------------------------------------------------------------------------- */
+/* MONTSERRAT ALTERNATES - Normal (100 à 900)   */
+/* -------------------------------------------------------------------------- */
+
+/* 300 - Light */
+@font-face {
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Light.ttf') format('truetype');
+}
+
+/* 400 - Regular */
+@font-face {
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Regular.ttf') format('truetype');
+}
+
+/* 500 - Medium */
+@font-face {
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf') format('truetype');
+}
+
+/* 600 - SemiBold */
+@font-face {
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-SemiBold.ttf') format('truetype');
+}
+
+/* 700 - Bold */
+@font-face {
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf') format('truetype');
+}
+
+/* -------------------------------------------------------------------------- */
+/* MONTSERRAT ALTERNATES - Italique (100 à 900) */
+/* -------------------------------------------------------------------------- */

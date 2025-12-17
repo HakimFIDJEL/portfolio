@@ -4,13 +4,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Lang;
 use Inertia\Middleware;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 /**
  * Middleware to handle Inertia requests and share common data.
@@ -45,7 +46,6 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-
         $user = $request->user()?->load([
             'avatar',
             'resume',
@@ -73,10 +73,10 @@ class HandleInertiaRequests extends Middleware
                 ? $request->session()->get('errors')->getBag('default')->getMessages()
                 : (object) [],
 
-            'locale' => App::getLocale(),
+            'locale' => Session::get('locale', App::getLocale()),
             'fallback_locale' => config('app.fallback_locale'),
 
-            'translations' => fn () => collect(File::files(lang_path(App::getLocale())))
+            'translations' => fn () => collect(File::files(lang_path(Session::get('locale', App::getLocale()))))
                 ->mapWithKeys(function ($file) {
                     $name = pathinfo($file, PATHINFO_FILENAME);
                     $lines = Lang::get($name);
@@ -95,6 +95,9 @@ class HandleInertiaRequests extends Middleware
                 ->toArray(),
 
             'timezone' => date_default_timezone_get(),
+
+            'avatar_url' => User::first()->avatar->url ?? null,
+            'resume_url' => User::first()->resume->url ?? null,
         ]);
     }
 }
