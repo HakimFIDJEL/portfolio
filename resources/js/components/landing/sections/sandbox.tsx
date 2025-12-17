@@ -358,7 +358,7 @@ function SandboxItem({
             )}
             tabIndex={dialog_open ? -1 : 0}
             onClick={handleClick}
-            aria-label={__('landing.seo.open_dialog', 'Open dialog for project :title', { title: project.title })}
+            aria-label={__('landing.seo.open_dialog', 'Open dialog')}
         >
             {/* Button */}
             <ArrowUpRight
@@ -392,7 +392,7 @@ function SandboxItem({
                             
                             // Hover & Focus styles
                             'border-primary group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
-                            'text-primary-foreground group-hover:text-foreground group-focus-visible:text-foreground',
+                            'text-primary-foreground group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
                             'bg-primary group-hover:bg-transparent group-focus-visible:bg-transparent',
                         )}
                     >
@@ -594,7 +594,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Code source */}
                         <RoundedButton
                             disabled={!item?.source_code_url}
-                            aria_label={__('landing.seo.view_source_code', 'View source code for project :title', { title: item?.title || '' })}
+                            aria_label={__('landing.seo.view_source_code', 'View source code')}
                             className="p-2.5"
                             tabIndex={
                                 open && item && item.source_code_url ? 0 : -1
@@ -618,7 +618,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Live demo */}
                         <RoundedButton
                             disabled={!item?.live_demo_url}
-                            aria_label={__('landing.seo.view_live_demo', 'View live demo for project :title', { title: item?.title || '' })}
+                            aria_label={__('landing.seo.view_live_demo', 'View live demo')}
                             className="p-2.5"
                             tabIndex={
                                 open && item && item.live_demo_url ? 0 : -1
@@ -640,7 +640,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Code source */}
                         <RoundedButton
                             onClick={() => setOpen(false)}
-                            aria_label={__('landing.seo.close_dialog', 'Close dialog for project :title', { title: item?.title || '' })}
+                            aria_label={__('landing.seo.close_dialog', 'Close dialog')}
                             className="p-2.5"
                             tabIndex={open ? 0 : -1}
                         >
