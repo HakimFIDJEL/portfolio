@@ -91,7 +91,7 @@ export default function Footer({ appear }: FooterProps) {
             items: [
                 {
                     label: __('landing.layout.footer.links.resources.items.terms', 'Terms'),
-                    href: route('home'),
+                    href: route('terms'),
                 },
                 {
                     label: __('landing.layout.footer.links.resources.items.source_code', 'Source Code'),
@@ -115,7 +115,7 @@ export default function Footer({ appear }: FooterProps) {
 
     const { _navigateToPage } = useLandingContext();
 
-    function handleProjectClick(
+    function handleLinkClick(
         e: React.MouseEvent<HTMLAnchorElement>,
         href: string,
         anchor: string = 'top',
@@ -171,8 +171,8 @@ export default function Footer({ appear }: FooterProps) {
                         >
                             <FadeIn show={appear} delay={125}>
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton>
-                                        <a href="#top" tabIndex={-1}>
+                                    <RoundedButton aria_label={__('landing.seo.scroll_to_top', 'Scroll to top')}>
+                                        <a href="#top" tabIndex={-1} aria-label={__('landing.seo.scroll_to_top', 'Scroll to top')}>
                                             <ArrowUp className="stroke-1" />
                                         </a>
                                     </RoundedButton>
@@ -182,6 +182,7 @@ export default function Footer({ appear }: FooterProps) {
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
                                         onClick={handleSwitchAppearance}
+                                        aria_label={__('landing.seo.toggle_appearance', 'Toggle appearance mode')}
                                     >
                                         {appearance === 'dark' && (
                                             <Moon className="stroke-1" />
@@ -219,9 +220,13 @@ export default function Footer({ appear }: FooterProps) {
                                 {linkGroup.items.map((item, itemIndex) => {
                                     let onClick = null;
 
-                                    if(currentUrl !== homePath) {
+                                    const triggerAnimation = (currentUrl !== homePath) || item.href === route('terms');
+
+                                    if(triggerAnimation) {
                                         if(item.href.startsWith('#')) {
-                                            onClick = (e: React.MouseEvent<HTMLAnchorElement>) => handleProjectClick(e, route('home'), item.href.substring(1));
+                                            onClick = (e: React.MouseEvent<HTMLAnchorElement>) => handleLinkClick(e, route('home'), item.href.substring(1));
+                                        } else if (item.href === route('terms')) {
+                                            onClick = (e: React.MouseEvent<HTMLAnchorElement>) => handleLinkClick(e, route('terms'));
                                         }
                                     }
 
@@ -230,6 +235,7 @@ export default function Footer({ appear }: FooterProps) {
                                             key={`footer-link-item-${index}-${itemIndex}`}
                                         >
                                             <UnderlineLink
+                                                aria_label={__('landing.seo.go_to_link', 'Go to :link link', { link: item.label })}
                                                 className={cn(
                                                     // Default styles
                                                     'font-light transition-all',
@@ -238,7 +244,7 @@ export default function Footer({ appear }: FooterProps) {
                                                 )}
 
                                                 {...onClick && { onClick: onClick }}
-                                                href={currentUrl === homePath ? item.href : route('home')}
+                                                href={!triggerAnimation ? item.href : ( item.href === route('terms') ? route('terms') : route('home'))}
                                                 {...item.target && { target: item.target }}
                                             >
                                                 {item.label}

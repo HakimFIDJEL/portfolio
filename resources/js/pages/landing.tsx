@@ -1,30 +1,34 @@
 // resources/js/pages/landing.tsx
 
 // Necessary imports
-import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { Head, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
 
 // Sections
-import Hero from '@/components/landing/sections/hero';
 import About from '@/components/landing/sections/about';
+import Contact from '@/components/landing/sections/contact';
+import Hero from '@/components/landing/sections/hero';
 import Projects from '@/components/landing/sections/projects';
 import Sandbox from '@/components/landing/sections/sandbox';
-import Contact from '@/components/landing/sections/contact';
+
+// Context
+import { useLandingContext } from '@/contexts/use-landing-context';
 
 // Mocks
-import { 
-    Contact as ContactType, 
-    Experience as ExperienceType,
+import {
+    Contact as ContactType,
     Education as EducationType,
+    Experience as ExperienceType,
+    Project,
+    SharedData,
     Stack,
     Tool,
-    Project
 } from '@/types';
 
-interface LandingProps {
+interface LandingData {
     contacts: ContactType[];
     experiences: ExperienceType[];
     educations: EducationType[];
@@ -34,20 +38,53 @@ interface LandingProps {
     sandbox: Project[];
 }
 
-export default function Landing({ contacts, experiences, educations, stacks, tools, projects, sandbox }: LandingProps) {
-    const [showContent, setShowContent] = useState(false);
+export default function Landing() {
+    const { contentActive, fetchingData, setFetchingData } =
+        useLandingContext();
+
+    const [data, setData] = useState<LandingData | null>(null);
+
+    const { locale } = usePage<SharedData>().props;
+
+    useEffect(() => {
+        if (!fetchingData) setFetchingData(true);
+        let timer: ReturnType<typeof setTimeout>;
+
+        fetch(route('landing.data'))
+            .then((response) => response.json())
+            .then((data: LandingData) => {
+                setData(data);
+                timer = setTimeout(() => {
+                    setFetchingData(false);
+                }, 1000);
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+                setFetchingData(false);
+            });
+
+        return () => clearTimeout(timer);
+    }, [locale]);
 
     return (
-        <AppLanding showContent={showContent} setShowContent={setShowContent}>
-            <Head title="Porfolio" />
+        <>
+            <Head title="Portfolio" />
 
             <main>
-                <Hero appear={showContent} />
-                <About appear={showContent} stacks={stacks} tools={tools} educations={educations} experiences={experiences} />
-                <Projects appear={showContent} projects={projects} />
-                <Sandbox appear={showContent} projects={sandbox} />
-                <Contact appear={showContent} contacts={contacts}/>
+                <Hero appear={contentActive} />
+                <About
+                    appear={contentActive}
+                    stacks={(fetchingData || !data) ? [] : data.stacks}
+                    tools={(fetchingData || !data) ? [] : data.tools}
+                    educations={(fetchingData || !data) ? [] : data.educations}
+                    experiences={(fetchingData || !data) ? [] : data.experiences}
+                />
+                <Projects appear={contentActive} projects={(fetchingData || !data) ? [] : data.projects} />
+                <Sandbox appear={contentActive} projects={(fetchingData || !data) ? [] : data.sandbox} />
+                <Contact appear={contentActive} contacts={(fetchingData || !data) ? [] : data.contacts} />
             </main>
-        </AppLanding>
+        </>
     );
 }
+
+Landing.layout = (page: React.ReactNode) => <AppLanding>{page}</AppLanding>;

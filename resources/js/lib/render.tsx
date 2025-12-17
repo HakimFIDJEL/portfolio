@@ -1,20 +1,25 @@
-import type { LucideIcon } from 'lucide-react';
-import * as LucideIcons from 'lucide-react';
+import React, { lazy, Suspense, useMemo } from 'react';
+import dynamicIconImports from 'lucide-react/dynamicIconImports';
+import type { LucideProps } from 'lucide-react';
 
-export function getIcon(
-    icon: string,
-    props?: Record<string, unknown>,
-): React.JSX.Element | null {
-    const normalized = icon
-        .split('-')
-        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-        .join('');
+interface IconProps {
+    icon: string;
+    props?: LucideProps;
+}
 
-    const icons = LucideIcons as unknown as Record<string, LucideIcon>;
+export function GetIcon({ icon, props }: IconProps) {
+    const validIcon = icon as keyof typeof dynamicIconImports;
 
-    const Icon = icons[normalized];
+    const LucideIcon = useMemo(() => {
+        const dynamicImport = dynamicIconImports[validIcon];
+        return dynamicImport ? lazy(dynamicImport) : null;
+    }, [validIcon]);
 
-    if (!Icon) return null;
+    if (!LucideIcon) return null;
 
-    return <Icon {...props} />;
+    return (
+        <Suspense fallback={null}>
+            <LucideIcon {...props} />
+        </Suspense>
+    );
 }

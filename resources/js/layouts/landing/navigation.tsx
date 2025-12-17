@@ -89,8 +89,12 @@ interface NavigationButtonProps {
 }
 
 function NavigationButton({ show, handleClick }: NavigationButtonProps) {
+
+    const __ = useTrans();
+
     return (
         <button
+            aria-label={__('landing.seo.toggle_menu', 'Toggle menu')}
             tabIndex={show ? 0 : -1}
             onClick={() => handleClick(false)}
             className={cn(
@@ -181,6 +185,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     const homePath = new URL(route('home')).pathname;
 
     const { _navigateToPage } = useLandingContext();
+    const __ = useTrans();
 
     function handleProjectClick(
         e: React.MouseEvent<HTMLAnchorElement>,
@@ -198,6 +203,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     return (
         <Curtain showCurtain={!show} className='w-max'>
             <a
+                aria-label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: label.toLowerCase() })}
                 {...(show
                     ? { href: currentUrl === homePath ? href : route('home') }
                     : {})}
@@ -211,7 +217,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
                     'focus-visible:!text-primary-foreground focus-visible:md:gap-[80px] focus-visible:md:pl-[30px] focus-visible:md:outline-none',
 
                     // Responsive styles
-                    'gap-[10px] sm:gap-[50px] md:gap-[120px]',
+                    'gap-[0px] sm:gap-[50px] md:gap-[120px]',
                     'flex-col sm:flex-row',
                     'items-start sm:items-center',
                 )}
@@ -259,7 +265,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
                             'group-hover:md:pl-18 group-focus-visible:md:pl-18',
 
                             // Reponsive styles
-                            'text-3xl sm:text-6xl',
+                            'text-2xl sm:text-6xl',
                         )}
                     >
                         {index}
@@ -273,7 +279,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
                         'col-span-1 font-normal uppercase',
 
                         // Reponsive styles
-                        'text-4xl sm:text-6xl',
+                        'text-3xl sm:text-6xl',
 
                         'transition-all duration-1000',
                     )}

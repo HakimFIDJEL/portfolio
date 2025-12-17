@@ -50,7 +50,7 @@ return [
                 'resources' => [
                     'title' => 'Ressources',
                     'items' => [
-                        'terms' => 'Conditions',
+                        'terms' => 'CGU',
                         'source_code' => 'Code source',
                     ],
                 ],
@@ -136,12 +136,35 @@ return [
             'tech_stack' => 'Stack Technologique',
             'description' => 'Description',
             'attachments' => 'Pièces jointes',
-            'feedback' => 'Retour',
+            'feedback' => "Retour d'expérience",
             'what_i_learned' => "Ce que j'ai appris",
             'ongoing' => 'En cours'
         ],
     ],
 
-    
-
+    'terms' => [
+        'h1' => 'Conditions Générales d\'Utilisation',
+        'last_updated' => 'Dernière mise à jour : 14 Décembre 2025',
+        'sections' => [
+            'introduction' => [
+                'h2' => 'Introduction',
+                'p_1' => 'Bienvenue sur le portfolio de Hakim Fidjel. En accédant à ce site web, vous acceptez d\'être lié par les présentes Conditions Générales d\'Utilisation. Si vous n\'êtes pas d\'accord avec une partie de ces termes, veuillez ne pas utiliser ce site.',
+                'p_2' => 'Ce site est une vitrine de mon travail et de mes compétences en tant qu\'ingénieur Fullstack.',
+            ],
+            'intellectual_property' => [
+                'h2' => 'Propriété Intellectuelle',
+                'p_1' => 'Tout le contenu de ce portfolio (textes, images, projets, code source visible, etc.) est la propriété exclusive de Hakim Fidjel, sauf indication contraire.',
+                'p_2' => 'L\'utilisation, la reproduction, ou la distribution de tout contenu sans autorisation écrite préalable est strictement interdite.',
+                'p_3' => 'Le code source du portfolio lui-même est disponible sur GitHub à titre d\'exemple et de référence technique. Cependant, cela ne confère pas de droit d\'utilisation commerciale ou de re-publication sans autorisation explicite.',
+            ],
+            'limitation_of_liability' => [
+                'h2' => 'Limitation de Responsabilité',
+                'p_1' => 'Ce site web est fourni "tel quel", sans aucune garantie d\'aucune sorte. Je ne serai en aucun cas responsable des dommages directs, indirects, ou consécutifs découlant de l\'utilisation de ce site ou des informations qu\'il contient.',
+            ],
+            'contact' => [
+                'h2' => 'Contact',
+                'p_1' => 'Pour toute question concernant ces Conditions, vous pouvez me contacter via les méthodes listées dans la section Contact de la page d\'Accueil.',
+            ],
+        ],
+    ],
 ];

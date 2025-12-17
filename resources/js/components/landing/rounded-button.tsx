@@ -9,6 +9,7 @@ interface RoundedButtonProps {
     className?: string;
     disabled?: boolean;
     tabIndex?: number;
+    aria_label?: string;
 }
 
 export default function RoundedButton({
@@ -17,6 +18,7 @@ export default function RoundedButton({
     className,
     disabled,
     tabIndex,
+    aria_label,
 }: RoundedButtonProps) {
     const [isClicked, setIsClicked] = useState(false);
 
@@ -34,6 +36,7 @@ export default function RoundedButton({
 
     return (
         <button
+            aria-label={aria_label}
             onClick={disabled ? undefined : handleClick}
             tabIndex={tabIndex}
             className={cn(

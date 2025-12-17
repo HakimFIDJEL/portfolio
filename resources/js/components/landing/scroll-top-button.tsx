@@ -11,6 +11,9 @@ import Magnet from '@/components/ui/magnet';
 // Icons
 import { ArrowUp } from 'lucide-react';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface ScrollTopButtonProps {
     appear: boolean;
 }
@@ -19,6 +22,7 @@ export default function ScrollTopButton({ appear }: ScrollTopButtonProps) {
     const [isVisible, setIsVisible] = React.useState(false);
 
     const [scrollY, setScrollY] = React.useState(0);
+    const __ = useTrans();
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -63,8 +67,8 @@ export default function ScrollTopButton({ appear }: ScrollTopButtonProps) {
                     'translate-x-[-25%] sm:translate-x-[50%] xl:translate-x-[125%] 2xl:translate-x-[200%]',
                 )}
             >
-                <a href="#top" tabIndex={-1}>
-                    <RoundedButton className='bg-background'>
+                <a href="#top" tabIndex={-1} aria-label={__('landing.seo.scroll_to_top', 'Scroll to top')}>
+                    <RoundedButton className='bg-background' aria_label={__('landing.seo.scroll_to_top', 'Scroll to top')}>
                         <ArrowUp className="stroke-1" />
                     </RoundedButton>
                 </a>

@@ -3,13 +3,14 @@
 namespace App\Traits;
 
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\App;
 
 trait HasLocalizedFields
 {
     public function getAttribute($key)
     {
         if (in_array($key, $this->localized ?? [])) {
-            $locale = Session::get('locale', 'en'); // récupère la langue de session
+            $locale = Session::get('locale', App::getLocale()); // récupère la langue de session
             $localizedKey = "{$key}_{$locale}";
             return parent::getAttribute($localizedKey);
         }
@@ -20,7 +21,7 @@ trait HasLocalizedFields
     public function setAttribute($key, $value)
     {
         if (in_array($key, $this->localized ?? [])) {
-            $locale = Session::get('locale', 'en');
+            $locale = Session::get('locale', App::getLocale());
             $localizedKey = "{$key}_{$locale}";
             return parent::setAttribute($localizedKey, $value);
         }
@@ -30,7 +31,7 @@ trait HasLocalizedFields
 
     public function getLocalizedField($field)
     {
-        $locale = Session::get('locale', 'en');
+        $locale = Session::get('locale', App::getLocale());
         $localizedKey = "{$field}_{$locale}";
         return $this->attributes[$localizedKey] ?? null;
     }

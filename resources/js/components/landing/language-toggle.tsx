@@ -13,9 +13,13 @@ import { useLandingContext } from '@/contexts/use-landing-context';
 // Types
 import { SharedData } from '@/types';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 export default function LanguageToggle() {
 
     const locale = usePage<SharedData>().props.locale;  
+    const __ = useTrans();
 
     const { _navigateToPage } = useLandingContext();
 
@@ -30,8 +34,8 @@ export default function LanguageToggle() {
 
     return (
         <Magnet magnetStrength={3} padding={20}>
-            <a onClick={(e) => handleProjectClick(e, route('toggle_language'))} tabIndex={-1}>
-                <RoundedButton>
+            <a onClick={(e) => handleProjectClick(e, route('toggle_language'))} tabIndex={-1} aria-label={__('landing.seo.switch_language', 'Switch language to :language', { language: locale.toUpperCase() })}>
+                <RoundedButton aria_label={__('landing.seo.switch_language', 'Switch language to :language', { language: locale.toUpperCase() })}>
                     {locale.toUpperCase()}
                 </RoundedButton>
             </a>

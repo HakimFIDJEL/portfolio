@@ -8,9 +8,6 @@ import { useEffect, useState } from 'react';
 // Components
 import UnderlineLink from '@/components/landing/underline-link';
 
-// Contexts
-import { useLandingContext } from '@/contexts/use-landing-context';
-
 // Translation
 import { useTrans } from '@/lib/translation';
 
@@ -20,15 +17,14 @@ import { SharedData } from '@/types';
 interface HeaderProps {
     showContent: boolean;
     handleMenuToggle: (open: boolean) => void;
+    navigateToPage: (href: string, anchor: string | null) => void;
 }
 
-export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
+export default function Header({ showContent, handleMenuToggle, navigateToPage }: HeaderProps) {
     const [scrollY, setScrollY] = useState(0);
     const [showMenu, setShowMenu] = useState(true);
 
     const __ = useTrans();
-
-    const { _navigateToPage } = useLandingContext();
 
     function handleProjectClick(
         e: React.MouseEvent<HTMLAnchorElement>,
@@ -36,7 +32,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
         anchor: string = 'top',
     ) {
         e.preventDefault();
-        _navigateToPage(href, anchor);
+        navigateToPage(href, anchor);
     }
 
     useEffect(() => {
@@ -45,7 +41,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
 
-            if (currentScrollY > lastScrollY) {
+            if (currentScrollY > lastScrollY + 20) {
                 // Down
                 setShowMenu(false);
             } else if (currentScrollY < lastScrollY - 10) {
@@ -110,6 +106,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
                 )}
             >
                 <a
+                    aria-label={__('landing.seo.go_to_home', 'Go to home page')}
                     onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'))}
                     href={currentUrl === homePath ? '#top' : route('home')}
                     className={cn(
@@ -131,6 +128,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
                 )}
             >
                 <UnderlineLink
+                    aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'contact' })}
                     onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'), 'contact')}
                     href={currentUrl === homePath ? '#contact' : route('home')}
                 >
@@ -139,6 +137,7 @@ export default function Header({ showContent, handleMenuToggle }: HeaderProps) {
 
                 {user && (
                     <UnderlineLink
+                        aria_label={__('landing.seo.go_to_dashboard', 'Go to dashboard')}
                         href={route('dashboard')}
                     >
                         {__('landing.layout.header.dashboard', 'Dashboard')}
@@ -153,8 +152,12 @@ interface MenuButtonProps {
     handleClick: (open: boolean) => void;
 }
 function MenuButton({ handleClick }: MenuButtonProps) {
+
+    const __ = useTrans();
+
     return (
         <button
+            aria-label={__('landing.seo.toggle_menu', 'Toggle menu')}
             onClick={() => handleClick(true)}
             className={cn(
                 'group flex h-full cursor-pointer flex-col justify-center gap-[8px]',

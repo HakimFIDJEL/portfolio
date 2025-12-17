@@ -45,6 +45,7 @@ export default function Loader({ showLoader, showLoaderContent }: LoaderProps) {
                     'flex flex-col items-center justify-center gap-8',
                     'transition-all duration-1000',
 
+                    'gap-4 sm:gap-8',
                     'w-[100%] max-w-[100%]',
                     !showLoader && 'w-[90%] max-w-7xl',
                 )}

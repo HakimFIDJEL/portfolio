@@ -29,34 +29,33 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { Spinner } from '@/components/ui/spinner';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-    Select, 
+    Select,
     SelectContent,
     SelectGroup,
     SelectItem,
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { DatePicker } from '@/components/ui/date-picker';
+import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MinimalTiptap } from '@/components/ui/tiptap';
 
-
 // Components
-import { Tags, StackItems } from './create';
+import { StackItems, Tags } from './create';
 
 // Types
-import type { BreadcrumbItem, Project, Stack, StackItem, Tag, } from '@/types';
+import type { BreadcrumbItem, Project, Stack, StackItem, Tag } from '@/types';
 
 // Icons
-import { ArrowLeft, Pen, Trash2 } from 'lucide-react';
+import { FileUpload } from '@/components/image-upload';
 import { FileWithPreview } from '@/hooks/use-file-upload';
 import { convertAttachmentsToFileWithPreview } from '@/lib/utils';
-import { FileUpload } from '@/components/image-upload';
+import { ArrowLeft, Pen, Trash2 } from 'lucide-react';
 
 interface EditProps {
     project: Project;
@@ -79,7 +78,7 @@ export default function Edit({ project, tags, stacks }: EditProps) {
             href: route('backoffice.projects.edit', project.id),
         },
     ];
-    
+
     console.log(project);
 
     const { data, setData, processing, post, errors } = useForm<{
@@ -125,7 +124,9 @@ export default function Edit({ project, tags, stacks }: EditProps) {
         live_demo_url: project.live_demo_url || '',
         tags: project.tags || [],
         stackItems: project.stack_items || [],
-        attachments: convertAttachmentsToFileWithPreview({ attachments: project.attachments || [] }),
+        attachments: convertAttachmentsToFileWithPreview({
+            attachments: project.attachments || [],
+        }),
     });
 
     function handleSubmit(e: React.FormEvent) {
@@ -150,22 +151,28 @@ export default function Edit({ project, tags, stacks }: EditProps) {
             <Head title="Edit Project" />
 
             <Card>
-                <CardHeader className='flex flex-col md:items-center justify-between md:flex-row'>
-                    <div className='flex flex-col'>
+                <CardHeader className="flex flex-col justify-between md:flex-row md:items-center">
+                    <div className="flex flex-col">
                         <CardTitle>Edit a project</CardTitle>
                         <CardDescription>
                             Update the form below to edit the project.
                         </CardDescription>
                     </div>
-                    <CardAction className="flex flex-col md:items-center justify-between md:flex-row gap-2 w-full md:w-auto">
+                    <CardAction className="flex w-full flex-col justify-between gap-2 md:w-auto md:flex-row md:items-center">
                         <Link href={route('backoffice.projects.index')}>
-                            <Button variant={'outline'} className="w-full md:w-auto">
+                            <Button
+                                variant={'outline'}
+                                className="w-full md:w-auto"
+                            >
                                 <ArrowLeft />
                                 Go back
                             </Button>
                         </Link>
                         <DeleteProject project={project}>
-                            <Button variant="destructive" className="w-full md:w-auto">
+                            <Button
+                                variant="destructive"
+                                className="w-full md:w-auto"
+                            >
                                 <Trash2 />
                                 Delete project
                             </Button>
@@ -176,13 +183,29 @@ export default function Edit({ project, tags, stacks }: EditProps) {
                 <form onSubmit={handleSubmit} className="grid gap-4">
                     <CardContent className="grid gap-12">
                         <Tabs defaultValue="details">
-                            <TabsList className="w-full">
-                                <TabsTrigger value="details">
+                            <TabsList className="flex h-auto w-full flex-col gap-2 md:h-9 md:flex-row md:gap-4">
+                                <TabsTrigger
+                                    value="details"
+                                    className="w-full md:w-auto"
+                                >
                                     Project Details
                                 </TabsTrigger>
-                                <TabsTrigger value="tags">Tags</TabsTrigger>
-                                <TabsTrigger value="stack">Stack</TabsTrigger>
-                                <TabsTrigger value="attachments">
+                                <TabsTrigger
+                                    value="tags"
+                                    className="w-full md:w-auto"
+                                >
+                                    Tags
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    value="stack"
+                                    className="w-full md:w-auto"
+                                >
+                                    Stack
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    value="attachments"
+                                    className="w-full md:w-auto"
+                                >
                                     Attachments
                                 </TabsTrigger>
                             </TabsList>
@@ -756,8 +779,8 @@ function DeleteProject({ children, project }: DeleteProjectProps) {
                 <AlertDialogHeader>
                     <AlertDialogTitle>Delete Project</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Are you sure you want to delete this project? This action
-                        cannot be undone.
+                        Are you sure you want to delete this project? This
+                        action cannot be undone.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

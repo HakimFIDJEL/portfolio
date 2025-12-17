@@ -143,4 +143,52 @@ return [
             'new' => 'New',
         ],
     ],
+
+    'terms' => [
+        'h1' => 'Terms of Use',
+        'last_updated' => 'last Updated: December 14, 2025',
+        'sections' => [
+            'introduction' => [
+                'h2' => 'Introduction',
+                'p_1' => 'Welcome to Hakim Fidjel\'s portfolio. By accessing this website, you agree to be bound by these Terms of Use. If you disagree with any part of the terms, please do not use this website.',
+                'p_2' => 'This site is a showcase of my work and skills as a Fullstack engineer.',
+            ],
+            'intellectual_property' => [
+                'h2' => 'Intellectual Property',
+                'p_1' => 'All content on this portfolio (texts, images, projects, visible source code, etc.) is the exclusive property of Hakim Fidjel, unless otherwise indicated.',
+                'p_2' => 'The use, reproduction, or distribution of any content without prior written permission is strictly prohibited.',
+                'p_3' => 'The source code of the portfolio itself is available on GitHub as an example and technical reference. However, this does not grant rights for commercial use or republication without explicit authorization.',
+            ],
+            'limitation_of_liability' => [
+                'h2' => 'Limitation of Liability',
+                'p_1' => 'This website is provided "as is", without any warranties of any kind. I shall not be held responsible for any direct, indirect, or consequential damages arising from the use of this site or the information it contains.',
+            ],
+            'contact' => [
+                'h2' => 'Contact',
+                'p_1' => 'For any questions regarding these Terms, you can contact me through the methods listed on the Contact section of the Landing Page.',
+            ],
+        ],
+    ],
+
+    'seo' => [
+        'toggle_accordion' => 'Toggle accordion for :section section',
+        'carousel_pagination' => 'Go to slide :slide_number',
+        'carousel_next' => 'Go to next slide',
+        'carousel_previous' => 'Go to previous slide',
+        'open_dialog' => 'Open dialog for project :title',
+        'close_dialog' => 'Close dialog for project :title',
+        'view_source_code' => 'View source code for project :title',
+        'view_live_demo' => 'View live demo for project :title',
+        'discover_more_about_me' => 'Discover more about me',
+        'toggle_appearance' => 'Toggle appearance mode',
+        'switch_language' => 'Switch language to :language',
+        'scroll_to_top' => 'Scroll to top of the page',
+        'scroll_to_content' => 'Scroll to content',
+        'scroll_to_section' => 'Scroll to :section section',
+        'go_to_link' => 'Go to :link link',
+        'go_to_dashboard' => 'Go to dashboard',
+        'toggle_menu' => 'Toggle navigation menu',
+        'go_to_home' => 'Go to home page',
+        'download_resume' => 'Download my resume',
+    ],
 ];

@@ -70,14 +70,14 @@ export default function Sandbox({
                 'relative w-full border-t border-b border-dashed',
 
                 // Responsive styles
-                'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                'px-0 sm:px-8 md:px-10 lg:px-12.5',
                 'flex-col lg:flex-row',
-                'mt-24 lg:mt-48',
+                // 'mt-36 lg:mt-48',
             )}
             id="sandbox"
         >
-            {/* Left Panel */}
-            <Delimiter
+            {/* Left Panel - Desktop */}
+            <div
                 className={cn(
                     // Default styles
 
@@ -89,6 +89,8 @@ export default function Sandbox({
 
                     'border-r border-b border-l border-dashed',
                     'lg:border-0',
+
+                    'hidden lg:block'
                 )}
             >
                 <div
@@ -142,6 +144,7 @@ export default function Sandbox({
                         delay={500}
                     >
                         <UnderlineLink
+                            aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'contact' })}
                             href="#contact"
                             showUnderline
                             className={cn(
@@ -161,7 +164,96 @@ export default function Sandbox({
                         </UnderlineLink>
                     </Curtain>
                 </div>
-            </Delimiter>
+            </div>
+
+            {/* Left Panel - Mobile */}
+            <div className={cn(
+                // Responsive styles
+                'px-6 sm:px-0',
+                'border-b border-dashed',
+                'sm:border-0',
+                'block lg:hidden',
+            )}>
+                <Delimiter
+                    plusCorners={['top-left', 'top-right']}
+                    className={cn(
+                        // Default styles
+
+                        // Responsive styles
+                        'w-full lg:w-[25%] lg:min-w-[285px]',
+
+                        'px-6 lg:pr-12.5 lg:pl-0',
+                        'py-8 sm:py-6 md:py-8 lg:py-10',
+
+                        'border-r border-l border-dashed',
+                        'lg:border-0',
+
+                        'flex flex-col',
+                        'gap-4 sm:gap-8',
+                    )}
+                >
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        className="w-full"
+                        delay={0}
+                    >
+                        <h2
+                            className={cn(
+                                // Default styles
+                                'font-medium transition-all',
+
+                                'text-4xl sm:text-7xl',
+                            )}
+                        >
+                            {__('landing.landing.sandbox.h2', 'The Sand Box')}
+                        </h2>
+                    </Curtain>
+
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        className="w-full"
+                        delay={250}
+                    >
+                        <p
+                            className={cn(
+                                // Default styles
+                                'text-base sm:text-lg',
+                            )}
+                        >
+                            {__('landing.landing.sandbox.p_1', 'My less impactful but still taughtful works, I’ve currently worked on')}{' '}
+                            <strong className="font-semibold">{projects.length}{' '}</strong> {__('landing.landing.sandbox.p_2', 'small projects here.')}
+                        </p>
+                    </Curtain>
+
+                    <Curtain
+                        showCurtain={!appear}
+                        background="background"
+                        delay={500}
+                    >
+                        <UnderlineLink
+                            aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'contact' })}
+                            href="#contact"
+                            showUnderline
+                            className={cn(
+                                // Default styles
+                                'group flex w-max items-center gap-2',
+
+                                // Responsive styles
+                                'font-normal',
+                                'translate-x-[0px]',
+                            )}
+                        >
+                            {__('landing.landing.sandbox.skip', 'Skip')}
+                            <ArrowDownRight
+                                size={32}
+                                className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
+                            />
+                        </UnderlineLink>
+                    </Curtain>
+                </Delimiter>
+            </div>
 
             {/* Right Panel */}
             <Delimiter
@@ -177,7 +269,9 @@ export default function Sandbox({
                     'py-12 md:py-10',
                     'gap-4 md:gap-8',
 
-                    'w-full',
+                    'mx-6 sm:mx-0',
+
+                    'w-auto sm:w-full',
                     'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
                 )}
             >
@@ -192,7 +286,7 @@ export default function Sandbox({
                                 key={item.id}
                                 className="w-full"
                                 // Ajuster le délai pour la séquence dans la colonne
-                                delay={(colIndex + itemIndex * cols) * 100}
+                                delay={250}
                             >
                                 <Magnet magnetStrength={5} padding={10}>
                                     <SandboxItem
@@ -220,6 +314,7 @@ export default function Sandbox({
                 item={projects[activeIndex ?? -1] || null}
                 handleClose={() => handleClick(null)}
             />
+
         </section>
     );
 }
@@ -263,6 +358,7 @@ function SandboxItem({
             )}
             tabIndex={dialog_open ? -1 : 0}
             onClick={handleClick}
+            aria-label={__('landing.seo.open_dialog', 'Open dialog for project :title', { title: project.title })}
         >
             {/* Button */}
             <ArrowUpRight
@@ -286,15 +382,18 @@ function SandboxItem({
                     'flex flex-wrap gap-2',
                 )}
             >
-                {project.is_new && (
+                {project.is_new == true && (
                     <span
                         className={cn(
                             // Default styles
                             'border px-1.5 py-0.5 text-sm font-light',
                             'transition-all duration-1000',
 
+                            
                             // Hover & Focus styles
-                            'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
+                            'border-primary group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
+                            'text-primary-foreground group-hover:text-foreground group-focus-visible:text-foreground',
+                            'bg-primary group-hover:bg-transparent group-focus-visible:bg-transparent',
                         )}
                     >
                         {__('landing.projects.sections.new', 'New')}
@@ -320,7 +419,7 @@ function SandboxItem({
             </div>
 
             {/* Title */}
-            <h4
+            <h3
                 className={cn(
                     // Default styles
                     'font-medium',
@@ -329,7 +428,7 @@ function SandboxItem({
                 )}
             >
                 {project.title}
-            </h4>
+            </h3>
 
             {/* Description */}
             <p>
@@ -495,6 +594,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Code source */}
                         <RoundedButton
                             disabled={!item?.source_code_url}
+                            aria_label={__('landing.seo.view_source_code', 'View source code for project :title', { title: item?.title || '' })}
                             className="p-2.5"
                             tabIndex={
                                 open && item && item.source_code_url ? 0 : -1
@@ -518,6 +618,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Live demo */}
                         <RoundedButton
                             disabled={!item?.live_demo_url}
+                            aria_label={__('landing.seo.view_live_demo', 'View live demo for project :title', { title: item?.title || '' })}
                             className="p-2.5"
                             tabIndex={
                                 open && item && item.live_demo_url ? 0 : -1
@@ -539,6 +640,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Code source */}
                         <RoundedButton
                             onClick={() => setOpen(false)}
+                            aria_label={__('landing.seo.close_dialog', 'Close dialog for project :title', { title: item?.title || '' })}
                             className="p-2.5"
                             tabIndex={open ? 0 : -1}
                         >
@@ -586,7 +688,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.tech_stack', 'Tech Stack')}
@@ -644,7 +746,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.description', 'Description')}
@@ -658,6 +760,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'shrink-0 sm:w-[65%]',
 
                                         'flex flex-col gap-2',
+
+                                        '[&_ul]:space-y-4',
+                                        '[&_strong]:font-medium [&_strong]:text-foreground',
+                                        'text-foreground/70',
                                     )}
                                     dangerouslySetInnerHTML={{ __html: item.description }}
                                 >
@@ -683,7 +789,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                     className={cn(
                                         // Default styles
                                         'font-medium',
-                                        'text-lg',
+                                        'text-xl',
                                     )}
                                 >
                                     {__('landing.projects.sections.attachments', 'Attachments')}
@@ -723,7 +829,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.feedback', 'Feedback')}
@@ -737,6 +843,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'shrink-0 sm:w-[65%]',
 
                                         'flex flex-col gap-2',
+
+                                        '[&_ul]:space-y-4',
+                                        '[&_strong]:font-medium [&_strong]:text-foreground',
+                                        'text-foreground/70',
                                     )}
 
                                     dangerouslySetInnerHTML={{ __html: item.feedback }}
@@ -771,7 +881,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         className={cn(
                                             // Default styles
                                             'font-medium',
-                                            'text-lg',
+                                            'text-xl',
                                         )}
                                     >
                                         {__('landing.projects.sections.what_i_learned', 'What I Learned')}
@@ -785,6 +895,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'shrink-0 sm:w-[65%]',
 
                                         'flex flex-col gap-2',
+
+                                        '[&_ul]:space-y-4',
+                                        '[&_strong]:font-medium [&_strong]:text-foreground',
+                                        'text-foreground/70',
                                     )}
 
                                     dangerouslySetInnerHTML={{ __html: item.what_i_learned }}

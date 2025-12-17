@@ -10,6 +10,8 @@ import { useAppearance } from '@/hooks/use-appearance';
 import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import RoundedButton from '@/components/landing/rounded-button';
+import FadeIn from '@/components/landing/fade-in';
+import LanguageToggle from '@/components/landing/language-toggle';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
@@ -28,7 +30,6 @@ import {
 import { Project } from '@/types';
 
 // Translation
-import LanguageToggle from '@/components/landing/language-toggle';
 import { useTrans } from '@/lib/translation';
 
 interface HeroProps {
@@ -150,7 +151,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                     'flex-wrap',
                                 )}
                             >
-                                {project.is_new && (
+                                {project.is_new == true && (
                                     <span
                                         className={cn(
                                         // Default styles
@@ -159,6 +160,8 @@ export default function Hero({ appear, project }: HeroProps) {
 
                                             // Hover & Focus styles
                                             'border-primary',
+                                            'bg-primary',
+                                            'text-primary-foreground',
                                             'whitespace-nowrap',
                                         )}
                                     >
@@ -228,14 +231,16 @@ export default function Hero({ appear, project }: HeroProps) {
                         'gap-4 md:gap-5',
                     )}
                 >
-                    <p
-                        className={cn(
-                            // Default styles
-                            'text-lg font-medium',
-                        )}
-                    >
-                        {project.subtitle}
-                    </p>
+                    <FadeIn className='w-auto' show={appear} delay={250}>
+                        <p
+                            className={cn(
+                                // Default styles
+                                'text-lg font-medium',
+                            )}
+                        >
+                            {project.subtitle}
+                        </p>
+                    </FadeIn>
                     <div
                         className={cn(
                             // Default styles
@@ -263,6 +268,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                         })}
                                         target="_blank"
                                         tabIndex={-1}
+                                        aria-label={__('landing.seo.view_source_code', 'View source code for :project project', { project: project.title })}
                                     >
                                         <RoundedButton
                                             disabled={!project?.source_code_url}
@@ -271,6 +277,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                                     ? 0
                                                     : -1
                                             }
+                                            aria_label={__('landing.seo.view_source_code', 'View source code for :project project', { project: project.title })}
                                         >
                                             <Code2 className="stroke-1" />
                                         </RoundedButton>
@@ -289,12 +296,14 @@ export default function Hero({ appear, project }: HeroProps) {
                                         })}
                                         target="_blank"
                                         tabIndex={-1}
+                                        aria-label={__('landing.seo.view_live_demo', 'View live demo for :project project', { project: project.title })}
                                     >
                                         <RoundedButton
                                             disabled={!project?.live_demo_url}
                                             tabIndex={
                                                 project?.live_demo_url ? 0 : -1
                                             }
+                                            aria_label={__('landing.seo.view_live_demo', 'View live demo for :project project', { project: project.title })}
                                         >
                                             <SquareArrowOutUpRight className="stroke-1" />
                                         </RoundedButton>
@@ -316,6 +325,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
                                         onClick={handleSwitchAppearance}
+                                        aria_label={__('landing.seo.toggle_appearance', 'Toggle appearance mode')}
                                     >
                                         {appearance === 'dark' && (
                                             <Moon className="stroke-1" />
@@ -342,8 +352,8 @@ export default function Hero({ appear, project }: HeroProps) {
                                 delay={1500}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton>
-                                        <a href="#content" tabIndex={-1}>
+                                    <RoundedButton aria_label={__('landing.seo.scroll_to_content', 'Scroll to content')}>
+                                        <a href="#content" tabIndex={-1} aria-label={__('landing.seo.scroll_to_content', 'Scroll to content')}>
                                             <ArrowDown className="stroke-1" />
                                         </a>
                                     </RoundedButton>

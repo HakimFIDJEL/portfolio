@@ -24,7 +24,11 @@ class Landing extends Controller
 {
     public function landing()
     {
+        return Inertia::render('landing');
+    }
 
+    public function data()
+    {
         $contacts = Contact::orderBy('sort_order', 'asc')->get();
         $experiences = Experience::orderBy('sort_order', 'asc')->get();
         $educations = Education::orderBy('sort_order', 'asc')->get();
@@ -33,7 +37,7 @@ class Landing extends Controller
         $projects = Project::where('type', 'project')->orderBy('sort_order', 'asc')->get();
         $sandbox = Project::where('type', 'sandbox')->orderBy('sort_order', 'asc')->with(['tags', 'stackItems', 'attachments'])->get();
 
-        return Inertia::render('landing', [
+        return response()->json([
             'contacts' => $contacts,
             'experiences' => $experiences,
             'educations' => $educations,
@@ -79,5 +83,10 @@ class Landing extends Controller
         App::setLocale($newLocale);
 
         return redirect()->back();
+    }
+
+    public function terms()
+    {
+        return Inertia::render('terms');
     }
 }
