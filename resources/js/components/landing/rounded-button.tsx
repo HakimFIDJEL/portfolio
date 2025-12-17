@@ -2,7 +2,7 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import React, { useState } from 'react';
+import React from 'react';
 
 // Shadcn UI components
 import {
@@ -23,7 +23,6 @@ interface RoundedButtonProps {
 
 export default function RoundedButton({
     children,
-    onClick,
     className,
     disabled,
     tabIndex,
