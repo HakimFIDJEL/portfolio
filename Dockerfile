@@ -29,15 +29,12 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
  && sed -ri 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Copier code projet + entrypoint
+# Copier code projet
 COPY . .
 
 # Rendre entrypoint.sh exécutable
-RUN chmod +x /var/www/html/entrypoint.sh
-
-# Permissions database
-RUN chown www-data:www-data database/database.sqlite \
- && chmod 664 database/database.sqlite
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Permissions storage/bootstrap
 RUN chown -R www-data:www-data storage bootstrap/cache \
@@ -51,7 +48,4 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
 # Expose Apache
 # EXPOSE 80
 
-# Définir l'entrypoint
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
-RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
