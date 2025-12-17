@@ -24,6 +24,7 @@ interface RoundedButtonProps {
 export default function RoundedButton({
     children,
     className,
+    onClick,
     disabled,
     tabIndex,
     aria_label,
@@ -62,7 +63,7 @@ export default function RoundedButton({
         return (
             <button
                 aria-label={aria_label}
-                // onClick={disabled ? undefined : handleClick}
+                onClick={disabled ? undefined : onClick}
                 tabIndex={tabIndex}
                 title={title}
                 className={cn(
