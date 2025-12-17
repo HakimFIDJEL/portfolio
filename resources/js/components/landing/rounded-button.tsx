@@ -30,19 +30,19 @@ export default function RoundedButton({
     aria_label,
     showTooltip = true,
 }: RoundedButtonProps) {
-    const [isClicked, setIsClicked] = useState(false);
+    // const [isClicked, setIsClicked] = useState(false);
 
-    const handleClick = () => {
-        setIsClicked(true); // Réduire à l'activation
+    // const handleClick = () => {
+    //     setIsClicked(true); // Réduire à l'activation
 
-        setTimeout(() => {
-            setIsClicked(false); // Agrandir après un court délai
-        }, 150); // Ajustez la durée de l'effet
+    //     setTimeout(() => {
+    //         setIsClicked(false); // Agrandir après un court délai
+    //     }, 150); // Ajustez la durée de l'effet
 
-        if (onClick) {
-            onClick();
-        }
-    };
+    //     if (onClick) {
+    //         onClick();
+    //     }
+    // };
 
     if(!showTooltip) {
         return renderButton(aria_label);
@@ -63,7 +63,7 @@ export default function RoundedButton({
         return (
             <button
                 aria-label={aria_label}
-                onClick={disabled ? undefined : handleClick}
+                // onClick={disabled ? undefined : handleClick}
                 tabIndex={tabIndex}
                 title={title}
                 className={cn(
