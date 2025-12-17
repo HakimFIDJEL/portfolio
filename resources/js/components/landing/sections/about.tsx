@@ -436,6 +436,7 @@ function AccordionItem({
                                     'border-primary-foreground !text-primary-foreground',
                             )}
                             onClick={() => onChange && onChange(index)}
+                            showTooltip={false}
                             aria_label={__('landing.seo.toggle_accordion', 'Toggle accordion for :section section', { section: title })}
                         >
                             {open ? <Minus /> : <Plus />}
