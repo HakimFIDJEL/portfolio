@@ -35,7 +35,7 @@ export default function LanguageToggle() {
     return (
         <Magnet magnetStrength={3} padding={20}>
             <a onClick={(e) => handleProjectClick(e, route('toggle_language'))} tabIndex={-1} aria-label={__('landing.seo.switch_language', 'Switch language to :language', { language: locale.toUpperCase() })}>
-                <RoundedButton aria_label={__('landing.seo.switch_language', 'Switch language to :language', { language: locale.toUpperCase() })}>
+                <RoundedButton aria_label={__('landing.seo.switch_language', 'Switch language to :language', { language: (locale.toUpperCase() == 'EN' ? 'French' : 'Anglais') })}>
                     {locale.toUpperCase()}
                 </RoundedButton>
             </a>

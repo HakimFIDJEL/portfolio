@@ -1,8 +1,16 @@
 // resources/js/components/landing/rounded-button.tsx
+
+// Necessary imports
 import { cn } from '@/lib/utils';
 import React, { useState } from 'react';
 
-// Necessary imports
+// Shadcn UI components
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 interface RoundedButtonProps {
     children: React.ReactNode;
     onClick?: () => void;
@@ -35,59 +43,66 @@ export default function RoundedButton({
     };
 
     return (
-        <button
-            aria-label={aria_label}
-            onClick={disabled ? undefined : handleClick}
-            tabIndex={tabIndex}
-            className={cn(
-                // Default styles
-                'cursor-pointer',
-                'relative rounded-full p-3',
-                'border border-primary ',
-                'bg-transparent !text-primary',
-
-                'group transition-all',
-
-                // Hover & Focus styles
-                'hover:!text-primary-foreground',
-                'focus-visible:!text-primary-foreground focus-visible:outline-none',
-
-                // Disabled styles
-                disabled &&
-                    'pointer-events-none opacity-50 hover:!text-primary focus-visible:!text-primary',
-
-                className,
-            )}
-        >
-            <div
-                className={cn(
-                    // Default styles
-                    'transition-all flex items-center justify-center',
-                    'h-max',
-                    'relative z-1',
-                    'w-[24px]',
-                    isClicked && 'scale-75 opacity-75',
-                )}
-            >
-                {children}
-            </div>
-
-            {!disabled && (
-                <div
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <button
+                    aria-label={aria_label}
+                    onClick={disabled ? undefined : handleClick}
+                    tabIndex={tabIndex}
                     className={cn(
                         // Default styles
-                        'absolute z-0',
-                        'rounded-full',
-                        'bg-primary transition-all',
-                        'inset-1/2 duration-1000',
-                        'group-hover:!duration-500 group-focus-visible:!duration-500',
+                        'cursor-pointer',
+                        'relative rounded-full p-3',
+                        'border border-primary ',
+                        'bg-transparent text-primary',
+
+                        'group transition-all',
 
                         // Hover & Focus styles
-                        'group-hover:inset-0',
-                        'group-focus-visible:inset-0',
+                        'hover:text-primary-foreground',
+                        'focus-visible:text-primary-foreground focus-visible:outline-none',
+
+                        // Disabled styles
+                        disabled &&
+                            'pointer-events-none opacity-50 hover:text-primary focus-visible:text-primary',
+
+                        className,
                     )}
-                ></div>
-            )}
-        </button>
+                >
+                    <div
+                        className={cn(
+                            // Default styles
+                            'transition-all flex items-center justify-center duration-0',
+                            'h-max',
+                            'relative z-1',
+                            'w-[24px]',
+                            // isClicked && 'scale-75 opacity-75',
+                        )}
+                    >
+                        {children}
+                    </div>
+
+                    {!disabled && (
+                        <div
+                            className={cn(
+                                // Default styles
+                                'absolute z-0',
+                                'rounded-full',
+                                'bg-primary transition-all',
+                                'inset-1/2 duration-1000',
+                                'group-hover:!duration-500 group-focus-visible:!duration-500',
+
+                                // Hover & Focus styles
+                                'group-hover:inset-0',
+                                'group-focus-visible:inset-0',
+                            )}
+                        ></div>
+                    )}
+                </button>
+            </TooltipTrigger>
+            <TooltipContent>
+                {aria_label}
+            </TooltipContent>
+        </Tooltip>
     );
 }

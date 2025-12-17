@@ -167,4 +167,27 @@ return [
             ],
         ],
     ],
+
+    'seo' => [
+        'toggle_accordion' => 'Basculer l’accordéon pour la section :section',
+        'carousel_pagination' => 'Aller à la diapositive :slide_number',
+        'carousel_next' => 'Aller à la diapositive suivante',
+        'carousel_previous' => 'Aller à la diapositive précédente',
+        'open_dialog' => 'Ouvrir la fenêtre pour le projet :title',
+        'close_dialog' => 'Fermer la fenêtre pour le projet :title',
+        'view_source_code' => 'Voir le code source du projet :title',
+        'view_live_demo' => 'Voir la démo en ligne du projet :title',
+        'discover_more_about_me' => 'En savoir plus sur moi',
+        'toggle_appearance' => 'Basculer le mode d’apparence',
+        'switch_language' => 'Changer la langue vers :language',
+        'scroll_to_top' => 'Remonter en haut de la page',
+        'scroll_to_content' => 'Aller au contenu',
+        'scroll_to_section' => 'Aller à la section :section',
+        'go_to_link' => 'Aller au lien :link',
+        'go_to_dashboard' => 'Aller au tableau de bord',
+        'toggle_menu' => 'Basculer le menu de navigation',
+        'go_to_home' => 'Aller à la page d’accueil',
+        'download_resume' => 'Télécharger mon CV',
+    ],
+
 ];
