@@ -268,7 +268,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                         })}
                                         target="_blank"
                                         tabIndex={-1}
-                                        aria-label={__('landing.seo.view_source_code', 'View source code for :project project', { project: project.title })}
+                                        aria-label={__('landing.seo.view_source_code', 'View source code')}
                                     >
                                         <RoundedButton
                                             disabled={!project?.source_code_url}
@@ -277,7 +277,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                                     ? 0
                                                     : -1
                                             }
-                                            aria_label={__('landing.seo.view_source_code', 'View source code for :project project', { project: project.title })}
+                                            aria_label={__('landing.seo.view_source_code', 'View source code')}
                                         >
                                             <Code2 className="stroke-1" />
                                         </RoundedButton>
@@ -296,14 +296,14 @@ export default function Hero({ appear, project }: HeroProps) {
                                         })}
                                         target="_blank"
                                         tabIndex={-1}
-                                        aria-label={__('landing.seo.view_live_demo', 'View live demo for :project project', { project: project.title })}
+                                        aria-label={__('landing.seo.view_live_demo', 'View live demo')}
                                     >
                                         <RoundedButton
                                             disabled={!project?.live_demo_url}
                                             tabIndex={
                                                 project?.live_demo_url ? 0 : -1
                                             }
-                                            aria_label={__('landing.seo.view_live_demo', 'View live demo for :project project', { project: project.title })}
+                                            aria_label={__('landing.seo.view_live_demo', 'View live demo')}
                                         >
                                             <SquareArrowOutUpRight className="stroke-1" />
                                         </RoundedButton>
