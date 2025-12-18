@@ -138,7 +138,8 @@ return [
             'attachments' => 'Pièces jointes',
             'feedback' => "Retour d'expérience",
             'what_i_learned' => "Ce que j'ai appris",
-            'ongoing' => 'En cours'
+            'ongoing' => 'En cours',
+            'new' => 'Nouveau',
         ],
     ],
 
