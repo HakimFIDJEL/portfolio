@@ -126,6 +126,7 @@ export default function Footer({ appear }: FooterProps) {
 
     const currentUrl = usePage().url.split('#')[0];
     const homePath = new URL(route('home')).pathname;
+    const termsPath = new URL(route('terms')).pathname;
 
     return (
         <>
@@ -219,16 +220,32 @@ export default function Footer({ appear }: FooterProps) {
                                 </li>
                                 {linkGroup.items.map((item, itemIndex) => {
                                     let onClick = null;
+                                    let href = item.href;
 
-                                    const triggerAnimation = (currentUrl !== homePath) || item.href === route('terms');
+                                    const onHomePage = currentUrl == homePath;
+                                    const onTermsPage = currentUrl == termsPath;
 
-                                    if(triggerAnimation) {
-                                        if(item.href.startsWith('#')) {
+                                    const isExternal = item.target === '_blank' || item.href.startsWith('mailto:');
+
+                                    // Anchor
+                                    if(item.href.startsWith('#')) {
+                                        if(onHomePage) {
+                                            href = item.href;
+                                        } else {
+                                            href = route('home');
                                             onClick = (e: React.MouseEvent<HTMLAnchorElement>) => handleLinkClick(e, route('home'), item.href.substring(1));
-                                        } else if (item.href === route('terms')) {
-                                            onClick = (e: React.MouseEvent<HTMLAnchorElement>) => handleLinkClick(e, route('terms'));
                                         }
+                                    } else if (item.href === route('terms')) {
+                                        if(onTermsPage) {
+                                            href = '#top';
+                                        } else {
+                                            href = route('terms');
+                                            onClick = (e: React.MouseEvent<HTMLAnchorElement>) => handleLinkClick(e, route('terms'), 'top');
+                                        }
+                                    } else if (isExternal) {
+                                        href = item.href;
                                     }
+                                    
 
                                     return (
                                         <li
@@ -244,7 +261,7 @@ export default function Footer({ appear }: FooterProps) {
                                                 )}
 
                                                 {...onClick && { onClick: onClick }}
-                                                href={!triggerAnimation ? item.href : ( item.href === route('terms') ? route('terms') : route('home'))}
+                                                href={href}
                                                 {...item.target && { target: item.target }}
                                             >
                                                 {item.label}
