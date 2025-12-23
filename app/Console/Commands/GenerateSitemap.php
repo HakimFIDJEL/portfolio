@@ -49,21 +49,21 @@ class GenerateSitemap extends Command
                 ->setPriority(0.5)
         );
 
-        $projects = Project::all();
+        $projects = Project::where('type', 'project')->orderBy('sort_order', 'asc')->get();
 
         foreach ($projects as $project) {
             $slugFr = $project->slug_fr;
             $slugEn = $project->slug_en;
             $routeFr = $slugFr ? route('project', ['slug' => $slugFr], absolute: true) : null;
             $routeEn = $slugEn ? route('project', ['slug' => $slugEn], absolute: true) : null;
-            $type = $project->type;
+            
             $lastModified = $project->updated_at ?? now();
 
             if ($routeFr) {
                 $frTag = Url::create($routeFr)
                     ->setLastModificationDate($lastModified)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                    ->setPriority($type === 'project' ? 0.8 : 0.6);
+                    ->setPriority(0.8);
 
                 if($routeEn) {
                     $frTag->addAlternate($routeEn, 'en');
@@ -76,12 +76,11 @@ class GenerateSitemap extends Command
                 $enTag = Url::create($routeEn)
                     ->setLastModificationDate($lastModified)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                    ->setPriority($type === 'project' ? 0.8 : 0.6);
+                    ->setPriority(0.8);
 
                 if($routeFr) {
                     $enTag->addAlternate($routeFr, 'fr');
                 }
-
                 $sitemap->add($enTag);
             }
         }
