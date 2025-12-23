@@ -61,6 +61,9 @@ return [
     ],
     
     'landing' => [
+
+        'meta_description' => "Portfolio de Hakim Fidjel. Découvrez mes projets, compétences et ambitions en tant qu'apprenti ingénieur FullStack dans le domaine de l'ingénierie informatique.",
+
         'hero' => [
             'h2' => 'Ingénieur Fullstack',
             'circularText' => 'Bienvenue sur mon portfolio ~ ',
@@ -145,6 +148,9 @@ return [
 
     'terms' => [
         'h1' => 'Conditions Générales d\'Utilisation',
+
+        'meta_description' => 'Lisez les conditions générales d\'utilisation du site portfolio de Hakim Fidjel, qui décrivent les règles et directives pour accéder et utiliser le site.',
+
         'last_updated' => 'Dernière mise à jour : 14 Décembre 2025',
         'sections' => [
             'introduction' => [

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
+<html lang="{{ str_replace('_', '-', session('locale',app()->getLocale())) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
 
 <head>
     <meta charset="utf-8">
@@ -39,7 +39,7 @@
 
     {{-- SEO --}}
     <title inertia>{{ config('app.name', 'Hakim Fidjel') }}</title>
-    <meta name="description" content="Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering.">
+    {{-- <meta name="description" content=> --}}
     <meta name="author" content="Hakim Fidjel">
     <meta name="keywords" content="Portfolio, Hakim Fidjel, Hakim, Fidjel, FullStack, Engineering Apprentice, Computer Engineering, Projects, Skills, Ambitions">
 
