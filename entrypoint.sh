@@ -110,6 +110,10 @@ if [ -f .env ]; then
     chmod 664 .env
 fi
 
+# --- START SSR ---
+echo "Starting Inertia SSR server..."
+php artisan inertia:start-ssr &
+
 # --- START APACHE ---
 echo "Starting Apache..."
 exec apache2-foreground
