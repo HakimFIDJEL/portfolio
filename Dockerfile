@@ -48,7 +48,7 @@ RUN composer install \
   --optimize-autoloader \
   --no-scripts \
  && npm install \
- && npm run build
+ && npm run build:ssr
 
 
 # Expose Apache
