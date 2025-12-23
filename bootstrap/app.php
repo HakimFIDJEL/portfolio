@@ -14,6 +14,11 @@ use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Session;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -44,6 +49,30 @@ return Application::configure(basePath: dirname(__DIR__))
                 return $response; 
             }
 
+            $translations = fn () => collect(File::files(lang_path(Session::get('locale', App::getLocale()))))
+                ->mapWithKeys(function ($file) {
+                    $name = pathinfo($file, PATHINFO_FILENAME);
+                    $lines = Lang::get($name);
+
+                    return [$name => Arr::undot($lines)];
+                })
+                ->toArray();
+
+            $user = $request->user()?->load([
+                'avatar',
+                'resume',
+            ]);
+
+            $auth = [
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'avatar' => $user->avatar,
+                    'resume' => $user->resume,
+                ] : null,
+            ];
+
             if ($exception instanceof HttpExceptionInterface) {
                 $statusCode = $exception->getStatusCode();
 
@@ -52,6 +81,9 @@ return Application::configure(basePath: dirname(__DIR__))
                     return Inertia::render('errors/show', [
                         'statusCode' => $statusCode,
                         'title' => $exception->getMessage() ?? '',
+                        'translations' => $translations,
+                        'auth' => $auth,
+                        
                     ])->toResponse($request)
                         ->setStatusCode($statusCode);
                 }
@@ -62,6 +94,8 @@ return Application::configure(basePath: dirname(__DIR__))
                 return Inertia::render('errors/show', [
                     'statusCode' => 403,
                     'title' => $exception->getMessage() ?: 'Forbidden',
+                    'translations' => $translations,
+                    'auth' => $auth,
                 ])->toResponse($request)
                     ->setStatusCode(403);
             }
@@ -73,6 +107,8 @@ return Application::configure(basePath: dirname(__DIR__))
                 return Inertia::render('errors/show', [
                     'statusCode' => $statusCode,
                     'title' => 'Server Error',
+                    'translations' => $translations,
+                    'auth' => $auth,
                 ])->toResponse($request)
                     ->setStatusCode($statusCode);
             }
