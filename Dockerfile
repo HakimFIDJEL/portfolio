@@ -7,6 +7,7 @@ RUN a2enmod rewrite
 
 # Dépendances système
 RUN apt-get update -y && apt-get install -y \
+    git \
     libicu-dev libmariadb-dev unzip zip zlib1g-dev \
     libpng-dev libjpeg-dev libfreetype6-dev curl libzip-dev \
     default-mysql-client \
@@ -41,9 +42,14 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
  && chmod -R 775 storage bootstrap/cache
 
 # Installer dépendances PHP & JS (sans artisan commands)
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
+RUN composer install \
+  --no-interaction \
+  --prefer-dist \
+  --optimize-autoloader \
+  --no-scripts \
  && npm install \
  && npm run build
+
 
 # Expose Apache
 # EXPOSE 80
