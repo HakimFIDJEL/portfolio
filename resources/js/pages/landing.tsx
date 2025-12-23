@@ -68,7 +68,9 @@ export default function Landing() {
 
     return (
         <>
-            <Head title="Portfolio" />
+            <Head>
+                <meta name='description' content="Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering." />
+            </Head>
 
             <main>
                 <Hero appear={contentActive} />

@@ -94,7 +94,9 @@ export default function Terms() {
 
     return (
         <>
-            <Head title={__('landing.terms.h1', 'Terms of Use')} />
+            <Head title={__('landing.terms.h1', 'Terms of Use')}>
+                <meta name='description' content="Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering." />
+            </Head>
             <div className="min-h-screen bg-background">
                 <FadeIn show={contentActive} className="w-full">
                     <Delimiter plusCorners={['all']}>

@@ -39,7 +39,7 @@
 
     {{-- SEO --}}
     <title inertia>{{ config('app.name', 'Hakim Fidjel') }}</title>
-    <meta name="description" content="Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering.">
+    {{-- <meta name="description" content=> --}}
     <meta name="author" content="Hakim Fidjel">
     <meta name="keywords" content="Portfolio, Hakim Fidjel, Hakim, Fidjel, FullStack, Engineering Apprentice, Computer Engineering, Projects, Skills, Ambitions">
 

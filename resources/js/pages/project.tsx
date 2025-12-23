@@ -39,7 +39,9 @@ export default function Project({ project }: ProjectProps) {
 
     return (
         <>
-            <Head title={project.title} />
+            <Head title={project.title}>
+                <meta name='description' content={project.subtitle} />
+            </Head>
 
             <main>
                 <Hero appear={contentActive} project={project} />
