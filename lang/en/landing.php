@@ -62,6 +62,8 @@ return [
 
     'landing'=> [
 
+        'meta_description' => "Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering.",
+
         'hero' => [
             'h2' => 'Fullstack Engineer',
             'circularText' => 'Welcome to my portfolio ~ ',
@@ -146,6 +148,7 @@ return [
 
     'terms' => [
         'h1' => 'Terms of Use',
+        'meta_description' => 'Read the terms of use for Hakim Fidjel\'s portfolio website, outlining the rules and guidelines for accessing and using the site.',
         'last_updated' => 'last Updated: December 14, 2025',
         'sections' => [
             'introduction' => [

@@ -28,6 +28,9 @@ import {
     Tool,
 } from '@/types';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface LandingData {
     contacts: ContactType[];
     experiences: ExperienceType[];
@@ -45,6 +48,8 @@ export default function Landing() {
     const [data, setData] = useState<LandingData | null>(null);
 
     const { locale } = usePage<SharedData>().props;
+
+    const __ = useTrans();
 
     useEffect(() => {
         if (!fetchingData) setFetchingData(true);
@@ -69,7 +74,7 @@ export default function Landing() {
     return (
         <>
             <Head>
-                <meta name='description' content="Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering." />
+                <meta name='description' content={__('landing.landing.meta_description', "Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering.")} />
             </Head>
 
             <main>
