@@ -7,6 +7,7 @@ RUN a2enmod rewrite
 
 # Dépendances système
 RUN apt-get update -y && apt-get install -y \
+    git \
     libicu-dev libmariadb-dev unzip zip zlib1g-dev \
     libpng-dev libjpeg-dev libfreetype6-dev curl libzip-dev \
     default-mysql-client \
