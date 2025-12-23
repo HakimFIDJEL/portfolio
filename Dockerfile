@@ -41,9 +41,14 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
  && chmod -R 775 storage bootstrap/cache
 
 # Installer dépendances PHP & JS (sans artisan commands)
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
+RUN composer install \
+  --no-interaction \
+  --prefer-dist \
+  --optimize-autoloader \
+  --no-scripts \
  && npm install \
  && npm run build
+
 
 # Expose Apache
 # EXPOSE 80
