@@ -4,9 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Backoffice\{
-    Tag, Stack, StackItem, Tool, ToolItem, Project, Contact, Experience, Education
+    Tag, Stack, StackItem, Tool, ToolItem, Contact, Experience, Education
 };
-use App\Models\Attachment;
 
 class BackofficeSeeder extends Seeder
 {
@@ -24,7 +23,7 @@ class BackofficeSeeder extends Seeder
         ];
 
         foreach ($mockTags as $tag) {
-            Tag::firstOrCreate(['name_fr'=>$tag['name_fr']], $tag);
+            Tag::firstOrCreate(['sort_order'=>$tag['sort_order']], $tag);
         }
 
         // ---------------------------
@@ -98,15 +97,15 @@ class BackofficeSeeder extends Seeder
         ];
 
         foreach ($mockStacks as $stackData) {
-            $stack = Stack::firstOrCreate(
-                ['name_fr'=>$stackData['name_fr']],
-                ['sort_order'=>$stackData['sort_order'],'name_en'=>$stackData['name_en']]
-            );
+            $items = $stackData['items'];
+            unset($stackData['items']);
 
-            foreach ($stackData['items'] as $itemData) {
+            $stack = Stack::firstOrCreate(['sort_order' => $stackData['sort_order']], $stackData);
+
+            foreach ($items as $itemData) {
                 StackItem::firstOrCreate(
-                    ['name'=>$itemData['name'],'stack_id'=>$stack->id],
-                    array_merge($itemData,['stack_id'=>$stack->id])
+                    ['sort_order' => $itemData['sort_order'], 'stack_id' => $stack->id],
+                    $itemData
                 );
             }
         }
@@ -178,15 +177,15 @@ class BackofficeSeeder extends Seeder
         ];
 
         foreach ($mockTools as $toolData) {
-            $tool = Tool::firstOrCreate(
-                ['name_fr'=>$toolData['name_fr']],
-                ['sort_order'=>$toolData['sort_order'],'name_en'=>$toolData['name_en']]
-            );
+            $items = $toolData['items'];
+            unset($toolData['items']);
 
-            foreach ($toolData['items'] as $itemData) {
+            $tool = Tool::firstOrCreate(['sort_order' => $toolData['sort_order']], $toolData);
+
+            foreach ($items as $itemData) {
                 ToolItem::firstOrCreate(
-                    ['name'=>$itemData['name'],'tool_id'=>$tool->id],
-                    array_merge($itemData,['tool_id'=>$tool->id])
+                    ['sort_order' => $itemData['sort_order'], 'tool_id' => $tool->id],
+                    $itemData
                 );
             }
         }
@@ -226,7 +225,7 @@ class BackofficeSeeder extends Seeder
 
         foreach ($mockExperiences as $exp) {
             Experience::firstOrCreate(
-                ['company'=>$exp['company'],'job_fr'=>$exp['job_fr']],
+                ['sort_order'=>$exp['sort_order']],
                 $exp
             );
         }
@@ -241,8 +240,8 @@ class BackofficeSeeder extends Seeder
                 'type_fr'=>'École',
                 'type_en'=>'School',
                 'duration'=>'09/21 - Present',
-                'description_fr'=>'Actuellement en 4e année à l\'IG2I Centrale Lille, je poursuis un diplôme d\'ingénieur spécialisé en informatique et génie industriel. Le programme combine l\'excellence académique avec des applications concrètes via des projets pratiques et des formations professionnelles.',
-                'description_en'=>'Currently in my 4th year at IG2I Centrale Lille, I am pursuing an engineering degree specializing in industrial and computer science. The program combines academic excellence with real-world applications through hands-on projects and professional training.',
+                'description_fr'=>'Actuellement en 5e année à l\'IG2I Centrale Lille, je poursuis un diplôme d\'ingénieur spécialisé en informatique et génie industriel. Le programme combine l\'excellence académique avec des applications concrètes via des projets pratiques et des formations professionnelles.',
+                'description_en'=>'Currently in my 5th year at IG2I Centrale Lille, I am pursuing an engineering degree specializing in industrial and computer science. The program combines academic excellence with real-world applications through hands-on projects and professional training.',
             ],
             [
                 'sort_order'=>2,
@@ -255,7 +254,7 @@ class BackofficeSeeder extends Seeder
             ],
             [
                 'sort_order'=>3,
-                'institution'=>'Baccalauréat Scientifique (Spé. Mathématiques et Physique)',
+                'institution'=>'Baccalauréat Scientifique',
                 'type_fr'=>'Diplôme',
                 'type_en'=>'Diploma',
                 'duration'=>'07/21',
@@ -284,7 +283,7 @@ class BackofficeSeeder extends Seeder
 
         foreach ($mockEducations as $edu) {
             Education::firstOrCreate(
-                ['institution'=>$edu['institution'],'type_fr'=>$edu['type_fr']],
+                ['sort_order'=>$edu['sort_order']],
                 $edu
             );
         }
