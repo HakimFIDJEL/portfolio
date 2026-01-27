@@ -144,6 +144,9 @@ return [
             'ongoing' => 'Ongoing',
             'new' => 'New',
         ],
+
+
+        'go_back' => 'Go back to projects',
     ],
 
     'terms' => [

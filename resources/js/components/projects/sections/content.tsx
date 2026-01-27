@@ -393,7 +393,7 @@ export default function Content({ project, appear, previous_project, next_projec
                     >
                         {/* Arrow Left - Previous project */}
                         <NavCard 
-                            text={previous_project ? previous_project.title : 'Go back to projects'} 
+                            text={previous_project ? previous_project.title : __('landing.projects.go_back')} 
                             href={previous_project ? route('project', { slug: previous_project.slug }) : route('home')} 
                             onClick={!previous_project ? (e: React.MouseEvent<HTMLAnchorElement>) => handleBackClick(e) : (e: React.MouseEvent<HTMLAnchorElement>) => handleProjectClick(e, previous_project.slug)}
                             arrow="left" 
@@ -401,7 +401,7 @@ export default function Content({ project, appear, previous_project, next_projec
 
                         {/* Arrow Right - Next project */}
                         <NavCard 
-                            text={next_project ? next_project.title : 'Go back to projects'} 
+                            text={next_project ? next_project.title : __('landing.projects.go_back')} 
                             href={next_project ? route('project', { slug: next_project.slug }) : route('home')} 
                             onClick={!next_project ? (e: React.MouseEvent<HTMLAnchorElement>) => handleBackClick(e) : (e: React.MouseEvent<HTMLAnchorElement>) => handleProjectClick(e, next_project.slug)}
                             arrow="right" 
