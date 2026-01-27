@@ -13,14 +13,39 @@ import { Project } from '@/types';
 // Translation
 import { useTrans } from '@/lib/translation';
 
+// Icons
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+
+// Context
+import { useLandingContext } from '@/contexts/use-landing-context';
+
 interface ContentProps {
     project: Project;
     appear: boolean;
+
+    previous_project: Project | null;
+    next_project: Project | null;
 }
 
-export default function Content({ project, appear }: ContentProps) {
+export default function Content({ project, appear, previous_project, next_project }: ContentProps) {
 
     const __ = useTrans();
+    const { _navigateToPage } = useLandingContext();
+
+    function handleBackClick(
+        e: React.MouseEvent<HTMLAnchorElement>,
+    ) {
+        e.preventDefault();
+        _navigateToPage(route('home'), 'projects');
+    }
+
+    function handleProjectClick(
+        e: React.MouseEvent<HTMLAnchorElement>,
+        slug: string,
+    ) {
+        e.preventDefault();
+        _navigateToPage(route('project', slug), 'top');
+    }
 
     return (
         <section
@@ -335,19 +360,105 @@ export default function Content({ project, appear }: ContentProps) {
             )}
 
             {/* Borders */}
+            <div
+                className={cn(
+                    // Responsive styles
+                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                )}
+            >
                 <div
                     className={cn(
-                        // Responsive styles
-                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
+                        // Default styles
+                        'h-32 w-full border-r border-l border-dashed',
                     )}
-                >
+                ></div>
+            </div>
+
+            {/* Navigation - If there is no previous or next project, replace the text by 'go back to projects' */}
+            <Delimiter
+                plusCorners={['all']}
+                dashedBorders={['top', 'left', 'right']}
+            >
+                <FadeIn show={appear} className="w-full">
                     <div
                         className={cn(
                             // Default styles
-                            'h-32 w-full border-r border-l border-dashed',
+                            'w-full',
+                            'flex items-center justify-between ',
+
+                            // Responsive styles
+                            'flex-col sm:flex-row',
+                            'divide-x-0 divide-y divide-dashed divide-border sm:divide-x sm:divide-y-0',
                         )}
-                    ></div>
-                </div>
+                    >
+                        {/* Arrow Left - Previous project */}
+                        <NavCard 
+                            text={previous_project ? previous_project.title : 'Go back to projects'} 
+                            href={previous_project ? route('project', { slug: previous_project.slug }) : route('home')} 
+                            onClick={!previous_project ? (e: React.MouseEvent<HTMLAnchorElement>) => handleBackClick(e) : (e: React.MouseEvent<HTMLAnchorElement>) => handleProjectClick(e, previous_project.slug)}
+                            arrow="left" 
+                        />
+
+                        {/* Arrow Right - Next project */}
+                        <NavCard 
+                            text={next_project ? next_project.title : 'Go back to projects'} 
+                            href={next_project ? route('project', { slug: next_project.slug }) : route('home')} 
+                            onClick={!next_project ? (e: React.MouseEvent<HTMLAnchorElement>) => handleBackClick(e) : (e: React.MouseEvent<HTMLAnchorElement>) => handleProjectClick(e, next_project.slug)}
+                            arrow="right" 
+                        />
+                    </div>
+                </FadeIn>
+            </Delimiter>
         </section>
     );
+}
+
+
+interface NavCardProps {
+    text: string;
+    href: string;
+    onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+    arrow: 'left' | 'right';
+}
+
+function NavCard({ text, href, onClick, arrow }: NavCardProps) {
+    return (
+        <a 
+            href={href}
+            onClick={onClick}
+            className={cn(
+                // Default styles
+                'flex items-center justify-center gap-2 w-full self-stretch flex-wrap',
+                'bg-card transition-all cursor-pointer',
+                'font-thin group',
+
+                // Hover styles
+                'hover:bg-primary hover:text-primary-foreground',
+
+                // Focus styles
+                'focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-none',
+
+                // Responsive styles
+                'py-6 sm:py-8 px-4 sm:px-6',
+            )}
+        >
+            
+            {arrow === 'left' ? 
+            (
+                <>
+                    <ArrowLeft className='stroke-1 h-6 w-6'/> 
+                    <span className='text-center group-hover:ml-2 transition-all border-b border-transparent group-hover:border-primary-foreground group-focus-visible:border-primary-foreground group-focus-visible:ml-2'>
+                        {text}
+                    </span>
+                </>
+            ) : (
+                <>
+                    <span className='text-center group-hover:mr-2 transition-all border-b border-transparent group-hover:border-primary-foreground group-focus-visible:border-primary-foreground group-focus-visible:mr-2'>
+                        {text}
+                    </span>
+                    <ArrowRight className='stroke-1 h-6 w-6'/>
+                </>
+            )}
+        </a>
+    )
 }

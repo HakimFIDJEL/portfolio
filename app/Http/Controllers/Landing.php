@@ -72,7 +72,15 @@ class Landing extends Controller
             abort(404);
         }
 
-        return Inertia::render('project', ['project' => $project]);
+        $previous_project = Project::where('sort_order', '<', $project->sort_order)
+            ->orderBy('sort_order', 'desc')
+            ->first();
+
+        $next_project = Project::where('sort_order', '>', $project->sort_order)
+            ->orderBy('sort_order', 'asc')
+            ->first();
+
+        return Inertia::render('project', ['project' => $project, 'previous_project' => $previous_project, 'next_project' => $next_project]);
     }
 
     public function toggle_language()
