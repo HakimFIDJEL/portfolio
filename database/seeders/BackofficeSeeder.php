@@ -255,7 +255,7 @@ class BackofficeSeeder extends Seeder
             ],
             [
                 'sort_order'=>3,
-                'institution'=>'Baccalauréat Scientifique (Spé. Mathématiques et Physique)',
+                'institution'=>'Baccalauréat Scientifique',
                 'type_fr'=>'Diplôme',
                 'type_en'=>'Diploma',
                 'duration'=>'07/21',

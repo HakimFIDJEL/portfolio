@@ -43,6 +43,8 @@ class Projects extends Controller
     public function store(RequestStore $request) {
         $validated = $request->validated();
 
+        $validated['sort_order'] = Project::max('sort_order') + 1;
+
         // Create the project
         $project = Project::create($validated);
 

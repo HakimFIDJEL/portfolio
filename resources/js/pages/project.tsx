@@ -19,9 +19,11 @@ import { useLandingContext } from '@/contexts/use-landing-context';
 
 interface ProjectProps {
     project: Project;
+    previous_project: Project | null;
+    next_project: Project | null;
 }
 
-export default function Project({ project }: ProjectProps) {
+export default function Project({ project, previous_project, next_project }: ProjectProps) {
     const { contentActive, fetchingData, setFetchingData } =
         useLandingContext();
 
@@ -35,7 +37,7 @@ export default function Project({ project }: ProjectProps) {
         }, 1000);
 
         return () => clearTimeout(timer);
-    }, [locale]);
+    }, [locale, project]);
 
     return (
         <>
@@ -45,7 +47,7 @@ export default function Project({ project }: ProjectProps) {
 
             <main>
                 <Hero appear={contentActive} project={project} />
-                <Content appear={contentActive} project={project} />
+                <Content appear={contentActive} project={project} previous_project={previous_project} next_project={next_project} />
             </main>
         </>
     );
