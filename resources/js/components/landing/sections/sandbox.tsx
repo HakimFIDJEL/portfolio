@@ -361,19 +361,35 @@ function SandboxItem({
             aria-label={__('landing.seo.open_dialog', 'Open dialog')}
         >
             {/* Button */}
-            <ArrowUpRight
-                className={cn(
-                    // Default styles
-                    'absolute top-4 right-4 h-8 w-8 stroke-1 transition-all',
-                    'translate-x-0 translate-y-0 opacity-0',
+            <div className={cn(
+                // Default styles
+                'absolute top-0 left-0 right-0 bottom-0 z-1',
 
-                    // Hover & Focus styles
-                    'group-hover:translate-x-[4px] group-hover:translate-y-[-4px] group-hover:opacity-100',
-                    'group-focus-visible:translate-x-[4px] group-focus-visible:translate-y-[-4px] group-focus-visible:opacity-100',
-                    active &&
-                        'translate-x-[4px] translate-y-[-4px] opacity-100',
-                )}
-            />
+                'pt-4 pr-4 pb-8 flex justify-end items-start',
+                // 'bg-gradient-to-b from-primary via-primary/80 to-transparent',
+                'bg-primary/80',
+
+                'opacity-0',
+                'transition-all',
+
+                // Hover styles
+                'group-hover:opacity-100',
+                'group-focus-visible:opacity-100',
+            )}>
+                <ArrowUpRight
+                    className={cn(
+                        // Default styles
+                        'relative h-12 w-12 stroke-1 transition-all',
+                        'translate-x-0 translate-y-0 opacity-0',
+
+                        // Hover & Focus styles
+                        'group-hover:translate-x-[4px] group-hover:translate-y-[-4px] group-hover:opacity-100',
+                        'group-focus-visible:translate-x-[4px] group-focus-visible:translate-y-[-4px] group-focus-visible:opacity-100',
+                        active &&
+                            'translate-x-[4px] translate-y-[-4px] opacity-100',
+                    )}
+                />
+            </div>
 
             {/* Tags */}
             <div
