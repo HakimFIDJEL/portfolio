@@ -39,9 +39,10 @@
 
     {{-- SEO --}}
     <title inertia>{{ config('app.name', 'Hakim Fidjel') }}</title>
-    {{-- <meta name="description" content=> --}}
+    <meta name="description" content="Découvrez mes projets, compétences et ambitions en tant qu'apprenti ingénieur FullStack dans le domaine de l'ingénierie informatique.">
     <meta name="author" content="Hakim Fidjel">
     <meta name="keywords" content="Portfolio, Hakim Fidjel, Hakim, Fidjel, FullStack, Engineering Apprentice, Computer Engineering, Projects, Skills, Ambitions">
+
 
     <link rel="icon" href="{{asset('favicon.ico')}}" sizes="any" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{asset('apple-touch-icon.png')}}">
