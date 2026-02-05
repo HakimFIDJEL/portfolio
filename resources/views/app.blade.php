@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', session('locale',app()->getLocale())) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
+<html lang="{{ str_replace('_', '-', session('locale', app()->getLocale())) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
 
 <head>
     <meta charset="utf-8">
@@ -7,7 +7,7 @@
 
     {{-- Inline script to detect system dark mode preference and apply it immediately --}}
     <script>
-        (function() {
+        (function () {
             const appearance = '{{ $appearance ?? 'system' }}';
             const user = '{{ Auth::check() }}'
 
@@ -19,10 +19,10 @@
                 }
             }
 
-            if(user) {
+            if (user) {
                 localStorage.setItem('appearance', appearance);
             }
-            
+
         })();
     </script>
 
@@ -39,9 +39,9 @@
 
     {{-- SEO --}}
     <title inertia>{{ config('app.name', 'Hakim Fidjel') }}</title>
-    <meta name="description" content="Découvrez mes projets, compétences et ambitions en tant qu'apprenti ingénieur FullStack dans le domaine de l'ingénierie informatique.">
     <meta name="author" content="Hakim Fidjel">
-    <meta name="keywords" content="Portfolio, Hakim Fidjel, Hakim, Fidjel, FullStack, Engineering Apprentice, Computer Engineering, Projects, Skills, Ambitions">
+    <meta name="keywords"
+        content="Portfolio, Hakim Fidjel, Hakim, Fidjel, FullStack, Engineering Apprentice, Computer Engineering, Projects, Skills, Ambitions">
 
 
     <link rel="icon" href="{{asset('favicon.ico')}}" sizes="any" type="image/x-icon">

@@ -98,6 +98,10 @@ class HandleInertiaRequests extends Middleware
 
             'avatar_url' => User::first()->avatar->url ?? null,
             'resume_url' => User::first()->resume->url ?? null,
+            'ziggy' => fn () => [
+                ...(new \Tighten\Ziggy\Ziggy)->toArray(),
+                'location' => $request->url(),
+            ],
         ]);
     }
 }

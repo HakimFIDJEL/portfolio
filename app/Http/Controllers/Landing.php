@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Models\Backoffice\Contact;
 use App\Models\Backoffice\Education;
 use App\Models\Backoffice\Experience;
-// Models
 use App\Models\Backoffice\Project;
 use App\Models\Backoffice\Stack;
 use App\Models\Backoffice\Tool;
@@ -52,31 +51,36 @@ class Landing extends Controller
     {
         $locale = Session::get('locale', App::getLocale());
 
-        $project = Project::where('slug_'.$locale, $slug)->with(['tags', 'stackItems', 'attachments'])->first();
+        $project = Project::where('slug_'.$locale, $slug)
+            ->where('type', 'project')
+            ->with(['tags', 'stackItems', 'attachments'])->first();
 
-        if (!$project) {
+        if (! $project) {
 
-            if($locale === 'en') {
+            if ($locale === 'en') {
                 $alternateLocale = 'fr';
             } else {
                 $alternateLocale = 'en';
             }
 
-            $project = Project::where('slug_'.$alternateLocale, $slug)->with(['tags', 'stackItems', 'attachments'])->first();
+            $project = Project::where('slug_'.$alternateLocale, $slug)
+                ->where('type', 'project')
+                ->with(['tags', 'stackItems', 'attachments'])->first();
 
             if ($project) {
                 return redirect()->route('project', ['slug' => $project->{'slug_'.$locale}]);
             }
 
-
             abort(404);
         }
 
         $previous_project = Project::where('sort_order', '<', $project->sort_order)
+            ->where('type', 'project')
             ->orderBy('sort_order', 'desc')
             ->first();
 
         $next_project = Project::where('sort_order', '>', $project->sort_order)
+            ->where('type', 'project')
             ->orderBy('sort_order', 'asc')
             ->first();
 
