@@ -20,7 +20,11 @@ interface HeaderProps {
     navigateToPage: (href: string, anchor: string | null) => void;
 }
 
-export default function Header({ showContent, handleMenuToggle, navigateToPage }: HeaderProps) {
+export default function Header({
+    showContent,
+    handleMenuToggle,
+    navigateToPage,
+}: HeaderProps) {
     const [scrollY, setScrollY] = useState(0);
     const [showMenu, setShowMenu] = useState(true);
 
@@ -107,7 +111,11 @@ export default function Header({ showContent, handleMenuToggle, navigateToPage }
             >
                 <a
                     aria-label={__('landing.seo.go_to_home', 'Go to home page')}
-                    onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'))}
+                    onClick={
+                        currentUrl === homePath
+                            ? () => {}
+                            : (e) => handleProjectClick(e, route('home'))
+                    }
                     href={currentUrl === homePath ? '#top' : route('home')}
                     className={cn(
                         // Focus styles
@@ -128,8 +136,21 @@ export default function Header({ showContent, handleMenuToggle, navigateToPage }
                 )}
             >
                 <UnderlineLink
-                    aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'contact' })}
-                    onClick={currentUrl === homePath ? () => {} : (e) => handleProjectClick(e, route('home'), 'contact')}
+                    aria_label={__(
+                        'landing.seo.scroll_to_section',
+                        'Scroll to :section section',
+                        { section: 'contact' },
+                    )}
+                    onClick={
+                        currentUrl === homePath
+                            ? () => {}
+                            : (e) =>
+                                  handleProjectClick(
+                                      e,
+                                      route('home'),
+                                      'contact',
+                                  )
+                    }
                     href={currentUrl === homePath ? '#contact' : route('home')}
                 >
                     {__('landing.layout.header.contact', 'Contact')}
@@ -137,7 +158,10 @@ export default function Header({ showContent, handleMenuToggle, navigateToPage }
 
                 {user && (
                     <UnderlineLink
-                        aria_label={__('landing.seo.go_to_dashboard', 'Go to dashboard')}
+                        aria_label={__(
+                            'landing.seo.go_to_dashboard',
+                            'Go to dashboard',
+                        )}
                         href={route('dashboard')}
                     >
                         {__('landing.layout.header.dashboard', 'Dashboard')}
@@ -152,7 +176,6 @@ interface MenuButtonProps {
     handleClick: (open: boolean) => void;
 }
 function MenuButton({ handleClick }: MenuButtonProps) {
-
     const __ = useTrans();
 
     return (

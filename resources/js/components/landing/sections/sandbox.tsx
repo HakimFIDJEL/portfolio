@@ -41,8 +41,24 @@ export default function Sandbox({
     const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
     const __ = useTrans();
 
-    const cols =
-        window.innerWidth >= 1279 ? 3 : window.innerWidth >= 639 ? 2 : 1;
+    const [cols, setCols] = React.useState(3);
+
+    React.useEffect(() => {
+        const handleResize = () => {
+            setCols(
+                window.innerWidth >= 1279
+                    ? 3
+                    : window.innerWidth >= 639
+                      ? 2
+                      : 1,
+            );
+        };
+
+        handleResize();
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const columns: Project[][] = Array.from({ length: cols }, () => []);
 
@@ -90,7 +106,7 @@ export default function Sandbox({
                     'border-r border-b border-l border-dashed',
                     'lg:border-0',
 
-                    'hidden lg:block'
+                    'hidden lg:block',
                 )}
             >
                 <div
@@ -133,8 +149,17 @@ export default function Sandbox({
                                 'text-base sm:text-lg',
                             )}
                         >
-                            {__('landing.landing.sandbox.p_1', 'My less impactful but still taughtful works, I’ve currently worked on')}{' '}
-                            <strong className="font-semibold">{projects.length}{' '}</strong> {__('landing.landing.sandbox.p_2', 'small projects here.')}
+                            {__(
+                                'landing.landing.sandbox.p_1',
+                                'My less impactful but still taughtful works, I’ve currently worked on',
+                            )}{' '}
+                            <strong className="font-semibold">
+                                {projects.length}{' '}
+                            </strong>{' '}
+                            {__(
+                                'landing.landing.sandbox.p_2',
+                                'small projects here.',
+                            )}
                         </p>
                     </Curtain>
 
@@ -144,7 +169,11 @@ export default function Sandbox({
                         delay={500}
                     >
                         <UnderlineLink
-                            aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'contact' })}
+                            aria_label={__(
+                                'landing.seo.scroll_to_section',
+                                'Scroll to :section section',
+                                { section: 'contact' },
+                            )}
                             href="#contact"
                             showUnderline
                             className={cn(
@@ -167,13 +196,15 @@ export default function Sandbox({
             </div>
 
             {/* Left Panel - Mobile */}
-            <div className={cn(
-                // Responsive styles
-                'px-6 sm:px-0',
-                'border-b border-dashed',
-                'sm:border-0',
-                'block lg:hidden',
-            )}>
+            <div
+                className={cn(
+                    // Responsive styles
+                    'px-6 sm:px-0',
+                    'border-b border-dashed',
+                    'sm:border-0',
+                    'block lg:hidden',
+                )}
+            >
                 <Delimiter
                     plusCorners={['top-left', 'top-right']}
                     className={cn(
@@ -222,8 +253,17 @@ export default function Sandbox({
                                 'text-base sm:text-lg',
                             )}
                         >
-                            {__('landing.landing.sandbox.p_1', 'My less impactful but still taughtful works, I’ve currently worked on')}{' '}
-                            <strong className="font-semibold">{projects.length}{' '}</strong> {__('landing.landing.sandbox.p_2', 'small projects here.')}
+                            {__(
+                                'landing.landing.sandbox.p_1',
+                                'My less impactful but still taughtful works, I’ve currently worked on',
+                            )}{' '}
+                            <strong className="font-semibold">
+                                {projects.length}{' '}
+                            </strong>{' '}
+                            {__(
+                                'landing.landing.sandbox.p_2',
+                                'small projects here.',
+                            )}
                         </p>
                     </Curtain>
 
@@ -233,7 +273,11 @@ export default function Sandbox({
                         delay={500}
                     >
                         <UnderlineLink
-                            aria_label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: 'contact' })}
+                            aria_label={__(
+                                'landing.seo.scroll_to_section',
+                                'Scroll to :section section',
+                                { section: 'contact' },
+                            )}
                             href="#contact"
                             showUnderline
                             className={cn(
@@ -314,7 +358,6 @@ export default function Sandbox({
                 item={projects[activeIndex ?? -1] || null}
                 handleClose={() => handleClick(null)}
             />
-
         </section>
     );
 }
@@ -332,7 +375,6 @@ function SandboxItem({
     handleClick,
     dialog_open,
 }: SandboxItemProps) {
-
     const __ = useTrans();
 
     return (
@@ -361,21 +403,23 @@ function SandboxItem({
             aria-label={__('landing.seo.open_dialog', 'Open dialog')}
         >
             {/* Button */}
-            <div className={cn(
-                // Default styles
-                'absolute top-0 left-0 right-0 bottom-0 z-1',
+            <div
+                className={cn(
+                    // Default styles
+                    'absolute top-0 right-0 bottom-0 left-0 z-1',
 
-                'pt-4 pr-4 pb-8 flex justify-end items-start',
-                // 'bg-gradient-to-b from-primary via-primary/80 to-transparent',
-                'bg-primary/80',
+                    'flex items-start justify-end pt-4 pr-4 pb-8',
+                    // 'bg-gradient-to-b from-primary via-primary/80 to-transparent',
+                    'bg-primary/80',
 
-                'opacity-0',
-                'transition-all',
+                    'opacity-0',
+                    'transition-all',
 
-                // Hover styles
-                'group-hover:opacity-100',
-                'group-focus-visible:opacity-100',
-            )}>
+                    // Hover styles
+                    'group-hover:opacity-100',
+                    'group-focus-visible:opacity-100',
+                )}
+            >
                 <ArrowUpRight
                     className={cn(
                         // Default styles
@@ -405,7 +449,6 @@ function SandboxItem({
                             'border px-1.5 py-0.5 text-sm font-light',
                             'transition-all duration-1000',
 
-                            
                             // Hover & Focus styles
                             'border-primary group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
                             'text-primary-foreground group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
@@ -447,9 +490,7 @@ function SandboxItem({
             </h3>
 
             {/* Description */}
-            <p>
-                {project.subtitle}
-            </p>
+            <p>{project.subtitle}</p>
 
             <Separator className="mt-2 bg-foreground transition-all duration-1000 group-hover:bg-primary-foreground group-focus-visible:bg-primary-foreground" />
 
@@ -466,7 +507,7 @@ function SandboxItem({
                 <span
                     className={cn(
                         // Default styles
-                        'border px-1.5 py-0.5 text-sm font-light w-max',
+                        'w-max border px-1.5 py-0.5 text-sm font-light',
                         'transition-all duration-1000',
 
                         // Hover & Focus styles
@@ -610,7 +651,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Code source */}
                         <RoundedButton
                             disabled={!item?.source_code_url}
-                            aria_label={__('landing.seo.view_source_code', 'View source code')}
+                            aria_label={__(
+                                'landing.seo.view_source_code',
+                                'View source code',
+                            )}
                             className="p-2.5"
                             tabIndex={
                                 open && item && item.source_code_url ? 0 : -1
@@ -634,7 +678,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Live demo */}
                         <RoundedButton
                             disabled={!item?.live_demo_url}
-                            aria_label={__('landing.seo.view_live_demo', 'View live demo')}
+                            aria_label={__(
+                                'landing.seo.view_live_demo',
+                                'View live demo',
+                            )}
                             className="p-2.5"
                             tabIndex={
                                 open && item && item.live_demo_url ? 0 : -1
@@ -656,7 +703,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         {/* Code source */}
                         <RoundedButton
                             onClick={() => setOpen(false)}
-                            aria_label={__('landing.seo.close_dialog', 'Close dialog')}
+                            aria_label={__(
+                                'landing.seo.close_dialog',
+                                'Close dialog',
+                            )}
                             className="p-2.5"
                             tabIndex={open ? 0 : -1}
                         >
@@ -707,7 +757,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                             'text-xl',
                                         )}
                                     >
-                                        {__('landing.projects.sections.tech_stack', 'Tech Stack')}
+                                        {__(
+                                            'landing.projects.sections.tech_stack',
+                                            'Tech Stack',
+                                        )}
                                     </h4>
                                 </div>
                                 <div
@@ -765,7 +818,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                             'text-xl',
                                         )}
                                     >
-                                        {__('landing.projects.sections.description', 'Description')}
+                                        {__(
+                                            'landing.projects.sections.description',
+                                            'Description',
+                                        )}
                                     </h4>
                                 </div>
                                 <p
@@ -781,9 +837,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         '[&_strong]:font-medium [&_strong]:text-foreground',
                                         'text-foreground/70',
                                     )}
-                                    dangerouslySetInnerHTML={{ __html: item.description }}
-                                >
-                                </p>
+                                    dangerouslySetInnerHTML={{
+                                        __html: item.description,
+                                    }}
+                                ></p>
                             </div>
                         </FadeIn>
                     )}
@@ -808,7 +865,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         'text-xl',
                                     )}
                                 >
-                                    {__('landing.projects.sections.attachments', 'Attachments')}
+                                    {__(
+                                        'landing.projects.sections.attachments',
+                                        'Attachments',
+                                    )}
                                 </h4>
 
                                 <Carousel
@@ -848,7 +908,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                             'text-xl',
                                         )}
                                     >
-                                        {__('landing.projects.sections.feedback', 'Feedback')}
+                                        {__(
+                                            'landing.projects.sections.feedback',
+                                            'Feedback',
+                                        )}
                                     </h4>
                                 </div>
                                 <p
@@ -864,10 +927,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         '[&_strong]:font-medium [&_strong]:text-foreground',
                                         'text-foreground/70',
                                     )}
-
-                                    dangerouslySetInnerHTML={{ __html: item.feedback }}
-                                >
-                                </p>
+                                    dangerouslySetInnerHTML={{
+                                        __html: item.feedback,
+                                    }}
+                                ></p>
                             </div>
                         </FadeIn>
                     )}
@@ -900,7 +963,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                             'text-xl',
                                         )}
                                     >
-                                        {__('landing.projects.sections.what_i_learned', 'What I Learned')}
+                                        {__(
+                                            'landing.projects.sections.what_i_learned',
+                                            'What I Learned',
+                                        )}
                                     </h4>
                                 </div>
                                 <p
@@ -916,10 +982,10 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                         '[&_strong]:font-medium [&_strong]:text-foreground',
                                         'text-foreground/70',
                                     )}
-
-                                    dangerouslySetInnerHTML={{ __html: item.what_i_learned }}
-                                >
-                                </p>
+                                    dangerouslySetInnerHTML={{
+                                        __html: item.what_i_learned,
+                                    }}
+                                ></p>
                             </div>
                         </FadeIn>
                     )}

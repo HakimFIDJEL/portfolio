@@ -62,21 +62,33 @@ php artisan key:generate
 php artisan migrate
 ```
 
-## Lancement du projet
-
-### Backend
+## Développement
 
 ```bash
 php artisan serve
 ```
 
-### Frontend (HMR)
-
 ```bash
 npm run dev
 ```
 
-### Queue
+```bash
+php artisan queue:work
+```
+
+## Production
+
+```bash
+php artisan inertia:start-ssr
+```
+
+```bash
+npm run build:ssr
+```
+
+```bash
+php artisan serve
+```
 
 ```bash
 php artisan queue:work
