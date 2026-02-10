@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 // Hooks
 import { useAppearance } from '@/hooks/use-appearance';
 import { useTrans } from '@/lib/translation';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Components
 import CircularText from '@/components/landing/circular-text';
@@ -13,6 +14,7 @@ import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import LanguageToggle from '@/components/landing/language-toggle';
 import RoundedButton from '@/components/landing/rounded-button';
+import CursorToggle from '@/components/landing/cursor-toggle';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
@@ -27,6 +29,7 @@ interface HeroProps {
 export default function Hero({ appear }: HeroProps) {
     const { appearance, updateAppearance } = useAppearance();
     const __ = useTrans();
+    const isMobile = useIsMobile();
 
     function handleSwitchAppearance() {
         const newAppearance =
@@ -192,6 +195,15 @@ export default function Hero({ appear }: HeroProps) {
                     >
                         <LanguageToggle />
                     </Curtain>
+                    {!isMobile && (
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={1250}
+                        >
+                            <CursorToggle />
+                        </Curtain>
+                    )}
                 </Delimiter>
             </div>
         </section>

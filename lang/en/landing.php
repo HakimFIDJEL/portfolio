@@ -187,6 +187,7 @@ return [
         'view_live_demo' => 'View live demo',
         'discover_more_about_me' => 'Discover more about me',
         'toggle_appearance' => 'Toggle appearance mode',
+        'toggle_mouse_pointer' => 'Toggle cursor visual effects',
         'switch_language' => 'Switch language to :language',
         'scroll_to_top' => 'Scroll to top of the page',
         'scroll_to_content' => 'Scroll to content',
