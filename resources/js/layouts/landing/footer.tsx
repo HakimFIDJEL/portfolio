@@ -13,15 +13,19 @@ import FadeIn from '@/components/landing/fade-in';
 import RoundedButton from '@/components/landing/rounded-button';
 import UnderlineLink from '@/components/landing/underline-link';
 import LanguageToggle from '@/components/landing/language-toggle';
+import CursorToggle from '@/components/landing/cursor-toggle';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
 
 // Icons
-import { ArrowUp, Monitor, Moon, Sun } from 'lucide-react';
+import { Monitor, Moon, Sun } from 'lucide-react';
 
 // Contexts
 import { useLandingContext } from '@/contexts/use-landing-context';
+
+// Hooks
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Translation
 import { useTrans } from '@/lib/translation';
@@ -33,6 +37,7 @@ interface FooterProps {
 
 export default function Footer({ appear }: FooterProps) {
     const { appearance, updateAppearance } = useAppearance();
+    const isMobile = useIsMobile();
 
     const __ = useTrans();
     
@@ -170,7 +175,7 @@ export default function Footer({ appear }: FooterProps) {
                                 'col-span-1 flex flex-col gap-4',
                             )}
                         >
-                            <FadeIn show={appear} delay={125}>
+                            {/* <FadeIn show={appear} delay={125}>
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton aria_label={__('landing.seo.scroll_to_top', 'Scroll to top')}>
                                         <a href="#top" tabIndex={-1} aria-label={__('landing.seo.scroll_to_top', 'Scroll to top')}>
@@ -178,8 +183,8 @@ export default function Footer({ appear }: FooterProps) {
                                         </a>
                                     </RoundedButton>
                                 </Magnet>
-                            </FadeIn>
-                            <FadeIn show={appear} delay={250}>
+                            </FadeIn> */}
+                            <FadeIn show={appear} delay={125}>
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
                                         onClick={handleSwitchAppearance}
@@ -197,9 +202,17 @@ export default function Footer({ appear }: FooterProps) {
                                     </RoundedButton>
                                 </Magnet>
                             </FadeIn>
-                            <FadeIn show={appear} delay={375}>
+                            <FadeIn show={appear} delay={250}>
                                 <LanguageToggle />
                             </FadeIn>
+                            {!isMobile && (
+                                <FadeIn
+                                    show={appear}
+                                    delay={375}
+                                >
+                                    <CursorToggle />
+                                </FadeIn>
+                            )}
                         </div>
 
                         {links.map((linkGroup, index) => (

@@ -12,6 +12,7 @@ import Delimiter from '@/components/landing/delimiter';
 import RoundedButton from '@/components/landing/rounded-button';
 import FadeIn from '@/components/landing/fade-in';
 import LanguageToggle from '@/components/landing/language-toggle';
+import CursorToggle from '@/components/landing/cursor-toggle';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
@@ -29,6 +30,9 @@ import {
 // Types
 import { Project } from '@/types';
 
+// Hooks
+import { useIsMobile } from '@/hooks/use-mobile';
+
 // Translation
 import { useTrans } from '@/lib/translation';
 
@@ -40,6 +44,7 @@ interface HeroProps {
 export default function Hero({ appear, project }: HeroProps) {
     const { appearance, updateAppearance } = useAppearance();
     const __ = useTrans();
+    const isMobile = useIsMobile();
 
     function handleSwitchAppearance() {
         const newAppearance =
@@ -359,6 +364,15 @@ export default function Hero({ appear, project }: HeroProps) {
                                     </RoundedButton>
                                 </Magnet>
                             </Curtain>
+                            {!isMobile && (
+                                <Curtain
+                                    showCurtain={!appear}
+                                    background="background"
+                                    delay={1750}
+                                >
+                                    <CursorToggle />
+                                </Curtain>
+                            )}
                         </div>
                     </div>
                 </div>
