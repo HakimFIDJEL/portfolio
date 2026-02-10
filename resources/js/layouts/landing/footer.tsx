@@ -19,7 +19,7 @@ import CursorToggle from '@/components/landing/cursor-toggle';
 import Magnet from '@/components/ui/magnet';
 
 // Icons
-import { ArrowUp, Monitor, Moon, Sun } from 'lucide-react';
+import { Monitor, Moon, Sun } from 'lucide-react';
 
 // Contexts
 import { useLandingContext } from '@/contexts/use-landing-context';

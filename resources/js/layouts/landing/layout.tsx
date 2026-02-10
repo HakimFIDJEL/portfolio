@@ -2,7 +2,7 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import { type ReactNode, useState, useEffect } from 'react';
+import { type ReactNode } from 'react';
 
 // Shadcn UI Components
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
