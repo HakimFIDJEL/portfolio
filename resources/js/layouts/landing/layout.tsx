@@ -2,7 +2,7 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import { type ReactNode } from 'react';
+import { type ReactNode, useState, useEffect } from 'react';
 
 // Shadcn UI Components
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
@@ -14,6 +14,7 @@ import Footer from '@/layouts/landing/footer';
 import Header from '@/layouts/landing/header';
 import Loader from '@/layouts/landing/loader';
 import Navigation from '@/layouts/landing/navigation';
+import Antigravity from '@/components/antigravity';
 
 // Contexts
 import CoverScreen from '@/components/landing/cover-screen';
@@ -21,6 +22,9 @@ import {
     LandingTransitionsProvider,
     useLandingContext,
 } from '@/contexts/use-landing-context';
+
+// Hooks
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface AppLandingProps {
     children: ReactNode;
@@ -48,6 +52,9 @@ function AppLandingContent({ children }: AppLandingProps) {
         _navigateToPage,
     } = useLandingContext();
 
+    const isMobile = useIsMobile();
+
+
     return (
         <>
             <div
@@ -56,6 +63,30 @@ function AppLandingContent({ children }: AppLandingProps) {
                 )}
             >
                 {/* <BreakpointIndicator className="fixed bottom-5 left-6" /> */}
+
+                {!isMobile && (
+                    <div className={cn('pointer-events-none fixed inset-0 z-10')}>
+                        <Antigravity
+                            count={200}
+                            magnetRadius={50}
+                            ringRadius={8}
+                            waveSpeed={0.4}
+                            waveAmplitude={1.3}
+                            idleSize={0.2}
+                            activeSize={0.5}
+                            idleColorVar="--foreground"
+                            activeColorVar="--primary"
+                            lerpSpeed={0.4}
+                            autoAnimate={false}
+                            particleVariance={1}
+                            rotationSpeed={0.1}
+                            depthFactor={1.9}
+                            pulseSpeed={10}
+                            particleShape="capsule"
+                            fieldStrength={30}
+                        />
+                    </div>
+                )}
 
                 <Loader
                     showLoader={introLoaderWrapperActive}
