@@ -188,7 +188,7 @@ return [
         'view_live_demo' => 'Voir la démo en ligne',
         'discover_more_about_me' => 'En savoir plus sur moi',
         'toggle_appearance' => 'Basculer le mode d’apparence',
-        'toggle_mouse_pointer' => 'Afficher ou masquer le pointeur de la souris',
+        'toggle_mouse_pointer' => 'Activer/Désactiver les effets visuels du curseur',
         'switch_language' => 'Changer la langue vers :language',
         'scroll_to_top' => 'Remonter en haut de la page',
         'scroll_to_content' => 'Aller au contenu',
