@@ -1,6 +1,7 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useMemo, useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
+import { useCursorPreference } from '@/hooks/use-cursor-preference';
 
 const AntigravityInner = ({
   count = 300,
@@ -67,6 +68,9 @@ const AntigravityInner = ({
   const lastMousePos = useRef({ x: 0, y: 0 });
   const lastMouseMoveTime = useRef(0);
   const virtualMouse = useRef({ x: 0, y: 0 });
+  
+  // AJOUT: Pour savoir si c'est la première frame
+  const initialized = useRef(false);
 
   const particles = useMemo(() => {
     const temp = [];
@@ -131,9 +135,16 @@ const AntigravityInner = ({
       destY = Math.cos(time * 0.5 * 2) * (v.height / 4);
     }
 
-    const smoothFactor = 0.05;
-    virtualMouse.current.x += (destX - virtualMouse.current.x) * smoothFactor;
-    virtualMouse.current.y += (destY - virtualMouse.current.y) * smoothFactor;
+    // MODIFICATION ICI: Initialisation immédiate
+    if (!initialized.current) {
+        virtualMouse.current.x = destX;
+        virtualMouse.current.y = destY;
+        initialized.current = true;
+    } else {
+        const smoothFactor = 0.05;
+        virtualMouse.current.x += (destX - virtualMouse.current.x) * smoothFactor;
+        virtualMouse.current.y += (destY - virtualMouse.current.y) * smoothFactor;
+    }
 
     const targetX = virtualMouse.current.x;
     const targetY = virtualMouse.current.y;
@@ -209,6 +220,10 @@ const AntigravityInner = ({
 };
 
 const Antigravity = props => {
+  const { isEnabled } = useCursorPreference();
+
+  if (!isEnabled) return null;
+
   return (
     <Canvas 
       camera={{ position: [0, 0, 50], fov: 35 }}
