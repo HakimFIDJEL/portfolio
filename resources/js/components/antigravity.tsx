@@ -3,16 +3,60 @@ import { useMemo, useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { useCursorPreference } from '@/hooks/use-cursor-preference';
 
-let globalMouse = { x: 0, y: 0, hasMoved: false };
+// --- Types & Interfaces ---
+
+interface AntigravityProps {
+  count?: number;
+  magnetRadius?: number;
+  ringRadius?: number;
+  waveSpeed?: number;
+  waveAmplitude?: number;
+  idleSize?: number;
+  activeSize?: number;
+  idleColorVar?: string;
+  activeColorVar?: string;
+  lerpSpeed?: number;
+  autoAnimate?: boolean;
+  particleVariance?: number;
+  rotationSpeed?: number;
+  depthFactor?: number;
+  pulseSpeed?: number;
+  particleShape?: 'capsule' | 'sphere' | 'box' | 'tetrahedron';
+  fieldStrength?: number;
+}
+
+interface Particle {
+  t: number;
+  speed: number;
+  mx: number; // Original x
+  my: number; // Original y
+  mz: number; // Original z
+  cx: number; // Current x
+  cy: number; // Current y
+  cz: number; // Current z
+  ro: number; // Random offset
+}
+
+interface GlobalMouse {
+  x: number;
+  y: number;
+  hasMoved: boolean;
+}
+
+// --- Global Tracker ---
+
+const globalMouse: GlobalMouse = { x: 0, y: 0, hasMoved: false };
 
 if (typeof window !== 'undefined') {
-  const updateMouse = (e) => {
+  const updateMouse = (e: MouseEvent) => {
     globalMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     globalMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
     globalMouse.hasMoved = true;
   };
   window.addEventListener('mousemove', updateMouse, { passive: true });
 }
+
+// --- Component ---
 
 const AntigravityInner = ({
   count = 300,
@@ -32,9 +76,9 @@ const AntigravityInner = ({
   pulseSpeed = 3,
   particleShape = 'capsule',
   fieldStrength = 10
-}) => {
+}: AntigravityProps) => {
 
-  const resolveColor = (input) => {
+  const resolveColor = (input: string): string => {
     if (typeof document === 'undefined') return '#000000';
     const div = document.createElement('div');
     div.style.color = input.startsWith('--') ? `var(${input})` : input;
@@ -42,18 +86,20 @@ const AntigravityInner = ({
     const style = getComputedStyle(div).color;
     document.body.removeChild(div);
     
-    const ctx = document.createElement('canvas').getContext('2d');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return '#000000';
     ctx.fillStyle = style;
-    return ctx.fillStyle; 
+    return ctx.fillStyle as string; 
   };
 
-  const [color, setColor] = useState(() => resolveColor(idleColorVar));
-  const [particleSize, setParticleSize] = useState(idleSize);
-  const [isVisible, setIsVisible] = useState(false);
+  const [color, setColor] = useState<string>(() => resolveColor(idleColorVar));
+  const [particleSize, setParticleSize] = useState<number>(idleSize);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   useEffect(() => {
-    const handleInteract = (e) => {
-      const target = e.target;
+    const handleInteract = (e: Event) => {
+      const target = e.target as HTMLElement;
       const isInteractive = target.closest('a') || target.closest('button');
       setColor(resolveColor(isInteractive ? activeColorVar : idleColorVar));
       setParticleSize(isInteractive ? activeSize : idleSize);
@@ -72,14 +118,14 @@ const AntigravityInner = ({
     };
   }, [activeColorVar, idleColorVar, activeSize, idleSize]);
 
-  const meshRef = useRef(null);
+  const meshRef = useRef<THREE.InstancedMesh>(null);
   const { viewport } = useThree();
   const dummy = useMemo(() => new THREE.Object3D(), []);
-  const virtualMouse = useRef({ x: 0, y: 0 });
-  const initialized = useRef(false);
+  const virtualMouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const initialized = useRef<boolean>(false);
 
-  const particles = useMemo(() => {
-    const temp = new Array(count);
+  const particles = useMemo<Particle[]>(() => {
+    const temp: Particle[] = new Array(count);
     const w = viewport.width || 100;
     const h = viewport.height || 100;
 
@@ -188,7 +234,7 @@ const AntigravityInner = ({
   );
 };
 
-const Antigravity = props => {
+const Antigravity = (props: AntigravityProps) => {
   const { isEnabled } = useCursorPreference();
   if (!isEnabled) return null;
 
