@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const EVENT_NAME = 'cursor-preference-change';
 
@@ -22,7 +22,8 @@ export function useCursorPreference() {
         };
 
         window.addEventListener(EVENT_NAME, handlePreferenceChange);
-        return () => window.removeEventListener(EVENT_NAME, handlePreferenceChange);
+        return () =>
+            window.removeEventListener(EVENT_NAME, handlePreferenceChange);
     }, []);
 
     const toggleCursor = () => {

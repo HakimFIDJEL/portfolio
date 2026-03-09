@@ -410,7 +410,8 @@ function SandboxItem({
 
                     'flex items-start justify-end pt-4 pr-4 pb-8',
                     // 'bg-gradient-to-b from-primary via-primary/80 to-transparent',
-                    'bg-primary/80',
+                    // 'bg-primary',
+                    'backdrop-blur-xs',
 
                     'opacity-0',
                     'transition-all',
@@ -598,7 +599,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         'translate-y-[50%] opacity-0 delay-0 duration-1000',
 
                     // Responsive styles
-                    'sm:h-[80vh] sm:w-[90%] sm:max-w-5xl',
+                    'sm:h-[90vh] sm:max-h-[750px] sm:w-[90%] sm:max-w-6xl',
                     'h-full w-full',
                 )}
                 onClick={(e) => e.stopPropagation()}
@@ -875,6 +876,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                     attachments={item.attachments}
                                     show_navigation={false}
                                     show_pagination={true}
+                                    className="overflow-hidden"
                                 />
                             </div>
                         </FadeIn>

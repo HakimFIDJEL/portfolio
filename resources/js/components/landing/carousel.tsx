@@ -89,21 +89,21 @@ function CarouselContent({
 
     return (
         <>
-            <UI_CarouselContent>
+            <UI_CarouselContent className="h-full">
                 {attachments.map((item, index) => (
-                    <UI_CarouselItem key={index}>
+                    <UI_CarouselItem key={index} className="h-full">
                         <Card
                             className={cn(
                                 // Default styles
                                 'rounded-none border shadow-none',
 
-                                'p-0',
+                                'h-full p-0',
                             )}
                         >
                             <CardContent
                                 className={cn(
                                     // Default styles
-                                    'flex cursor-grab items-center justify-center rounded-none',
+                                    'flex h-full cursor-grab items-center justify-center rounded-none',
 
                                     // Responsive styles
                                     'p-0',
@@ -113,7 +113,7 @@ function CarouselContent({
                                     <img
                                         src={item.url}
                                         alt={item.file_name}
-                                        className="max-h-full max-w-full object-contain"
+                                        className="h-full w-full object-contain lg:max-h-[60vh]"
                                     />
                                 ) : (
                                     <span className="text-xl">
