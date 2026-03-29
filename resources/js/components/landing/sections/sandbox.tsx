@@ -792,7 +792,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                     )}
 
                     {/* Description */}
-                    {item?.description && (
+                    {item?.description && item?.description != '' && (
                         <FadeIn show={open} className="w-full" delay={250}>
                             <div
                                 className={cn(
@@ -883,7 +883,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                     )}
 
                     {/* Feedback */}
-                    {item?.feedback && (
+                    {item?.feedback && item?.feedback != '' && (
                         <FadeIn show={open} className="w-full">
                             <div
                                 className={cn(
@@ -938,7 +938,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                     )}
 
                     {/* What I Learned */}
-                    {item?.what_i_learned && (
+                    {item?.what_i_learned && item?.what_i_learned != '' && (
                         <FadeIn show={open} className="w-full">
                             <div
                                 className={cn(
