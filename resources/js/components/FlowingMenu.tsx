@@ -80,7 +80,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
     const itemRef = useRef<HTMLDivElement>(null);
     const marqueeRef = useRef<HTMLDivElement>(null);
     const marqueeInnerRef = useRef<HTMLDivElement>(null);
-    const animationRef = useRef<gsap.core.Tween | null>(null);
+    const animationInnerRef = useRef<gsap.core.Tween | null>(null);
+    const isMarqueeActive = useRef(false);
     const [repetitions, setRepetitions] = useState(4);
 
     const animationDefaults = { duration: 0.6, ease: 'expo' };
@@ -126,11 +127,11 @@ const MenuItem: React.FC<MenuItemProps> = ({
             const contentWidth = marqueeContent.offsetWidth;
             if (contentWidth === 0) return;
 
-            if (animationRef.current) {
-                animationRef.current.kill();
+            if (animationInnerRef.current) {
+                animationInnerRef.current.kill();
             }
 
-            animationRef.current = gsap.to(marqueeInnerRef.current, {
+            animationInnerRef.current = gsap.to(marqueeInnerRef.current, {
                 x: -contentWidth,
                 duration: speed,
                 ease: 'none',
@@ -141,29 +142,24 @@ const MenuItem: React.FC<MenuItemProps> = ({
         const timer = setTimeout(setupMarquee, 50);
         return () => {
             clearTimeout(timer);
-            if (animationRef.current) {
-                animationRef.current.kill();
+            if (animationInnerRef.current) {
+                animationInnerRef.current.kill();
             }
         };
     }, [text, image, repetitions, speed]);
 
-    const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
-        if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current)
+    const animateIn = (edge: 'top' | 'bottom') => {
+        if (
+            !marqueeRef.current ||
+            !marqueeInnerRef.current ||
+            isMarqueeActive.current
+        )
             return;
-        const rect = itemRef.current.getBoundingClientRect();
-        const edge = findClosestEdge(
-            ev.clientX - rect.left,
-            ev.clientY - rect.top,
-            rect.width,
-            rect.height,
-        );
+
+        isMarqueeActive.current = true;
 
         gsap.timeline({ defaults: animationDefaults })
-            .set(
-                marqueeRef.current,
-                { y: edge === 'top' ? '-101%' : '101%' },
-                0,
-            )
+            .set(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
             .set(
                 marqueeInnerRef.current,
                 { y: edge === 'top' ? '101%' : '-101%' },
@@ -172,16 +168,15 @@ const MenuItem: React.FC<MenuItemProps> = ({
             .to([marqueeRef.current, marqueeInnerRef.current], { y: '0%' }, 0);
     };
 
-    const handleMouseLeave = (ev: React.MouseEvent<HTMLAnchorElement>) => {
-        if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current)
+    const animateOut = (edge: 'top' | 'bottom') => {
+        if (
+            !marqueeRef.current ||
+            !marqueeInnerRef.current ||
+            !isMarqueeActive.current
+        )
             return;
-        const rect = itemRef.current.getBoundingClientRect();
-        const edge = findClosestEdge(
-            ev.clientX - rect.left,
-            ev.clientY - rect.top,
-            rect.width,
-            rect.height,
-        );
+
+        isMarqueeActive.current = false;
 
         gsap.timeline({ defaults: animationDefaults })
             .to(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
@@ -192,6 +187,38 @@ const MenuItem: React.FC<MenuItemProps> = ({
             );
     };
 
+    const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
+        if (!itemRef.current) return;
+        const rect = itemRef.current.getBoundingClientRect();
+        const edge = findClosestEdge(
+            ev.clientX - rect.left,
+            ev.clientY - rect.top,
+            rect.width,
+            rect.height,
+        );
+        animateIn(edge);
+    };
+
+    const handleMouseLeave = (ev: React.MouseEvent<HTMLAnchorElement>) => {
+        if (!itemRef.current) return;
+        const rect = itemRef.current.getBoundingClientRect();
+        const edge = findClosestEdge(
+            ev.clientX - rect.left,
+            ev.clientY - rect.top,
+            rect.width,
+            rect.height,
+        );
+        animateOut(edge);
+    };
+
+    const handleFocus = () => {
+        animateIn('top');
+    };
+
+    const handleBlur = () => {
+        animateOut('top');
+    };
+
     return (
         <div
             className={cn('relative flex-1 overflow-hidden text-center')}
@@ -200,12 +227,14 @@ const MenuItem: React.FC<MenuItemProps> = ({
         >
             <a
                 className={cn(
-                    'relative flex h-full cursor-pointer items-center justify-center text-[4vh] font-semibold uppercase no-underline',
+                    'relative flex h-full cursor-pointer items-center justify-center text-[4vh] font-semibold uppercase no-underline focus-visible:outline-none',
                     className,
                 )}
                 href={link}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
                 onClick={linkOnClick}
                 style={{ color: textColor }}
             >
