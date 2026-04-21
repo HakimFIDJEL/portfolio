@@ -275,11 +275,13 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                         speed={5}
                         bgColor="var(--card)"
                         borderColor="var(--border)"
+                        textColor="var(--foreground)"
                         marqueeBgColor="var(--primary)"
                         marqueeTextColor="var(--primary-foreground)"
                         itemClassName={cn(
                             'py-8 sm:py-10 md:py-12 lg:py-14',
                             'text-xl sm:text-5xl',
+                            'font-light',
                         )}
                     />
                 </Delimiter>
