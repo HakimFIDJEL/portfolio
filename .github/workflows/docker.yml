@@ -2,32 +2,37 @@ name: Docker Build and Push
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - develop
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - develop
+      - main
 
 jobs:
   docker-build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # Étape 1 : Configurer Docker Buildx
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    # Étape 2 : Login à Docker Hub
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image (Test)
+        run: docker build . --file Dockerfile --tag hakimfidjel/portfolio:${{ github.sha }}
 
-    # # Étape 3 : Construire l'image Docker
-    - name: Build Docker image
-      run: docker build . --file Dockerfile --tag hakimfidjel/portfolio:latest
+      - name: Log in to Docker Hub
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # # Étape 4 : Pousser l'image sur Docker Hub
-    - name: Push Docker image
-      run: docker push hakimfidjel/portfolio:latest
+      - name: Tag and Push Docker image (Production)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag hakimfidjel/portfolio:${{ github.sha }} hakimfidjel/portfolio:latest
+          docker push hakimfidjel/portfolio:latest
