@@ -27,6 +27,7 @@ RUN composer install \
     --prefer-dist \
     --no-interaction \
     --no-scripts \
+    --ignore-platform-req=php \
     --optimize-autoloader
 
 COPY . .
