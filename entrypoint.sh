@@ -12,9 +12,20 @@ if [ ! -f .env ]; then
     chmod 664 .env
 fi
 
-if ! grep -q "APP_KEY=base64" .env; then
+# Si APP_KEY est transmis vide par l'environnement conteneur, le retirer pour laisser le .env operer
+if [ -z "$APP_KEY" ]; then
+    unset APP_KEY
+fi
+
+# S'assurer que le .env possede une cle d'application valide
+if ! grep -q "^APP_KEY=base64:" .env; then
     echo "Generation de la cle d'application Laravel (APP_KEY)..."
     php artisan key:generate --force
+fi
+
+# Charger la cle depuis le .env si elle n'est pas encore definie dans l'environnement
+if [ -z "$APP_KEY" ]; then
+    export APP_KEY=$(grep '^APP_KEY=' .env | cut -d '=' -f 2-)
 fi
 
 # ==============================================================================
