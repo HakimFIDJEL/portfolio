@@ -10,8 +10,10 @@ services:
       - .:/var/www/html
       - ./storage:/var/www/html/storage
       - ./database:/var/www/html/database
-      # Éviter d'écraser vendor et public/build avec des dossiers locaux non compilés
+      # Éviter d'écraser vendor, public/build et bootstrap/cache avec l'hôte
       - /var/www/html/vendor
+      - /var/www/html/public/build
+      - /var/www/html/bootstrap/cache
     ports:
       - "8000:80"
       - "5173:5173"

@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Nettoyer les caches résiduels au boot pour éviter toute incohérence d'autoloading/packages
+rm -f bootstrap/cache/*.php
+
 # ==============================================================================
 # 1. GESTION DU FICHIER D'ENVIRONNEMENT ET DE LA CLE D'APPLICATION
 # ==============================================================================
@@ -59,10 +62,11 @@ elif [ "$DB_CONN" = "sqlite" ]; then
 fi
 
 # ==============================================================================
-# 3. MIGRATIONS ET SEEDING
+# 3. DÉCOUVERTE DES PACKAGES, MIGRATIONS ET SEEDING
 # ==============================================================================
 
-php artisan config:clear
+echo "Découverte des packages Laravel..."
+php artisan package:discover --ansi
 
 echo "Application des migrations..."
 php artisan migrate --force
@@ -83,10 +87,15 @@ if [ ! -L public/storage ] || [ ! -e public/storage ]; then
     php artisan storage:link || true
 fi
 
-echo "Mise en cache de la configuration, des routes et des vues..."
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+if [ "${APP_ENV:-production}" = "production" ]; then
+    echo "Mise en cache de la configuration, des routes et des vues (production)..."
+    php artisan config:cache
+    php artisan route:cache
+    php artisan view:cache
+else
+    echo "Environnement de développement (${APP_ENV:-local}) : optimisation des caches désactivée."
+    php artisan optimize:clear
+fi
 
 if php artisan list | grep -q "sitemap:generate"; then
     echo "Generation du sitemap..."

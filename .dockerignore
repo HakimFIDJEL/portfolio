@@ -14,6 +14,8 @@ storage/framework/views/*
 !storage/framework/cache/.gitignore
 !storage/framework/sessions/.gitignore
 !storage/framework/views/.gitignore
+bootstrap/cache/*.php
+!bootstrap/cache/.gitignore
 public/storage
 public/hot
 npm-debug.log
