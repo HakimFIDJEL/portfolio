@@ -1,0 +1,17 @@
+services:
+  app:
+    container_name: portfolio_app_dev
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: sqlite
+      RUN_SEEDERS: "true"
+    volumes:
+      - .:/var/www/html
+      - ./storage:/var/www/html/storage
+      - ./database:/var/www/html/database
+      # Éviter d'écraser vendor et public/build avec des dossiers locaux non compilés
+      - /var/www/html/vendor
+    ports:
+      - "8000:80"
+      - "5173:5173"
