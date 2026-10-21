@@ -197,15 +197,24 @@ class BackofficeSeeder extends Seeder
         $mockExperiences = [
             [
                 'sort_order'=>1,
+                'company'=>'TenderCrunch',
+                'job_fr'=>'Ingénieur Logiciel','job_en'=>'Software Engineer',
+                'status_fr'=>'CDI','status_en'=>'Full-time',
+                'duration'=>'09/26 - Present',
+                'description_fr'=>'Ingénierie logicielle et conception de systèmes agentiques, architectures d\'automatisation avancées et développement fullstack d\'applications à haute valeur ajoutée.',
+                'description_en'=>'Software engineering and agentic systems design, advanced automation architectures, and fullstack development of high-impact applications.',
+            ],
+            [
+                'sort_order'=>2,
                 'company'=>'Réservoir Digital',
                 'job_fr'=>'Ingénieur Fullstack','job_en'=>'Fullstack Engineer',
                 'status_fr'=>'Apprentissage','status_en'=>'Apprenticeship',
-                'duration'=>'09/23 - Present',
+                'duration'=>'09/23 - 08/26',
                 'description_fr'=>'Je supervise le développement de projets web, de l\'analyse à la production. Mon rôle inclut d\'assurer la conformité aux besoins métier, de rationaliser les flux de travail et de moderniser les processus internes.',
                 'description_en'=>'I oversee the development of web projects from analysis to production. My role includes ensuring compliance with business needs, streamlining workflows, and modernizing internal processes.',
             ],
             [
-                'sort_order'=>2,
+                'sort_order'=>3,
                 'company'=>'Réservoir Digital',
                 'job_fr'=>'Développeur Fullstack','job_en'=>'Fullstack Developer',
                 'status_fr'=>'Stage','status_en'=>'Internship',
@@ -214,7 +223,7 @@ class BackofficeSeeder extends Seeder
                 'description_en'=>'During my internship at Réservoir Digital, I improved my skills in new technologies while contributing to digital solution development. Collaborating within a team was a key part of this experience.',
             ],
             [
-                'sort_order'=>3,
+                'sort_order'=>4,
                 'company'=>'Hôpital Maritime de Zuydcoote',
                 'job_fr'=>'Développeur Web & Technicien Informatique','job_en'=>'Web Developer & IT Technician',
                 'status_fr'=>'Stage','status_en'=>'Internship',
@@ -240,9 +249,9 @@ class BackofficeSeeder extends Seeder
                 'institution'=>'IG2I de Centrale Lille Institut',
                 'type_fr'=>'École',
                 'type_en'=>'School',
-                'duration'=>'09/21 - Present',
-                'description_fr'=>'Actuellement en 4e année à l\'IG2I Centrale Lille, je poursuis un diplôme d\'ingénieur spécialisé en informatique et génie industriel. Le programme combine l\'excellence académique avec des applications concrètes via des projets pratiques et des formations professionnelles.',
-                'description_en'=>'Currently in my 4th year at IG2I Centrale Lille, I am pursuing an engineering degree specializing in industrial and computer science. The program combines academic excellence with real-world applications through hands-on projects and professional training.',
+                'duration'=>'09/21 - 08/26',
+                'description_fr'=>'Diplôme d\'ingénieur spécialisé en informatique et génie industriel. Le programme combine l\'excellence académique avec des applications concrètes via des projets pratiques, de l\'architecture logicielle et de la formation professionnelle.',
+                'description_en'=>'Engineering degree specializing in industrial and computer science. The program combines academic excellence with real-world applications through practical projects, software architecture, and professional training.',
             ],
             [
                 'sort_order'=>2,
@@ -305,5 +314,10 @@ class BackofficeSeeder extends Seeder
                 $contact
             );
         }
+
+        // ---------------------------
+        // Projects & Sandbox
+        // ---------------------------
+        $this->call(ProjectSeeder::class);
     }
 }
