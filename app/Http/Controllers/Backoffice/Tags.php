@@ -1,76 +1,110 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use Inertia\Inertia;
 use App\Models\Backoffice\Tag;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class Tags extends Controller
 {
-    public function index() {
+    /**
+     * Liste des étiquettes / tags.
+     */
+    public function index(): Response
+    {
         return Inertia::render('backoffice/tags/index', [
-            'tags' => Tag::orderBy('sort_order', 'asc')->get()
+            'tags' => Tag::orderBy('sort_order', 'asc')->get(),
         ]);
     }
 
-    public function create() {
+    /**
+     * Formulaire de création d'un tag.
+     */
+    public function create(): Response
+    {
         return Inertia::render('backoffice/tags/create');
     }
 
-    public function store(Request $request) {
+    /**
+     * Persister un nouveau tag.
+     */
+    public function store(Request $request): RedirectResponse
+    {
         $validated = $request->validate([
-            'name_fr' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
+            'name_fr' => ['required', 'string', 'max:255'],
+            'name_en' => ['required', 'string', 'max:255'],
         ]);
 
-        $validated['sort_order'] = Tag::max('sort_order') + 1;
+        $validated['sort_order'] = (int) (Tag::max('sort_order') ?? 0) + 1;
 
         Tag::create($validated);
 
         return redirect()->route('backoffice.tags.index')->with('success', 'Tag created successfully.');
     }
 
-    public function edit(Tag $tag) {
+    /**
+     * Formulaire d'édition d'un tag.
+     */
+    public function edit(Tag $tag): Response
+    {
         return Inertia::render('backoffice/tags/edit', [
-            'tag' => $tag
+            'tag' => $tag,
         ]);
     }
 
-    public function update(Request $request, Tag $tag) {
+    /**
+     * Mettre à jour un tag.
+     */
+    public function update(Request $request, Tag $tag): RedirectResponse
+    {
         $validated = $request->validate([
-            'name_fr' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
+            'name_fr' => ['required', 'string', 'max:255'],
+            'name_en' => ['required', 'string', 'max:255'],
         ]);
 
         $tag->update($validated);
+
         return redirect()->route('backoffice.tags.index')->with('success', 'Tag updated successfully.');
     }
 
-    public function sort(Request $request) {
+    /**
+     * Réordonner les tags.
+     */
+    public function sort(Request $request): RedirectResponse
+    {
         $validated = $request->validate([
-            'tags' => 'required|array',
-            'tags.*.id' => 'required|integer|exists:tags,id',
-            'tags.*.sort_order' => 'required|integer',
+            'tags' => ['required', 'array'],
+            'tags.*.id' => ['required', 'integer', 'exists:tags,id'],
+            'tags.*.sort_order' => ['required', 'integer'],
         ]);
 
-        // To avoid unique constraint issues, we set a high temporary sort_order first
-        foreach ($validated['tags'] as $index => $tag) {
-            Tag::where('id', $tag['id'])->update(['sort_order' => $index + 9000]);
-        }
+        DB::transaction(function () use ($validated): void {
+            foreach ($validated['tags'] as $index => $tag) {
+                Tag::where('id', $tag['id'])->update(['sort_order' => $index + 9000]);
+            }
 
-        // Now set the correct sort_order
-        foreach ($validated['tags'] as $index => $tag) {
-            Tag::where('id', $tag['id'])->update(['sort_order' => $index]);
-        }
+            foreach ($validated['tags'] as $index => $tag) {
+                Tag::where('id', $tag['id'])->update(['sort_order' => $index]);
+            }
+        });
 
         return redirect()->back()->with('success', 'Tags sorted successfully.');
     }
 
-    public function destroy(Tag $tag) {
+    /**
+     * Supprimer un tag.
+     */
+    public function destroy(Tag $tag): RedirectResponse
+    {
         $tag->delete();
+
         return redirect()->route('backoffice.tags.index')->with('success', 'Tag deleted successfully.');
     }
 }

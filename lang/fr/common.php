@@ -20,7 +20,6 @@ return [
     |
     */
 
-
     /*
     |--------------------------------------------------------------------------
     | Autres
@@ -72,6 +71,6 @@ return [
             'title' => 'Service indisponible',
             'message' => 'Le service est actuellement indisponible. Veuillez réessayer plus tard.',
         ],
-    ]
+    ],
 
 ];

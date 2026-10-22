@@ -1,33 +1,25 @@
 <?php
 
-// app/Http/Requests/Auth/SendResetLinkEmail.php
+declare(strict_types=1);
 
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Class SendResetLinkEmail
- *
- * Handles the validation for sending password reset link email requests.
- * 
- * @package App\Http\Requests\Auth
- */
 class SendResetLinkEmail extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Détermine si l'utilisateur est autorisé à exécuter cette requête.
      */
     public function authorize(): bool
     {
-        // Allow all users to make this request
         return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Règles de validation pour l'envoi du lien de réinitialisation.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, array<int, string>>
      */
     public function rules(): array
     {

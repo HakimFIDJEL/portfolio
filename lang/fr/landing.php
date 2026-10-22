@@ -14,11 +14,11 @@ return [
             'loading' => 'Chargement...',
             'intro' => "Salut, c'est Hakim",
         ],
-    
+
         'header' => [
             'contact' => 'Contact',
         ],
-    
+
         'navigation' => [
             'home' => 'Accueil',
             'about' => 'À propos',
@@ -59,7 +59,7 @@ return [
             'copyright' => 'Tous droits réservés.',
         ],
     ],
-    
+
     'landing' => [
 
         'meta_description' => "Portfolio de Hakim Fidjel. Découvrez mes projets, compétences et ambitions en tant qu'apprenti ingénieur FullStack dans le domaine de l'ingénierie informatique.",
@@ -68,17 +68,17 @@ return [
             'h2' => 'Ingénieur Fullstack',
             'circularText' => 'Bienvenue sur mon portfolio ~ ',
         ],
-    
+
         'about' => [
             'h2' => 'À propos de moi',
             'skip' => 'Passer',
-    
+
             'p_1' => "Salut, c'est Hakim",
-            'p_2' => "Je suis un ingénieur fullstack français",
-            'p_3' => "avec une forte expertise en développement, infrastructure et automatisation. Je construis et gère des projets évolutifs, assurant des déploiements fluides et des flux de travail efficaces.",
+            'p_2' => 'Je suis un ingénieur fullstack français',
+            'p_3' => 'avec une forte expertise en développement, infrastructure et automatisation. Je construis et gère des projets évolutifs, assurant des déploiements fluides et des flux de travail efficaces.',
             'p_4' => "Avec une approche pratique, je m'occupe de tout, de la logique backend à l'administration serveur, en accordant toujours une attention particulière au design et à l'utilisabilité. Je m'efforce de créer des solutions à la fois",
-            'p_5' => "fonctionnelles et visuellement raffinées.",  
-            
+            'p_5' => 'fonctionnelles et visuellement raffinées.',
+
             'tabs' => [
                 'about' => [
                     'title' => 'À propos de moi',
@@ -87,7 +87,7 @@ return [
                     'quote_2' => "“Ce n'est jamais un bug, c'est une fonctionnalité.”",
                     'quote_3' => "“Mon parcours équilibre expertise dans les outils que je connais et enthousiasme pour ceux que je n'ai pas encore explorés.”",
                     'quote_4' => "“Si ce n'est pas cassé, ne le réparez pas.”",
-                    'button' => "Télécharger mon CV",
+                    'button' => 'Télécharger mon CV',
                 ],
                 'experience' => [
                     'title' => 'Expérience professionnelle',
@@ -95,7 +95,7 @@ return [
                 ],
                 'education' => [
                     'title' => 'Éducation & Diplômes',
-                    'description' => "Ces expériences ont façonné mon esprit technique et analytique, me préparant aux défis futurs dans le monde de la technologie.",
+                    'description' => 'Ces expériences ont façonné mon esprit technique et analytique, me préparant aux défis futurs dans le monde de la technologie.',
                 ],
                 'tech_stack' => [
                     'title' => 'Stack Technologique',
@@ -105,15 +105,15 @@ return [
                 ],
             ],
         ],
-    
+
         'projects' => [
             'h2' => 'Mes Projets',
-            'p_1' => "Jetez un œil à mes projets.",
+            'p_1' => 'Jetez un œil à mes projets.',
             'p_2' => "J'ai actuellement travaillé sur",
-            'p_3' => "projets impactants.",
+            'p_3' => 'projets impactants.',
             'skip' => 'Passer',
         ],
-    
+
         'sandbox' => [
             'h2' => 'Le Bac à Sable',
             'p_1' => 'Mes travaux moins impactants mais tout de même instructifs, j’ai actuellement travaillé sur',
@@ -123,7 +123,7 @@ return [
 
         'contact' => [
             'h2' => 'Contact',
-            'p_1' => "Faisons connaissance, non ?",
+            'p_1' => 'Faisons connaissance, non ?',
             'p_2' => "Contactez-moi pour parler de projets, d'offres d'emploi, ou même d'une bonne partie de jeu. Je réponds rapidement !",
             'top' => 'Retour en haut',
         ],

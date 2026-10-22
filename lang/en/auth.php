@@ -58,7 +58,7 @@ return [
     */
 
     'layout' => [
-        'description' => 'A brief description of the application.'
+        'description' => 'A brief description of the application.',
     ],
 
     'pages' => [

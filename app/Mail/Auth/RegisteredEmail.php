@@ -1,46 +1,38 @@
 <?php
 
-// app\Mail\RegisteredEmail 
+declare(strict_types=1);
 
 namespace App\Mail\Auth;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Mail\Mailables\Address;
-
-// Models
-use App\Models\User;
 
 class RegisteredEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user;
+    public function __construct(
+        protected User $user
+    ) {}
 
     /**
-     * Create a new message instance.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
-     * Get the message envelope.
+     * Définir l'enveloppe du message (sujet et destinataire).
      */
     public function envelope(): Envelope
     {
         return new Envelope(
             subject: __('notifications.mail.registered.subject', ['app' => config('app.name')]),
-            to: [new Address($this->user->email, $this->user->name ?? null)],
+            to: [new Address($this->user->email, $this->user->name)],
         );
     }
 
     /**
-     * Get the message content definition.
+     * Définir le contenu markdown de l'email.
      */
     public function content(): Content
     {
@@ -54,7 +46,7 @@ class RegisteredEmail extends Mailable
     }
 
     /**
-     * Get the attachments for the message.
+     * Pièces jointes de l'email.
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */

@@ -1,115 +1,151 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use Inertia\Inertia;
-
-// Models
 use App\Models\Backoffice\Stack;
 use App\Models\Backoffice\StackItem;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class Stacks extends Controller
 {
-    public function index() {
+    /**
+     * Liste des catégories de stacks techniques.
+     */
+    public function index(): Response
+    {
         return Inertia::render('backoffice/stacks/index', [
             'stacks' => Stack::orderBy('sort_order', 'asc')->with('items')->get(),
         ]);
     }
 
-    public function create() {
+    /**
+     * Formulaire de création d'une stack.
+     */
+    public function create(): Response
+    {
         return Inertia::render('backoffice/stacks/create');
     }
 
-    public function store(Request $request) {
+    /**
+     * Persister une nouvelle stack et ses technologies.
+     */
+    public function store(Request $request): RedirectResponse
+    {
         $validated = $request->validate([
-            'name_fr' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-
-            'items' => 'sometimes|array',
-            'items.*.name' => 'required_with:items|string|max:255',
-            'items.*.sort_order' => 'required_with:items|integer',
+            'name_fr' => ['required', 'string', 'max:255'],
+            'name_en' => ['required', 'string', 'max:255'],
+            'items' => ['sometimes', 'array'],
+            'items.*.name' => ['required_with:items', 'string', 'max:255'],
+            'items.*.sort_order' => ['required_with:items', 'integer'],
         ]);
 
-        $validated['sort_order'] = Stack::max('sort_order') + 1;
+        DB::transaction(function () use ($validated): void {
+            $validated['sort_order'] = (int) (Stack::max('sort_order') ?? 0) + 1;
 
-        $stack = Stack::create($validated);
+            /** @var Stack $stack */
+            $stack = Stack::create($validated);
 
-        foreach ($validated['items'] ?? [] as $itemData) {
-            $itemData['stack_id'] = $stack->id;
-            StackItem::create($itemData);
-        }
+            foreach ($validated['items'] ?? [] as $itemData) {
+                $itemData['stack_id'] = $stack->id;
+                StackItem::create($itemData);
+            }
+        });
 
         return redirect()->route('backoffice.stacks.index')->with('success', 'Stack created successfully.');
     }
 
-    public function edit(Stack $stack) {
+    /**
+     * Formulaire d'édition d'une stack.
+     */
+    public function edit(Stack $stack): Response
+    {
         return Inertia::render('backoffice/stacks/edit', [
             'stack' => $stack->load('items'),
         ]);
     }
 
-    public function update(Request $request, Stack $stack) {
+    /**
+     * Mettre à jour une stack et synchroniser ses technologies.
+     */
+    public function update(Request $request, Stack $stack): RedirectResponse
+    {
         $validated = $request->validate([
-            'name_fr' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-
-            'items' => 'sometimes|array',
-            'items.*.name' => 'required_with:items|string|max:255',
-            'items.*.sort_order' => 'required_with:items|integer',
+            'name_fr' => ['required', 'string', 'max:255'],
+            'name_en' => ['required', 'string', 'max:255'],
+            'items' => ['sometimes', 'array'],
+            'items.*.id' => ['sometimes', 'integer', 'exists:stack_items,id'],
+            'items.*.name' => ['required_with:items', 'string', 'max:255'],
+            'items.*.sort_order' => ['required_with:items', 'integer'],
         ]);
 
-        $stack->update($validated);
+        DB::transaction(function () use ($validated, $stack): void {
+            $stack->update($validated);
 
-        // Sync items
-        $existingItemIds = $stack->items()->pluck('id')->toArray();
-        $submittedItemIds = [];
+            $existingItemIds = $stack->items()->pluck('id')->all();
+            $submittedItemIds = [];
 
-        foreach ($validated['items'] ?? [] as $itemData) {
-            if (isset($itemData['id']) && in_array($itemData['id'], $existingItemIds)) {
-                // Update existing item
-                $item = StackItem::find($itemData['id']);
-                $item->update($itemData);
-                $submittedItemIds[] = $itemData['id'];
-            } else {
-                // Create new item
-                $itemData['stack_id'] = $stack->id;
-                $newItem = StackItem::create($itemData);
-                $submittedItemIds[] = $newItem->id;
+            foreach ($validated['items'] ?? [] as $itemData) {
+                if (isset($itemData['id']) && in_array($itemData['id'], $existingItemIds, true)) {
+                    $item = StackItem::find($itemData['id']);
+                    $item?->update($itemData);
+                    $submittedItemIds[] = (int) $itemData['id'];
+                } else {
+                    $itemData['stack_id'] = $stack->id;
+                    $newItem = StackItem::create($itemData);
+                    $submittedItemIds[] = (int) $newItem->id;
+                }
             }
-        }
 
-        // Delete removed items
-        $itemsToDelete = array_diff($existingItemIds, $submittedItemIds);
-        StackItem::destroy($itemsToDelete);
+            $itemsToDelete = array_diff($existingItemIds, $submittedItemIds);
+            if (! empty($itemsToDelete)) {
+                StackItem::destroy($itemsToDelete);
+            }
+        });
 
         return redirect()->route('backoffice.stacks.index')->with('success', 'Stack updated successfully.');
     }
 
-    public function sort(Request $request) {
+    /**
+     * Réordonner les stacks techniques.
+     */
+    public function sort(Request $request): RedirectResponse
+    {
         $validated = $request->validate([
-            'stacks' => 'required|array',
-            'stacks.*.id' => 'required|integer|exists:stacks,id',
-            'stacks.*.sort_order' => 'required|integer',
+            'stacks' => ['required', 'array'],
+            'stacks.*.id' => ['required', 'integer', 'exists:stacks,id'],
+            'stacks.*.sort_order' => ['required', 'integer'],
         ]);
 
-        // To avoid unique constraint issues, we set a high temporary sort_order first
-        foreach ($validated['stacks'] as $index => $stack) {
-            Stack::where('id', $stack['id'])->update(['sort_order' => $index + 9000]);
-        }
+        DB::transaction(function () use ($validated): void {
+            foreach ($validated['stacks'] as $index => $stack) {
+                Stack::where('id', $stack['id'])->update(['sort_order' => $index + 9000]);
+            }
 
-        // Now set the correct sort_order
-        foreach ($validated['stacks'] as $index => $stack) {
-            Stack::where('id', $stack['id'])->update(['sort_order' => $index]);
-        }
+            foreach ($validated['stacks'] as $index => $stack) {
+                Stack::where('id', $stack['id'])->update(['sort_order' => $index]);
+            }
+        });
 
         return redirect()->back()->with('success', 'Stacks sorted successfully.');
     }
 
-    public function destroy(Stack $stack) {
-        $stack->delete();
+    /**
+     * Supprimer une stack et ses technologies en cascade.
+     */
+    public function destroy(Stack $stack): RedirectResponse
+    {
+        DB::transaction(function () use ($stack): void {
+            $stack->items()->delete();
+            $stack->delete();
+        });
+
         return redirect()->route('backoffice.stacks.index')->with('success', 'Stack deleted successfully.');
     }
 }

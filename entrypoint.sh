@@ -62,8 +62,13 @@ elif [ "$DB_CONN" = "sqlite" ]; then
 fi
 
 # ==============================================================================
-# 3. DÉCOUVERTE DES PACKAGES, MIGRATIONS ET SEEDING
+# 3. DÉCOUVERTE DES PACKAGES, DÉPENDANCES DEV, MIGRATIONS ET SEEDING
 # ==============================================================================
+
+if [ "${APP_ENV:-production}" = "local" ] && [ ! -f "vendor/bin/pest" ]; then
+    echo "Environnement local : installation des dépendances de dev via Composer..."
+    composer install --prefer-dist --no-interaction
+fi
 
 echo "Découverte des packages Laravel..."
 php artisan package:discover --ansi

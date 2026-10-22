@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Illuminate\Auth\Middleware\Authenticate;
-use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Enregistrer les services de l'application.
      */
     public function register(): void
     {
@@ -21,18 +22,23 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Amorcer les services de l'application.
      */
     public function boot(): void
     {
         Schema::defaultStringLength(191);
 
-        // Customizing the authentication redirect behavior
-        Authenticate::redirectUsing(function ($request) {
-            return redirect()->route('auth.login')->with(['error' => ['title' => __('common.flash.error'), 'description' => __('auth.flash.middleware.auth_required')]])->getTargetUrl();
+        // Personnalisation de la redirection d'authentification
+        Authenticate::redirectUsing(function (Request $request): string {
+            return redirect()->route('auth.login')->with([
+                'error' => [
+                    'title' => __('common.flash.error'),
+                    'description' => __('auth.flash.middleware.auth_required'),
+                ],
+            ])->getTargetUrl();
         });
 
-        // Force HTTPS in production
+        // Forcer HTTPS en environnement de production
         if (App::environment('production')) {
             URL::forceScheme('https');
         }

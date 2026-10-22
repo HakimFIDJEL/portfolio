@@ -1,25 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Backoffice;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasLocalizedFields;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tool extends Model
 {
     use HasLocalizedFields;
 
-    protected $fillable = ['sort_order', 'name_fr', 'name_en'];
+    /**
+     * Les attributs assignables en masse.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'sort_order',
+        'name_fr',
+        'name_en',
+    ];
+
+    /**
+     * Attributs calculés inclus dans la sérialisation.
+     *
+     * @var list<string>
+     */
     protected $appends = ['name'];
 
-    public function items()
+    /**
+     * Outils individuels rattachés à cette catégorie.
+     */
+    public function items(): HasMany
     {
         return $this->hasMany(ToolItem::class);
     }
 
-    // Accessor for localized 'name' field
-    public function getNameAttribute() {
+    public function getNameAttribute(): ?string
+    {
         return $this->getLocalizedField('name');
     }
-
 }

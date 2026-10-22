@@ -1,35 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
+use App\Models\Backoffice\Project;
 use Illuminate\Console\Command;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
-use Illuminate\Support\Facades\App;
-
-// Models
-use App\Models\Backoffice\Project;
 
 class GenerateSitemap extends Command
 {
     /**
-     * The name and signature of the console command.
+     * Signature de la commande console.
      *
      * @var string
      */
     protected $signature = 'sitemap:generate';
 
     /**
-     * The console command description.
+     * Description de la commande console.
      *
      * @var string
      */
     protected $description = 'Generate the website sitemap';
 
     /**
-     * Execute the console command.
+     * Exécuter la génération du sitemap.
      */
-    public function handle()
+    public function handle(): int
     {
         $this->info('Starting sitemap generation...');
 
@@ -56,7 +55,7 @@ class GenerateSitemap extends Command
             $slugEn = $project->slug_en;
             $routeFr = $slugFr ? route('project', ['slug' => $slugFr], absolute: true) : null;
             $routeEn = $slugEn ? route('project', ['slug' => $slugEn], absolute: true) : null;
-            
+
             $lastModified = $project->updated_at ?? now();
 
             if ($routeFr) {
@@ -65,7 +64,7 @@ class GenerateSitemap extends Command
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
                     ->setPriority(0.8);
 
-                if($routeEn) {
+                if ($routeEn) {
                     $frTag->addAlternate($routeEn, 'en');
                 }
 
@@ -78,7 +77,7 @@ class GenerateSitemap extends Command
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
                     ->setPriority(0.8);
 
-                if($routeFr) {
+                if ($routeFr) {
                     $enTag->addAlternate($routeFr, 'fr');
                 }
                 $sitemap->add($enTag);
@@ -87,7 +86,7 @@ class GenerateSitemap extends Command
 
         $sitemap->writeToFile(public_path('sitemap.xml'));
 
-        $this->info('Sitemap generated successfully at: ' . public_path('sitemap.xml'));
+        $this->info('Sitemap generated successfully at: '.public_path('sitemap.xml'));
 
         return Command::SUCCESS;
     }

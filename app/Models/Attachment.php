@@ -1,25 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
 
-/**
- * Attachment Model
- *
- * Represents a file attachment in the system.
- * @property string $title
- * @property string $description
- * @property string $file_name
- * @property string $file_path
- * @property string $mime_type
- * @property string $file_extension
- * @property int $file_size
- */
 class Attachment extends Model
 {
+    /**
+     * Les attributs assignables en masse.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
         'title',
         'description',
@@ -30,21 +25,26 @@ class Attachment extends Model
         'file_size',
     ];
 
+    /**
+     * Attributs calculés inclus dans la sérialisation.
+     *
+     * @var list<string>
+     */
     protected $appends = ['url'];
 
     /**
-     * A file can be the avatar of a user.
+     * Relation vers l'utilisateur dont c'est l'avatar.
      */
     public function user(): HasOne
     {
-        return $this->hasOne(User::class, 'attachment_avatar');
+        return $this->hasOne(User::class, 'avatar_id');
     }
 
+    /**
+     * Accesseur calculant l'URL publique de la pièce jointe.
+     */
     public function getUrlAttribute(): string
     {
-        /** @var Filesystem $publicDisk */
-        $publicDisk = Storage::disk('public');
-        
-        return $publicDisk->url($this->file_path);
+        return Storage::disk('public')->url($this->file_path);
     }
 }

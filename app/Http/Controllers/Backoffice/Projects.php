@@ -1,36 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
-use App\Models\Attachment;
-use Illuminate\Http\Request;
-
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use Inertia\Inertia;
-
-// Models
-use App\Models\Backoffice\Project;
-use App\Models\Backoffice\StackItem;
-use App\Models\Backoffice\Stack;
-use App\Models\Backoffice\Tag;
-
-// Requests
 use App\Http\Requests\Projects\Store as RequestStore;
 use App\Http\Requests\Projects\Update as RequestUpdate;
+use App\Models\Backoffice\Project;
+use App\Models\Backoffice\Stack;
+use App\Models\Backoffice\Tag;
+use App\Services\ProjectService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
+use Throwable;
 
 class Projects extends Controller
 {
-    public function index() {
+    public function __construct(
+        private readonly ProjectService $projectService
+    ) {}
+
+    /**
+     * Liste des projets ordonnés.
+     */
+    public function index(): Response
+    {
         return Inertia::render('backoffice/projects/index', [
             'projects' => Project::orderBy('sort_order', 'asc')->with(['tags'])->get(),
         ]);
     }
 
-    public function create() {
-
+    /**
+     * Formulaire de création d'un projet.
+     */
+    public function create(): Response
+    {
         $tags = Tag::orderBy('sort_order', 'asc')->get();
         $stacks = Stack::orderBy('sort_order', 'asc')->with('items')->get();
 
@@ -40,50 +47,30 @@ class Projects extends Controller
         ]);
     }
 
-    public function store(RequestStore $request) {
+    /**
+     * Persister un nouveau projet.
+     *
+     * @throws Throwable
+     */
+    public function store(RequestStore $request): RedirectResponse
+    {
         $validated = $request->validated();
 
-        $validated['sort_order'] = Project::max('sort_order') + 1;
-
-        // Create the project
-        $project = Project::create($validated);
-
-        // Attach tags if provided
-        if (isset($validated['tags'])) {
-            $project->tags()->attach(array_column($validated['tags'], 'id'));
-        }
-
-        // Attach stack items if provided
-        if (isset($validated['stackItems'])) {
-            $project->stackItems()->attach(array_column($validated['stackItems'], 'id'));
-        }
-
-        // Attachments
-        if( isset($validated['attachments']) ) {
-            foreach($validated['attachments'] as $attachmentData) {
-
-                $file = $attachmentData['file'];
-                $filePath = $file->store('attachments', 'public');
-
-                $attachment = Attachment::create([
-                    'title' => $attachmentData['title'] ?? null,
-                    'description' => null,
-                    'file_name' => $file->getClientOriginalName(),
-                    'file_path' => $filePath,
-                    'mime_type' => $file->getClientMimeType(),
-                    'file_extension' => $file->getClientOriginalExtension(),
-                    'file_size' => $file->getSize(),
-                ]);
-
-                $project->attachments()->attach($attachment->id);
-            }
-        }
+        $this->projectService->create(
+            attributes: $validated,
+            tags: $validated['tags'] ?? null,
+            stackItems: $validated['stackItems'] ?? null,
+            attachments: $validated['attachments'] ?? null
+        );
 
         return redirect()->route('backoffice.projects.index')->with('success', 'Project created successfully.');
     }
 
-    public function edit(Project $project) {
-
+    /**
+     * Formulaire d'édition d'un projet.
+     */
+    public function edit(Project $project): Response
+    {
         $tags = Tag::orderBy('sort_order', 'asc')->get();
         $stacks = Stack::orderBy('sort_order', 'asc')->with('items')->get();
 
@@ -94,121 +81,53 @@ class Projects extends Controller
         ]);
     }
 
-    public function update(RequestUpdate $request, Project $project) {
-        
+    /**
+     * Mettre à jour un projet existant.
+     *
+     * @throws Throwable
+     */
+    public function update(RequestUpdate $request, Project $project): RedirectResponse
+    {
         $validated = $request->validated();
 
-        // Update the project
-        $project->update($validated);
-
-        // Sync tags
-        if (isset($validated['tags'])) {
-            $project->tags()->sync(array_column($validated['tags'], 'id'));
-        } else {
-            $project->tags()->detach();
-        }
-
-        // Sync stack items
-        if (isset($validated['stackItems'])) {
-            $project->stackItems()->sync(array_column($validated['stackItems'], 'id'));
-        } else {
-            $project->stackItems()->detach();
-        }
-
-        // Attachments
-        if( isset($validated['attachments']) ) {
-            $existingAttachmentsInRequest = [];
-            $existingAttachmentsInModel = $project->attachments()->get();
-
-            $index = 0;
-
-            foreach($validated['attachments'] as $attachment) {
-                if( !isset($attachment['file']) ) {
-                    continue;
-                }
-
-                // New File
-                if( $attachment['file'] instanceof UploadedFile ) {
-
-                    // dd( 'new file', $attachment );
-
-                    // validation for file
-                    $validation = Validator::make(
-                        ['file' => $attachment['file']],
-                        ['file' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:5120']]
-                    );
-
-                    if ($validation->fails()) {
-                        continue; // Skip invalid files
-                    }
-
-                    $file = $attachment['file'];
-                    $filePath = $file->store('attachments', 'public');
-
-                    $newAttachment = Attachment::create([
-                        'title' => $attachment['title'] ?? null,
-                        'description' => null,
-                        'file_name' => $file->getClientOriginalName(),
-                        'file_path' => $filePath,
-                        'mime_type' => $file->getClientMimeType(),
-                        'file_extension' => $file->getClientOriginalExtension(),
-                        'file_size' => $file->getSize(),
-                    ]);
-
-                    $project->attachments()->attach($newAttachment->id);
-                } 
-                // Existing File
-                else {
-                    $existingAttachmentsInRequest[] = $attachment['id'];
-
-                    // Update title & sort order (based on index) if changed
-                    $project->attachments()->updateExistingPivot($attachment['id'], [
-                        'sort_order' => $index,
-                    ]);
-
-                    Attachment::where('id', $attachment['id'])->update([
-                        'title' => $attachment['title'] ?? null,
-                    ]);
-                }
-
-                $index++;
-            }
-
-            // Detach removed attachments
-            foreach($existingAttachmentsInModel as $attachment) {
-                if( !in_array($attachment->id, $existingAttachmentsInRequest) ) {
-                    Storage::delete($attachment->file_path);
-                    $project->attachments()->detach($attachment->id);
-                    $attachment->delete();
-                }
-            }
-        }
+        $this->projectService->update(
+            project: $project,
+            attributes: $validated,
+            tags: $validated['tags'] ?? null,
+            stackItems: $validated['stackItems'] ?? null,
+            attachments: $validated['attachments'] ?? null
+        );
 
         return redirect()->route('backoffice.projects.index')->with('success', 'Project updated successfully.');
     }
 
-    public function sort(Request $request) {
+    /**
+     * Réordonner les projets de la liste.
+     *
+     * @throws Throwable
+     */
+    public function sort(Request $request): RedirectResponse
+    {
         $validated = $request->validate([
-            'projects' => 'required|array',
-            'projects.*.id' => 'required|integer|exists:projects,id',
-            'projects.*.sort_order' => 'required|integer',
+            'projects' => ['required', 'array'],
+            'projects.*.id' => ['required', 'integer', 'exists:projects,id'],
+            'projects.*.sort_order' => ['required', 'integer'],
         ]);
 
-        // To avoid unique constraint issues, we set a high temporary sort_order first
-        foreach ($validated['projects'] as $index => $project) {
-            Project::where('id', $project['id'])->update(['sort_order' => $index + 9000]);
-        }
-
-        // Now set the correct sort_order
-        foreach ($validated['projects'] as $index => $project) {
-            Project::where('id', $project['id'])->update(['sort_order' => $index]);
-        }
+        $this->projectService->sort($validated['projects']);
 
         return redirect()->back()->with('success', 'Projects sorted successfully.');
     }
 
-    public function destroy(Project $project) {
-        $project->delete();
+    /**
+     * Supprimer un projet et ses médias associés.
+     *
+     * @throws Throwable
+     */
+    public function destroy(Project $project): RedirectResponse
+    {
+        $this->projectService->delete($project);
+
         return redirect()->route('backoffice.projects.index')->with('success', 'Project deleted successfully.');
     }
 }

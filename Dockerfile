@@ -47,6 +47,8 @@ RUN a2enmod rewrite
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
+    git \
+    unzip \
     libicu-dev \
     libmariadb-dev \
     libpng-dev \
@@ -81,6 +83,9 @@ COPY . .
 
 # Copie des dépendances PHP compilées
 COPY --from=composer-builder /app/vendor ./vendor
+
+# Copie du binaire Composer pour l'outillage et les commandes en conteneur
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 # Copie des artefacts frontend compilés (assets publics et bundle SSR)
 COPY --from=frontend-builder /app/public/build ./public/build
