@@ -27,8 +27,14 @@ test('une page projet est accessible avec son slug et rend le composant project'
 });
 
 test('un slug dans une autre langue redirige vers le slug de la langue active', function () {
-    $project = Project::where('type', 'project')->first();
-    expect($project)->not->toBeNull();
+    $project = Project::create([
+        'type' => 'project',
+        'sort_order' => 999,
+        'slug_fr' => 'projet-test-fr',
+        'slug_en' => 'project-test-en',
+        'title_fr' => 'Titre FR',
+        'title_en' => 'Title EN',
+    ]);
 
     // Session en français, mais requête avec le slug anglais
     $response = $this->withSession(['locale' => 'fr'])->get(route('project', ['slug' => $project->slug_en]));

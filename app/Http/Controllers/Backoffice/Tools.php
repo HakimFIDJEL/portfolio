@@ -1,115 +1,151 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use Inertia\Inertia;
-
-// Models
 use App\Models\Backoffice\Tool;
 use App\Models\Backoffice\ToolItem;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class Tools extends Controller
 {
-    public function index() {
+    /**
+     * Liste des catégories d'outils.
+     */
+    public function index(): Response
+    {
         return Inertia::render('backoffice/tools/index', [
             'tools' => Tool::orderBy('sort_order', 'asc')->with('items')->get(),
         ]);
     }
 
-    public function create() {
+    /**
+     * Formulaire d'ajout d'une catégorie d'outils.
+     */
+    public function create(): Response
+    {
         return Inertia::render('backoffice/tools/create');
     }
 
-    public function store(Request $request) {
+    /**
+     * Persister une nouvelle catégorie d'outils et ses items.
+     */
+    public function store(Request $request): RedirectResponse
+    {
         $validated = $request->validate([
-            'name_fr' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-
-            'items' => 'sometimes|array',
-            'items.*.name' => 'required_with:items|string|max:255',
-            'items.*.sort_order' => 'required_with:items|integer',
+            'name_fr' => ['required', 'string', 'max:255'],
+            'name_en' => ['required', 'string', 'max:255'],
+            'items' => ['sometimes', 'array'],
+            'items.*.name' => ['required_with:items', 'string', 'max:255'],
+            'items.*.sort_order' => ['required_with:items', 'integer'],
         ]);
 
-        $validated['sort_order'] = Tool::max('sort_order') + 1;
+        DB::transaction(function () use ($validated): void {
+            $validated['sort_order'] = (int) (Tool::max('sort_order') ?? 0) + 1;
 
-        $tool = Tool::create($validated);
+            /** @var Tool $tool */
+            $tool = Tool::create($validated);
 
-        foreach ($validated['items'] ?? [] as $itemData) {
-            $itemData['tool_id'] = $tool->id;
-            ToolItem::create($itemData);
-        }
+            foreach ($validated['items'] ?? [] as $itemData) {
+                $itemData['tool_id'] = $tool->id;
+                ToolItem::create($itemData);
+            }
+        });
 
         return redirect()->route('backoffice.tools.index')->with('success', 'Tool created successfully.');
     }
 
-    public function edit(Tool $tool) {
+    /**
+     * Formulaire d'édition d'une catégorie d'outils.
+     */
+    public function edit(Tool $tool): Response
+    {
         return Inertia::render('backoffice/tools/edit', [
             'tool' => $tool->load('items'),
         ]);
     }
 
-    public function update(Request $request, Tool $tool) {
+    /**
+     * Mettre à jour une catégorie d'outils et synchroniser ses items.
+     */
+    public function update(Request $request, Tool $tool): RedirectResponse
+    {
         $validated = $request->validate([
-            'name_fr' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-
-            'items' => 'sometimes|array',
-            'items.*.name' => 'required_with:items|string|max:255',
-            'items.*.sort_order' => 'required_with:items|integer',
+            'name_fr' => ['required', 'string', 'max:255'],
+            'name_en' => ['required', 'string', 'max:255'],
+            'items' => ['sometimes', 'array'],
+            'items.*.id' => ['sometimes', 'integer', 'exists:tool_items,id'],
+            'items.*.name' => ['required_with:items', 'string', 'max:255'],
+            'items.*.sort_order' => ['required_with:items', 'integer'],
         ]);
 
-        $tool->update($validated);
+        DB::transaction(function () use ($validated, $tool): void {
+            $tool->update($validated);
 
-        // Sync items
-        $existingItemIds = $tool->items()->pluck('id')->toArray();
-        $submittedItemIds = [];
+            $existingItemIds = $tool->items()->pluck('id')->all();
+            $submittedItemIds = [];
 
-        foreach ($validated['items'] ?? [] as $itemData) {
-            if (isset($itemData['id']) && in_array($itemData['id'], $existingItemIds)) {
-                // Update existing item
-                $item = ToolItem::find($itemData['id']);
-                $item->update($itemData);
-                $submittedItemIds[] = $itemData['id'];
-            } else {
-                // Create new item
-                $itemData['tool_id'] = $tool->id;
-                $newItem = ToolItem::create($itemData);
-                $submittedItemIds[] = $newItem->id;
+            foreach ($validated['items'] ?? [] as $itemData) {
+                if (isset($itemData['id']) && in_array($itemData['id'], $existingItemIds, true)) {
+                    $item = ToolItem::find($itemData['id']);
+                    $item?->update($itemData);
+                    $submittedItemIds[] = (int) $itemData['id'];
+                } else {
+                    $itemData['tool_id'] = $tool->id;
+                    $newItem = ToolItem::create($itemData);
+                    $submittedItemIds[] = (int) $newItem->id;
+                }
             }
-        }
 
-        // Delete removed items
-        $itemsToDelete = array_diff($existingItemIds, $submittedItemIds);
-        ToolItem::destroy($itemsToDelete);
+            $itemsToDelete = array_diff($existingItemIds, $submittedItemIds);
+            if (! empty($itemsToDelete)) {
+                ToolItem::destroy($itemsToDelete);
+            }
+        });
 
         return redirect()->route('backoffice.tools.index')->with('success', 'Tool updated successfully.');
     }
 
-    public function sort(Request $request) {
+    /**
+     * Réordonner les catégories d'outils.
+     */
+    public function sort(Request $request): RedirectResponse
+    {
         $validated = $request->validate([
-            'tools' => 'required|array',
-            'tools.*.id' => 'required|integer|exists:tools,id',
-            'tools.*.sort_order' => 'required|integer',
+            'tools' => ['required', 'array'],
+            'tools.*.id' => ['required', 'integer', 'exists:tools,id'],
+            'tools.*.sort_order' => ['required', 'integer'],
         ]);
 
-        // To avoid unique constraint issues, we set a high temporary sort_order first
-        foreach ($validated['tools'] as $index => $tool) {
-            Tool::where('id', $tool['id'])->update(['sort_order' => $index + 9000]);
-        }
+        DB::transaction(function () use ($validated): void {
+            foreach ($validated['tools'] as $index => $tool) {
+                Tool::where('id', $tool['id'])->update(['sort_order' => $index + 9000]);
+            }
 
-        // Now set the correct sort_order
-        foreach ($validated['tools'] as $index => $tool) {
-            Tool::where('id', $tool['id'])->update(['sort_order' => $index]);
-        }
+            foreach ($validated['tools'] as $index => $tool) {
+                Tool::where('id', $tool['id'])->update(['sort_order' => $index]);
+            }
+        });
 
         return redirect()->back()->with('success', 'Tools sorted successfully.');
     }
 
-    public function destroy(Tool $tool) {
-        $tool->delete();
+    /**
+     * Supprimer une catégorie d'outils et ses items en cascade.
+     */
+    public function destroy(Tool $tool): RedirectResponse
+    {
+        DB::transaction(function () use ($tool): void {
+            $tool->items()->delete();
+            $tool->delete();
+        });
+
         return redirect()->route('backoffice.tools.index')->with('success', 'Tool deleted successfully.');
     }
 }

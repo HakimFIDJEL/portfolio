@@ -3,7 +3,6 @@
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SetLocale;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -11,14 +10,14 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Session;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -42,11 +41,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->respond(function ($response, Throwable $exception, Request $request) {
             // Vérifie si c'est une exception HTTP (y compris 404, 403, 401, 503, etc.)
             if ($exception instanceof ValidationException) {
-                return $response; 
+                return $response;
             }
 
-            if($exception instanceof AuthenticationException) {
-                return $response; 
+            if ($exception instanceof AuthenticationException) {
+                return $response;
             }
 
             $translations = fn () => collect(File::files(lang_path(Session::get('locale', App::getLocale()))))
@@ -83,7 +82,7 @@ return Application::configure(basePath: dirname(__DIR__))
                         'title' => $exception->getMessage() ?? '',
                         'translations' => $translations,
                         'auth' => $auth,
-                        
+
                     ])->toResponse($request)
                         ->setStatusCode($statusCode);
                 }

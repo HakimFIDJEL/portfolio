@@ -2,8 +2,8 @@
 
 // tests/Feature/Auth/VerificationNotificationTest.php
 
-use App\Models\User;
 use App\Jobs\SendEmailJob;
+use App\Models\User;
 use Illuminate\Support\Facades\Queue;
 
 test('sends verification notification', function () {

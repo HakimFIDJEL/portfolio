@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\PasswordResetToken;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -13,7 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * Les attributs assignables en masse.
      *
      * @var list<string>
      */
@@ -27,10 +30,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'resume_id',
     ];
 
+    /**
+     * Relations chargées par défaut.
+     *
+     * @var list<string>
+     */
     protected $with = ['avatar', 'resume'];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Les attributs masqués lors de la sérialisation.
      *
      * @var list<string>
      */
@@ -41,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Les conversions d'attributs.
      *
      * @return array<string, string>
      */
@@ -54,17 +62,26 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Custom methods
+     * Jeton de réinitialisation de mot de passe associé.
      */
-    public function passwordResetToken() {
+    public function passwordResetToken(): HasOne
+    {
         return $this->hasOne(PasswordResetToken::class, 'email', 'email');
     }
 
-    public function avatar() {
+    /**
+     * Photo de profil / avatar de l'utilisateur.
+     */
+    public function avatar(): BelongsTo
+    {
         return $this->belongsTo(Attachment::class, 'avatar_id');
     }
 
-    public function resume() {
+    /**
+     * CV téléversé de l'utilisateur.
+     */
+    public function resume(): BelongsTo
+    {
         return $this->belongsTo(Attachment::class, 'resume_id');
     }
 }

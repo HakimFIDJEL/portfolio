@@ -63,14 +63,18 @@ test: ## Executer la suite complete de tests fonctionnels et unitaires Pest
 	@if [ -f vendor/bin/pest ]; then \
 		vendor/bin/pest; \
 	else \
-		docker compose exec app vendor/bin/pest; \
+		docker compose exec -e APP_ENV=testing app vendor/bin/pest; \
 	fi
 
 lint: ## Verifier le style du code PHP (Pint) et le linting Frontend (ESLint)
 	@echo "$(GREEN)Verification du style PHP (Laravel Pint)...$(RESET)"
-	@if [ -f vendor/bin/pint ]; then vendor/bin/pint --test; fi
+	@if [ -f vendor/bin/pint ]; then vendor/bin/pint --test; else docker compose exec app vendor/bin/pint --test; fi
 	@echo "$(GREEN)Verification du linting Frontend (ESLint)...$(RESET)"
 	@npm run lint
+
+pint: ## Corriger automatiquement le style du code PHP (Laravel Pint)
+	@echo "$(GREEN)Correction automatique du style PHP (Laravel Pint)...$(RESET)"
+	@if [ -f vendor/bin/pint ]; then vendor/bin/pint; else docker compose exec app vendor/bin/pint; fi
 
 format: ## Formater automatiquement le code Frontend avec Prettier
 	@echo "$(GREEN)Formatage Prettier des fichiers resources/...$(RESET)"

@@ -1,43 +1,28 @@
 <?php
 
-// app/Http/Controllers/Auth/EmailVerification.php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-// Necessary imports
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\Email as RequestsEmail;
+use App\Jobs\SendEmailJob;
+use App\Mail\Auth\VerifyEmail;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\RedirectResponse;
 
-// Requests
-use App\Http\Requests\Auth\Email as RequestsEmail;
-
-// Models
-use App\Models\User;
-
-// Jobs
-use App\Jobs\SendEmailJob;
-
-// Mail
-use App\Mail\Auth\VerifyEmail;
-
-/**
- * Class EmailVerification
- *
- * Handles email verification functionalities.
- */
 class EmailVerification extends Controller
 {
     /**
-     * Show the email verification notice.
-     *
-     * @return \Inertia\Response
+     * Afficher l'écran de notification de vérification d'email.
      */
     public function notice(): RedirectResponse|Response
     {
+        /** @var User|null $user */
         $user = Auth::user();
 
         if ($user && $user->hasVerifiedEmail()) {
@@ -48,20 +33,18 @@ class EmailVerification extends Controller
     }
 
     /**
-     * Send the email verification notification.
-     *
-     * @param  App\Http\Requests\Auth\SendResetLinkEmail  $request
+     * Envoyer un nouvel email de vérification avec token sécurisé.
      */
     public function sendVerificationEmail(): RedirectResponse
     {
-        // Check if users is not already verified
-        if (Auth::user()->email_verified_at !== null) {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if ($user->email_verified_at !== null) {
             return redirect()->route('dashboard');
         }
 
-        $token = Str::random(12);
-        $user = Auth::user();
-
+        $token = Str::random(32);
         $user->update(['verification_token' => $token]);
 
         SendEmailJob::dispatch(new VerifyEmail($user, $token));
@@ -72,40 +55,37 @@ class EmailVerification extends Controller
     }
 
     /**
-     * Verify the user's email.
-     *
-     * @param  string  $verification_token
-     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
+     * Vérifier l'adresse email de l'utilisateur à partir du token.
      */
-    public function verify(string $token): RedirectResponse | Response
-    {   
-        // Find user by verification token
+    public function verify(string $token): RedirectResponse|Response
+    {
+        /** @var User|null $user */
         $user = User::where('verification_token', $token)->first();
 
         if (! $user) {
-            return redirect()->route('auth.verification.notice')->withErrors(['verification' => __('auth.flash.verification.invalid_token')]);
+            return redirect()->route('auth.verification.notice')->withErrors([
+                'verification' => __('auth.flash.verification.invalid_token'),
+            ]);
         }
 
         if ($user->hasVerifiedEmail()) {
             return redirect()->route('dashboard');
         }
 
-        // Mark the user's email as verified
         $user->markEmailAsVerified();
 
         return Inertia::render('auth/email-verified');
     }
 
     /**
-     * Display change email page
-     *
-     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
+     * Afficher la page de modification d'adresse email.
      */
-    public function editEmail(): RedirectResponse | Response
+    public function editEmail(): RedirectResponse|Response
     {
+        /** @var User $user */
         $user = Auth::user();
 
-        if($user->hasVerifiedEmail()) {
+        if ($user->hasVerifiedEmail()) {
             return redirect()->route('settings.profile.edit');
         }
 
@@ -113,17 +93,15 @@ class EmailVerification extends Controller
     }
 
     /**
-     * Update user's email
-     * 
-     * @param  \App\Http\Requests\Auth\Email  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * Mettre à jour l'adresse email de l'utilisateur non vérifié.
      */
-    public function updateEmail(RequestsEmail $request): RedirectResponse 
+    public function updateEmail(RequestsEmail $request): RedirectResponse
     {
         $data = $request->validated();
+        /** @var User $user */
         $user = Auth::user();
 
-        if(!Auth::validate(['id' => Auth::id(), 'password' => $data['password']])) {
+        if (! Auth::validate(['id' => Auth::id(), 'password' => $data['password']])) {
             return redirect()->back()->withErrors([
                 'password' => __('profile.flash.incorrect_current_password'),
             ]);
@@ -131,13 +109,19 @@ class EmailVerification extends Controller
 
         $emailChanged = array_key_exists('email', $data) && $data['email'] !== $user->email;
 
-        
-        if (!$emailChanged) {
-            return redirect()->back()->withErrors(['email' => __('auth.flash.email.no_change')]);
+        if (! $emailChanged) {
+            return redirect()->back()->withErrors([
+                'email' => __('auth.flash.email.no_change'),
+            ]);
         }
 
-        $user->update($data, ['email_verified_at' => null]);
+        $user->update([
+            'email' => $data['email'],
+            'email_verified_at' => null,
+        ]);
 
-        return redirect()->route('auth.verification.notice')->with(['success' => __('auth.flash.email.change')]);
+        return redirect()->route('auth.verification.notice')->with([
+            'success' => __('auth.flash.email.change'),
+        ]);
     }
 }

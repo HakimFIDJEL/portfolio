@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('avatar_id')
                 ->nullable()
                 ->constrained('attachments')
-                ->nullOnDelete();          
+                ->nullOnDelete();
 
             $table->foreignId('resume_id')
                 ->nullable()
@@ -29,8 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-
-        });
+        Schema::table('users', function (Blueprint $table) {});
     }
 };

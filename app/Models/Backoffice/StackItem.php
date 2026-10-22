@@ -1,15 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Backoffice;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasLocalizedFields;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StackItem extends Model
 {
-    protected $fillable = ['stack_id', 'sort_order', 'name'];
+    /**
+     * Les attributs assignables en masse.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'stack_id',
+        'sort_order',
+        'name',
+    ];
 
-    public function stack()
+    /**
+     * Stack parente.
+     */
+    public function stack(): BelongsTo
     {
         return $this->belongsTo(Stack::class);
     }

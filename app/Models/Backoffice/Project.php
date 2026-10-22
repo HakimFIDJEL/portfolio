@@ -1,72 +1,111 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Backoffice;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasLocalizedFields;
-
 use App\Models\Attachment;
+use App\Traits\HasLocalizedFields;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Project extends Model
 {
     use HasLocalizedFields;
 
+    /**
+     * Les attributs assignables en masse.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
-        'sort_order', 'slug_fr', 'slug_en',
-        'title_fr', 'title_en', 'subtitle_fr', 'subtitle_en',
-        'description_fr', 'description_en', 'feedback_fr', 'feedback_en',
-        'what_i_learned_fr', 'what_i_learned_en',
-        'source_code_url', 'live_demo_url', 'end_date', 'is_new', 'type',
+        'sort_order',
+        'slug_fr',
+        'slug_en',
+        'title_fr',
+        'title_en',
+        'subtitle_fr',
+        'subtitle_en',
+        'description_fr',
+        'description_en',
+        'feedback_fr',
+        'feedback_en',
+        'what_i_learned_fr',
+        'what_i_learned_en',
+        'source_code_url',
+        'live_demo_url',
+        'end_date',
+        'is_new',
+        'type',
     ];
 
+    /**
+     * Les accesseurs traduits injectés dans la sérialisation.
+     *
+     * @var list<string>
+     */
     protected $appends = [
-        'slug', 'title', 'subtitle', 'description', 'feedback', 'what_i_learned'
+        'slug',
+        'title',
+        'subtitle',
+        'description',
+        'feedback',
+        'what_i_learned',
     ];
 
-    public function tags()
+    /**
+     * Étiquettes associées au projet.
+     */
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'project_tags');
     }
 
-    public function stackItems()
+    /**
+     * Technologies de la stack utilisées dans le projet.
+     */
+    public function stackItems(): BelongsToMany
     {
         return $this->belongsToMany(StackItem::class, 'project_stack_items');
     }
 
-    public function attachments()
+    /**
+     * Captures et pièces jointes associées au projet.
+     */
+    public function attachments(): BelongsToMany
     {
         return $this->belongsToMany(Attachment::class, 'attachment_projects')
-                    ->withPivot('sort_order')
-                    ->orderBy('pivot_sort_order', 'asc');
+            ->withPivot('sort_order')
+            ->orderBy('pivot_sort_order', 'asc');
     }
 
-    // Accessor for localized 'slug' field
-    public function getSlugAttribute() {
-        return $this->getLocalizedField('slug');    
+    public function getSlugAttribute(): ?string
+    {
+        return $this->getLocalizedField('slug');
     }
 
-    // Accessor for localized 'title' field
-    public function getTitleAttribute() {
+    public function getTitleAttribute(): ?string
+    {
         return $this->getLocalizedField('title');
     }
 
-    // Accessor for localized 'subtitle' field
-    public function getSubtitleAttribute() {
+    public function getSubtitleAttribute(): ?string
+    {
         return $this->getLocalizedField('subtitle');
     }
 
-    // Accessor for localized 'description' field
-    public function getDescriptionAttribute() {
+    public function getDescriptionAttribute(): ?string
+    {
         return $this->getLocalizedField('description');
     }
 
-    // Accessor for localized 'feedback' field
-    public function getFeedbackAttribute() {
+    public function getFeedbackAttribute(): ?string
+    {
         return $this->getLocalizedField('feedback');
     }
 
-    // Accessor for localized 'what_i_learned' field
-    public function getWhatILearnedAttribute() {
+    public function getWhatILearnedAttribute(): ?string
+    {
         return $this->getLocalizedField('what_i_learned');
     }
 }

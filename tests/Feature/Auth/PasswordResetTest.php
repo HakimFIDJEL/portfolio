@@ -2,11 +2,11 @@
 
 // tests/Feature/Auth/PasswordResetTest.php
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 use App\Jobs\SendEmailJob;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Str;
 
 test('reset password link screen can be rendered', function () {
     $response = $this->get(route('auth.password.request'));
@@ -19,7 +19,7 @@ test('reset password link can be requested', function () {
     $user = User::factory()->create();
 
     $response = $this->post(route('auth.password.email'), [
-        'email' => $user->email
+        'email' => $user->email,
     ]);
 
     $response->assertRedirect();
@@ -27,7 +27,6 @@ test('reset password link can be requested', function () {
 
     Queue::assertPushed(SendEmailJob::class);
 });
-
 
 test('reset password screen can be rendered', function () {
     $user = User::factory()->create();

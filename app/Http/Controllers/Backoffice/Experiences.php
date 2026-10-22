@@ -1,60 +1,84 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use Inertia\Inertia;
 use App\Models\Backoffice\Experience;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class Experiences extends Controller
 {
-    public function index() {
+    /**
+     * Liste des expériences professionnelles.
+     */
+    public function index(): Response
+    {
         return Inertia::render('backoffice/experiences/index', [
-            'experiences' => Experience::orderBy('sort_order', 'asc')->get()
+            'experiences' => Experience::orderBy('sort_order', 'asc')->get(),
         ]);
     }
 
-    public function create() {
+    /**
+     * Formulaire d'ajout d'une expérience.
+     */
+    public function create(): Response
+    {
         return Inertia::render('backoffice/experiences/create');
     }
 
-    public function store(Request $request) {
+    /**
+     * Persister une nouvelle expérience.
+     */
+    public function store(Request $request): RedirectResponse
+    {
         $validated = $request->validate([
-            'company' => 'required|string|max:255',
-            'job_fr' => 'required|string|max:255',
-            'job_en' => 'required|string|max:255',
-            'status_fr' => 'required|string|max:255',
-            'status_en' => 'required|string|max:255',
-            'duration' => 'required|string|max:255',
-            'description_fr' => 'required|string',
-            'description_en' => 'required|string',
+            'company' => ['required', 'string', 'max:255'],
+            'job_fr' => ['required', 'string', 'max:255'],
+            'job_en' => ['required', 'string', 'max:255'],
+            'status_fr' => ['required', 'string', 'max:255'],
+            'status_en' => ['required', 'string', 'max:255'],
+            'duration' => ['required', 'string', 'max:255'],
+            'description_fr' => ['required', 'string'],
+            'description_en' => ['required', 'string'],
         ]);
 
-        $validated['sort_order'] = Experience::max('sort_order') + 1;
+        $validated['sort_order'] = (int) (Experience::max('sort_order') ?? 0) + 1;
 
         Experience::create($validated);
 
         return redirect()->route('backoffice.experiences.index')->with('success', 'Experience created successfully.');
     }
 
-    public function edit(Experience $experience) {
+    /**
+     * Formulaire d'édition d'une expérience.
+     */
+    public function edit(Experience $experience): Response
+    {
         return Inertia::render('backoffice/experiences/edit', [
-            'experience' => $experience
+            'experience' => $experience,
         ]);
     }
 
-    public function update(Request $request, Experience $experience) {
+    /**
+     * Mettre à jour une expérience.
+     */
+    public function update(Request $request, Experience $experience): RedirectResponse
+    {
         $validated = $request->validate([
-            'company' => 'required|string|max:255',
-            'job_fr' => 'required|string|max:255',
-            'job_en' => 'required|string|max:255',
-            'status_fr' => 'required|string|max:255',
-            'status_en' => 'required|string|max:255',
-            'duration' => 'required|string|max:255',
-            'description_fr' => 'required|string',
-            'description_en' => 'required|string',
+            'company' => ['required', 'string', 'max:255'],
+            'job_fr' => ['required', 'string', 'max:255'],
+            'job_en' => ['required', 'string', 'max:255'],
+            'status_fr' => ['required', 'string', 'max:255'],
+            'status_en' => ['required', 'string', 'max:255'],
+            'duration' => ['required', 'string', 'max:255'],
+            'description_fr' => ['required', 'string'],
+            'description_en' => ['required', 'string'],
         ]);
 
         $experience->update($validated);
@@ -62,29 +86,37 @@ class Experiences extends Controller
         return redirect()->route('backoffice.experiences.index')->with('success', 'Experience updated successfully.');
     }
 
-    public function sort(Request $request) {
+    /**
+     * Réordonner les expériences.
+     */
+    public function sort(Request $request): RedirectResponse
+    {
         $validated = $request->validate([
-            'experiences' => 'required|array',
-            'experiences.*.id' => 'required|integer|exists:experiences,id',
-            'experiences.*.sort_order' => 'required|integer',
+            'experiences' => ['required', 'array'],
+            'experiences.*.id' => ['required', 'integer', 'exists:experiences,id'],
+            'experiences.*.sort_order' => ['required', 'integer'],
         ]);
 
-        // To avoid unique constraint issues, we set a high temporary sort_order first
-        foreach ($validated['experiences'] as $index => $experience) {
-            Experience::where('id', $experience['id'])->update(['sort_order' => $index + 9000]);
-        }
+        DB::transaction(function () use ($validated): void {
+            foreach ($validated['experiences'] as $index => $experience) {
+                Experience::where('id', $experience['id'])->update(['sort_order' => $index + 9000]);
+            }
 
-        // Now set the correct sort_order
-        foreach ($validated['experiences'] as $index => $experience) {
-            Experience::where('id', $experience['id'])->update(['sort_order' => $index]);
-        }
+            foreach ($validated['experiences'] as $index => $experience) {
+                Experience::where('id', $experience['id'])->update(['sort_order' => $index]);
+            }
+        });
 
         return redirect()->back()->with('success', 'Experiences sorted successfully.');
     }
 
-    public function destroy(Experience $experience) {
+    /**
+     * Supprimer une expérience.
+     */
+    public function destroy(Experience $experience): RedirectResponse
+    {
         $experience->delete();
+
         return redirect()->route('backoffice.experiences.index')->with('success', 'Experience deleted successfully.');
     }
-
 }

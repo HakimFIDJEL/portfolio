@@ -46,7 +46,7 @@ test('users can logout', function () {
 test('users are rate limited', function () {
     $user = User::factory()->create();
 
-    $key = hash('sha256', 'login' . implode('|', [$user->email, '127.0.0.1']));
+    $key = hash('sha256', 'login'.implode('|', [$user->email, '127.0.0.1']));
     RateLimiter::increment($key, amount: 5);
 
     $response = $this->post(route('auth.login.store'), [

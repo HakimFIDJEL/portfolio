@@ -77,7 +77,7 @@ return [
 
                 'buttons' => [
                     'submit' => 'Save information',
-                    'upload_file' => 'Upload file', 
+                    'upload_file' => 'Upload file',
                     'select_file' => 'Select file',
                 ],
 

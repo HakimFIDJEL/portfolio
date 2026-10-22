@@ -1,24 +1,21 @@
 <?php
 
-// app/Http/Controllers/Settings/Password.php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Settings;
 
-// Necessary imports
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\Password as RequestsPassword;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
-// Requests
-use App\Http\Requests\Settings\Password as RequestsPassword;
-
-
 class Password extends Controller
 {
     /**
-     * Show the user's password settings page.
+     * Afficher le formulaire de modification de mot de passe utilisateur.
      */
     public function edit(): Response
     {
@@ -26,22 +23,21 @@ class Password extends Controller
     }
 
     /**
-     * Update the user's password.
-     * 
-     * @param \App\Http\Requests\Settings\Password $request
-     * @return \Illuminate\Http\RedirectResponse
+     * Mettre à jour le mot de passe de l'utilisateur connecté.
      */
     public function update(RequestsPassword $request): RedirectResponse
     {
         $data = $request->validated();
 
-        if(!Auth::validate(['id' => Auth::id(), 'password' => $data['current_password']])) {
+        if (! Auth::validate(['id' => Auth::id(), 'password' => $data['current_password']])) {
             return redirect()->back()->withErrors([
                 'current_password' => __('settings.flash.incorrect_current_password'),
             ]);
         }
 
-        Auth::user()->update([
+        /** @var User $user */
+        $user = Auth::user();
+        $user->update([
             'password' => $data['password'],
         ]);
 
