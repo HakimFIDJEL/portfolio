@@ -52,6 +52,13 @@ return [
             'info_form' => [
                 'title' => 'Informations du profil',
                 'description' => 'Mettez à jour vos informations de profil telles que le nom et l’adresse e-mail.',
+
+                'file_too_big_title' => 'Le fichier est trop volumineux',
+                'file_too_big_description' => 'La taille maximale autorisée est de :size Mo.',
+
+                'file_error_type' => 'Type de fichier non supporté.',
+                'file_error_type_description' => 'Formats autorisés : PDF, DOC, DOCX.',
+
                 // FRONT ERRORS (React)
                 'avatar_too_big_title' => 'L’image est trop lourde',
                 'avatar_too_big_description' => 'La taille maximale autorisée est de :size MB.',
@@ -74,6 +81,10 @@ return [
                         'label' => 'Photo de profil',
                         'description' => 'Glisser ou cliquer pour choisir un fichier — max : :size MB',
                     ],
+                    'resume' => [
+                        'label' => 'Curriculum Vitae (CV)',
+                        'description' => 'Document PDF ou Word — max :size Mo',
+                    ],
                     'phone' => [
                         'label' => 'Numéro de téléphone',
                         'placeholder' => '01 23 45 67 89',
@@ -82,6 +93,8 @@ return [
                 ],
                 'buttons' => [
                     'submit' => 'Enregistrer les informations',
+                    'upload_file' => 'Téléverser le fichier',
+                    'select_file' => 'Sélectionner un fichier',
                 ],
                 'crop_title' => 'Recadrer l’image',
                 'crop_confirm' => 'Valider',
