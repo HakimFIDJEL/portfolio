@@ -73,37 +73,11 @@ class HandleInertiaRequests extends Middleware
             'locale' => $locale,
             'fallback_locale' => $fallbackLocale,
 
-            'translations' => fn () => Cache::remember('translations_'.$locale, 3600, function () use ($locale): array {
-                $path = lang_path($locale);
-                if (! File::isDirectory($path)) {
-                    return [];
-                }
+            'translations' => fn () => Cache::rememberForever('translations_'.$locale, fn (): array => $this->loadTranslations($locale)),
 
-                return collect(File::files($path))
-                    ->mapWithKeys(function ($file) use ($locale) {
-                        $name = pathinfo((string) $file, PATHINFO_FILENAME);
-                        $lines = Lang::get($name, [], $locale);
-
-                        return [$name => Arr::undot(is_array($lines) ? $lines : [])];
-                    })
-                    ->toArray();
-            }),
-
-            'translations_fallback' => fn () => Cache::remember('translations_fallback_'.$fallbackLocale, 3600, function () use ($fallbackLocale): array {
-                $path = lang_path($fallbackLocale);
-                if (! File::isDirectory($path)) {
-                    return [];
-                }
-
-                return collect(File::files($path))
-                    ->mapWithKeys(function ($file) use ($fallbackLocale) {
-                        $name = pathinfo((string) $file, PATHINFO_FILENAME);
-                        $lines = Lang::get($name, [], $fallbackLocale);
-
-                        return [$name => Arr::undot(is_array($lines) ? $lines : [])];
-                    })
-                    ->toArray();
-            }),
+            'translations_fallback' => fn () => $locale === $fallbackLocale
+                ? []
+                : Cache::rememberForever('translations_fallback_'.$fallbackLocale, fn (): array => $this->loadTranslations($fallbackLocale)),
 
             'timezone' => date_default_timezone_get(),
 
@@ -114,5 +88,27 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
         ]);
+    }
+
+    /**
+     * Charger et structurer l'ensemble des dictionnaires d'une langue.
+     *
+     * @return array<string, mixed>
+     */
+    private function loadTranslations(string $locale): array
+    {
+        $path = lang_path($locale);
+        if (! File::isDirectory($path)) {
+            return [];
+        }
+
+        return collect(File::files($path))
+            ->mapWithKeys(function ($file) use ($locale) {
+                $name = pathinfo((string) $file, PATHINFO_FILENAME);
+                $lines = Lang::get($name, [], $locale);
+
+                return [$name => Arr::undot(is_array($lines) ? $lines : [])];
+            })
+            ->toArray();
     }
 }
