@@ -20,11 +20,30 @@ use Inertia\Response;
 class Landing extends Controller
 {
     /**
-     * Rendu de la page d'accueil principale.
+     * Rendu de la page d'accueil principale avec injection directe des données SSR.
      */
     public function landing(): Response
     {
-        return Inertia::render('landing');
+        $contacts = Contact::orderBy('sort_order', 'asc')->get();
+        $experiences = Experience::orderBy('sort_order', 'asc')->get();
+        $educations = Education::orderBy('sort_order', 'asc')->get();
+        $stacks = Stack::orderBy('sort_order', 'asc')->with('items')->get();
+        $tools = Tool::orderBy('sort_order', 'asc')->with('items')->get();
+        $projects = Project::where('type', 'project')->orderBy('sort_order', 'asc')->get();
+        $sandbox = Project::where('type', 'sandbox')
+            ->orderBy('sort_order', 'asc')
+            ->with(['tags', 'stackItems', 'attachments'])
+            ->get();
+
+        return Inertia::render('landing', [
+            'contacts' => $contacts,
+            'experiences' => $experiences,
+            'educations' => $educations,
+            'stacks' => $stacks,
+            'tools' => $tools,
+            'projects' => $projects,
+            'sandbox' => $sandbox,
+        ]);
     }
 
     /**

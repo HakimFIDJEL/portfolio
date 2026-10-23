@@ -12,12 +12,19 @@ beforeEach(function () {
     $this->seed(BackofficeSeeder::class);
 });
 
-test('la landing page est accessible et rend le composant Inertia landing', function () {
+test('la landing page est accessible et rend le composant Inertia landing avec toutes ses props ssr', function () {
     $response = $this->get(route('home'));
 
     $response->assertOk();
     $response->assertInertia(fn (Assert $page) => $page
         ->component('landing')
+        ->has('contacts')
+        ->has('experiences')
+        ->has('educations')
+        ->has('stacks')
+        ->has('tools')
+        ->has('projects')
+        ->has('sandbox')
     );
 });
 

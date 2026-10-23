@@ -9,13 +9,16 @@ import { cn } from "@/lib/utils";
 import { LucideProps, LucideIcon } from 'lucide-react';
 import { DynamicIcon, dynamicIconImports, IconName } from 'lucide-react/dynamic';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { iconsData } from "./icons-data"
 import { useVirtualizer, VirtualItem } from '@tanstack/react-virtual';
 import Fuse from 'fuse.js';
 import { useDebounceValue } from "usehooks-ts";
 import { Spinner } from "./spinner";
 
-export type IconData = typeof iconsData[number];
+export interface IconData {
+    name: string;
+    categories: string[];
+    tags: string[];
+}
 
 interface IconPickerProps extends Omit<React.ComponentPropsWithoutRef<typeof PopoverTrigger>, 'onSelect' | 'onOpenChange'> {
   value?: IconName

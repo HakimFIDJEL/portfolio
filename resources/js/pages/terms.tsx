@@ -1,6 +1,6 @@
 // resources/js/pages/landing.terms.tsx
 
-import { Head, usePage } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
@@ -14,26 +14,11 @@ import { useTrans } from '@/lib/translation';
 
 // Context
 import { useLandingContext } from '@/contexts/use-landing-context';
-import { useEffect } from 'react';
-import { SharedData } from '@/types';
 
 export default function Terms() {
     const __ = useTrans();
 
-    const { locale } = usePage<SharedData>().props;
-
-    const { contentActive, fetchingData, setFetchingData } =
-        useLandingContext();
-
-    useEffect(() => {
-        if (!fetchingData) setFetchingData(true);
-
-        const timer = setTimeout(() => {
-            setFetchingData(false);
-        }, 1000);
-
-        return () => clearTimeout(timer);
-    }, [locale]);
+    const { contentActive } = useLandingContext();
 
     const sections = [
         {
@@ -95,7 +80,13 @@ export default function Terms() {
     return (
         <>
             <Head title={__('landing.terms.h1', 'Terms of Use')}>
-                <meta name='description' content={__('landing.terms.meta_description', 'Read the terms of use for Hakim Fidjel\'s portfolio website, outlining the rules and guidelines for accessing and using the site.')} />
+                <meta
+                    name="description"
+                    content={__(
+                        'landing.terms.meta_description',
+                        "Read the terms of use for Hakim Fidjel's portfolio website, outlining the rules and guidelines for accessing and using the site.",
+                    )}
+                />
             </Head>
             <div className="min-h-screen bg-background">
                 <FadeIn show={contentActive} className="w-full">

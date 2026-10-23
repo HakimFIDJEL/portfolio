@@ -13,6 +13,17 @@ export default defineConfig({
         react(),
         tailwindcss(),
     ],
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('icons-data.ts')) {
+                        return 'icons-data';
+                    }
+                },
+            },
+        },
+    },
     esbuild: {
         jsx: 'automatic',
     },
