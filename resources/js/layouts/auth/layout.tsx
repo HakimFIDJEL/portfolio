@@ -40,7 +40,9 @@ export default function AuthLayout({
                     </div>
                     <div className="relative z-20">
                         <blockquote className="space-y-2">
-                            <p className="text-sm text-muted-foreground">Portfolio</p>
+                            <p className="text-sm text-muted-foreground">
+                                Portfolio
+                            </p>
                         </blockquote>
                     </div>
                 </div>

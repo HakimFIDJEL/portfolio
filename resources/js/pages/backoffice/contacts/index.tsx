@@ -66,7 +66,10 @@ export default function Index({ contacts }: IndexProps) {
         return (
             <>
                 <TableCell>
-                    <GetIcon icon={contact.icon} props={{ className: "h-5 w-5" }} />
+                    <GetIcon
+                        icon={contact.icon}
+                        props={{ className: 'h-5 w-5' }}
+                    />
                 </TableCell>
                 <TableCell>{contact.label}</TableCell>
                 <TableCell>{contact.link}</TableCell>
@@ -86,10 +89,10 @@ export default function Index({ contacts }: IndexProps) {
             <Head title="Contacts" />
 
             <Card>
-                <CardHeader >
-                    <CardTitle className='flex items-center gap-4 text-xl'>
-                        <div className='p-1 rounded-md bg-accent border'>
-                            <Mail className='text-primary'/>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-4 text-xl">
+                        <div className="rounded-md border bg-accent p-1">
+                            <Mail className="text-primary" />
                         </div>
                         Contact
                     </CardTitle>
@@ -106,12 +109,7 @@ export default function Index({ contacts }: IndexProps) {
                 <CardContent>
                     <SortableTable
                         entries={contacts}
-                        columns={[
-                            'Icon',
-                            'Label',
-                            'Link',
-                            'Value',
-                        ]}
+                        columns={['Icon', 'Label', 'Link', 'Value']}
                         handleSort={handleSort}
                         renderCells={renderCells}
                         handleRowClick={handleRowClick}

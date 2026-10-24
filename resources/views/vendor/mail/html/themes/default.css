@@ -3,7 +3,8 @@
 body,
 body *:not(html):not(style):not(br):not(tr):not(code) {
     box-sizing: border-box;
-    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+    font-family:
+        'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
     position: relative;
@@ -152,7 +153,9 @@ img {
     border-color: #e5e7eb;
     border-radius: 12px;
     border-width: 1px;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.04);
+    box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.04),
+        0 2px 4px rgba(0, 0, 0, 0.04);
     margin: 0 auto;
     padding: 0;
     width: 600px;

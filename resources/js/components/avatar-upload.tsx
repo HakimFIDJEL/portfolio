@@ -1,44 +1,47 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeftIcon, XIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useFileUpload } from "@/hooks/use-file-upload";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
     Cropper,
     CropperCropArea,
     CropperImage,
-} from "@/components/ui/cropper";
+} from '@/components/ui/cropper';
 import {
     Dialog,
     DialogContent,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog";
-import { Slider } from "@/components/ui/slider";
-import { toast } from "sonner";
-import { useTrans } from "@/lib/translation";
+} from '@/components/ui/dialog';
+import { Slider } from '@/components/ui/slider';
+import { useFileUpload } from '@/hooks/use-file-upload';
+import { useTrans } from '@/lib/translation';
+import { toast } from 'sonner';
 
 type Area = { x: number; y: number; width: number; height: number };
 
 const createImage = (url: string): Promise<HTMLImageElement> =>
     new Promise((resolve, reject) => {
         const image = new Image();
-        image.addEventListener("load", () => resolve(image));
-        image.addEventListener("error", () => {
+        image.addEventListener('load', () => resolve(image));
+        image.addEventListener('error', () => {
             reject(new Error(`Failed to load image: ${url}`));
         });
-        image.setAttribute("crossOrigin", "anonymous");
+        image.setAttribute('crossOrigin', 'anonymous');
         image.src = url;
     });
 
-async function getCroppedImg(imageSrc: string, pixelCrop: Area): Promise<File | null> {
+async function getCroppedImg(
+    imageSrc: string,
+    pixelCrop: Area,
+): Promise<File | null> {
     try {
         const image = await createImage(imageSrc);
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
 
         if (!ctx) return null;
 
@@ -60,8 +63,8 @@ async function getCroppedImg(imageSrc: string, pixelCrop: Area): Promise<File | 
         return new Promise((resolve) => {
             canvas.toBlob((blob) => {
                 if (!blob) return resolve(null);
-                resolve(new File([blob], "avatar.jpg", { type: "image/jpeg" }));
-            }, "image/jpeg");
+                resolve(new File([blob], 'avatar.jpg', { type: 'image/jpeg' }));
+            }, 'image/jpeg');
         });
     } catch {
         return null;
@@ -80,7 +83,8 @@ export default function AvatarUploader({
     const __ = useTrans();
 
     // --- Normalisation du defaultUrl (id, chemin storage, URL complète) ---
-    const normalizedDefault = typeof defaultUrl === 'string' ? defaultUrl : null;
+    const normalizedDefault =
+        typeof defaultUrl === 'string' ? defaultUrl : null;
     const [
         { files },
         {

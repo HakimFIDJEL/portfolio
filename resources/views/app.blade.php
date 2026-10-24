@@ -51,6 +51,10 @@
     <link rel="icon" href="{{asset('favicon.ico')}}" sizes="any" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{asset('apple-touch-icon.png')}}">
 
+    {{-- Preload primary fonts --}}
+    <link rel="preload" href="{{ Vite::asset('resources/fonts/Montserrat_Alternates/MontserratAlternates-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ Vite::asset('resources/fonts/Montserrat_Alternates/MontserratAlternates-SemiBold.woff2') }}" as="font" type="font/woff2" crossorigin>
+
     @routes
     @viteReactRefresh
     @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])

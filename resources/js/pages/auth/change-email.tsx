@@ -71,7 +71,9 @@ export default function ChangeEmail() {
                         <div className="grid gap-2">
                             <div className="flex items-center">
                                 <Label htmlFor="password">
-                                    {__('auth.pages.change_email.password_label')}
+                                    {__(
+                                        'auth.pages.change_email.password_label',
+                                    )}
                                 </Label>
                             </div>
                             <InputGroup>
@@ -81,7 +83,9 @@ export default function ChangeEmail() {
                                     name="password"
                                     required
                                     tabIndex={2}
-                                    placeholder={__('auth.pages.change_email.password_placeholder')}
+                                    placeholder={__(
+                                        'auth.pages.change_email.password_placeholder',
+                                    )}
                                     aria-invalid={
                                         errors.password ? 'true' : 'false'
                                     }
@@ -131,7 +135,9 @@ export default function ChangeEmail() {
                             >
                                 <Link href={route('auth.verification.notice')}>
                                     <Send />
-                                    {__('auth.pages.change_email.verify_button')}
+                                    {__(
+                                        'auth.pages.change_email.verify_button',
+                                    )}
                                 </Link>
                             </Button>
                             <div className="text-center">
@@ -142,7 +148,9 @@ export default function ChangeEmail() {
                                     tabIndex={6}
                                 >
                                     <Link href={route('auth.logout')}>
-                                        {__('auth.pages.change_email.logout_link')}
+                                        {__(
+                                            'auth.pages.change_email.logout_link',
+                                        )}
                                     </Link>
                                 </Button>
                             </div>

@@ -60,7 +60,6 @@ interface UserMenuContentProps {
 }
 
 export function AppSidebar() {
-
     // Sidebar menus
     const mainNavItems: NavItem[] = [
         // {
@@ -130,7 +129,6 @@ export function AppSidebar() {
     );
 }
 
-
 function NavMain({ items = [] }: { items: NavItem[] }) {
     const page = usePage();
 
@@ -139,13 +137,16 @@ function NavMain({ items = [] }: { items: NavItem[] }) {
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) => {
-                    
-                    const linkUrl = typeof item.href === 'string'
-                        ? item.href
-                        : item.href.url;
-                    
-                    const isActive = linkUrl.includes(page.url) || page.url.includes(linkUrl) || window.location.href.includes(linkUrl);
-                    
+                    const linkUrl =
+                        typeof item.href === 'string'
+                            ? item.href
+                            : item.href.url;
+
+                    const isActive =
+                        linkUrl.includes(page.url) ||
+                        page.url.includes(linkUrl) ||
+                        window.location.href.includes(linkUrl);
+
                     return (
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton
@@ -154,12 +155,14 @@ function NavMain({ items = [] }: { items: NavItem[] }) {
                                 tooltip={{ children: item.title }}
                             >
                                 <Link href={item.href} prefetch>
-                                    {item.icon && <item.icon className='text-primary/70' />}
+                                    {item.icon && (
+                                        <item.icon className="text-primary/70" />
+                                    )}
                                     <span>{item.title}</span>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
-                    )
+                    );
                 })}
             </SidebarMenu>
         </SidebarGroup>

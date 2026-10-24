@@ -10,8 +10,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-    --font-sans:
-        'Montserrat Alternates', sans-serif;
+    --font-sans: 'Montserrat Alternates', sans-serif;
 
     --default-transition-duration: 0.5s;
     --default-transition-timing-function: cubic-bezier(0.25, 0.38, 0, 0.99);
@@ -70,8 +69,7 @@
 ------------------------------------------------------------ */
 
 :root {
-    --font-sans:
-        'Montserrat Alternates', sans-serif;
+    --font-sans: 'Montserrat Alternates', sans-serif;
 }
 :root {
     --radius: 0.65rem;

@@ -4,7 +4,7 @@ import {
     Transition,
     useAnimation,
     useMotionValue,
-} from 'framer-motion';
+} from 'motion/react';
 import React, { useEffect } from 'react';
 interface CircularTextProps {
     text: string;

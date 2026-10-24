@@ -77,7 +77,9 @@ export default function VerifyEmail() {
                                     href={route('auth.verification.email.edit')}
                                 >
                                     <RefreshCcw />
-                                    {__('auth.pages.verify_email.change_email_button')}
+                                    {__(
+                                        'auth.pages.verify_email.change_email_button',
+                                    )}
                                 </Link>
                             </Button>
                             <div className="text-center">
@@ -88,7 +90,9 @@ export default function VerifyEmail() {
                                     tabIndex={3}
                                 >
                                     <Link href={route('auth.logout')}>
-                                        {__('auth.pages.verify_email.logout_link')}
+                                        {__(
+                                            'auth.pages.verify_email.logout_link',
+                                        )}
                                     </Link>
                                 </Button>
                             </div>

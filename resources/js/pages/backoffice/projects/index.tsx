@@ -63,27 +63,24 @@ export default function Index({ projects }: IndexProps) {
     }
 
     function renderCells(project: Project) {
-
-        console.log(project.is_new)
+        console.log(project.is_new);
 
         return (
             <>
-                <TableCell>{project.is_new == true && <Badge>New</Badge>}</TableCell>
+                <TableCell>
+                    {project.is_new == true && <Badge>New</Badge>}
+                </TableCell>
                 <TableCell>
                     {project.type === 'project' ? (
-                        <Badge>
-                            Project
-                        </Badge>
+                        <Badge>Project</Badge>
                     ) : (
-                        <Badge variant="secondary">
-                            Sandbox
-                        </Badge>
+                        <Badge variant="secondary">Sandbox</Badge>
                     )}
                 </TableCell>
                 <TableCell>{project.title}</TableCell>
-                
-                <TableCell className='space-x-2'>
-                    {(project.tags && project.tags.length > 0) ? (
+
+                <TableCell className="space-x-2">
+                    {project.tags && project.tags.length > 0 ? (
                         project.tags.map((tag) => (
                             <Badge key={tag.id}>{tag.name}</Badge>
                         ))
@@ -94,11 +91,14 @@ export default function Index({ projects }: IndexProps) {
                 <TableCell>
                     {project.end_date ? (
                         <Badge>
-                            {new Date(project.end_date).toLocaleDateString('en-EN', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                            })}
+                            {new Date(project.end_date).toLocaleDateString(
+                                'en-EN',
+                                {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                },
+                            )}
                         </Badge>
                     ) : (
                         <Badge variant="secondary">Ongoing</Badge>
@@ -109,7 +109,9 @@ export default function Index({ projects }: IndexProps) {
     }
 
     function handleRowClick(project: Project) {
-        router.visit(route('backoffice.projects.edit', { project: project.id }));
+        router.visit(
+            route('backoffice.projects.edit', { project: project.id }),
+        );
     }
 
     return (

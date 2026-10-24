@@ -2,7 +2,7 @@
 
 // Necessary imports
 import { usePage } from '@inertiajs/react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Components
 import RoundedButton from '@/components/landing/rounded-button';

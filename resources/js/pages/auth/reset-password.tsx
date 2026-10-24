@@ -82,7 +82,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                     name="password"
                                     required
                                     autoFocus
-                                    placeholder={__('auth.pages.reset_password.password_placeholder')}
+                                    placeholder={__(
+                                        'auth.pages.reset_password.password_placeholder',
+                                    )}
                                     aria-invalid={
                                         errors.password ? 'true' : 'false'
                                     }
@@ -119,7 +121,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
 
                         <div className="grid gap-2">
                             <Label htmlFor="password_confirmation">
-                                {__('auth.pages.reset_password.password_confirm_label')}
+                                {__(
+                                    'auth.pages.reset_password.password_confirm_label',
+                                )}
                             </Label>
                             <InputGroup>
                                 <InputGroupInput
@@ -127,7 +131,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                     type="password"
                                     name="password_confirmation"
                                     required
-                                    placeholder={__('auth.pages.reset_password.password_confirm_placeholder')}
+                                    placeholder={__(
+                                        'auth.pages.reset_password.password_confirm_placeholder',
+                                    )}
                                     aria-invalid={
                                         errors.password_confirmation
                                             ? 'true'
@@ -152,7 +158,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             </Button>
                             <div className="space-x-1 text-center text-sm text-muted-foreground">
                                 <span>
-                                    {__('auth.pages.reset_password.return_text')}
+                                    {__(
+                                        'auth.pages.reset_password.return_text',
+                                    )}
                                 </span>
                                 <Button
                                     asChild
@@ -162,7 +170,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                     tabIndex={6}
                                 >
                                     <Link href={route('auth.login')}>
-                                        {__('auth.pages.reset_password.login_link')}
+                                        {__(
+                                            'auth.pages.reset_password.login_link',
+                                        )}
                                     </Link>
                                 </Button>
                             </div>

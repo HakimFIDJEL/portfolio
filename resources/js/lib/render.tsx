@@ -1,6 +1,6 @@
-import React, { lazy, Suspense, useMemo } from 'react';
-import dynamicIconImports from 'lucide-react/dynamicIconImports';
 import type { LucideProps } from 'lucide-react';
+import dynamicIconImports from 'lucide-react/dynamicIconImports';
+import { lazy, Suspense, useMemo } from 'react';
 
 interface IconProps {
     icon: string;

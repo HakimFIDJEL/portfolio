@@ -62,16 +62,19 @@ export default function Create() {
             <Head title="Create Tag" />
 
             <Card>
-                <CardHeader className="flex flex-col md:items-center justify-between md:flex-row">
+                <CardHeader className="flex flex-col justify-between md:flex-row md:items-center">
                     <div className="flex flex-col">
                         <CardTitle>Create a tag</CardTitle>
                         <CardDescription>
                             Fill in the form below to create a new tag.
                         </CardDescription>
                     </div>
-                    <CardAction className="flex flex-col md:items-center justify-between md:flex-row gap-2 w-full md:w-auto">
+                    <CardAction className="flex w-full flex-col justify-between gap-2 md:w-auto md:flex-row md:items-center">
                         <Link href={route('backoffice.tags.index')}>
-                            <Button variant={'outline'} className="w-full md:w-auto">
+                            <Button
+                                variant={'outline'}
+                                className="w-full md:w-auto"
+                            >
                                 <ArrowLeft />
                                 Go back
                             </Button>

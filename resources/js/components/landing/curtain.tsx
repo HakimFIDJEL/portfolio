@@ -1,6 +1,6 @@
 // Necessary imports
 import { cn } from '@/lib/utils';
-import { useInView } from 'framer-motion';
+import { useInView } from 'motion/react';
 import React from 'react';
 
 interface CurtainProps {
@@ -24,14 +24,13 @@ export default function Curtain({
     const show = !showCurtain;
 
     return (
-        <div
-            ref={ref}
-            className={cn('relative', className)}
-        >
+        <div ref={ref} className={cn('relative', className)}>
             <div
                 className={cn(
                     'relative transition-all duration-1500',
-                    isInView && show ? 'translate-y-0 opacity-100' : '-translate-y-1/2 opacity-0',
+                    isInView && show
+                        ? 'translate-y-0 opacity-100'
+                        : '-translate-y-1/2 opacity-0',
                 )}
                 style={{ transitionDelay: isInView ? `${delay}ms` : '0ms' }}
             >

@@ -2,8 +2,8 @@
 
 // Necessary imports
 import { Head, Link, router, useForm } from '@inertiajs/react';
-import { toast } from 'sonner';
 import React from 'react';
+import { toast } from 'sonner';
 
 // Layout
 import AppLayout from '@/layouts/app/layout';
@@ -91,22 +91,28 @@ export default function Edit({ experience }: EditProps) {
             <Head title="Edit Experience" />
 
             <Card>
-                <CardHeader className='flex flex-col md:items-center justify-between md:flex-row'>
-                    <div className='flex flex-col'>
+                <CardHeader className="flex flex-col justify-between md:flex-row md:items-center">
+                    <div className="flex flex-col">
                         <CardTitle>Edit an experience</CardTitle>
                         <CardDescription>
                             Update the form below to edit the experience.
                         </CardDescription>
                     </div>
-                    <CardAction className="flex flex-col md:items-center justify-between md:flex-row gap-2 w-full md:w-auto">
+                    <CardAction className="flex w-full flex-col justify-between gap-2 md:w-auto md:flex-row md:items-center">
                         <Link href={route('backoffice.experiences.index')}>
-                            <Button variant={'outline'} className="w-full md:w-auto">
+                            <Button
+                                variant={'outline'}
+                                className="w-full md:w-auto"
+                            >
                                 <ArrowLeft />
                                 Go back
                             </Button>
                         </Link>
                         <DeleteExperience experience={experience}>
-                            <Button variant="destructive" className="w-full md:w-auto">
+                            <Button
+                                variant="destructive"
+                                className="w-full md:w-auto"
+                            >
                                 <Trash2 />
                                 Delete experience
                             </Button>
@@ -231,13 +237,18 @@ export default function Edit({ experience }: EditProps) {
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <Label htmlFor="description_en">Description (EN)</Label>
+                                <Label htmlFor="description_en">
+                                    Description (EN)
+                                </Label>
                                 <Textarea
                                     id="description_en"
                                     value={data.description_en || ''}
                                     placeholder="Enter a description (EN)"
                                     onChange={(e) =>
-                                        setData('description_en', e.target.value)
+                                        setData(
+                                            'description_en',
+                                            e.target.value,
+                                        )
                                     }
                                     aria-invalid={
                                         errors.description_en ? 'true' : 'false'
@@ -247,13 +258,18 @@ export default function Edit({ experience }: EditProps) {
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <Label htmlFor="description_fr">Description (FR)</Label>
+                                <Label htmlFor="description_fr">
+                                    Description (FR)
+                                </Label>
                                 <Textarea
                                     id="description_fr"
                                     value={data.description_fr || ''}
                                     placeholder="Enter a description (FR)"
                                     onChange={(e) =>
-                                        setData('description_fr', e.target.value)
+                                        setData(
+                                            'description_fr',
+                                            e.target.value,
+                                        )
                                     }
                                     aria-invalid={
                                         errors.description_fr ? 'true' : 'false'
@@ -287,7 +303,6 @@ interface DeleteExperienceProps {
 }
 
 function DeleteExperience({ children, experience }: DeleteExperienceProps) {
-
     const [deleting, setDeleting] = React.useState(false);
 
     function handleDelete() {
@@ -296,7 +311,7 @@ function DeleteExperience({ children, experience }: DeleteExperienceProps) {
         router.delete(route('backoffice.experiences.destroy', experience.id), {
             onFinish: () => {
                 setDeleting(false);
-            }
+            },
         });
     }
     return (
@@ -311,8 +326,14 @@ function DeleteExperience({ children, experience }: DeleteExperienceProps) {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
-                    <Button variant="destructive" onClick={handleDelete} disabled={deleting}>
+                    <AlertDialogCancel disabled={deleting}>
+                        Cancel
+                    </AlertDialogCancel>
+                    <Button
+                        variant="destructive"
+                        onClick={handleDelete}
+                        disabled={deleting}
+                    >
                         {deleting ? <Spinner /> : <Trash2 />}
                         Delete
                     </Button>

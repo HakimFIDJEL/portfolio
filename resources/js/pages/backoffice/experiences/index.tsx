@@ -84,9 +84,9 @@ export default function Index({ experiences }: IndexProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className='flex items-center gap-4 text-xl'>
-                        <div className='p-1 rounded-md bg-accent border'>
-                            <Building2 className='text-primary'/>
+                    <CardTitle className="flex items-center gap-4 text-xl">
+                        <div className="rounded-md border bg-accent p-1">
+                            <Building2 className="text-primary" />
                         </div>
                         Experiences
                     </CardTitle>
@@ -103,12 +103,7 @@ export default function Index({ experiences }: IndexProps) {
                 <CardContent>
                     <SortableTable
                         entries={experiences}
-                        columns={[
-                            'Company',
-                            'Job',
-                            'Status',
-                            'Duration',
-                        ]}
+                        columns={['Company', 'Job', 'Status', 'Duration']}
                         handleSort={handleSort}
                         renderCells={renderCells}
                         handleRowClick={handleRowClick}

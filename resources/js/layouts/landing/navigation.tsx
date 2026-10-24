@@ -47,7 +47,10 @@ export default function Navigation({
     return (
         <nav
             id="navigation-menu"
-            aria-label={__('landing.layout.navigation.title', 'Menu de navigation')}
+            aria-label={__(
+                'landing.layout.navigation.title',
+                'Menu de navigation',
+            )}
             className={cn(
                 'pointer-events-none fixed inset-0 z-2000 translate-y-[-100%] opacity-0',
                 'flex items-end justify-start',
@@ -138,16 +141,40 @@ function NavigationContent({
     showNavigationContent,
     handleMenuToggle,
 }: NavigationContentProps) {
-
     const __ = useTrans();
 
     const links: Link[] = useMemo(
         () => [
-            { index: '01', href: '#top', label: __('landing.layout.navigation.home', 'Home'), show: false },
-            { index: '02', href: '#about', label: __('landing.layout.navigation.about', 'About'), show: false },
-            { index: '03', href: '#projects', label: __('landing.layout.navigation.projects', 'Projects'), show: false },
-            { index: '04', href: '#sandbox', label: __('landing.layout.navigation.sandbox', 'Sandbox'), show: false },
-            { index: '05', href: '#contact', label: __('landing.layout.navigation.contact', 'Contact'), show: false },
+            {
+                index: '01',
+                href: '#top',
+                label: __('landing.layout.navigation.home', 'Home'),
+                show: false,
+            },
+            {
+                index: '02',
+                href: '#about',
+                label: __('landing.layout.navigation.about', 'About'),
+                show: false,
+            },
+            {
+                index: '03',
+                href: '#projects',
+                label: __('landing.layout.navigation.projects', 'Projects'),
+                show: false,
+            },
+            {
+                index: '04',
+                href: '#sandbox',
+                label: __('landing.layout.navigation.sandbox', 'Sandbox'),
+                show: false,
+            },
+            {
+                index: '05',
+                href: '#contact',
+                label: __('landing.layout.navigation.contact', 'Contact'),
+                show: false,
+            },
         ],
         [__],
     );
@@ -220,9 +247,13 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     }
 
     return (
-        <Curtain showCurtain={!show} className='w-max'>
+        <Curtain showCurtain={!show} className="w-max">
             <a
-                aria-label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: label.toLowerCase() })}
+                aria-label={__(
+                    'landing.seo.scroll_to_section',
+                    'Scroll to :section section',
+                    { section: label.toLowerCase() },
+                )}
                 {...(show
                     ? { href: currentUrl === homePath ? href : route('home') }
                     : {})}
@@ -244,7 +275,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
                     handleProjectClick(
                         e,
                         currentUrl === homePath ? href : route('home'),
-                        href.replace('#', '')
+                        href.replace('#', ''),
                     )
                 }
             >

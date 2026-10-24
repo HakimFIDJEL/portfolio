@@ -9,11 +9,13 @@ import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
 
 interface RoundedButtonProps {
     children: React.ReactNode;
-    onClick?: (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
+    onClick?: (
+        e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
+    ) => void;
     href?: string;
     target?: string;
     className?: string;
@@ -82,12 +84,8 @@ export default function RoundedButton({
 
     return (
         <Tooltip>
-            <TooltipTrigger asChild>
-                {renderButton()}
-            </TooltipTrigger>
-            <TooltipContent>
-                {aria_label}
-            </TooltipContent>
+            <TooltipTrigger asChild>{renderButton()}</TooltipTrigger>
+            <TooltipContent>{aria_label}</TooltipContent>
         </Tooltip>
     );
 
@@ -95,7 +93,7 @@ export default function RoundedButton({
         const commonClassName = cn(
             // Default styles
             'cursor-pointer',
-            'relative rounded-full p-3 inline-flex items-center justify-center',
+            'relative inline-flex items-center justify-center rounded-full p-3',
             'border border-primary',
             'bg-transparent text-primary',
 
@@ -103,7 +101,7 @@ export default function RoundedButton({
 
             // Hover & Focus styles
             'hover:text-primary-foreground',
-            'focus-visible:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+            'focus-visible:text-primary-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none',
 
             // Disabled styles
             disabled &&
@@ -125,7 +123,7 @@ export default function RoundedButton({
                 >
                     <div
                         className={cn(
-                            'flex items-center justify-center origin-center transition-all duration-100 transform',
+                            'flex origin-center transform items-center justify-center transition-all duration-100',
                             isShrunk
                                 ? 'scale-75 opacity-0 ease-in'
                                 : 'scale-100 opacity-100 ease-out',
@@ -186,5 +184,3 @@ export default function RoundedButton({
         );
     }
 }
-
-

@@ -82,7 +82,7 @@ export default function Sandbox({
         <section
             className={cn(
                 // Default styles
-                'flex items-stretch justify-between scroll-mt-24',
+                'flex scroll-mt-24 items-stretch justify-between',
                 'relative w-full border-t border-b border-dashed',
 
                 // Responsive styles

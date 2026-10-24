@@ -76,7 +76,9 @@ export default function ForgotPassword() {
                             </Button>
                             <div className="space-x-1 text-center text-sm text-muted-foreground">
                                 <span>
-                                    {__('auth.pages.forgot_password.return_text')}
+                                    {__(
+                                        'auth.pages.forgot_password.return_text',
+                                    )}
                                 </span>
                                 <Button
                                     asChild
@@ -87,7 +89,9 @@ export default function ForgotPassword() {
                                     tabIndex={3}
                                 >
                                     <Link href={route('auth.login')}>
-                                        {__('auth.pages.forgot_password.login_link')}
+                                        {__(
+                                            'auth.pages.forgot_password.login_link',
+                                        )}
                                     </Link>
                                 </Button>
                             </div>

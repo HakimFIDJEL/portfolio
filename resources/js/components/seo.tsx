@@ -1,7 +1,7 @@
 // resources/js/components/seo.tsx
 
-import { Head, usePage } from '@inertiajs/react';
 import { type SharedData } from '@/types';
+import { Head, usePage } from '@inertiajs/react';
 
 interface SeoProps {
     title?: string;
@@ -46,7 +46,9 @@ export default function Seo({
     const defaultImage = `${origin}/apple-touch-icon.png`;
     const metaImage = image || defaultImage;
 
-    const fullTitle = title ? `${title} | ${siteName}` : `${siteName} — Ingénieur en génie informatique`;
+    const fullTitle = title
+        ? `${title} | ${siteName}`
+        : `${siteName} — Ingénieur en génie informatique`;
     const metaDescription =
         description ||
         (currentLocale === 'fr'
@@ -91,8 +93,15 @@ export default function Seo({
             <meta property="og:image:alt" content={fullTitle} />
 
             {/* Dates pour les articles/projets */}
-            {publishedTime && <meta property="article:published_time" content={publishedTime} />}
-            {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+            {publishedTime && (
+                <meta
+                    property="article:published_time"
+                    content={publishedTime}
+                />
+            )}
+            {modifiedTime && (
+                <meta property="article:modified_time" content={modifiedTime} />
+            )}
 
             {/* Twitter Cards */}
             <meta name="twitter:card" content="summary_large_image" />

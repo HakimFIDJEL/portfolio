@@ -17,28 +17,25 @@ import { ArrowUpRight } from 'lucide-react';
 import { type Contact as ContactType } from '@/types';
 
 // Translation
-import { useTrans } from '@/lib/translation';
 import { GetIcon } from '@/lib/render';
+import { useTrans } from '@/lib/translation';
 
 interface ContactProps {
     appear: boolean;
     contacts: ContactType[];
 }
 export default function Contact({ appear, contacts }: ContactProps) {
-
     const __ = useTrans();
 
     return (
         <section
             className={cn(
                 // Default styles
-                'flex flex-col scroll-mt-24',
+                'flex scroll-mt-24 flex-col',
                 'mt-0 sm:mt-36',
             )}
             id="contact"
         >
-
-
             {/* Borders */}
             <div
                 className={cn(
@@ -59,12 +56,14 @@ export default function Contact({ appear, contacts }: ContactProps) {
                 ></div>
             </div>
 
-            <div className={cn(
-                // Responsive styles
-                'px-6 sm:px-0',
-                'border-t border-b border-dashed',
-                'sm:border-0',
-            )}>
+            <div
+                className={cn(
+                    // Responsive styles
+                    'px-6 sm:px-0',
+                    'border-t border-b border-dashed',
+                    'sm:border-0',
+                )}
+            >
                 {/* Title */}
                 <Delimiter
                     dashedBorders={['all']}
@@ -114,7 +113,10 @@ export default function Contact({ appear, contacts }: ContactProps) {
                             delay={250}
                         >
                             <p>
-                                {__('landing.landing.contact.p_1', "Let's get in touch shall we ?")}
+                                {__(
+                                    'landing.landing.contact.p_1',
+                                    "Let's get in touch shall we ?",
+                                )}
                             </p>
                         </Curtain>
                         <Curtain
@@ -123,7 +125,10 @@ export default function Contact({ appear, contacts }: ContactProps) {
                             delay={250}
                         >
                             <UnderlineLink
-                                aria_label={__('landing.seo.scroll_to_top', 'Scroll to top of the page')}
+                                aria_label={__(
+                                    'landing.seo.scroll_to_top',
+                                    'Scroll to top of the page',
+                                )}
                                 showUnderline
                                 href="#top"
                                 className={cn(
@@ -135,7 +140,10 @@ export default function Contact({ appear, contacts }: ContactProps) {
                                     'md:translate-x-[8px]',
                                 )}
                             >
-                                {__('landing.landing.contact.top', 'Back to top')}
+                                {__(
+                                    'landing.landing.contact.top',
+                                    'Back to top',
+                                )}
                                 <ArrowUpRight
                                     size={32}
                                     className="stroke-1 transition-all group-hover:-rotate-45 group-focus-visible:-rotate-45"
@@ -177,7 +185,10 @@ export default function Contact({ appear, contacts }: ContactProps) {
                             delay={250}
                         >
                             <p>
-                                {__('landing.landing.contact.p_2', "Reach out to talk projects, job offers, or even a good game. I'm quick to reply.")}
+                                {__(
+                                    'landing.landing.contact.p_2',
+                                    "Reach out to talk projects, job offers, or even a good game. I'm quick to reply.",
+                                )}
                             </p>
                         </Curtain>
                     </div>
@@ -242,7 +253,15 @@ interface ContactItemProps {
 }
 
 function ContactItem({ item }: ContactItemProps) {
-    const IconComponent = <GetIcon icon={item.icon} props={{ className: 'h-6 w-6 stroke-2 text-primary transition-all duration-500 group-hover:text-primary-foreground group-focus-visible:text-primary-foreground' }} />;
+    const IconComponent = (
+        <GetIcon
+            icon={item.icon}
+            props={{
+                className:
+                    'h-6 w-6 stroke-2 text-primary transition-all duration-500 group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
+            }}
+        />
+    );
 
     return (
         <Magnet magnetStrength={25} padding={10} wrapperClassName="w-full">
@@ -251,17 +270,31 @@ function ContactItem({ item }: ContactItemProps) {
                     'flex flex-col items-center justify-between',
                     'group border transition-all duration-500',
                     'hover:border-primary hover:bg-primary hover:duration-1000',
-                    'focus-visible:border-primary focus-visible:bg-primary focus-visible:duration-1000 focus-visible:outline-none'
+                    'focus-visible:border-primary focus-visible:bg-primary focus-visible:duration-1000 focus-visible:outline-none',
                 )}
                 href={item.link}
                 target="_blank"
             >
-                <div className={cn('flex items-center justify-center gap-2 border-b bg-card', 'w-full p-4 transition-all duration-500', 'group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:duration-1000', 'group-focus-visible:border-primary group-focus-visible:bg-primary group-focus-visible:text-primary-foreground group-focus-visible:duration-1000')}>
+                <div
+                    className={cn(
+                        'flex items-center justify-center gap-2 border-b bg-card',
+                        'w-full p-4 transition-all duration-500',
+                        'group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:duration-1000',
+                        'group-focus-visible:border-primary group-focus-visible:bg-primary group-focus-visible:text-primary-foreground group-focus-visible:duration-1000',
+                    )}
+                >
                     {IconComponent}
                     <span className="font-semibold">{item.label}</span>
                 </div>
 
-                <div className={cn('flex items-center justify-center gap-2 bg-background', 'w-full p-4 underline transition-all duration-500', 'group-hover:border-primary group-hover:bg-card group-hover:duration-1000', 'group-focus-visible:border-primary group-focus-visible:bg-card group-focus-visible:duration-1000')}>
+                <div
+                    className={cn(
+                        'flex items-center justify-center gap-2 bg-background',
+                        'w-full p-4 underline transition-all duration-500',
+                        'group-hover:border-primary group-hover:bg-card group-hover:duration-1000',
+                        'group-focus-visible:border-primary group-focus-visible:bg-card group-focus-visible:duration-1000',
+                    )}
+                >
                     {item.name}
                 </div>
             </a>

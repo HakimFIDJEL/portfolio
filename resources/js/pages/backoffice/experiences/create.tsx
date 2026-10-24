@@ -75,16 +75,19 @@ export default function Create() {
             <Head title="Create Experience" />
 
             <Card>
-                <CardHeader className='flex flex-col md:items-center justify-between md:flex-row'>
-                    <div className='flex flex-col'>
+                <CardHeader className="flex flex-col justify-between md:flex-row md:items-center">
+                    <div className="flex flex-col">
                         <CardTitle>Create an experience</CardTitle>
                         <CardDescription>
                             Fill in the form below to create a new experience.
                         </CardDescription>
                     </div>
-                    <CardAction className="flex flex-col md:items-center justify-between md:flex-row gap-2 w-full md:w-auto">
+                    <CardAction className="flex w-full flex-col justify-between gap-2 md:w-auto md:flex-row md:items-center">
                         <Link href={route('backoffice.experiences.index')}>
-                            <Button variant={'outline'} className="w-full md:w-auto">
+                            <Button
+                                variant={'outline'}
+                                className="w-full md:w-auto"
+                            >
                                 <ArrowLeft />
                                 Go back
                             </Button>
@@ -209,13 +212,18 @@ export default function Create() {
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <Label htmlFor="description_en">Description (EN)</Label>
+                                <Label htmlFor="description_en">
+                                    Description (EN)
+                                </Label>
                                 <Textarea
                                     id="description_en"
                                     value={data.description_en || ''}
                                     placeholder="Enter a description (EN)"
                                     onChange={(e) =>
-                                        setData('description_en', e.target.value)
+                                        setData(
+                                            'description_en',
+                                            e.target.value,
+                                        )
                                     }
                                     aria-invalid={
                                         errors.description_en ? 'true' : 'false'
@@ -225,13 +233,18 @@ export default function Create() {
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <Label htmlFor="description_fr">Description (FR)</Label>
+                                <Label htmlFor="description_fr">
+                                    Description (FR)
+                                </Label>
                                 <Textarea
                                     id="description_fr"
                                     value={data.description_fr || ''}
                                     placeholder="Enter a description (FR)"
                                     onChange={(e) =>
-                                        setData('description_fr', e.target.value)
+                                        setData(
+                                            'description_fr',
+                                            e.target.value,
+                                        )
                                     }
                                     aria-invalid={
                                         errors.description_fr ? 'true' : 'false'

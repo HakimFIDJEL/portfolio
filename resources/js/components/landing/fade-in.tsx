@@ -2,7 +2,7 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView } from 'motion/react';
 import React from 'react';
 
 interface FadeInProps {

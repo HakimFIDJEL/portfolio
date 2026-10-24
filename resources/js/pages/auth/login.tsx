@@ -39,9 +39,7 @@ export default function Login({
     return (
         <AuthLayout
             title={__('auth.pages.login.title')}
-            description={__(
-                'auth.pages.login.description',
-            )}
+            description={__('auth.pages.login.description')}
         >
             <Head title={__('auth.pages.login.header')} />
 
@@ -79,9 +77,7 @@ export default function Login({
                         <div className="grid gap-2">
                             <div className="flex items-center">
                                 <Label htmlFor="password">
-                                    {__(
-                                        'auth.pages.login.password_label',
-                                    )}
+                                    {__('auth.pages.login.password_label')}
                                 </Label>
                                 {canResetPassword && (
                                     <Button
@@ -176,9 +172,7 @@ export default function Login({
                                 tabIndex={7}
                             >
                                 <Link href={route('home')}>
-                                    {__(
-                                        'auth.pages.login.home_link',
-                                    )}
+                                    {__('auth.pages.login.home_link')}
                                 </Link>
                             </Button>
                         </div>

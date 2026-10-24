@@ -265,7 +265,10 @@ export default function Hero({ appear, project }: HeroProps) {
                             >
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
-                                        href={project?.source_code_url || undefined}
+                                        href={
+                                            project?.source_code_url ||
+                                            undefined
+                                        }
                                         target="_blank"
                                         disabled={!project?.source_code_url}
                                         tabIndex={
@@ -287,7 +290,9 @@ export default function Hero({ appear, project }: HeroProps) {
                             >
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
-                                        href={project?.live_demo_url || undefined}
+                                        href={
+                                            project?.live_demo_url || undefined
+                                        }
                                         target="_blank"
                                         disabled={!project?.live_demo_url}
                                         tabIndex={

@@ -56,7 +56,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
         <section
             className={cn(
                 // Default styles
-                'flex flex-col scroll-mt-24',
+                'flex scroll-mt-24 flex-col',
 
                 // Before pseudo-element styles
                 'mb-0 lg:mb-48',

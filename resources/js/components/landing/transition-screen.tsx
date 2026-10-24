@@ -12,7 +12,10 @@ interface TransitionScreenProps {
     mode: 'instant' | 'staggered';
 }
 
-export default function TransitionScreen({ active, mode = 'staggered' }: TransitionScreenProps) {
+export default function TransitionScreen({
+    active,
+    mode = 'staggered',
+}: TransitionScreenProps) {
     const panelIndices = useMemo(() => PANEL_INDICES, []);
     const [visiblePanels, setVisiblePanels] = useState<number[]>([]);
 
