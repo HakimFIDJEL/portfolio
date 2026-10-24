@@ -651,6 +651,8 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                     >
                         {/* Code source */}
                         <RoundedButton
+                            href={item?.source_code_url || undefined}
+                            target="_blank"
                             disabled={!item?.source_code_url}
                             aria_label={__(
                                 'landing.seo.view_source_code',
@@ -661,23 +663,13 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                 open && item && item.source_code_url ? 0 : -1
                             }
                         >
-                            <a
-                                {...(item?.source_code_url && {
-                                    href: item.source_code_url,
-                                })}
-                                target="_blank"
-                                tabIndex={
-                                    open && item && item.source_code_url
-                                        ? 0
-                                        : -1
-                                }
-                            >
-                                <Code2 />
-                            </a>
+                            <Code2 />
                         </RoundedButton>
 
                         {/* Live demo */}
                         <RoundedButton
+                            href={item?.live_demo_url || undefined}
+                            target="_blank"
                             disabled={!item?.live_demo_url}
                             aria_label={__(
                                 'landing.seo.view_live_demo',
@@ -688,17 +680,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                 open && item && item.live_demo_url ? 0 : -1
                             }
                         >
-                            <a
-                                {...(item?.live_demo_url && {
-                                    href: item.live_demo_url,
-                                })}
-                                target="_blank"
-                                tabIndex={
-                                    open && item && item.live_demo_url ? 0 : -1
-                                }
-                            >
-                                <SquareArrowOutUpRight />
-                            </a>
+                            <SquareArrowOutUpRight />
                         </RoundedButton>
 
                         {/* Code source */}

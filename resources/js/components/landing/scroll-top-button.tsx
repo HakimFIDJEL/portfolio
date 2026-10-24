@@ -65,25 +65,19 @@ export default function ScrollTopButton({ appear }: ScrollTopButtonProps) {
                     'translate-x-[-25%] sm:translate-x-[50%] xl:translate-x-[125%] 2xl:translate-x-[200%]',
                 )}
             >
-                <a
-                    href="#top"
+                <RoundedButton
+                    className="bg-background"
                     tabIndex={isVisible && appear ? 0 : -1}
-                    aria-label={__(
+                    aria_label={__(
                         'landing.seo.scroll_to_top',
                         'Scroll to top',
                     )}
+                    onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                 >
-                    <RoundedButton
-                        className="bg-background"
-                        tabIndex={isVisible && appear ? 0 : -1}
-                        aria_label={__(
-                            'landing.seo.scroll_to_top',
-                            'Scroll to top',
-                        )}
-                    >
-                        <ArrowUp className="stroke-1" />
-                    </RoundedButton>
-                </a>
+                    <ArrowUp className="stroke-1" />
+                </RoundedButton>
             </Magnet>
         </div>
     );

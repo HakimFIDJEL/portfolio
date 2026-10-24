@@ -14,6 +14,8 @@ import {
 interface RoundedButtonProps {
     children: React.ReactNode;
     onClick?: () => void;
+    href?: string;
+    target?: string;
     className?: string;
     disabled?: boolean;
     tabIndex?: number;
@@ -25,26 +27,14 @@ export default function RoundedButton({
     children,
     className,
     onClick,
+    href,
+    target,
     disabled,
     tabIndex,
     aria_label,
     showTooltip = true,
 }: RoundedButtonProps) {
-    // const [isClicked, setIsClicked] = useState(false);
-
-    // const handleClick = () => {
-    //     setIsClicked(true); // Réduire à l'activation
-
-    //     setTimeout(() => {
-    //         setIsClicked(false); // Agrandir après un court délai
-    //     }, 150); // Ajustez la durée de l'effet
-
-    //     if (onClick) {
-    //         onClick();
-    //     }
-    // };
-
-    if(!showTooltip) {
+    if (!showTooltip) {
         return renderButton(aria_label);
     }
 
@@ -60,32 +50,28 @@ export default function RoundedButton({
     );
 
     function renderButton(title?: string) {
-        return (
-            <button
-                aria-label={aria_label}
-                onClick={disabled ? undefined : onClick}
-                tabIndex={tabIndex}
-                title={title}
-                className={cn(
-                    // Default styles
-                    'cursor-pointer',
-                    'relative rounded-full p-3',
-                    'border border-primary ',
-                    'bg-transparent text-primary',
+        const commonClassName = cn(
+            // Default styles
+            'cursor-pointer',
+            'relative rounded-full p-3 inline-flex items-center justify-center',
+            'border border-primary',
+            'bg-transparent text-primary',
 
-                    'group transition-all',
+            'group transition-all',
 
-                    // Hover & Focus styles
-                    'hover:text-primary-foreground',
-                    'focus-visible:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+            // Hover & Focus styles
+            'hover:text-primary-foreground',
+            'focus-visible:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 
-                    // Disabled styles
-                    disabled &&
-                        'pointer-events-none opacity-50 hover:text-primary focus-visible:text-primary',
+            // Disabled styles
+            disabled &&
+                'pointer-events-none opacity-50 hover:text-primary focus-visible:text-primary',
 
-                    className,
-                )}
-            >
+            className,
+        );
+
+        const content = (
+            <>
                 <div
                     className={cn(
                         // Default styles
@@ -93,7 +79,6 @@ export default function RoundedButton({
                         'h-max',
                         'relative z-1',
                         'w-[24px]',
-                        // isClicked && 'scale-75 opacity-75',
                     )}
                 >
                     {children}
@@ -114,13 +99,41 @@ export default function RoundedButton({
                             'group-hover:inset-0',
                             'group-focus-visible:inset-0',
                         )}
-                    ></div>
+                    />
                 )}
+            </>
+        );
+
+        if (href) {
+            return (
+                <a
+                    href={disabled ? undefined : href}
+                    target={target}
+                    {...(target === '_blank' && { rel: 'noopener noreferrer' })}
+                    aria-label={aria_label}
+                    onClick={disabled ? (e) => e.preventDefault() : onClick}
+                    tabIndex={tabIndex}
+                    title={title}
+                    className={commonClassName}
+                >
+                    {content}
+                </a>
+            );
+        }
+
+        return (
+            <button
+                type="button"
+                aria-label={aria_label}
+                onClick={disabled ? undefined : onClick}
+                tabIndex={tabIndex}
+                title={title}
+                className={commonClassName}
+            >
+                {content}
             </button>
-        )
+        );
     }
-
-
 }
 
 

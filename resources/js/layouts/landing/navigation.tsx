@@ -29,6 +29,21 @@ export default function Navigation({
 }: NavigationProps) {
     const __ = useTrans();
 
+    useEffect(() => {
+        if (!showNavigation) {
+            return;
+        }
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                handleMenuToggle(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [showNavigation, handleMenuToggle]);
+
     return (
         <nav
             id="navigation-menu"

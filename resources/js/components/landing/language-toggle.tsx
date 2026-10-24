@@ -17,27 +17,15 @@ import { SharedData } from '@/types';
 import { useTrans } from '@/lib/translation';
 
 export default function LanguageToggle() {
-
-    const locale = usePage<SharedData>().props.locale;  
+    const locale = usePage<SharedData>().props.locale;
     const __ = useTrans();
 
     const { _navigateToPage } = useLandingContext();
 
-    function handleProjectClick(
-        e: React.MouseEvent<HTMLAnchorElement>,
-        href: string,
-        anchor?: string | null,
-    ) {
-        e.preventDefault();
-        _navigateToPage(href, anchor || null);
-    }
-
     return (
         <Magnet magnetStrength={3} padding={20}>
-            <a
-                href={route('toggle_language')}
-                onClick={(e) => handleProjectClick(e, route('toggle_language'))}
-                aria-label={__(
+            <RoundedButton
+                aria_label={__(
                     'landing.seo.switch_language',
                     'Switch language to :language',
                     {
@@ -47,22 +35,12 @@ export default function LanguageToggle() {
                                 : 'English',
                     },
                 )}
+                onClick={() => {
+                    _navigateToPage(route('toggle_language'), null);
+                }}
             >
-                <RoundedButton
-                    aria_label={__(
-                        'landing.seo.switch_language',
-                        'Switch language to :language',
-                        {
-                            language:
-                                locale.toUpperCase() === 'EN'
-                                    ? 'French'
-                                    : 'Anglais',
-                        },
-                    )}
-                >
-                    {locale.toUpperCase()}
-                </RoundedButton>
-            </a>
+                {locale.toUpperCase()}
+            </RoundedButton>
         </Magnet>
     );
 }
