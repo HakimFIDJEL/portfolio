@@ -67,7 +67,7 @@ export default function ScrollTopButton({ appear }: ScrollTopButtonProps) {
             >
                 <a
                     href="#top"
-                    tabIndex={-1}
+                    tabIndex={isVisible && appear ? 0 : -1}
                     aria-label={__(
                         'landing.seo.scroll_to_top',
                         'Scroll to top',
@@ -75,6 +75,7 @@ export default function ScrollTopButton({ appear }: ScrollTopButtonProps) {
                 >
                     <RoundedButton
                         className="bg-background"
+                        tabIndex={isVisible && appear ? 0 : -1}
                         aria_label={__(
                             'landing.seo.scroll_to_top',
                             'Scroll to top',

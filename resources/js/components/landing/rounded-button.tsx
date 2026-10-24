@@ -77,7 +77,7 @@ export default function RoundedButton({
 
                     // Hover & Focus styles
                     'hover:text-primary-foreground',
-                    'focus-visible:text-primary-foreground focus-visible:outline-none',
+                    'focus-visible:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background',
 
                     // Disabled styles
                     disabled &&

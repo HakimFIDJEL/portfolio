@@ -16,12 +16,14 @@ import { SharedData } from '@/types';
 
 interface HeaderProps {
     showContent: boolean;
+    isNavigationOpen?: boolean;
     handleMenuToggle: (open: boolean) => void;
     navigateToPage: (href: string, anchor: string | null) => void;
 }
 
 export default function Header({
     showContent,
+    isNavigationOpen = false,
     handleMenuToggle,
     navigateToPage,
 }: HeaderProps) {
@@ -98,7 +100,10 @@ export default function Header({
                     'col-span-1',
                 )}
             >
-                <MenuButton handleClick={handleMenuToggle} />
+                <MenuButton
+                    handleClick={handleMenuToggle}
+                    isOpen={isNavigationOpen}
+                />
             </div>
             <div
                 className={cn(
@@ -174,13 +179,17 @@ export default function Header({
 
 interface MenuButtonProps {
     handleClick: (open: boolean) => void;
+    isOpen: boolean;
 }
-function MenuButton({ handleClick }: MenuButtonProps) {
+function MenuButton({ handleClick, isOpen }: MenuButtonProps) {
     const __ = useTrans();
 
     return (
         <button
+            type="button"
             aria-label={__('landing.seo.toggle_menu', 'Toggle menu')}
+            aria-expanded={isOpen}
+            aria-controls="navigation-menu"
             onClick={() => handleClick(true)}
             className={cn(
                 'group flex h-full cursor-pointer flex-col justify-center gap-[8px]',

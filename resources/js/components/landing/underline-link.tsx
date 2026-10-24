@@ -43,7 +43,8 @@ export default function UnderlineLink({
             )}
             onClick={onClick}
             href={href}
-            {...target && { target: target }}
+            {...(target && { target })}
+            {...(target === '_blank' && { rel: 'noopener noreferrer' })}
         >
             {children}
         </a>

@@ -32,7 +32,7 @@ export default function Contact({ appear, contacts }: ContactProps) {
         <section
             className={cn(
                 // Default styles
-                'flex flex-col',
+                'flex flex-col scroll-mt-24',
                 'mt-0 sm:mt-36',
             )}
             id="contact"

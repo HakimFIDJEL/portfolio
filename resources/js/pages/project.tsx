@@ -1,6 +1,7 @@
 // resources/js/pages/project.tsx
 
-import { Head } from '@inertiajs/react';
+// SEO
+import Seo from '@/components/seo';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
@@ -28,13 +29,36 @@ export default function Project({
 }: ProjectProps) {
     const { contentActive } = useLandingContext();
 
+    const firstImage =
+        project.attachments && project.attachments.length > 0
+            ? project.attachments[0].url
+            : undefined;
+
+    const projectJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareSourceCode',
+        name: project.title,
+        description: project.subtitle || project.description || '',
+        programmingLanguage:
+            project.stack_items?.map((item) => item.name) ?? [],
+        codeRepository: project.source_code_url || undefined,
+        author: {
+            '@type': 'Person',
+            name: 'Hakim Fidjel',
+        },
+    };
+
     return (
         <>
-            <Head title={project.title}>
-                <meta name="description" content={project.subtitle} />
-            </Head>
+            <Seo
+                title={project.title}
+                description={project.subtitle}
+                image={firstImage}
+                type="article"
+                jsonLd={projectJsonLd}
+            />
 
-            <main>
+            <main id="main-content">
                 <Hero appear={contentActive} project={project} />
                 <Content
                     appear={contentActive}

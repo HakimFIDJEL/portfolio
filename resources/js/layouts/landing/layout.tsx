@@ -21,11 +21,15 @@ import {
     useLandingContext,
 } from '@/contexts/use-landing-context';
 
+// Translation
+import { useTrans } from '@/lib/translation';
+
 interface AppLandingProps {
     children: ReactNode;
 }
 
 function AppLandingContent({ children }: AppLandingProps) {
+    const __ = useTrans();
     const {
         contentActive,
         navigationWrapperActive,
@@ -41,6 +45,13 @@ function AppLandingContent({ children }: AppLandingProps) {
 
     return (
         <>
+            <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-10000 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus:shadow-lg focus:ring-2 focus:ring-ring focus:outline-none"
+            >
+                {__('landing.seo.skip_to_content', 'Passer au contenu principal')}
+            </a>
+
             <div
                 className={cn(
                     'landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased',
@@ -69,6 +80,7 @@ function AppLandingContent({ children }: AppLandingProps) {
 
                 <Header
                     showContent={contentActive}
+                    isNavigationOpen={navigationWrapperActive}
                     handleMenuToggle={() => setNavigationActive(true)}
                     navigateToPage={_navigateToPage}
                 />

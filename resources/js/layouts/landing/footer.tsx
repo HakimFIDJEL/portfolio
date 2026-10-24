@@ -243,6 +243,7 @@ export default function Footer({ appear }: FooterProps) {
                         {links.map((linkGroup, index) => (
                             <ul
                                 key={`footer-link-group-${index}`}
+                                aria-label={linkGroup.name}
                                 className={cn(
                                     // Default styles
                                     'col-span-1 flex flex-col gap-2',

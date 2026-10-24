@@ -192,6 +192,7 @@ return [
         'switch_language' => 'Changer la langue vers :language',
         'scroll_to_top' => 'Remonter en haut de la page',
         'scroll_to_content' => 'Aller au contenu',
+        'skip_to_content' => 'Passer au contenu principal',
         'scroll_to_section' => 'Aller à la section :section',
         'go_to_link' => 'Aller au lien :link',
         'go_to_dashboard' => 'Aller au tableau de bord',
