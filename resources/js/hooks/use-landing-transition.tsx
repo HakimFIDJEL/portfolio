@@ -12,8 +12,11 @@ export function useLandingTransitions() {
     // -----------------------------------
     // States
     // -----------------------------------
-    // Affichage immédiat du contenu sans fake loading
-    const [contentActive, setContentActive] = useState(true);
+    // Contrôle d'affichage progressif du contenu (rideaux, fade-in)
+    const [contentActive, setContentActive] = useState(false);
+    const [loaderState, setLoaderState] = useState<
+        'intro' | 'transition' | 'none'
+    >('intro');
 
     // Navigation plein écran
     const [navigationActive, setNavigationActive] = useState(false);
@@ -32,16 +35,20 @@ export function useLandingTransitions() {
             mode: 'staggered',
         });
 
-    // Écrans de chargement (désactivés au SSR direct)
-    const [introLoaderWrapperActive] = useState(false);
-    const [introLoaderContentActive] = useState(false);
-    const [transitionLoaderWrapperActive, setTransitionLoaderWrapperActive] =
+    // Écran de chargement d'intro ("Salut, c'est Hakim")
+    const [introLoaderWrapperActive, setIntroLoaderWrapperActive] =
+        useState(true);
+    const [introLoaderContentActive, setIntroLoaderContentActive] =
         useState(false);
-    const [transitionLoaderContentActive, setTransitionLoaderContentActive] =
-        useState(false);
+
+    // Écran de transition de chargement (CoverScreen)
+    const [transitionLoaderWrapperActive] = useState(false);
+    const [transitionLoaderContentActive] = useState(false);
 
     // Gestionnaire de minuteries sécurisé
     const timeouts = useRef<ReturnType<typeof setTimeout>[]>([]);
+    const isFirstMount = useRef(true);
+    const isTransitioningRef = useRef(false);
 
     const safeTimeout = useCallback((callback: () => void, delay: number) => {
         const id = setTimeout(callback, delay);
@@ -70,101 +77,184 @@ export function useLandingTransitions() {
         }
 
         const cleanAnchor = anchor.replace('#', '');
-        const element = document.getElementById(cleanAnchor);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+        const performScroll = () => {
+            const element = document.getElementById(cleanAnchor);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+                return true;
+            }
+            return false;
+        };
+
+        if (!performScroll()) {
+            const timeout1 = setTimeout(performScroll, 100);
+            const timeout2 = setTimeout(performScroll, 300);
+            const timeout3 = setTimeout(performScroll, 600);
+            return () => {
+                clearTimeout(timeout1);
+                clearTimeout(timeout2);
+                clearTimeout(timeout3);
+            };
         }
     }, []);
 
     // -----------------------------------
-    // Navigation déclarative via Inertia
+    // Séquence d'intro ("Salut, c'est Hakim")
+    // -----------------------------------
+    useEffect(() => {
+        if (loaderState === 'intro') {
+            window.scrollTo(0, 0);
+
+            // Ouvrir les rideaux du texte d'intro
+            const openId = safeTimeout(() => {
+                setIntroLoaderContentActive(true);
+            }, 100);
+
+            // Laisser l'intro visible puis refermer le texte
+            const closeId = safeTimeout(() => {
+                setIntroLoaderContentActive(false);
+
+                // Disparition progressive de l'arrière-plan du loader
+                safeTimeout(() => {
+                    setIntroLoaderWrapperActive(false);
+
+                    // Déclencher l'apparition progressive du contenu de la page
+                    safeTimeout(() => {
+                        setContentActive(true);
+                        setLoaderState('none');
+                    }, 500);
+                }, 500);
+            }, 1400);
+
+            return () => {
+                clearTimeout(openId);
+                clearTimeout(closeId);
+            };
+        }
+    }, [loaderState, safeTimeout]);
+
+    // -----------------------------------
+    // Séquences d'ouverture et fermeture du menu
+    // -----------------------------------
+    const _openNavigationSequence = useCallback(() => {
+        // Déployer les volets de transition pour servir de background
+        setTransitionPanelsActive({ active: true, mode: 'staggered' });
+        setContentActive(false);
+
+        safeTimeout(() => {
+            setNavigationWrapperActive(true);
+            safeTimeout(() => {
+                setNavigationContentActive(true);
+            }, 50);
+        }, 500);
+    }, [safeTimeout]);
+
+    const _closeNavigationSequence = useCallback(() => {
+        // Faire disparaître le contenu du menu
+        setNavigationContentActive(false);
+
+        safeTimeout(() => {
+            setNavigationWrapperActive(false);
+
+            // Rétracter les volets de transition
+            safeTimeout(() => {
+                setTransitionPanelsActive({ active: false, mode: 'staggered' });
+
+                // Réafficher progressivement le contenu de la page
+                safeTimeout(() => {
+                    setContentActive(true);
+                }, 500);
+            }, 50);
+        }, 750);
+    }, [safeTimeout]);
+
+    useEffect(() => {
+        if (isFirstMount.current) {
+            isFirstMount.current = false;
+            return;
+        }
+
+        if (navigationActive) {
+            _openNavigationSequence();
+        } else {
+            _closeNavigationSequence();
+        }
+    }, [navigationActive, _openNavigationSequence, _closeNavigationSequence]);
+
+    // -----------------------------------
+    // Navigation inter-pages et changement de langue
     // -----------------------------------
     const _navigateToPage = useCallback(
         (href: string, anchor: string | null = null) => {
-            // Fermer le menu de navigation si ouvert
+            if (isTransitioningRef.current) {
+                return;
+            }
+            isTransitioningRef.current = true;
+
+            // Refermer le contenu du menu si ouvert
             if (navigationActive) {
                 setNavigationContentActive(false);
-                safeTimeout(() => {
-                    setNavigationWrapperActive(false);
-                    setNavigationActive(false);
-                }, 300);
             }
 
             setTargetAnchor(anchor);
-            setTransitionPanelsActive({ active: true, mode: 'staggered' });
 
-            // Laisser le volet couvrir l'écran avant la visite Inertia
+            // Déployer les volets de transition
+            setTransitionPanelsActive({ active: true, mode: 'staggered' });
+            setContentActive(false);
+
+            // Attendre la fin complète de l'apparition des volets (1000ms) avant de lancer le rechargement
             safeTimeout(() => {
-                setTransitionLoaderWrapperActive(true);
-                setTransitionLoaderContentActive(true);
+                if (navigationActive) {
+                    setNavigationWrapperActive(false);
+                    setNavigationActive(false);
+                }
 
                 router.visit(href, {
                     preserveScroll: false,
                     preserveState: false,
                     onFinish: () => {
-                        setTransitionLoaderContentActive(false);
+                        // Si aucune ancre spécifique n'est ciblée, repositionner au sommet
+                        if (!anchor || anchor === 'top') {
+                            window.scrollTo(0, 0);
+                        }
+
+                        // Rétracter les volets une fois le nouveau contenu monté
                         safeTimeout(() => {
-                            setTransitionLoaderWrapperActive(false);
                             setTransitionPanelsActive({
                                 active: false,
                                 mode: 'staggered',
                             });
-                            setContentActive(true);
-                            if (anchor) {
-                                scrollToAnchor(anchor);
-                                setTargetAnchor(null);
-                            }
-                        }, 250);
+
+                            // Faire réapparaître le nouveau contenu progressivement
+                            safeTimeout(() => {
+                                setContentActive(true);
+                                isTransitioningRef.current = false;
+                            }, 500);
+                        }, 100);
+                    },
+                    onError: () => {
+                        setTransitionPanelsActive({
+                            active: false,
+                            mode: 'staggered',
+                        });
+                        setContentActive(true);
+                        setTargetAnchor(null);
+                        isTransitioningRef.current = false;
                     },
                 });
-            }, 350);
+            }, 1000);
         },
-        [navigationActive, safeTimeout, scrollToAnchor],
+        [navigationActive, safeTimeout],
     );
 
-    // -----------------------------------
-    // Synchronisation du menu de navigation
-    // -----------------------------------
+    // Défilement différé vers l'ancre lorsque le contenu de la nouvelle page est actif
     useEffect(() => {
-        if (navigationActive) {
-            setNavigationWrapperActive(true);
-            const id = safeTimeout(() => {
-                setNavigationContentActive(true);
-            }, 50);
-            return () => clearTimeout(id);
-        } else {
-            setNavigationContentActive(false);
-            const id = safeTimeout(() => {
-                setNavigationWrapperActive(false);
-            }, 300);
-            return () => clearTimeout(id);
+        if (contentActive && targetAnchor) {
+            const cleanup = scrollToAnchor(targetAnchor);
+            setTargetAnchor(null);
+            return typeof cleanup === 'function' ? cleanup : undefined;
         }
-    }, [navigationActive, safeTimeout]);
-
-    // -----------------------------------
-    // Écouteurs déclaratifs d'événements Inertia
-    // -----------------------------------
-    useEffect(() => {
-        const removeStart = router.on('start', () => {
-            setTransitionPanelsActive((prev) =>
-                prev.active ? prev : { active: true, mode: 'staggered' },
-            );
-        });
-
-        const removeFinish = router.on('finish', () => {
-            setTransitionPanelsActive({ active: false, mode: 'staggered' });
-            setContentActive(true);
-            if (targetAnchor) {
-                scrollToAnchor(targetAnchor);
-                setTargetAnchor(null);
-            }
-        });
-
-        return () => {
-            removeStart();
-            removeFinish();
-        };
-    }, [targetAnchor, scrollToAnchor]);
+    }, [contentActive, targetAnchor, scrollToAnchor]);
 
     return {
         // Paramètres de contenu
@@ -173,7 +263,15 @@ export function useLandingTransitions() {
         fetchingData: false,
         setFetchingData: () => {},
 
-        // Navigation
+        // Loader intro & transition
+        loaderState,
+        setLoaderState,
+        introLoaderWrapperActive,
+        introLoaderContentActive,
+        transitionLoaderWrapperActive,
+        transitionLoaderContentActive,
+
+        // Navigation plein écran
         navigationActive,
         navigationWrapperActive,
         navigationContentActive,
@@ -182,10 +280,6 @@ export function useLandingTransitions() {
 
         // Panneaux et volets
         transitionPanelsActive,
-        introLoaderWrapperActive,
-        introLoaderContentActive,
-        transitionLoaderWrapperActive,
-        transitionLoaderContentActive,
 
         // Actions
         _navigateToPage,

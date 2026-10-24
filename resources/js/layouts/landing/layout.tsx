@@ -12,6 +12,7 @@ import ScrollTopButton from '@/components/landing/scroll-top-button';
 import TransitionScreen from '@/components/landing/transition-screen';
 import Footer from '@/layouts/landing/footer';
 import Header from '@/layouts/landing/header';
+import Loader from '@/layouts/landing/loader';
 import Navigation from '@/layouts/landing/navigation';
 
 // Contexts
@@ -30,6 +31,8 @@ function AppLandingContent({ children }: AppLandingProps) {
         navigationWrapperActive,
         navigationContentActive,
         transitionPanelsActive,
+        introLoaderWrapperActive,
+        introLoaderContentActive,
         transitionLoaderWrapperActive,
         transitionLoaderContentActive,
         setNavigationActive,
@@ -43,6 +46,11 @@ function AppLandingContent({ children }: AppLandingProps) {
                     'landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased',
                 )}
             >
+                <Loader
+                    showLoader={introLoaderWrapperActive}
+                    showLoaderContent={introLoaderContentActive}
+                />
+
                 <TransitionScreen
                     active={transitionPanelsActive.active}
                     mode={transitionPanelsActive.mode}

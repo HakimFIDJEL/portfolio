@@ -12,6 +12,7 @@ use App\Models\Backoffice\Stack;
 use App\Models\Backoffice\Tool;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
@@ -118,11 +119,16 @@ class Landing extends Controller
     }
 
     /**
-     * Basculer la langue active de l'application (fr <-> en).
+     * Basculer la langue active de l'application (fr <-> en) ou définir une langue spécifique.
      */
-    public function toggle_language(): RedirectResponse
+    public function toggle_language(Request $request): RedirectResponse
     {
-        $newLocale = App::getLocale() === 'en' ? 'fr' : 'en';
+        $requested = (string) $request->query('locale');
+        if (in_array($requested, ['fr', 'en'], true)) {
+            $newLocale = $requested;
+        } else {
+            $newLocale = App::getLocale() === 'en' ? 'fr' : 'en';
+        }
 
         Session::put('locale', $newLocale);
         App::setLocale($newLocale);
