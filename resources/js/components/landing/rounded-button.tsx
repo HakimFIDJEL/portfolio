@@ -2,7 +2,7 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // Shadcn UI components
 import {
@@ -13,7 +13,7 @@ import {
 
 interface RoundedButtonProps {
     children: React.ReactNode;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
     href?: string;
     target?: string;
     className?: string;
@@ -34,6 +34,48 @@ export default function RoundedButton({
     aria_label,
     showTooltip = true,
 }: RoundedButtonProps) {
+    const [displayedChildren, setDisplayedChildren] = useState(children);
+    const [isShrunk, setIsShrunk] = useState(false);
+    const latestChildrenRef = useRef(children);
+    latestChildrenRef.current = children;
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        if (!isShrunk) {
+            setDisplayedChildren(children);
+        }
+    }, [children, isShrunk]);
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
+
+    const handleClick = (
+        e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
+    ) => {
+        if (disabled) {
+            e.preventDefault();
+            return;
+        }
+
+        setIsShrunk(true);
+
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            setDisplayedChildren(latestChildrenRef.current);
+            setIsShrunk(false);
+        }, 100);
+
+        onClick?.(e);
+    };
+
     if (!showTooltip) {
         return renderButton(aria_label);
     }
@@ -75,13 +117,22 @@ export default function RoundedButton({
                 <div
                     className={cn(
                         // Default styles
-                        'transition-all flex items-center justify-center duration-0',
+                        'flex items-center justify-center',
                         'h-max',
                         'relative z-1',
                         'w-[24px]',
                     )}
                 >
-                    {children}
+                    <div
+                        className={cn(
+                            'flex items-center justify-center origin-center transition-all duration-100 transform',
+                            isShrunk
+                                ? 'scale-75 opacity-0 ease-in'
+                                : 'scale-100 opacity-100 ease-out',
+                        )}
+                    >
+                        {displayedChildren}
+                    </div>
                 </div>
 
                 {!disabled && (
@@ -111,7 +162,7 @@ export default function RoundedButton({
                     target={target}
                     {...(target === '_blank' && { rel: 'noopener noreferrer' })}
                     aria-label={aria_label}
-                    onClick={disabled ? (e) => e.preventDefault() : onClick}
+                    onClick={handleClick}
                     tabIndex={tabIndex}
                     title={title}
                     className={commonClassName}
@@ -125,7 +176,7 @@ export default function RoundedButton({
             <button
                 type="button"
                 aria-label={aria_label}
-                onClick={disabled ? undefined : onClick}
+                onClick={handleClick}
                 tabIndex={tabIndex}
                 title={title}
                 className={commonClassName}
