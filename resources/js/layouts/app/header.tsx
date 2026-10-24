@@ -1,3 +1,4 @@
+import AppearanceToggleDropdown from '@/components/appearance-dropdown';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import LanguageToggleDropdown from '@/components/language-dropdown';
 import { SidebarTrigger } from '@/components/ui/sidebar';
@@ -16,6 +17,7 @@ export function AppHeader({
             </div>
             <div className="flex items-center gap-2">
                 <LanguageToggleDropdown />
+                <AppearanceToggleDropdown />
             </div>
         </header>
     );

@@ -57,9 +57,11 @@ export default function Appearance({ themes }: { themes: Theme[] }) {
                     <HeadingSmall
                         title={__(
                             'settings.pages.appearance.language_form.title',
+                            'Langue d’affichage',
                         )}
                         description={__(
                             'settings.pages.appearance.language_form.description',
+                            'Sélectionnez la langue de l’interface pour votre compte.',
                         )}
                     />
                     <LanguageToggle />
