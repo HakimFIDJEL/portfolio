@@ -67,17 +67,20 @@ function AppLandingContent({ children }: AppLandingProps) {
                     handleMenuToggle={() => setNavigationActive(false)}
                 />
 
-                <Header
-                    showContent={contentActive}
-                    handleMenuToggle={() => setNavigationActive(true)}
-                    navigateToPage={_navigateToPage}
-                />
+                <div inert={navigationWrapperActive}>
+                    <Header
+                        showContent={contentActive}
+                        isNavigationOpen={navigationWrapperActive}
+                        handleMenuToggle={() => setNavigationActive(true)}
+                        navigateToPage={_navigateToPage}
+                    />
 
-                {children}
+                    {children}
 
-                <Footer appear={contentActive} />
+                    <Footer appear={contentActive} />
 
-                <ScrollTopButton appear={contentActive} />
+                    <ScrollTopButton appear={contentActive} />
+                </div>
             </div>
             <PlaceholderPattern className="fixed inset-0 z-0 size-full h-[100vh] w-[100vw] stroke-neutral-900/20 dark:stroke-neutral-100/20" />
         </>

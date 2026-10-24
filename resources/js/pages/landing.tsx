@@ -1,6 +1,9 @@
 // resources/js/pages/landing.tsx
 
-import { Head } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
+
+// SEO
+import Seo from '@/components/seo';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
@@ -21,6 +24,7 @@ import {
     Education as EducationType,
     Experience as ExperienceType,
     Project,
+    SharedData,
     Stack,
     Tool,
 } from '@/types';
@@ -48,21 +52,82 @@ export default function Landing({
     sandbox = [],
 }: LandingProps) {
     const { contentActive } = useLandingContext();
+    const { props } = usePage<SharedData>();
     const __ = useTrans();
+
+    const locale = props.locale || 'fr';
+    const ziggyLocation =
+        typeof props.ziggy === 'object' &&
+        props.ziggy !== null &&
+        'location' in props.ziggy
+            ? String((props.ziggy as { location?: unknown }).location)
+            : '';
+
+    const siteUrl =
+        typeof window !== 'undefined'
+            ? window.location.origin
+            : ziggyLocation
+              ? new URL(ziggyLocation).origin
+              : 'https://hakimfidjel.fr';
+
+    const jsonLd = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'Hakim Fidjel — Portfolio',
+            url: siteUrl,
+            inLanguage: ['fr', 'en'],
+            author: {
+                '@type': 'Person',
+                name: 'Hakim Fidjel',
+            },
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: 'Hakim Fidjel',
+            url: siteUrl,
+            jobTitle:
+                locale === 'fr'
+                    ? 'Ingénieur en génie informatique & Développeur FullStack'
+                    : 'Computer Engineering Apprentice & FullStack Developer',
+            worksFor: {
+                '@type': 'Organization',
+                name: 'TenderCrunch',
+                url: 'https://tendercrunch.com',
+            },
+            alumniOf: {
+                '@type': 'EducationalOrganization',
+                name: 'IG2I — Centrale Lille Institut',
+            },
+            sameAs: [
+                'https://github.com/HakimFIDJEL',
+                'https://www.linkedin.com/in/hakim-fidjel',
+            ],
+            knowsAbout: [
+                'Laravel',
+                'PHP',
+                'React',
+                'TypeScript',
+                'Docker',
+                'Tailwind CSS',
+                'Inertia.js',
+                'Software Architecture',
+            ],
+        },
+    ];
 
     return (
         <>
-            <Head>
-                <meta
-                    name="description"
-                    content={__(
-                        'landing.landing.meta_description',
-                        "Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering.",
-                    )}
-                />
-            </Head>
+            <Seo
+                description={__(
+                    'landing.landing.meta_description',
+                    "Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering.",
+                )}
+                jsonLd={jsonLd}
+            />
 
-            <main>
+            <main id="main-content">
                 <Hero appear={contentActive} />
                 <About
                     appear={contentActive}

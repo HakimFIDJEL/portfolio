@@ -50,7 +50,7 @@ export default function About({
         <section
             className={cn(
                 // Default styles
-                'mt-48 flex flex-col',
+                'mt-48 flex flex-col scroll-mt-24',
 
                 // Responsive styles
                 'gap-0 md:gap-12 lg:gap-36',

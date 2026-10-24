@@ -27,8 +27,27 @@ export default function Navigation({
     showNavigationContent,
     handleMenuToggle,
 }: NavigationProps) {
+    const __ = useTrans();
+
+    useEffect(() => {
+        if (!showNavigation) {
+            return;
+        }
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                handleMenuToggle(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [showNavigation, handleMenuToggle]);
+
     return (
         <nav
+            id="navigation-menu"
+            aria-label={__('landing.layout.navigation.title', 'Menu de navigation')}
             className={cn(
                 'pointer-events-none fixed inset-0 z-2000 translate-y-[-100%] opacity-0',
                 'flex items-end justify-start',
@@ -89,12 +108,12 @@ interface NavigationButtonProps {
 }
 
 function NavigationButton({ show, handleClick }: NavigationButtonProps) {
-
     const __ = useTrans();
 
     return (
         <button
-            aria-label={__('landing.seo.toggle_menu', 'Toggle menu')}
+            type="button"
+            aria-label={__('landing.seo.close_dialog', 'Fermer le menu')}
             tabIndex={show ? 0 : -1}
             onClick={() => handleClick(false)}
             className={cn(

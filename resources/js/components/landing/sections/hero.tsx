@@ -160,21 +160,13 @@ export default function Hero({ appear }: HeroProps) {
                     >
                         <Magnet magnetStrength={3} padding={20}>
                             <RoundedButton
+                                href="#about"
                                 aria_label={__(
                                     'landing.seo.discover_more_about_me',
                                     'Discover more about me',
                                 )}
                             >
-                                <a
-                                    href="#about"
-                                    tabIndex={-1}
-                                    aria-label={__(
-                                        'landing.seo.discover_more_about_me',
-                                        'Discover more about me',
-                                    )}
-                                >
-                                    <ArrowDown className="stroke-1" />
-                                </a>
+                                <ArrowDown className="stroke-1" />
                             </RoundedButton>
                         </Magnet>
                     </Curtain>

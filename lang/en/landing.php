@@ -190,6 +190,7 @@ return [
         'switch_language' => 'Switch language to :language',
         'scroll_to_top' => 'Scroll to top of the page',
         'scroll_to_content' => 'Scroll to content',
+        'skip_to_content' => 'Skip to main content',
         'scroll_to_section' => 'Scroll to :section section',
         'go_to_link' => 'Go to :link link',
         'go_to_dashboard' => 'Go to dashboard',

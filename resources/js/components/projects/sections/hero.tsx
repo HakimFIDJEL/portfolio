@@ -264,32 +264,20 @@ export default function Hero({ appear, project }: HeroProps) {
                                 delay={500}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <a
-                                        {...(project?.source_code_url && {
-                                            href: project.source_code_url,
-                                        })}
+                                    <RoundedButton
+                                        href={project?.source_code_url || undefined}
                                         target="_blank"
-                                        tabIndex={-1}
-                                        aria-label={__(
+                                        disabled={!project?.source_code_url}
+                                        tabIndex={
+                                            project?.source_code_url ? 0 : -1
+                                        }
+                                        aria_label={__(
                                             'landing.seo.view_source_code',
                                             'View source code',
                                         )}
                                     >
-                                        <RoundedButton
-                                            disabled={!project?.source_code_url}
-                                            tabIndex={
-                                                project?.source_code_url
-                                                    ? 0
-                                                    : -1
-                                            }
-                                            aria_label={__(
-                                                'landing.seo.view_source_code',
-                                                'View source code',
-                                            )}
-                                        >
-                                            <Code2 className="stroke-1" />
-                                        </RoundedButton>
-                                    </a>
+                                        <Code2 className="stroke-1" />
+                                    </RoundedButton>
                                 </Magnet>
                             </Curtain>
                             <Curtain
@@ -298,30 +286,20 @@ export default function Hero({ appear, project }: HeroProps) {
                                 delay={750}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <a
-                                        {...(project?.live_demo_url && {
-                                            href: project.live_demo_url,
-                                        })}
+                                    <RoundedButton
+                                        href={project?.live_demo_url || undefined}
                                         target="_blank"
-                                        tabIndex={-1}
-                                        aria-label={__(
+                                        disabled={!project?.live_demo_url}
+                                        tabIndex={
+                                            project?.live_demo_url ? 0 : -1
+                                        }
+                                        aria_label={__(
                                             'landing.seo.view_live_demo',
                                             'View live demo',
                                         )}
                                     >
-                                        <RoundedButton
-                                            disabled={!project?.live_demo_url}
-                                            tabIndex={
-                                                project?.live_demo_url ? 0 : -1
-                                            }
-                                            aria_label={__(
-                                                'landing.seo.view_live_demo',
-                                                'View live demo',
-                                            )}
-                                        >
-                                            <SquareArrowOutUpRight className="stroke-1" />
-                                        </RoundedButton>
-                                    </a>
+                                        <SquareArrowOutUpRight className="stroke-1" />
+                                    </RoundedButton>
                                 </Magnet>
                             </Curtain>
                         </div>
@@ -370,21 +348,13 @@ export default function Hero({ appear, project }: HeroProps) {
                             >
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
+                                        href="#content"
                                         aria_label={__(
                                             'landing.seo.scroll_to_content',
                                             'Scroll to content',
                                         )}
                                     >
-                                        <a
-                                            href="#content"
-                                            tabIndex={-1}
-                                            aria-label={__(
-                                                'landing.seo.scroll_to_content',
-                                                'Scroll to content',
-                                            )}
-                                        >
-                                            <ArrowDown className="stroke-1" />
-                                        </a>
+                                        <ArrowDown className="stroke-1" />
                                     </RoundedButton>
                                 </Magnet>
                             </Curtain>
