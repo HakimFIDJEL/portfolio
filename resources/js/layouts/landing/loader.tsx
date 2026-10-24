@@ -18,7 +18,6 @@ interface LoaderProps {
 }
 
 export default function Loader({ showLoader, showLoaderContent }: LoaderProps) {
-
     const __ = useTrans();
 
     return (

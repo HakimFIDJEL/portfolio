@@ -163,6 +163,15 @@ return [
                 'title' => 'Color scheme',
                 'description' => 'Choose your preferred color theme.',
             ],
+
+            'language_form' => [
+                'title' => 'Display language',
+                'description' => 'Select the interface language for your account.',
+                'options' => [
+                    'fr' => 'Français',
+                    'en' => 'English',
+                ],
+            ],
         ],
 
         'password' => [

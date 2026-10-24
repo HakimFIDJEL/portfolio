@@ -162,6 +162,15 @@ return [
                 'title' => 'Thème de couleur',
                 'description' => 'Choisissez votre thème de couleur préféré.',
             ],
+
+            'language_form' => [
+                'title' => 'Langue d’affichage',
+                'description' => 'Sélectionnez la langue de l’interface pour votre compte.',
+                'options' => [
+                    'fr' => 'Français',
+                    'en' => 'English',
+                ],
+            ],
         ],
 
         'password' => [

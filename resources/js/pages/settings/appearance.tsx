@@ -2,7 +2,7 @@
 
 // Necessary imports
 import { type Appearance, useAppearance } from '@/hooks/use-appearance';
-import { Head } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 
 // Layout
 import AppLayout from '@/layouts/app/layout';
@@ -19,16 +19,12 @@ import HeadingSmall from '@/components/heading-small';
 import { Icon } from '@/components/icon';
 
 // Types
-import type { BreadcrumbItem, Theme } from '@/types';
+import type { BreadcrumbItem, SharedData, Theme } from '@/types';
 
 // Icons
-import { Monitor, Moon, Sun } from 'lucide-react';
+import { Languages, Monitor, Moon, Sun } from 'lucide-react';
 
-export default function Appearance({
-    themes,
-}: {
-    themes: Theme[];
-}) {
+export default function Appearance({ themes }: { themes: Theme[] }) {
     const __ = useTrans();
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -47,7 +43,7 @@ export default function Appearance({
             <Head title={__('settings.pages.appearance.head_title')} />
 
             <SettingsLayout>
-                <div className="mb-0 space-y-6">
+                <div className="space-y-6">
                     <HeadingSmall
                         title={__('settings.pages.appearance.theme_form.title')}
                         description={__(
@@ -55,6 +51,20 @@ export default function Appearance({
                         )}
                     />
                     <AppearanceToggle themes={themes} />
+                </div>
+
+                <div className="space-y-6">
+                    <HeadingSmall
+                        title={__(
+                            'settings.pages.appearance.language_form.title',
+                            'Langue d’affichage',
+                        )}
+                        description={__(
+                            'settings.pages.appearance.language_form.description',
+                            'Sélectionnez la langue de l’interface pour votre compte.',
+                        )}
+                    />
+                    <LanguageToggle />
                 </div>
             </SettingsLayout>
         </AppLayout>
@@ -91,6 +101,55 @@ function AppearanceToggle({ themes }: { themes: Theme[] }) {
                     >
                         <Icon iconNode={icon} />
                         <span className="hidden sm:inline">{label}</span>
+                    </TabsTrigger>
+                ))}
+            </TabsList>
+        </Tabs>
+    );
+}
+
+function LanguageToggle() {
+    const { locale } = usePage<SharedData>().props;
+    const __ = useTrans();
+
+    const languages = [
+        {
+            value: 'fr',
+            label: __(
+                'settings.pages.appearance.language_form.options.fr',
+                'Français',
+            ),
+        },
+        {
+            value: 'en',
+            label: __(
+                'settings.pages.appearance.language_form.options.en',
+                'English',
+            ),
+        },
+    ];
+
+    const handleChange = (newLocale: string) => {
+        if (newLocale !== locale) {
+            router.get(
+                route('toggle_language', { locale: newLocale }),
+                {},
+                { preserveScroll: true },
+            );
+        }
+    };
+
+    return (
+        <Tabs value={locale} onValueChange={handleChange}>
+            <TabsList className="gap-2">
+                {languages.map(({ value, label }) => (
+                    <TabsTrigger
+                        key={value}
+                        value={value}
+                        className="flex cursor-pointer gap-2 px-4 py-3"
+                    >
+                        <Languages className="h-4 w-4" />
+                        <span>{label}</span>
                     </TabsTrigger>
                 ))}
             </TabsList>

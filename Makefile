@@ -4,7 +4,7 @@
 # ==============================================================================
 
 .DEFAULT_GOAL := help
-.PHONY: help dev dev-down dev-rebuild dev-logs prod-up prod-down prod-logs build \
+.PHONY: help dev-hmr dev-ssr dev-down dev-rebuild dev-logs prod-up prod-down prod-logs build \
         test lint format types check migrate seed fresh ssr clean shell
 
 # Couleurs ANSI
@@ -27,9 +27,22 @@ help: ## Afficher ce menu d'aide interactif
 	@echo ""
 
 ##@ Environnements Docker
-dev: ## Demarrer l'environnement de developpement local (SQLite, override)
-	@echo "$(BLUE)Demarrage de l'environnement local (docker-compose.override.yml)...$(RESET)"
-	docker compose -f docker-compose.yml -f docker-compose.override.yml up -d
+dev-hmr: ## Demarrer l'environnement local avec Vite Hot Module Replacement (HMR instantane)
+	@echo "$(BLUE)Demarrage de l'environnement local avec Vite HMR...$(RESET)"
+	@docker compose -f docker-compose.yml -f docker-compose.override.yml up -d
+	@docker compose -f docker-compose.yml -f docker-compose.override.yml exec app php artisan cache:clear >/dev/null 2>&1 || true
+	@docker compose -f docker-compose.yml -f docker-compose.override.yml exec app php artisan inertia:stop-ssr >/dev/null 2>&1 || true
+	@echo "$(GREEN)Vite HMR pret sur http://localhost:5173 (Application sur http://localhost:8000)$(RESET)"
+	@trap 'rm -f public/hot' INT TERM EXIT; docker compose -f docker-compose.yml -f docker-compose.override.yml exec app npm run dev
+
+dev-ssr: ## Demarrer l'environnement local avec le moteur de rendu SSR Inertia direct
+	@echo "$(BLUE)Demarrage de l'environnement local en mode SSR...$(RESET)"
+	@rm -f public/hot
+	@docker compose -f docker-compose.yml -f docker-compose.override.yml up -d
+	@docker compose -f docker-compose.yml -f docker-compose.override.yml exec app php artisan cache:clear >/dev/null 2>&1 || true
+	@docker compose -f docker-compose.yml -f docker-compose.override.yml exec app php artisan inertia:stop-ssr >/dev/null 2>&1 || true
+	@docker compose -f docker-compose.yml -f docker-compose.override.yml exec -d app php artisan inertia:start-ssr
+	@echo "$(GREEN)Mode SSR actif sur http://localhost:8000 (Serveur SSR sur port interne 13714)$(RESET)"
 
 dev-down: ## Arreter l'environnement local
 	@echo "$(YELLOW)Arret de l'environnement local...$(RESET)"
@@ -37,7 +50,7 @@ dev-down: ## Arreter l'environnement local
 
 dev-rebuild: ## Reconstruire et relancer l'environnement local
 	@echo "$(BLUE)Reconstruction de l'environnement local...$(RESET)"
-	docker compose -f docker-compose.yml -f docker-compose.override.yml up -d --build
+	docker compose -f docker-compose.yml -f docker-compose.override.yml up -d --build -V
 
 dev-logs: ## Suivre les logs de l'environnement local en temps reel
 	docker compose -f docker-compose.yml -f docker-compose.override.yml logs -f app

@@ -9,10 +9,9 @@ import { useAppearance } from '@/hooks/use-appearance';
 // Components
 import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
-import RoundedButton from '@/components/landing/rounded-button';
 import FadeIn from '@/components/landing/fade-in';
 import LanguageToggle from '@/components/landing/language-toggle';
-import CursorToggle from '@/components/landing/cursor-toggle';
+import RoundedButton from '@/components/landing/rounded-button';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
@@ -30,9 +29,6 @@ import {
 // Types
 import { Project } from '@/types';
 
-// Hooks
-import { useIsMobile } from '@/hooks/use-mobile';
-
 // Translation
 import { useTrans } from '@/lib/translation';
 
@@ -44,7 +40,6 @@ interface HeroProps {
 export default function Hero({ appear, project }: HeroProps) {
     const { appearance, updateAppearance } = useAppearance();
     const __ = useTrans();
-    const isMobile = useIsMobile();
 
     function handleSwitchAppearance() {
         const newAppearance =
@@ -159,7 +154,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                 {project.is_new == true && (
                                     <span
                                         className={cn(
-                                        // Default styles
+                                            // Default styles
                                             'border px-2.5 py-0.5 text-sm font-medium',
                                             'transition-all duration-1000',
 
@@ -170,7 +165,10 @@ export default function Hero({ appear, project }: HeroProps) {
                                             'whitespace-nowrap',
                                         )}
                                     >
-                                        {__('landing.projects.sections.new', 'New')}
+                                        {__(
+                                            'landing.projects.sections.new',
+                                            'New',
+                                        )}
                                     </span>
                                 )}
                                 {project.tags
@@ -236,7 +234,7 @@ export default function Hero({ appear, project }: HeroProps) {
                         'gap-4 md:gap-5',
                     )}
                 >
-                    <FadeIn className='w-auto' show={appear} delay={250}>
+                    <FadeIn className="w-auto" show={appear} delay={250}>
                         <p
                             className={cn(
                                 // Default styles
@@ -250,7 +248,7 @@ export default function Hero({ appear, project }: HeroProps) {
                         className={cn(
                             // Default styles
                             'flex flex-wrap items-center gap-5',
-                            
+
                             'shrink-1 md:shrink-0',
                         )}
                     >
@@ -258,7 +256,6 @@ export default function Hero({ appear, project }: HeroProps) {
                             className={cn(
                                 // Default styles
                                 'flex flex-wrap items-center gap-5',
-
                             )}
                         >
                             <Curtain
@@ -273,7 +270,10 @@ export default function Hero({ appear, project }: HeroProps) {
                                         })}
                                         target="_blank"
                                         tabIndex={-1}
-                                        aria-label={__('landing.seo.view_source_code', 'View source code')}
+                                        aria-label={__(
+                                            'landing.seo.view_source_code',
+                                            'View source code',
+                                        )}
                                     >
                                         <RoundedButton
                                             disabled={!project?.source_code_url}
@@ -282,7 +282,10 @@ export default function Hero({ appear, project }: HeroProps) {
                                                     ? 0
                                                     : -1
                                             }
-                                            aria_label={__('landing.seo.view_source_code', 'View source code')}
+                                            aria_label={__(
+                                                'landing.seo.view_source_code',
+                                                'View source code',
+                                            )}
                                         >
                                             <Code2 className="stroke-1" />
                                         </RoundedButton>
@@ -301,14 +304,20 @@ export default function Hero({ appear, project }: HeroProps) {
                                         })}
                                         target="_blank"
                                         tabIndex={-1}
-                                        aria-label={__('landing.seo.view_live_demo', 'View live demo')}
+                                        aria-label={__(
+                                            'landing.seo.view_live_demo',
+                                            'View live demo',
+                                        )}
                                     >
                                         <RoundedButton
                                             disabled={!project?.live_demo_url}
                                             tabIndex={
                                                 project?.live_demo_url ? 0 : -1
                                             }
-                                            aria_label={__('landing.seo.view_live_demo', 'View live demo')}
+                                            aria_label={__(
+                                                'landing.seo.view_live_demo',
+                                                'View live demo',
+                                            )}
                                         >
                                             <SquareArrowOutUpRight className="stroke-1" />
                                         </RoundedButton>
@@ -330,7 +339,10 @@ export default function Hero({ appear, project }: HeroProps) {
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
                                         onClick={handleSwitchAppearance}
-                                        aria_label={__('landing.seo.toggle_appearance', 'Toggle appearance mode')}
+                                        aria_label={__(
+                                            'landing.seo.toggle_appearance',
+                                            'Toggle appearance mode',
+                                        )}
                                     >
                                         {appearance === 'dark' && (
                                             <Moon className="stroke-1" />
@@ -357,22 +369,25 @@ export default function Hero({ appear, project }: HeroProps) {
                                 delay={1500}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton aria_label={__('landing.seo.scroll_to_content', 'Scroll to content')}>
-                                        <a href="#content" tabIndex={-1} aria-label={__('landing.seo.scroll_to_content', 'Scroll to content')}>
+                                    <RoundedButton
+                                        aria_label={__(
+                                            'landing.seo.scroll_to_content',
+                                            'Scroll to content',
+                                        )}
+                                    >
+                                        <a
+                                            href="#content"
+                                            tabIndex={-1}
+                                            aria-label={__(
+                                                'landing.seo.scroll_to_content',
+                                                'Scroll to content',
+                                            )}
+                                        >
                                             <ArrowDown className="stroke-1" />
                                         </a>
                                     </RoundedButton>
                                 </Magnet>
                             </Curtain>
-                            {!isMobile && (
-                                <Curtain
-                                    showCurtain={!appear}
-                                    background="background"
-                                    delay={1750}
-                                >
-                                    <CursorToggle />
-                                </Curtain>
-                            )}
                         </div>
                     </div>
                 </div>
