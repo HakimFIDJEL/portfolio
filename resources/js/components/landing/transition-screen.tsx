@@ -48,21 +48,6 @@ export default function TransitionScreen({
                 active && 'items-start',
             )}
         >
-            {/* Overlay backdrop sous les volets */}
-            <div
-                className={cn(
-                    'pointer-events-none fixed inset-0 z-0',
-                    'bg-primary/8 backdrop-blur-[2px] dark:bg-black/50',
-                    active
-                        ? mode === 'instant'
-                            ? 'opacity-100 transition-none'
-                            : 'opacity-100 transition-opacity delay-0 duration-300'
-                        : mode === 'instant'
-                          ? 'opacity-0 transition-none'
-                          : 'opacity-0 transition-opacity delay-500 duration-500',
-                )}
-            />
-
             {panelIndices.map((index) => (
                 <TransitionPanel
                     key={index}
@@ -83,9 +68,7 @@ function TransitionPanel({ active, mode }: TransitionPanelProps) {
     return (
         <div
             className={cn(
-                'relative z-10 h-[25vh] w-full bg-card transition-all',
-                'border-b border-border/30 last:border-b-0',
-                'shadow-sm dark:shadow-[0_4px_24px_rgba(0,0,0,0.35)]',
+                'h-[25vh] w-full bg-card transition-all',
                 mode === 'instant' ? 'duration-0' : 'duration-1000',
                 !active && 'w-0',
             )}
