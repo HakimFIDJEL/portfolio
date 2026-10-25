@@ -25,10 +25,12 @@ class BackofficeSeeder extends Seeder
             ['sort_order' => 3, 'name_fr' => 'Site Web', 'name_en' => 'Website'],
             ['sort_order' => 4, 'name_fr' => 'API', 'name_en' => 'API'],
             ['sort_order' => 5, 'name_fr' => 'Script', 'name_en' => 'Script'],
+            ['sort_order' => 6, 'name_fr' => 'Système Agentique', 'name_en' => 'Agentic System'],
+            ['sort_order' => 7, 'name_fr' => 'Architecture Cloud', 'name_en' => 'Cloud Architecture'],
         ];
 
         foreach ($mockTags as $tag) {
-            Tag::firstOrCreate(['name_fr' => $tag['name_fr']], $tag);
+            Tag::updateOrCreate(['name_fr' => $tag['name_fr']], $tag);
         }
 
         // ---------------------------
@@ -40,13 +42,17 @@ class BackofficeSeeder extends Seeder
                 'name_fr' => 'Frontend',
                 'name_en' => 'Frontend',
                 'items' => [
-                    ['sort_order' => 1, 'name' => 'TypeScript'],
-                    ['sort_order' => 2, 'name' => 'React'],
-                    ['sort_order' => 3, 'name' => 'Next.js'],
-                    ['sort_order' => 4, 'name' => 'Inertia.js'],
-                    ['sort_order' => 5, 'name' => 'Tailwind CSS'],
-                    ['sort_order' => 6, 'name' => 'JavaScript'],
-                    ['sort_order' => 7, 'name' => 'HTML5 / CSS3'],
+                    ['sort_order' => 1, 'name' => 'Vue.js'],
+                    ['sort_order' => 2, 'name' => 'Vike (SSR)'],
+                    ['sort_order' => 3, 'name' => 'Pinia'],
+                    ['sort_order' => 4, 'name' => 'TypeScript'],
+                    ['sort_order' => 5, 'name' => 'React'],
+                    ['sort_order' => 6, 'name' => 'Next.js'],
+                    ['sort_order' => 7, 'name' => 'Inertia.js'],
+                    ['sort_order' => 8, 'name' => 'Tailwind CSS'],
+                    ['sort_order' => 9, 'name' => 'PrimeVue'],
+                    ['sort_order' => 10, 'name' => 'JavaScript'],
+                    ['sort_order' => 11, 'name' => 'HTML5 / CSS3'],
                 ],
             ],
             [
@@ -54,32 +60,48 @@ class BackofficeSeeder extends Seeder
                 'name_fr' => 'Backend',
                 'name_en' => 'Backend',
                 'items' => [
-                    ['sort_order' => 1, 'name' => 'PHP'],
-                    ['sort_order' => 2, 'name' => 'Laravel'],
-                    ['sort_order' => 3, 'name' => 'Node.js'],
-                    ['sort_order' => 4, 'name' => 'Express.js'],
-                    ['sort_order' => 5, 'name' => 'NestJS'],
-                    ['sort_order' => 6, 'name' => 'Inertia.js'],
+                    ['sort_order' => 1, 'name' => 'Fastify'],
+                    ['sort_order' => 2, 'name' => 'Node.js'],
+                    ['sort_order' => 3, 'name' => 'PHP'],
+                    ['sort_order' => 4, 'name' => 'Laravel'],
+                    ['sort_order' => 5, 'name' => 'Python'],
+                    ['sort_order' => 6, 'name' => 'BullMQ'],
                     ['sort_order' => 7, 'name' => 'REST APIs'],
                     ['sort_order' => 8, 'name' => 'WebSockets'],
-                    ['sort_order' => 9, 'name' => 'OctoberCMS'],
+                    ['sort_order' => 9, 'name' => 'NestJS'],
+                    ['sort_order' => 10, 'name' => 'Express.js'],
+                    ['sort_order' => 11, 'name' => 'Inertia.js'],
+                    ['sort_order' => 12, 'name' => 'OctoberCMS'],
                 ],
             ],
             [
                 'sort_order' => 3,
-                'name_fr' => 'Bases de données',
-                'name_en' => 'Databases',
+                'name_fr' => 'IA & Systèmes Agentiques',
+                'name_en' => 'AI & Agentic Systems',
                 'items' => [
-                    ['sort_order' => 1, 'name' => 'PostgreSQL'],
-                    ['sort_order' => 2, 'name' => 'MySQL'],
-                    ['sort_order' => 3, 'name' => 'SQLite'],
-                    ['sort_order' => 4, 'name' => 'Redis'],
-                    ['sort_order' => 5, 'name' => 'MongoDB'],
-                    ['sort_order' => 6, 'name' => 'PL/SQL'],
+                    ['sort_order' => 1, 'name' => 'LangGraph'],
+                    ['sort_order' => 2, 'name' => 'LangChain'],
+                    ['sort_order' => 3, 'name' => 'MCP (Model Context Protocol)'],
+                    ['sort_order' => 4, 'name' => 'Weaviate (Vector DB)'],
+                    ['sort_order' => 5, 'name' => 'RAG Multi-Agents'],
+                    ['sort_order' => 6, 'name' => 'Inférence LLM'],
                 ],
             ],
             [
                 'sort_order' => 4,
+                'name_fr' => 'Bases de données',
+                'name_en' => 'Databases',
+                'items' => [
+                    ['sort_order' => 1, 'name' => 'MongoDB'],
+                    ['sort_order' => 2, 'name' => 'PostgreSQL'],
+                    ['sort_order' => 3, 'name' => 'Redis'],
+                    ['sort_order' => 4, 'name' => 'MySQL'],
+                    ['sort_order' => 5, 'name' => 'SQLite'],
+                    ['sort_order' => 6, 'name' => 'PL/SQL'],
+                ],
+            ],
+            [
+                'sort_order' => 5,
                 'name_fr' => 'Logiciel',
                 'name_en' => 'Software',
                 'items' => [
@@ -87,11 +109,10 @@ class BackofficeSeeder extends Seeder
                     ['sort_order' => 2, 'name' => 'C'],
                     ['sort_order' => 3, 'name' => 'Java'],
                     ['sort_order' => 4, 'name' => 'Bash'],
-                    ['sort_order' => 5, 'name' => 'Systèmes Agentiques'],
                 ],
             ],
             [
-                'sort_order' => 5,
+                'sort_order' => 6,
                 'name_fr' => 'Mobile',
                 'name_en' => 'Mobile',
                 'items' => [
@@ -102,10 +123,16 @@ class BackofficeSeeder extends Seeder
             ],
         ];
 
+        // Nettoyer les stacks obsolètes qui n'ont pas de projets attachés
+        $activeStackNames = array_column($mockStacks, 'name_fr');
+        Stack::whereNotIn('name_fr', $activeStackNames)
+            ->whereDoesntHave('items.projects')
+            ->delete();
+
         foreach ($mockStacks as $stackData) {
             $stack = Stack::updateOrCreate(
-                ['sort_order' => $stackData['sort_order']],
-                ['name_fr' => $stackData['name_fr'], 'name_en' => $stackData['name_en']]
+                ['name_fr' => $stackData['name_fr']],
+                ['sort_order' => $stackData['sort_order'], 'name_en' => $stackData['name_en']]
             );
 
             $itemNames = [];
@@ -142,36 +169,38 @@ class BackofficeSeeder extends Seeder
             ],
             [
                 'sort_order' => 2,
-                'name_fr' => 'DevOps',
-                'name_en' => 'DevOps',
+                'name_fr' => 'DevOps & Test',
+                'name_en' => 'DevOps & Testing',
                 'items' => [
                     ['sort_order' => 1, 'name' => 'Docker & Compose'],
                     ['sort_order' => 2, 'name' => 'GitHub Actions'],
                     ['sort_order' => 3, 'name' => 'Git Flow'],
-                    ['sort_order' => 4, 'name' => 'CI/CD'],
-                    ['sort_order' => 5, 'name' => 'Linux (Ubuntu)'],
-                    ['sort_order' => 6, 'name' => 'Nginx'],
-                    ['sort_order' => 7, 'name' => 'Apache'],
-                    ['sort_order' => 8, 'name' => 'Makefile'],
+                    ['sort_order' => 4, 'name' => 'Vitest'],
+                    ['sort_order' => 5, 'name' => 'Playwright'],
+                    ['sort_order' => 6, 'name' => 'Linux (Ubuntu)'],
+                    ['sort_order' => 7, 'name' => 'CI/CD'],
+                    ['sort_order' => 8, 'name' => 'Nginx'],
+                    ['sort_order' => 9, 'name' => 'Apache'],
+                    ['sort_order' => 10, 'name' => 'Makefile'],
                 ],
             ],
             [
                 'sort_order' => 3,
-                'name_fr' => 'Bases de données',
-                'name_en' => 'Databases',
+                'name_fr' => 'Bases de données & Vectoriel',
+                'name_en' => 'Databases & Vector Tools',
                 'items' => [
                     ['sort_order' => 1, 'name' => 'TablePlus'],
-                    ['sort_order' => 2, 'name' => 'PgAdmin'],
-                    ['sort_order' => 3, 'name' => 'DataGrip'],
-                    ['sort_order' => 4, 'name' => 'PhpMyAdmin'],
+                    ['sort_order' => 2, 'name' => 'MongoDB Compass'],
+                    ['sort_order' => 3, 'name' => 'PgAdmin'],
+                    ['sort_order' => 4, 'name' => 'DataGrip'],
                     ['sort_order' => 5, 'name' => 'DBeaver'],
-                    ['sort_order' => 6, 'name' => 'MongoDB Compass'],
+                    ['sort_order' => 6, 'name' => 'PhpMyAdmin'],
                 ],
             ],
             [
                 'sort_order' => 4,
-                'name_fr' => 'Outils & Gestion',
-                'name_en' => 'Tools & Management',
+                'name_fr' => 'Outils & Organisation',
+                'name_en' => 'Tools & Organization',
                 'items' => [
                     ['sort_order' => 1, 'name' => 'Linear'],
                     ['sort_order' => 2, 'name' => 'Obsidian'],
@@ -184,10 +213,14 @@ class BackofficeSeeder extends Seeder
             ],
         ];
 
+        // Nettoyer les catégories d'outils obsolètes
+        $activeToolNames = array_column($mockTools, 'name_fr');
+        Tool::whereNotIn('name_fr', $activeToolNames)->delete();
+
         foreach ($mockTools as $toolData) {
             $tool = Tool::updateOrCreate(
-                ['sort_order' => $toolData['sort_order']],
-                ['name_fr' => $toolData['name_fr'], 'name_en' => $toolData['name_en']]
+                ['name_fr' => $toolData['name_fr']],
+                ['sort_order' => $toolData['sort_order'], 'name_en' => $toolData['name_en']]
             );
 
             $itemNames = [];
