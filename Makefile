@@ -73,7 +73,7 @@ build: ## Construire l'image Docker multi-stage de production
 ##@ Qualite et Tests
 test: ## Executer la suite complete de tests fonctionnels et unitaires Pest
 	@echo "$(GREEN)Execution des tests Pest PHP...$(RESET)"
-	@if [ -f vendor/bin/pest ]; then \
+	@if command -v php >/dev/null 2>&1 && [ -f vendor/bin/pest ]; then \
 		vendor/bin/pest; \
 	else \
 		docker compose exec -e APP_ENV=testing app vendor/bin/pest; \
@@ -81,13 +81,13 @@ test: ## Executer la suite complete de tests fonctionnels et unitaires Pest
 
 lint: ## Verifier le style du code PHP (Pint) et le linting Frontend (ESLint)
 	@echo "$(GREEN)Verification du style PHP (Laravel Pint)...$(RESET)"
-	@if [ -f vendor/bin/pint ]; then vendor/bin/pint --test; else docker compose exec app vendor/bin/pint --test; fi
+	@if command -v php >/dev/null 2>&1 && [ -f vendor/bin/pint ]; then vendor/bin/pint --test; else docker compose exec app vendor/bin/pint --test; fi
 	@echo "$(GREEN)Verification du linting Frontend (ESLint)...$(RESET)"
 	@npm run lint
 
 pint: ## Corriger automatiquement le style du code PHP (Laravel Pint)
 	@echo "$(GREEN)Correction automatique du style PHP (Laravel Pint)...$(RESET)"
-	@if [ -f vendor/bin/pint ]; then vendor/bin/pint; else docker compose exec app vendor/bin/pint; fi
+	@if command -v php >/dev/null 2>&1 && [ -f vendor/bin/pint ]; then vendor/bin/pint; else docker compose exec app vendor/bin/pint; fi
 
 format: ## Formater automatiquement le code Frontend avec Prettier
 	@echo "$(GREEN)Formatage Prettier des fichiers resources/...$(RESET)"
@@ -103,7 +103,7 @@ check: lint types test ## Executer la verification complete (Lint + Types + Test
 ##@ Base de donnees et Laravel
 migrate: ## Executer les migrations de base de donnees
 	@echo "$(BLUE)Application des migrations...$(RESET)"
-	@if [ -f artisan ]; then \
+	@if command -v php >/dev/null 2>&1 && [ -f artisan ]; then \
 		php artisan migrate --force; \
 	else \
 		docker compose exec app php artisan migrate --force; \
@@ -111,7 +111,7 @@ migrate: ## Executer les migrations de base de donnees
 
 seed: ## Executer le seeding de la base de donnees avec les donnees reelles
 	@echo "$(BLUE)Execution des seeders...$(RESET)"
-	@if [ -f artisan ]; then \
+	@if command -v php >/dev/null 2>&1 && [ -f artisan ]; then \
 		php artisan db:seed --force; \
 	else \
 		docker compose exec app php artisan db:seed --force; \
@@ -119,7 +119,7 @@ seed: ## Executer le seeding de la base de donnees avec les donnees reelles
 
 fresh: ## Reinitialiser la base de donnees et rejouer les migrations et seeds
 	@echo "$(YELLOW)Reinitialisation complete de la base de donnees...$(RESET)"
-	@if [ -f artisan ]; then \
+	@if command -v php >/dev/null 2>&1 && [ -f artisan ]; then \
 		php artisan migrate:fresh --seed --force; \
 	else \
 		docker compose exec app php artisan migrate:fresh --seed --force; \
@@ -127,7 +127,7 @@ fresh: ## Reinitialiser la base de donnees et rejouer les migrations et seeds
 
 ssr: ## Redemarrer le serveur SSR Inertia
 	@echo "$(BLUE)Redemarrage du serveur SSR Inertia...$(RESET)"
-	@if [ -f artisan ]; then \
+	@if command -v php >/dev/null 2>&1 && [ -f artisan ]; then \
 		php artisan inertia:stop-ssr || true; \
 		php artisan inertia:start-ssr & \
 	else \
@@ -137,7 +137,7 @@ ssr: ## Redemarrer le serveur SSR Inertia
 
 key: ## Generer une nouvelle cle d'application Laravel (APP_KEY)
 	@echo "$(BLUE)Generation de la cle d'application...$(RESET)"
-	@if [ -f artisan ]; then \
+	@if command -v php >/dev/null 2>&1 && [ -f artisan ]; then \
 		php artisan key:generate; \
 	else \
 		docker compose exec app php artisan key:generate; \
@@ -146,7 +146,7 @@ key: ## Generer une nouvelle cle d'application Laravel (APP_KEY)
 ##@ Maintenance et Shell
 clean: ## Nettoyer tous les caches applicatifs (config, routes, vues, optimize)
 	@echo "$(YELLOW)Nettoyage des caches Laravel...$(RESET)"
-	@if [ -f artisan ]; then \
+	@if command -v php >/dev/null 2>&1 && [ -f artisan ]; then \
 		php artisan optimize:clear; \
 	else \
 		docker compose exec app php artisan optimize:clear; \
