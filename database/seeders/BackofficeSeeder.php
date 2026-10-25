@@ -40,15 +40,13 @@ class BackofficeSeeder extends Seeder
                 'name_fr' => 'Frontend',
                 'name_en' => 'Frontend',
                 'items' => [
-                    ['sort_order' => 1, 'name' => 'HTML'],
-                    ['sort_order' => 2, 'name' => 'CSS'],
-                    ['sort_order' => 3, 'name' => 'SCSS'],
-                    ['sort_order' => 4, 'name' => 'Tailwind'],
-                    ['sort_order' => 5, 'name' => 'JavaScript'],
-                    ['sort_order' => 6, 'name' => 'TypeScript'],
-                    ['sort_order' => 7, 'name' => 'React'],
-                    ['sort_order' => 8, 'name' => 'jQuery'],
-                    ['sort_order' => 9, 'name' => 'Next.js'],
+                    ['sort_order' => 1, 'name' => 'TypeScript'],
+                    ['sort_order' => 2, 'name' => 'React'],
+                    ['sort_order' => 3, 'name' => 'Next.js'],
+                    ['sort_order' => 4, 'name' => 'Inertia.js'],
+                    ['sort_order' => 5, 'name' => 'Tailwind CSS'],
+                    ['sort_order' => 6, 'name' => 'JavaScript'],
+                    ['sort_order' => 7, 'name' => 'HTML5 / CSS3'],
                 ],
             ],
             [
@@ -58,11 +56,13 @@ class BackofficeSeeder extends Seeder
                 'items' => [
                     ['sort_order' => 1, 'name' => 'PHP'],
                     ['sort_order' => 2, 'name' => 'Laravel'],
-                    ['sort_order' => 3, 'name' => 'OctoberCMS'],
-                    ['sort_order' => 4, 'name' => 'Node.js'],
+                    ['sort_order' => 3, 'name' => 'Node.js'],
+                    ['sort_order' => 4, 'name' => 'Express.js'],
                     ['sort_order' => 5, 'name' => 'NestJS'],
-                    ['sort_order' => 6, 'name' => 'Express.js'],
-                    ['sort_order' => 7, 'name' => 'Inertia.js'],
+                    ['sort_order' => 6, 'name' => 'Inertia.js'],
+                    ['sort_order' => 7, 'name' => 'REST APIs'],
+                    ['sort_order' => 8, 'name' => 'WebSockets'],
+                    ['sort_order' => 9, 'name' => 'OctoberCMS'],
                 ],
             ],
             [
@@ -70,12 +70,12 @@ class BackofficeSeeder extends Seeder
                 'name_fr' => 'Bases de données',
                 'name_en' => 'Databases',
                 'items' => [
-                    ['sort_order' => 1, 'name' => 'MySQL'],
-                    ['sort_order' => 2, 'name' => 'PostgreSQL'],
-                    ['sort_order' => 3, 'name' => 'PL/SQL'],
-                    ['sort_order' => 4, 'name' => 'NoSQL'],
-                    ['sort_order' => 5, 'name' => 'SQLite'],
-                    ['sort_order' => 6, 'name' => 'MongoDB'],
+                    ['sort_order' => 1, 'name' => 'PostgreSQL'],
+                    ['sort_order' => 2, 'name' => 'MySQL'],
+                    ['sort_order' => 3, 'name' => 'SQLite'],
+                    ['sort_order' => 4, 'name' => 'Redis'],
+                    ['sort_order' => 5, 'name' => 'MongoDB'],
+                    ['sort_order' => 6, 'name' => 'PL/SQL'],
                 ],
             ],
             [
@@ -83,10 +83,11 @@ class BackofficeSeeder extends Seeder
                 'name_fr' => 'Logiciel',
                 'name_en' => 'Software',
                 'items' => [
-                    ['sort_order' => 1, 'name' => 'C'],
-                    ['sort_order' => 2, 'name' => 'Java'],
-                    ['sort_order' => 3, 'name' => 'Python'],
+                    ['sort_order' => 1, 'name' => 'Python'],
+                    ['sort_order' => 2, 'name' => 'C'],
+                    ['sort_order' => 3, 'name' => 'Java'],
                     ['sort_order' => 4, 'name' => 'Bash'],
+                    ['sort_order' => 5, 'name' => 'Systèmes Agentiques'],
                 ],
             ],
             [
@@ -102,17 +103,24 @@ class BackofficeSeeder extends Seeder
         ];
 
         foreach ($mockStacks as $stackData) {
-            $stack = Stack::firstOrCreate(
-                ['name_fr' => $stackData['name_fr']],
-                ['sort_order' => $stackData['sort_order'], 'name_en' => $stackData['name_en']]
+            $stack = Stack::updateOrCreate(
+                ['sort_order' => $stackData['sort_order']],
+                ['name_fr' => $stackData['name_fr'], 'name_en' => $stackData['name_en']]
             );
 
+            $itemNames = [];
             foreach ($stackData['items'] as $itemData) {
-                StackItem::firstOrCreate(
+                $itemNames[] = $itemData['name'];
+                StackItem::updateOrCreate(
                     ['name' => $itemData['name'], 'stack_id' => $stack->id],
                     array_merge($itemData, ['stack_id' => $stack->id])
                 );
             }
+
+            StackItem::where('stack_id', $stack->id)
+                ->whereNotIn('name', $itemNames)
+                ->whereDoesntHave('projects')
+                ->delete();
         }
 
         // ---------------------------
@@ -121,18 +129,15 @@ class BackofficeSeeder extends Seeder
         $mockTools = [
             [
                 'sort_order' => 1,
-                'name_fr' => 'IDE',
-                'name_en' => 'IDE',
+                'name_fr' => 'IDE & Éditeurs',
+                'name_en' => 'IDEs & Editors',
                 'items' => [
                     ['sort_order' => 1, 'name' => 'VS Code'],
-                    ['sort_order' => 2, 'name' => 'Visual Studio'],
-                    ['sort_order' => 3, 'name' => 'Sublime Text'],
-                    ['sort_order' => 4, 'name' => 'Notepad++'],
-                    ['sort_order' => 5, 'name' => 'Nano'],
+                    ['sort_order' => 2, 'name' => 'Cursor'],
+                    ['sort_order' => 3, 'name' => 'PhpStorm'],
+                    ['sort_order' => 4, 'name' => 'IntelliJ IDEA'],
+                    ['sort_order' => 5, 'name' => 'PyCharm'],
                     ['sort_order' => 6, 'name' => 'Vim'],
-                    ['sort_order' => 7, 'name' => 'PhpStorm'],
-                    ['sort_order' => 8, 'name' => 'IntelliJ IDEA'],
-                    ['sort_order' => 9, 'name' => 'PyCharm'],
                 ],
             ],
             [
@@ -140,14 +145,14 @@ class BackofficeSeeder extends Seeder
                 'name_fr' => 'DevOps',
                 'name_en' => 'DevOps',
                 'items' => [
-                    ['sort_order' => 1, 'name' => 'Docker'],
-                    ['sort_order' => 2, 'name' => 'Git'],
-                    ['sort_order' => 3, 'name' => 'GitHub Actions'],
+                    ['sort_order' => 1, 'name' => 'Docker & Compose'],
+                    ['sort_order' => 2, 'name' => 'GitHub Actions'],
+                    ['sort_order' => 3, 'name' => 'Git Flow'],
                     ['sort_order' => 4, 'name' => 'CI/CD'],
-                    ['sort_order' => 5, 'name' => 'Nginx'],
-                    ['sort_order' => 6, 'name' => 'Apache'],
-                    ['sort_order' => 7, 'name' => 'Kafka'],
-                    ['sort_order' => 8, 'name' => 'Nifi'],
+                    ['sort_order' => 5, 'name' => 'Linux (Ubuntu)'],
+                    ['sort_order' => 6, 'name' => 'Nginx'],
+                    ['sort_order' => 7, 'name' => 'Apache'],
+                    ['sort_order' => 8, 'name' => 'Makefile'],
                 ],
             ],
             [
@@ -155,44 +160,48 @@ class BackofficeSeeder extends Seeder
                 'name_fr' => 'Bases de données',
                 'name_en' => 'Databases',
                 'items' => [
-                    ['sort_order' => 1, 'name' => 'PhpMyAdmin'],
+                    ['sort_order' => 1, 'name' => 'TablePlus'],
                     ['sort_order' => 2, 'name' => 'PgAdmin'],
-                    ['sort_order' => 3, 'name' => 'Datagrip'],
-                    ['sort_order' => 4, 'name' => 'MongoDB Compass'],
-                    ['sort_order' => 5, 'name' => 'DataBricks'],
+                    ['sort_order' => 3, 'name' => 'DataGrip'],
+                    ['sort_order' => 4, 'name' => 'PhpMyAdmin'],
+                    ['sort_order' => 5, 'name' => 'DBeaver'],
+                    ['sort_order' => 6, 'name' => 'MongoDB Compass'],
                 ],
             ],
             [
                 'sort_order' => 4,
-                'name_fr' => 'Outils',
-                'name_en' => 'Tools',
+                'name_fr' => 'Outils & Gestion',
+                'name_en' => 'Tools & Management',
                 'items' => [
-                    ['sort_order' => 1, 'name' => 'Postman'],
-                    ['sort_order' => 2, 'name' => 'Figma'],
-                    ['sort_order' => 3, 'name' => 'Docker Desktop'],
-                    ['sort_order' => 4, 'name' => 'Docs'],
-                    ['sort_order' => 5, 'name' => 'Sheets'],
-                    ['sort_order' => 6, 'name' => 'Slides'],
-                    ['sort_order' => 7, 'name' => 'Canva'],
-                    ['sort_order' => 8, 'name' => 'Trello'],
-                    ['sort_order' => 9, 'name' => 'Draw.io'],
-                    ['sort_order' => 10, 'name' => 'ClickUp'],
+                    ['sort_order' => 1, 'name' => 'Linear'],
+                    ['sort_order' => 2, 'name' => 'Obsidian'],
+                    ['sort_order' => 3, 'name' => 'Postman'],
+                    ['sort_order' => 4, 'name' => 'Figma'],
+                    ['sort_order' => 5, 'name' => 'Docker Desktop'],
+                    ['sort_order' => 6, 'name' => 'GitHub'],
+                    ['sort_order' => 7, 'name' => 'GitLab'],
                 ],
             ],
         ];
 
         foreach ($mockTools as $toolData) {
-            $tool = Tool::firstOrCreate(
-                ['name_fr' => $toolData['name_fr']],
-                ['sort_order' => $toolData['sort_order'], 'name_en' => $toolData['name_en']]
+            $tool = Tool::updateOrCreate(
+                ['sort_order' => $toolData['sort_order']],
+                ['name_fr' => $toolData['name_fr'], 'name_en' => $toolData['name_en']]
             );
 
+            $itemNames = [];
             foreach ($toolData['items'] as $itemData) {
-                ToolItem::firstOrCreate(
+                $itemNames[] = $itemData['name'];
+                ToolItem::updateOrCreate(
                     ['name' => $itemData['name'], 'tool_id' => $tool->id],
                     array_merge($itemData, ['tool_id' => $tool->id])
                 );
             }
+
+            ToolItem::where('tool_id', $tool->id)
+                ->whereNotIn('name', $itemNames)
+                ->delete();
         }
 
         // ---------------------------

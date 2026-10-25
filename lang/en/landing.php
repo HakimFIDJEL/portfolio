@@ -109,7 +109,7 @@ return [
         'projects' => [
             'h2' => 'My Projects',
             'p_1' => 'Explore a curated selection of my software accomplishments.',
-            'p_2' => "Architected and delivered",
+            'p_2' => 'Architected and delivered',
             'p_3' => 'major production projects.',
             'skip' => 'Skip',
         ],
@@ -123,8 +123,8 @@ return [
 
         'contact' => [
             'h2' => 'Contact',
-            'p_1' => "Have a project or a technical challenge to discuss?",
-            'p_2' => "Open to discussing software architectures, engineering opportunities, and technical collaborations. I typically respond within 24 hours.",
+            'p_1' => 'Have a project or a technical challenge to discuss?',
+            'p_2' => 'Open to discussing software architectures, engineering opportunities, and technical collaborations. I typically respond within 24 hours.',
             'top' => 'Back to top',
         ],
     ],
