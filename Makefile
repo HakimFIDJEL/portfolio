@@ -33,7 +33,7 @@ dev-hmr: ## Demarrer l'environnement local avec Vite Hot Module Replacement (HMR
 	@docker compose -f docker-compose.yml -f docker-compose.override.yml exec app php artisan cache:clear >/dev/null 2>&1 || true
 	@docker compose -f docker-compose.yml -f docker-compose.override.yml exec app php artisan inertia:stop-ssr >/dev/null 2>&1 || true
 	@echo "$(GREEN)Vite HMR pret sur http://localhost:5173 (Application sur http://localhost:8000)$(RESET)"
-	@trap 'rm -f public/hot' INT TERM EXIT; docker compose -f docker-compose.yml -f docker-compose.override.yml exec app npm run dev
+	@trap 'rm -f public/hot' INT TERM EXIT; npm run dev
 
 dev-ssr: ## Demarrer l'environnement local avec le moteur de rendu SSR Inertia direct
 	@echo "$(BLUE)Demarrage de l'environnement local en mode SSR...$(RESET)"

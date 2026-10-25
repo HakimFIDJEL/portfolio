@@ -87,6 +87,9 @@ COPY --from=composer-builder /app/vendor ./vendor
 # Copie du binaire Composer pour l'outillage et les commandes en conteneur
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
+# Copie des dépendances frontend (runtime SSR et outillage de dev en conteneur)
+COPY --from=frontend-builder /app/node_modules ./node_modules
+
 # Copie des artefacts frontend compilés (assets publics et bundle SSR)
 COPY --from=frontend-builder /app/public/build ./public/build
 COPY --from=frontend-builder /app/bootstrap/ssr ./bootstrap/ssr

@@ -70,6 +70,11 @@ if [ "${APP_ENV:-production}" = "local" ] && [ ! -f "vendor/bin/pest" ]; then
     composer install --prefer-dist --no-interaction
 fi
 
+if [ "${APP_ENV:-production}" = "local" ] && [ ! -d "node_modules/vite" ]; then
+    echo "Environnement local : installation des dépendances frontend via npm..."
+    npm ci
+fi
+
 echo "Découverte des packages Laravel..."
 php artisan package:discover --ansi
 
