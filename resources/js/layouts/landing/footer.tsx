@@ -360,7 +360,7 @@ export default function Footer({ appear }: FooterProps) {
                     >
                         {__(
                             'landing.layout.footer.caption',
-                            'Designed, Developped, Deployed and Hosted by',
+                            'Designed, Developed, Deployed and Hosted by',
                         )}
                     </p>
                     <p

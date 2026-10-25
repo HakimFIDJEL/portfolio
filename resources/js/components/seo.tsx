@@ -48,12 +48,14 @@ export default function Seo({
 
     const fullTitle = title
         ? `${title} | ${siteName}`
-        : `${siteName} — Ingénieur en génie informatique`;
+        : currentLocale === 'fr'
+          ? `${siteName} — Ingénieur Logiciel`
+          : `${siteName} — Software Engineer`;
     const metaDescription =
         description ||
         (currentLocale === 'fr'
-            ? "Portfolio d'Hakim Fidjel, ingénieur apprenti chez TenderCrunch et développeur full-stack. Projets, compétences, expériences et réalisations informatiques."
-            : "Hakim Fidjel's portfolio. Computer engineering apprentice at TenderCrunch and full-stack developer. Projects, skills, experience and achievements.");
+            ? "Portfolio d'Hakim Fidjel, ingénieur logiciel chez TenderCrunch. Conception d'architectures applicatives robustes, systèmes agentiques et développement web moderne."
+            : "Hakim Fidjel's portfolio, Software Engineer at TenderCrunch. Designing robust software architectures, agentic systems, and modern web platforms.");
 
     const ogLocale = currentLocale === 'fr' ? 'fr_FR' : 'en_US';
     const alternateOgLocale = currentLocale === 'fr' ? 'en_US' : 'fr_FR';
@@ -70,7 +72,7 @@ export default function Seo({
             <meta name="author" content="Hakim Fidjel" />
             <meta
                 name="keywords"
-                content="Hakim Fidjel, Portfolio, Développeur FullStack, Laravel, React, TypeScript, Inertia, TenderCrunch, Docker, Ingénieur Informatique"
+                content="Hakim Fidjel, Portfolio, Ingénieur Logiciel, Software Engineer, Laravel, React, TypeScript, Inertia, TenderCrunch, Docker, Architecture Logicielle"
             />
 
             {/* URL canonique */}

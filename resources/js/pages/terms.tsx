@@ -31,7 +31,7 @@ export default function Terms() {
                 ),
                 __(
                     'landing.terms.sections.introduction.p_2',
-                    'This website is a showcase of my work and skills as a Fullstack Engineer.',
+                    'This website is a showcase of my work and skills as a Software Engineer.',
                 ),
             ],
         },
@@ -108,7 +108,7 @@ export default function Terms() {
                             <p className="mt-2 text-muted-foreground">
                                 {__(
                                     'landing.terms.last_updated',
-                                    'Last Updated: December 14, 2025',
+                                    'Last updated: October 25, 2026',
                                 )}
                             </p>
 

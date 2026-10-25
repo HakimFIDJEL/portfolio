@@ -214,8 +214,8 @@ class BackofficeSeeder extends Seeder
                 'job_fr' => 'Ingénieur Fullstack', 'job_en' => 'Fullstack Engineer',
                 'status_fr' => 'Apprentissage', 'status_en' => 'Apprenticeship',
                 'duration' => '09/23 - 08/26',
-                'description_fr' => 'Je supervise le développement de projets web, de l\'analyse à la production. Mon rôle inclut d\'assurer la conformité aux besoins métier, de rationaliser les flux de travail et de moderniser les processus internes.',
-                'description_en' => 'I oversee the development of web projects from analysis to production. My role includes ensuring compliance with business needs, streamlining workflows, and modernizing internal processes.',
+                'description_fr' => 'Conception et pilotage de projets web complexes de l\'analyse fonctionnelle à la mise en production. Garantie de conformité aux besoins métier, optimisation des workflows de développement et modernisation des processus internes.',
+                'description_en' => 'Led end-to-end web project development from requirements analysis to production deployment. Ensured alignment with business goals, streamlined workflows, and modernized internal processes.',
             ],
             [
                 'sort_order' => 3,
@@ -223,8 +223,8 @@ class BackofficeSeeder extends Seeder
                 'job_fr' => 'Développeur Fullstack', 'job_en' => 'Fullstack Developer',
                 'status_fr' => 'Stage', 'status_en' => 'Internship',
                 'duration' => '05/23 - 08/23',
-                'description_fr' => 'Durant mon stage chez Réservoir Digital, j\'ai amélioré mes compétences dans les nouvelles technologies tout en contribuant au développement de solutions numériques. La collaboration en équipe a été un élément clé de cette expérience.',
-                'description_en' => 'During my internship at Réservoir Digital, I improved my skills in new technologies while contributing to digital solution development. Collaborating within a team was a key part of this experience.',
+                'description_fr' => 'Développement d\'applications web et de solutions numériques sur mesure. Montée en compétences sur l\'écosystème web moderne et collaboration au sein d\'une équipe agile.',
+                'description_en' => 'Developed custom web applications and tailored digital solutions. Rapid onboarding on modern software stacks within an agile team environment.',
             ],
             [
                 'sort_order' => 4,
@@ -232,8 +232,8 @@ class BackofficeSeeder extends Seeder
                 'job_fr' => 'Développeur Web & Technicien Informatique', 'job_en' => 'Web Developer & IT Technician',
                 'status_fr' => 'Stage', 'status_en' => 'Internship',
                 'duration' => '06/22 - 08/22',
-                'description_fr' => 'J\'ai géré l\'infrastructure informatique pour assurer la connectivité et la fiabilité des systèmes. J\'ai également développé un site web interne qui a optimisé la gestion des dossiers patients, remplaçant les processus obsolètes basés sur Excel.',
-                'description_en' => 'I managed IT infrastructure to ensure system connectivity and reliability. I also developed an internal website that optimized patient file management, replacing outdated Excel processes.',
+                'description_fr' => 'Maintenance et fiabilisation de l\'infrastructure informatique et réseau. Conception et déploiement d\'une application web interne dédiée au suivi centralisé des dossiers patients.',
+                'description_en' => 'Maintained and secured IT infrastructure and network continuity. Designed and deployed an internal web platform for centralized patient file management.',
             ],
         ];
 

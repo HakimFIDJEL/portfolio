@@ -62,10 +62,10 @@ return [
 
     'landing' => [
 
-        'meta_description' => "Portfolio de Hakim Fidjel. Découvrez mes projets, compétences et ambitions en tant qu'apprenti ingénieur FullStack dans le domaine de l'ingénierie informatique.",
+        'meta_description' => "Portfolio de Hakim Fidjel, ingénieur logiciel. Conception d'architectures applicatives robustes, systèmes agentiques, ingénierie web moderne et solutions logicielles évolutives.",
 
         'hero' => [
-            'h2' => 'Ingénieur Fullstack',
+            'h2' => 'Ingénieur Logiciel',
             'circularText' => 'Bienvenue sur mon portfolio ~ ',
         ],
 
@@ -74,10 +74,10 @@ return [
             'skip' => 'Passer',
 
             'p_1' => "Salut, c'est Hakim",
-            'p_2' => 'Je suis un ingénieur fullstack français',
-            'p_3' => 'avec une forte expertise en développement, infrastructure et automatisation. Je construis et gère des projets évolutifs, assurant des déploiements fluides et des flux de travail efficaces.',
-            'p_4' => "Avec une approche pratique, je m'occupe de tout, de la logique backend à l'administration serveur, en accordant toujours une attention particulière au design et à l'utilisabilité. Je m'efforce de créer des solutions à la fois",
-            'p_5' => 'fonctionnelles et visuellement raffinées.',
+            'p_2' => 'Je suis ingénieur logiciel,',
+            'p_3' => "spécialisé dans la conception d'architectures applicatives robustes, l'automatisation et l'ingénierie backend. Je conçois des systèmes résilients, performants et pensés pour évoluer dans la durée.",
+            'p_4' => "De la modélisation métier jusqu'à l'infrastructure conteneurisée, j'accorde une exigence constante à la rigueur du code, à la clarté des interfaces et à l'ergonomie utilisateur. Mon objectif est de bâtir des solutions logicielles",
+            'p_5' => 'hautement fiables et visuellement soignées.',
 
             'tabs' => [
                 'about' => [
@@ -91,11 +91,11 @@ return [
                 ],
                 'experience' => [
                     'title' => 'Expérience professionnelle',
-                    'description' => "Ces rôles ont affiné ma capacité à fournir des solutions efficaces et innovantes tout en m'adaptant à divers environnements professionnels.",
+                    'description' => "Des environnements variés allant de l'ingénierie logicielle avancée aux projets web sur mesure, forgeant rigueur opérationnelle et sens du produit.",
                 ],
                 'education' => [
-                    'title' => 'Éducation & Diplômes',
-                    'description' => 'Ces expériences ont façonné mon esprit technique et analytique, me préparant aux défis futurs dans le monde de la technologie.',
+                    'title' => 'Formation & Diplômes',
+                    'description' => "Un cursus d'ingénieur rigoureux complété par des certifications internationales, forgeant une approche analytique et pragmatique de la résolution de problèmes.",
                 ],
                 'tech_stack' => [
                     'title' => 'Stack Technologique',
@@ -108,23 +108,23 @@ return [
 
         'projects' => [
             'h2' => 'Mes Projets',
-            'p_1' => 'Jetez un œil à mes projets.',
-            'p_2' => "J'ai actuellement travaillé sur",
-            'p_3' => 'projets impactants.',
+            'p_1' => 'Découvrez une sélection de mes réalisations logicielles.',
+            'p_2' => 'Conception et mise en production de',
+            'p_3' => 'projets applicatifs majeurs.',
             'skip' => 'Passer',
         ],
 
         'sandbox' => [
             'h2' => 'Le Bac à Sable',
-            'p_1' => 'Mes travaux moins impactants mais tout de même instructifs, j’ai actuellement travaillé sur',
-            'p_2' => 'petits projets ici.',
+            'p_1' => "Espace d'expérimentation technique, de prototypes et d'explorations conceptuelles :",
+            'p_2' => "projets et bancs d'essai documentés.",
             'skip' => 'Passer',
         ],
 
         'contact' => [
             'h2' => 'Contact',
-            'p_1' => 'Faisons connaissance, non ?',
-            'p_2' => "Contactez-moi pour parler de projets, d'offres d'emploi, ou même d'une bonne partie de jeu. Je réponds rapidement !",
+            'p_1' => 'Un projet ou un échange technique en perspective ?',
+            'p_2' => "Disponible pour échanger autour d'architectures logicielles, d'opportunités d'ingénierie ou de collaborations techniques. Réponse assurée sous 24h.",
             'top' => 'Retour en haut',
         ],
     ],
@@ -153,12 +153,12 @@ return [
 
         'meta_description' => 'Lisez les conditions générales d\'utilisation du site portfolio de Hakim Fidjel, qui décrivent les règles et directives pour accéder et utiliser le site.',
 
-        'last_updated' => 'Dernière mise à jour : 14 Décembre 2025',
+        'last_updated' => 'Dernière mise à jour : 25 Octobre 2026',
         'sections' => [
             'introduction' => [
                 'h2' => 'Introduction',
                 'p_1' => 'Bienvenue sur le portfolio de Hakim Fidjel. En accédant à ce site web, vous acceptez d\'être lié par les présentes Conditions Générales d\'Utilisation. Si vous n\'êtes pas d\'accord avec une partie de ces termes, veuillez ne pas utiliser ce site.',
-                'p_2' => 'Ce site est une vitrine de mon travail et de mes compétences en tant qu\'ingénieur Fullstack.',
+                'p_2' => 'Ce site est une vitrine de mon travail et de mes compétences en tant qu\'ingénieur logiciel.',
             ],
             'intellectual_property' => [
                 'h2' => 'Propriété Intellectuelle',

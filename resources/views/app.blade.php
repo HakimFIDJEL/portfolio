@@ -41,7 +41,7 @@
     <title inertia>{{ config('app.name', 'Hakim Fidjel') }}</title>
     <meta name="author" content="Hakim Fidjel">
     <meta name="keywords"
-        content="Portfolio, Hakim Fidjel, Hakim, Fidjel, FullStack, Engineering Apprentice, Computer Engineering, Projects, Skills, Ambitions, TenderCrunch">
+        content="Portfolio, Hakim Fidjel, Hakim, Fidjel, Software Engineer, Ingénieur Logiciel, Architecture Logicielle, Laravel, React, TypeScript, Docker, TenderCrunch">
     <meta property="og:site_name" content="{{ config('app.name', 'Hakim Fidjel') }}">
     <meta property="og:type" content="website">
     <meta property="og:image" content="{{ asset('apple-touch-icon.png') }}">

@@ -55,17 +55,17 @@ return [
                     ],
                 ],
             ],
-            'caption' => 'Designed, Developped, Deployed and Hosted by',
+            'caption' => 'Designed, Developed, Deployed and Hosted by',
             'copyright' => 'All rights reserved.',
         ],
     ],
 
     'landing' => [
 
-        'meta_description' => "Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering.",
+        'meta_description' => "Hakim Fidjel's portfolio, Software Engineer. Designing robust software architectures, agentic systems, modern web engineering, and scalable platforms.",
 
         'hero' => [
-            'h2' => 'Fullstack Engineer',
+            'h2' => 'Software Engineer',
             'circularText' => 'Welcome to my portfolio ~ ',
         ],
 
@@ -74,10 +74,10 @@ return [
             'skip' => 'Skip',
 
             'p_1' => "Hi I'm Hakim",
-            'p_2' => "I'm a french fullstack engineer",
-            'p_3' => 'with a strong focus on development, infrastructure, and automation. I build and manage scalable projects, ensuring smooth deployments and efficient workflows.',
-            'p_4' => 'With a hands-on approach, I handle everything from backend logic to server administration, always paying attention to design and usability. I strive to create solutions that are both',
-            'p_5' => 'functional and visually refined.',
+            'p_2' => "I'm a software engineer,",
+            'p_3' => 'specialized in robust application architecture, backend engineering, and system automation. I build scalable, resilient platforms designed to evolve seamlessly over time.',
+            'p_4' => 'From domain modeling to containerized infrastructure, I bring continuous rigor to code quality, interface clarity, and user experience. I strive to engineer software solutions that are both',
+            'p_5' => 'technically sound and visually refined.',
 
             'tabs' => [
                 'about' => [
@@ -91,11 +91,11 @@ return [
                 ],
                 'experience' => [
                     'title' => 'Work Experience',
-                    'description' => 'These roles have sharpened my ability to deliver efficient, innovative solutions while adapting to diverse professional environments.',
+                    'description' => 'Diverse environments ranging from advanced software engineering to tailored web platforms, driving operational rigor and product mindset.',
                 ],
                 'education' => [
-                    'title' => 'School & Diplomas',
-                    'description' => 'These experiences have shaped my technical and analytical mindset, preparing me for future challenges in the tech world.',
+                    'title' => 'Education & Degrees',
+                    'description' => 'A rigorous engineering curriculum complemented by international certifications, shaping an analytical and pragmatic approach to problem-solving.',
                 ],
                 'tech_stack' => [
                     'title' => 'Tech Stack',
@@ -108,23 +108,23 @@ return [
 
         'projects' => [
             'h2' => 'My Projects',
-            'p_1' => 'Take a look at my projects.',
-            'p_2' => "I've currently worked on",
-            'p_3' => 'impactful ones.',
+            'p_1' => 'Explore a curated selection of my software accomplishments.',
+            'p_2' => "Architected and delivered",
+            'p_3' => 'major production projects.',
             'skip' => 'Skip',
         ],
 
         'sandbox' => [
             'h2' => 'The Sand Box',
-            'p_1' => 'My less impactful but still taughtful works, I’ve currently worked on',
-            'p_2' => 'small projects here.',
+            'p_1' => 'Experimental grounds, technical proofs of concept, and exploratory tools:',
+            'p_2' => 'documented lab projects.',
             'skip' => 'Skip',
         ],
 
         'contact' => [
             'h2' => 'Contact',
-            'p_1' => "Let's get in touch shall we ?",
-            'p_2' => "Reach out to talk projects, job offers, or even a good game. I'm quick to reply!",
+            'p_1' => "Have a project or a technical challenge to discuss?",
+            'p_2' => "Open to discussing software architectures, engineering opportunities, and technical collaborations. I typically respond within 24 hours.",
             'top' => 'Back to top',
         ],
     ],
@@ -151,12 +151,12 @@ return [
     'terms' => [
         'h1' => 'Terms of Use',
         'meta_description' => 'Read the terms of use for Hakim Fidjel\'s portfolio website, outlining the rules and guidelines for accessing and using the site.',
-        'last_updated' => 'last Updated: December 14, 2025',
+        'last_updated' => 'Last updated: October 25, 2026',
         'sections' => [
             'introduction' => [
                 'h2' => 'Introduction',
                 'p_1' => 'Welcome to Hakim Fidjel\'s portfolio. By accessing this website, you agree to be bound by these Terms of Use. If you disagree with any part of the terms, please do not use this website.',
-                'p_2' => 'This site is a showcase of my work and skills as a Fullstack engineer.',
+                'p_2' => 'This website is a showcase of my work and skills as a Software Engineer.',
             ],
             'intellectual_property' => [
                 'h2' => 'Intellectual Property',

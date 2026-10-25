@@ -88,9 +88,7 @@ export default function Landing({
             name: 'Hakim Fidjel',
             url: siteUrl,
             jobTitle:
-                locale === 'fr'
-                    ? 'Ingénieur en génie informatique & Développeur FullStack'
-                    : 'Computer Engineering Apprentice & FullStack Developer',
+                locale === 'fr' ? 'Ingénieur Logiciel' : 'Software Engineer',
             worksFor: {
                 '@type': 'Organization',
                 name: 'TenderCrunch',
@@ -122,7 +120,7 @@ export default function Landing({
             <Seo
                 description={__(
                     'landing.landing.meta_description',
-                    "Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering.",
+                    "Hakim Fidjel's portfolio, Software Engineer. Designing robust software architectures, agentic systems, modern web engineering, and scalable platforms.",
                 )}
                 jsonLd={jsonLd}
             />
