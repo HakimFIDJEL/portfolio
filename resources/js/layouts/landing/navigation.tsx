@@ -74,15 +74,18 @@ export default function Navigation({
 interface NavigationHeaderProps {
     showNavigationContent: boolean;
     handleMenuToggle: (show: boolean) => void;
+    closeDuration?: number;
 }
 
 function NavigationHeader({
     showNavigationContent,
     handleMenuToggle,
+    closeDuration = 1000,
 }: NavigationHeaderProps) {
     return (
         <Curtain
             showCurtain={!showNavigationContent}
+            closeDuration={closeDuration}
             className="fixed top-0 right-0 left-0 z-10 mx-auto w-[90%] max-w-7xl"
         >
             <div
@@ -142,6 +145,7 @@ function NavigationContent({
     handleMenuToggle,
 }: NavigationContentProps) {
     const __ = useTrans();
+    const { completeNavigationClose } = useLandingContext();
 
     const links: Link[] = useMemo(
         () => [
@@ -179,7 +183,8 @@ function NavigationContent({
         [__],
     );
 
-    const DELAY_INCREMENT = 125;
+    const itemCloseDuration = 1000;
+    const itemDelay = 100;
     const [visibleLinks, setVisibleLinks] = useState<Link[]>([]);
 
     useEffect(() => {
@@ -188,15 +193,18 @@ function NavigationContent({
     }, [links]);
 
     useEffect(() => {
+        const timeoutIds: ReturnType<typeof setTimeout>[] = [];
+
         function handleLinksVisibility(show: boolean) {
             links.forEach((link, index) => {
-                setTimeout(() => {
+                const id = setTimeout(() => {
                     setVisibleLinks((prev) =>
                         prev.map((l) =>
                             l.label === link.label ? { ...l, show } : l,
                         ),
                     );
-                }, index * DELAY_INCREMENT);
+                }, index * (show ? 125 : itemDelay));
+                timeoutIds.push(id);
             });
         }
 
@@ -205,7 +213,11 @@ function NavigationContent({
         } else {
             handleLinksVisibility(false);
         }
-    }, [showNavigationContent, links]);
+
+        return () => {
+            timeoutIds.forEach(clearTimeout);
+        };
+    }, [showNavigationContent, links, itemDelay]);
 
     return (
         <div className="mx-auto flex w-[90%] max-w-7xl flex-col px-8 py-6 lg:px-12.5 lg:py-10">
@@ -213,6 +225,8 @@ function NavigationContent({
                 <NavigationLink
                     link={link}
                     key={index}
+                    closeDuration={itemCloseDuration}
+                    onClosed={index === visibleLinks.length - 1 ? completeNavigationClose : undefined}
                     handleMenuToggle={handleMenuToggle}
                 />
             ))}
@@ -222,9 +236,16 @@ function NavigationContent({
 
 interface NavigationLinkProps {
     link: Link;
+    closeDuration?: number;
+    onClosed?: () => void;
     handleMenuToggle: (show: boolean) => void;
 }
-function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
+function NavigationLink({
+    link,
+    closeDuration,
+    onClosed,
+    handleMenuToggle,
+}: NavigationLinkProps) {
     const { href, index, label, show } = link;
 
     const currentUrl = usePage().url.split('#')[0];
@@ -247,7 +268,12 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     }
 
     return (
-        <Curtain showCurtain={!show} className="w-max">
+        <Curtain
+            showCurtain={!show}
+            closeDuration={closeDuration}
+            onClosed={onClosed}
+            className="w-max"
+        >
             <a
                 aria-label={__(
                     'landing.seo.scroll_to_section',

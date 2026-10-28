@@ -150,22 +150,15 @@ export function useLandingTransitions() {
     }, [safeTimeout]);
 
     const _closeNavigationSequence = useCallback(() => {
-        // Faire disparaître le contenu du menu
         setNavigationContentActive(false);
+    }, []);
 
+    const completeNavigationClose = useCallback(() => {
+        setNavigationWrapperActive(false);
+        setTransitionPanelsActive({ active: false, mode: 'staggered' });
         safeTimeout(() => {
-            setNavigationWrapperActive(false);
-
-            // Rétracter les volets de transition
-            safeTimeout(() => {
-                setTransitionPanelsActive({ active: false, mode: 'staggered' });
-
-                // Réafficher progressivement le contenu de la page
-                safeTimeout(() => {
-                    setContentActive(true);
-                }, 500);
-            }, 50);
-        }, 750);
+            setContentActive(true);
+        }, 500);
     }, [safeTimeout]);
 
     useEffect(() => {
@@ -277,6 +270,7 @@ export function useLandingTransitions() {
         navigationContentActive,
         setNavigationActive,
         setNavigationContentActive,
+        completeNavigationClose,
 
         // Panneaux et volets
         transitionPanelsActive,
