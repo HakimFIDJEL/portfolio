@@ -76,7 +76,7 @@ export default function Header({
         <header
             className={cn(
                 // Default styles
-                'sticky top-0 right-0 left-0 z-10 grid w-full',
+                'sticky top-0 right-0 left-0 z-30 grid w-full',
                 'transition-all duration-1000',
                 'border-b border-transparent',
 

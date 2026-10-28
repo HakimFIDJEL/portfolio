@@ -54,7 +54,19 @@ export default function Curtain({
         !show && closeDuration !== undefined ? closeDuration : duration;
 
     return (
-        <div ref={ref} className={cn('relative', className)}>
+        <div
+            ref={ref}
+            className={cn(
+                'relative overflow-hidden transition-[clip-path]',
+                className,
+            )}
+            style={{
+                clipPath:
+                    isInView && show ? 'inset(0 0 0 0)' : 'inset(0 0 100% 0)',
+                transitionDuration: `${currentDuration}ms`,
+                transitionDelay: isInView ? `${delay}ms` : '0ms',
+            }}
+        >
             <div
                 ref={contentRef}
                 className={cn(
@@ -67,7 +79,6 @@ export default function Curtain({
                     transitionDuration: `${currentDuration}ms`,
                     transitionDelay: isInView ? `${delay}ms` : '0ms',
                 }}
-
             >
                 {children}
             </div>
