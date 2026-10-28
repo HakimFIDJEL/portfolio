@@ -108,7 +108,7 @@ export default function Hero({ appear }: HeroProps) {
                             className={cn(
                                 // Default styles
                                 '!leading-none font-medium',
-                                'text-[2.65rem] sm:text-7xl md:text-[clamp(2rem,10vw,8.5rem)]',
+                                'text-[clamp(1.75rem,8vw,2.65rem)] sm:text-7xl md:text-[clamp(2rem,10vw,8.5rem)]',
                                 'whitespace-nowrap',
                             )}
                         >
