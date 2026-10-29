@@ -567,8 +567,8 @@ function TabAboutContent() {
                     {resume_url && (
                         <div className="pt-2">
                             <Magnet
-                                magnetStrength={3}
-                                padding={20}
+                                magnetStrength={5}
+                                padding={10}
                                 wrapperClassName="inline-block"
                             >
                                 <a
