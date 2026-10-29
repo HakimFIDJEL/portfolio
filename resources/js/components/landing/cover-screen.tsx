@@ -14,8 +14,10 @@ interface CoverScreenProps {
     showContent: boolean;
 }
 
-export default function CoverScreen({ showWrapper, showContent }: CoverScreenProps) {
-
+export default function CoverScreen({
+    showWrapper,
+    showContent,
+}: CoverScreenProps) {
     const __ = useTrans();
 
     return (
@@ -31,13 +33,19 @@ export default function CoverScreen({ showWrapper, showContent }: CoverScreenPro
             )}
         >
             <Curtain showCurtain={!showContent} delay={0}>
-                <h1 className="text-4xl font-light sm:text-5xl">{__('landing.layout.loader.loading', 'Loading...')}</h1>
+                <h1 className="text-4xl font-light sm:text-5xl">
+                    {__('landing.layout.loader.loading', 'Loading...')}
+                </h1>
             </Curtain>
             <Curtain showCurtain={!showContent} delay={125}>
-                <h1 className="text-4xl font-normal sm:text-5xl">{__('landing.layout.loader.loading', 'Loading...')}</h1>
+                <h1 className="text-4xl font-normal sm:text-5xl">
+                    {__('landing.layout.loader.loading', 'Loading...')}
+                </h1>
             </Curtain>
             <Curtain showCurtain={!showContent} delay={250}>
-                <h1 className="text-4xl font-medium sm:text-5xl">{__('landing.layout.loader.loading', 'Loading...')}</h1>
+                <h1 className="text-4xl font-medium sm:text-5xl">
+                    {__('landing.layout.loader.loading', 'Loading...')}
+                </h1>
             </Curtain>
         </div>
     );

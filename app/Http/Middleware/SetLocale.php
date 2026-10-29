@@ -1,28 +1,25 @@
 <?php
 
-// app/Http/Middleware/SetLocale.php
+declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Middleware to set the application locale based on the authenticated user's preference.
- */
 class SetLocale
 {
     /**
-     * Handle an incoming request.
+     * Définir la langue active de l'application depuis la session.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = Session::get('locale', App::getLocale());
+        $locale = (string) Session::get('locale', App::getLocale());
 
         App::setLocale($locale);
 

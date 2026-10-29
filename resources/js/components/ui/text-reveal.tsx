@@ -35,7 +35,7 @@ export const TextReveal: FC<TextRevealProps> = ({
             if (item.type === "paragraph-start")
               return <div key={`pstart-${i}`} className="w-full" />
 
-            if (item.type === "word") {
+            if (item.type === "word" && item.index !== undefined && item.total !== undefined) {
               const start = item.index / item.total
               const end = start + 1 / item.total
 
@@ -99,7 +99,7 @@ function extractWordsWithBreaks(node: ReactNode) {
       return
     }
 
-    if (React.isValidElement(n)) {
+    if (React.isValidElement<{ className?: string; children?: ReactNode }>(n)) {
       const tag = typeof n.type === "string" ? n.type : undefined
 
       // push className du parent dans la stack

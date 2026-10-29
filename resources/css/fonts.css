@@ -8,7 +8,8 @@
     font-style: normal;
     font-weight: 300;
     font-display: swap;
-    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Light.ttf') format('truetype');
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Light.woff2')
+        format('woff2');
 }
 
 /* 400 - Regular */
@@ -17,7 +18,8 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Regular.ttf') format('truetype');
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Regular.woff2')
+        format('woff2');
 }
 
 /* 500 - Medium */
@@ -26,7 +28,8 @@
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf') format('truetype');
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Medium.woff2')
+        format('woff2');
 }
 
 /* 600 - SemiBold */
@@ -35,7 +38,8 @@
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-SemiBold.ttf') format('truetype');
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-SemiBold.woff2')
+        format('woff2');
 }
 
 /* 700 - Bold */
@@ -44,7 +48,8 @@
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf') format('truetype');
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Bold.woff2')
+        format('woff2');
 }
 
 /* -------------------------------------------------------------------------- */

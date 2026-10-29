@@ -18,7 +18,6 @@ interface LoaderProps {
 }
 
 export default function Loader({ showLoader, showLoaderContent }: LoaderProps) {
-
     const __ = useTrans();
 
     return (
@@ -47,7 +46,7 @@ export default function Loader({ showLoader, showLoaderContent }: LoaderProps) {
 
                     'gap-4 sm:gap-8',
                     'w-[100%] max-w-[100%]',
-                    !showLoader && 'w-[90%] max-w-7xl',
+                    !showLoader && 'w-full max-w-7xl sm:w-[90%]',
                 )}
             >
                 <Curtain

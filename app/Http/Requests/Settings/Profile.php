@@ -1,45 +1,33 @@
 <?php
 
-// app/Http/Requests/Settings/Profile.php
+declare(strict_types=1);
 
 namespace App\Http\Requests\Settings;
 
-// Necessary imports
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use libphonenumber\PhoneNumberUtil;
-use libphonenumber\NumberParseException;
-
-// Models
 use App\Models\User;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
-/**
- * Class Profile
- *
- * Handles the validation for user profile update requests.
- */
 class Profile extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Détermine si l'utilisateur est autorisé à exécuter cette requête.
      */
     public function authorize(): bool
     {
-        // Only allow authenticated users to make this request
         return Auth::check();
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Règles de validation pour la modification du profil utilisateur.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, array<int, mixed>>
      */
     public function rules(): array
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-
             'email' => [
                 'required',
                 'string',
@@ -48,10 +36,8 @@ class Profile extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore(Auth::id()),
             ],
-
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:2048'],
             'resume' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
-
         ];
     }
 }

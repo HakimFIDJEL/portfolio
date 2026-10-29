@@ -1,33 +1,56 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Backoffice;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasLocalizedFields;
+use Illuminate\Database\Eloquent\Model;
 
 class Experience extends Model
 {
     use HasLocalizedFields;
 
+    /**
+     * Les attributs assignables en masse.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
-        'sort_order', 'company', 'job_fr', 'job_en', 
-        'status_fr', 'status_en', 'duration', 'description_fr', 'description_en'
+        'sort_order',
+        'company',
+        'job_fr',
+        'job_en',
+        'status_fr',
+        'status_en',
+        'duration',
+        'description_fr',
+        'description_en',
     ];
 
-    protected $appends = ['job', 'status', 'description'];
+    /**
+     * Attributs calculés inclus dans la sérialisation.
+     *
+     * @var list<string>
+     */
+    protected $appends = [
+        'job',
+        'status',
+        'description',
+    ];
 
-    // Accessor for localized 'job' field
-    public function getJobAttribute() {
+    public function getJobAttribute(): ?string
+    {
         return $this->getLocalizedField('job');
     }
 
-    // Accessor for localized 'status' field
-    public function getStatusAttribute() {
+    public function getStatusAttribute(): ?string
+    {
         return $this->getLocalizedField('status');
     }
 
-    // Accessor for localized 'description' field
-    public function getDescriptionAttribute() {
+    public function getDescriptionAttribute(): ?string
+    {
         return $this->getLocalizedField('description');
     }
 }

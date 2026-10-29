@@ -4,11 +4,9 @@
 import { cn } from '@/lib/utils';
 
 // Components
-import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import FadeIn from '@/components/landing/fade-in';
 import UnderlineLink from '@/components/landing/underline-link';
-import Magnet from '@/components/ui/magnet';
 
 // Icons
 import { ArrowUpRight } from 'lucide-react';
@@ -16,55 +14,47 @@ import { ArrowUpRight } from 'lucide-react';
 // Types
 import { type Contact as ContactType } from '@/types';
 
-// Translation
-import { useTrans } from '@/lib/translation';
+// Translation & Icons
 import { GetIcon } from '@/lib/render';
+import { useTrans } from '@/lib/translation';
 
 interface ContactProps {
     appear: boolean;
     contacts: ContactType[];
 }
-export default function Contact({ appear, contacts }: ContactProps) {
 
+export default function Contact({ appear, contacts }: ContactProps) {
     const __ = useTrans();
+
+    const sortedContacts = [...contacts].sort(
+        (a, b) => a.sort_order - b.sort_order,
+    );
 
     return (
         <section
             className={cn(
                 // Default styles
-                'flex flex-col',
+                'flex scroll-mt-24 flex-col',
                 'mt-0 sm:mt-36',
             )}
             id="contact"
         >
-
-
             {/* Borders */}
-            <div
-                className={cn(
-                    // Before pseudo-element styles
-                    'relative',
-
-                    'px-6',
-                )}
-            >
+            <div className={cn('relative px-6')}>
                 <div
                     className={cn(
-                        // Before pseudo-element styles
-                        'relative',
-
-                        'h-36 sm:h-0',
-                        'border-r border-l border-dashed',
+                        'relative h-36 border-r border-l border-dashed sm:h-0',
                     )}
                 ></div>
             </div>
 
-            <div className={cn(
-                // Responsive styles
-                'px-6 sm:px-0',
-                'border-t border-b border-dashed',
-                'sm:border-0',
-            )}>
+            <div
+                className={cn(
+                    // Responsive styles
+                    'px-6 sm:px-0',
+                    'border-t border-b border-dashed sm:border-0',
+                )}
+            >
                 {/* Title */}
                 <Delimiter
                     dashedBorders={['all']}
@@ -88,9 +78,7 @@ export default function Contact({ appear, contacts }: ContactProps) {
                     <FadeIn show={appear}>
                         <h2
                             className={cn(
-                                // Default styles
-                                'font-medium transition-all',
-                                'text-4xl sm:text-7xl',
+                                'text-4xl font-medium transition-all sm:text-7xl',
                             )}
                         >
                             {__('landing.landing.contact.h2', 'Contact')}
@@ -100,48 +88,39 @@ export default function Contact({ appear, contacts }: ContactProps) {
                     {/* Text */}
                     <div
                         className={cn(
-                            // Default styles
-                            'flex flex-col',
-
-                            'gap-2',
-
-                            'items-start md:items-end',
+                            'flex flex-col items-start gap-2 md:items-end',
                         )}
                     >
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={250}
-                        >
+                        <FadeIn className="w-auto" show={appear} delay={250}>
                             <p>
-                                {__('landing.landing.contact.p_1', "Let's get in touch shall we ?")}
+                                {__(
+                                    'landing.landing.contact.p_1',
+                                    "Let's get in touch shall we ?",
+                                )}
                             </p>
-                        </Curtain>
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={250}
-                        >
+                        </FadeIn>
+                        <FadeIn className="w-auto" show={appear} delay={250}>
                             <UnderlineLink
-                                aria_label={__('landing.seo.scroll_to_top', 'Scroll to top of the page')}
+                                aria_label={__(
+                                    'landing.seo.scroll_to_top',
+                                    'Scroll to top of the page',
+                                )}
                                 showUnderline
                                 href="#top"
                                 className={cn(
-                                    // Default styles
-                                    'group flex w-max items-center gap-2',
-
-                                    // Responsive styles
-                                    'font-normal',
-                                    'md:translate-x-[8px]',
+                                    'group flex w-max items-center gap-2 font-normal md:translate-x-[8px]',
                                 )}
                             >
-                                {__('landing.landing.contact.top', 'Back to top')}
+                                {__(
+                                    'landing.landing.contact.top',
+                                    'Back to top',
+                                )}
                                 <ArrowUpRight
                                     size={32}
                                     className="stroke-1 transition-all group-hover:-rotate-45 group-focus-visible:-rotate-45"
                                 />
                             </UnderlineLink>
-                        </Curtain>
+                        </FadeIn>
                     </div>
                 </Delimiter>
             </div>
@@ -150,84 +129,57 @@ export default function Contact({ appear, contacts }: ContactProps) {
                 {/* Subtitle */}
                 <div
                     className={cn(
-                        // Default styles
-
-                        // Responsive styles
-                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
-
-                        'flex-col sm:flex-row',
-                        'items-start sm:items-center',
-                        'gap-6 sm:gap-0',
+                        'flex-col items-start gap-6 px-6 sm:flex-row sm:items-center sm:gap-0 sm:px-8 md:px-10 lg:px-12.5',
                     )}
                 >
                     <div
                         className={cn(
-                            // Default styles
-                            'h-32 w-full border-r border-l border-dashed',
-                            'flex items-end justify-start',
-
-                            // Responsive styles
-                            'py-4 sm:py-4 md:py-6 lg:py-6',
-                            'px-4 sm:px-4 md:px-6 lg:px-6',
+                            'flex h-32 w-full items-end justify-start border-r border-l border-dashed',
+                            'px-4 py-4 sm:px-4 sm:py-4 md:px-6 md:py-6 lg:px-6 lg:py-6',
                         )}
                     >
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={250}
-                        >
+                        <FadeIn className="w-auto" show={appear} delay={250}>
                             <p>
-                                {__('landing.landing.contact.p_2', "Reach out to talk projects, job offers, or even a good game. I'm quick to reply.")}
+                                {__(
+                                    'landing.landing.contact.p_2',
+                                    "Reach out to talk projects, job offers, or even a good game. I'm quick to reply.",
+                                )}
                             </p>
-                        </Curtain>
+                        </FadeIn>
                     </div>
                 </div>
 
-                {/* Contact items */}
+                {/* Contact Directory */}
                 <div
                     className={cn(
-                        'border-t border-b border-dashed',
-
-                        // Responsive styles
+                        'border-t border-b border-dashed border-border',
                         'px-6 sm:px-8 md:px-10 lg:px-12.5',
                     )}
                 >
                     <Delimiter
                         dashedBorders={['right', 'left']}
                         plusCorners={['all']}
-                        className={cn(
-                            // Default styles
-                            'grid grid-cols-1 md:grid-cols-2',
-
-                            // Responsive styles
-                            'gap-4 md:gap-8',
-                        )}
+                        className="w-full"
                     >
-                        {contacts
-                            .sort((a, b) => a.sort_order - b.sort_order)
-                            .map((item, index) => (
+                        <div className="flex w-full min-w-0 flex-col divide-y divide-border border border-border bg-card">
+                            {sortedContacts.map((item, index) => (
                                 <FadeIn
-                                    key={index}
+                                    key={item.id ?? index}
                                     show={appear}
-                                    delay={index * 100}
+                                    delay={index * 50}
                                     className="w-full"
                                 >
-                                    <ContactItem item={item} />
+                                    <ContactRow item={item} />
                                 </FadeIn>
                             ))}
+                        </div>
                     </Delimiter>
                 </div>
 
                 {/* Borders */}
-                <div
-                    className={cn(
-                        // Responsive styles
-                        'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                    )}
-                >
+                <div className={cn('px-6 sm:px-8 md:px-10 lg:px-12.5')}>
                     <div
                         className={cn(
-                            // Default styles
                             'h-32 w-full border-r border-l border-dashed',
                         )}
                     ></div>
@@ -237,34 +189,95 @@ export default function Contact({ appear, contacts }: ContactProps) {
     );
 }
 
-interface ContactItemProps {
+interface ContactRowProps {
     item: ContactType;
 }
 
-function ContactItem({ item }: ContactItemProps) {
-    const IconComponent = <GetIcon icon={item.icon} props={{ className: 'h-6 w-6 stroke-2 text-primary transition-all duration-500 group-hover:text-primary-foreground group-focus-visible:text-primary-foreground' }} />;
+function ContactRow({ item }: ContactRowProps) {
+    const __ = useTrans();
+
+    const isMail = item.link.startsWith('mailto:');
+    const mailSubject = encodeURIComponent(
+        __(
+            'landing.landing.contact.mail_subject',
+            'Prise de contact — Projet / Mission',
+        ),
+    );
+
+    const href =
+        isMail && !item.link.includes('?')
+            ? `${item.link}?subject=${mailSubject}`
+            : item.link;
 
     return (
-        <Magnet magnetStrength={25} padding={10} wrapperClassName="w-full">
-            <a
-                className={cn(
-                    'flex flex-col items-center justify-between',
-                    'group border transition-all duration-500',
-                    'hover:border-primary hover:bg-primary hover:duration-1000',
-                    'focus-visible:border-primary focus-visible:bg-primary focus-visible:duration-1000 focus-visible:outline-none'
-                )}
-                href={item.link}
-                target="_blank"
-            >
-                <div className={cn('flex items-center justify-center gap-2 border-b bg-card', 'w-full p-4 transition-all duration-500', 'group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:duration-1000', 'group-focus-visible:border-primary group-focus-visible:bg-primary group-focus-visible:text-primary-foreground group-focus-visible:duration-1000')}>
-                    {IconComponent}
-                    <span className="font-semibold">{item.label}</span>
-                </div>
+        <a
+            href={href}
+            target={isMail ? undefined : '_blank'}
+            rel={isMail ? undefined : 'noopener noreferrer'}
+            className={cn(
+                // Default styles
+                'group relative flex w-full items-center justify-between gap-4 overflow-hidden px-5 py-4.5 sm:px-8 sm:py-5.5',
+                'transition-all duration-1000',
 
-                <div className={cn('flex items-center justify-center gap-2 bg-background', 'w-full p-4 underline transition-all duration-500', 'group-hover:border-primary group-hover:bg-card group-hover:duration-1000', 'group-focus-visible:border-primary group-focus-visible:bg-card group-focus-visible:duration-1000')}>
-                    {item.name}
+                // Focus & hover styles
+                'hover:!text-primary-foreground',
+                'focus-visible:!text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary',
+            )}
+        >
+            {/* Background animation like menu items */}
+            <div
+                className={cn(
+                    'absolute inset-0 z-0 h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
+                )}
+            />
+
+            {/* Left: Platform Icon & Label */}
+            <div className="relative z-10 flex min-w-0 items-center gap-4 sm:gap-5">
+                <GetIcon
+                    icon={item.icon}
+                    props={{
+                        className:
+                            'size-5 shrink-0 stroke-[1.5] text-muted-foreground transition-all duration-1000 group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
+                    }}
+                />
+                <div className="flex min-w-0 flex-col sm:flex-row sm:items-baseline sm:gap-3">
+                    <span className="truncate text-base font-medium tracking-tight text-foreground transition-all duration-1000 group-hover:text-primary-foreground group-focus-visible:text-primary-foreground sm:text-lg">
+                        {item.label}
+                    </span>
+                    <span className="truncate text-xs font-normal text-muted-foreground transition-all duration-1000 group-hover:text-primary-foreground/80 group-focus-visible:text-primary-foreground/80 sm:hidden">
+                        {item.name}
+                    </span>
                 </div>
-            </a>
-        </Magnet>
+            </div>
+
+            {/* Right: Direct Handle/Target & Action Arrow */}
+            <div className="relative z-10 flex shrink-0 items-center gap-3 sm:gap-6">
+                <span className="hidden truncate text-sm font-normal text-muted-foreground transition-all duration-1000 group-hover:text-primary-foreground/90 group-focus-visible:text-primary-foreground/90 sm:inline md:text-base">
+                    {item.name}
+                </span>
+                <div className="relative size-5 shrink-0 overflow-hidden">
+                    {/* Primary arrow: exits upwards */}
+                    <ArrowUpRight
+                        className={cn(
+                            'size-5 shrink-0 stroke-[1.5] text-muted-foreground',
+                            'transition-all duration-300 ease-out',
+                            'group-hover:-translate-y-full group-hover:opacity-0',
+                            'group-focus-visible:-translate-y-full group-focus-visible:opacity-0',
+                        )}
+                    />
+                    {/* Secondary arrow: enters from underneath to rest position */}
+                    <ArrowUpRight
+                        aria-hidden="true"
+                        className={cn(
+                            'absolute inset-0 size-5 shrink-0 stroke-[1.5] text-primary-foreground',
+                            'translate-y-full opacity-0',
+                            'transition-all duration-300 ease-out',
+                            'group-hover:translate-y-0 group-hover:opacity-100',
+                            'group-focus-visible:translate-y-0 group-focus-visible:opacity-100',
+                        )}
+                    />
+                </div>
+            </div>
+        </a>
     );
 }

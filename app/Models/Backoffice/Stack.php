@@ -1,24 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Backoffice;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasLocalizedFields;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Stack extends Model
 {
     use HasLocalizedFields;
 
-    protected $fillable = ['sort_order', 'name_fr', 'name_en'];
+    /**
+     * Les attributs assignables en masse.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'sort_order',
+        'name_fr',
+        'name_en',
+    ];
+
+    /**
+     * Attributs calculés inclus dans la sérialisation.
+     *
+     * @var list<string>
+     */
     protected $appends = ['name'];
 
-    public function items()
+    /**
+     * Technologies rattachées à cette stack.
+     */
+    public function items(): HasMany
     {
         return $this->hasMany(StackItem::class);
     }
 
-    // Accessor for localized 'name' field
-    public function getNameAttribute() {
+    public function getNameAttribute(): ?string
+    {
         return $this->getLocalizedField('name');
     }
 }

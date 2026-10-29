@@ -81,7 +81,7 @@ function PlusShape({ className, position }: PlusShapeProps) {
         <div
             className={cn(
                 // Default styles
-                'absolute flex h-[20px] w-[20px]',
+                'pointer-events-none absolute z-20 flex h-[20px] w-[20px]',
 
                 // Positioning
                 position === 'top-right' &&

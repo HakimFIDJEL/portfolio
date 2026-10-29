@@ -1,0 +1,23 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hakimfidjel/portfolio:latest
+    container_name: portfolio_app
+    restart: unless-stopped
+    environment:
+      APP_NAME: "${APP_NAME:-Hakim Fidjel}"
+      APP_ENV: "${APP_ENV:-local}"
+      APP_DEBUG: "${APP_DEBUG:-true}"
+      APP_URL: "${APP_URL:-http://localhost:8000}"
+      DB_CONNECTION: "${DB_CONNECTION:-sqlite}"
+      RUN_SEEDERS: "${RUN_SEEDERS:-false}"
+    ports:
+      - "${PORT:-8000}:80"
+    networks:
+      - portfolio-network
+
+networks:
+  portfolio-network:
+    driver: bridge

@@ -1,48 +1,40 @@
 <?php
 
-// app\Mail\VerifyEmail 
+declare(strict_types=1);
 
 namespace App\Mail\Auth;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Mail\Mailables\Address;
-
-// Models
-use App\Models\User;
 
 class VerifyEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user;
-    protected $token;
+    public function __construct(
+        protected User $user,
+        protected string $token
+    ) {}
 
     /**
-     * Create a new message instance.
-     */
-    public function __construct(User $user, string $token)
-    {
-        $this->user = $user;
-        $this->token = $token;
-    }
-
-    /**
-     * Get the message envelope.
+     * Définir l'enveloppe du message (sujet et destinataire).
      */
     public function envelope(): Envelope
     {
         return new Envelope(
             subject: __('notifications.mail.verify_email.subject', ['app' => config('app.name')]),
-            to: [new Address($this->user->email, $this->user->name ?? null)],
+            to: [new Address($this->user->email, $this->user->name)],
         );
     }
 
     /**
-     * Get the message content definition.
+     * Définir le contenu markdown de l'email.
      */
     public function content(): Content
     {
@@ -58,9 +50,9 @@ class VerifyEmail extends Mailable
     }
 
     /**
-     * Get the attachments for the message.
+     * Pièces jointes de l'email.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

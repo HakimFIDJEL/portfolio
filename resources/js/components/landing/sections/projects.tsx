@@ -2,12 +2,12 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
+import React from 'react';
 
 // Contexts
 import { useLandingContext } from '@/contexts/use-landing-context';
 
 // Components
-import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import FadeIn from '@/components/landing/fade-in';
 import UnderlineLink from '@/components/landing/underline-link';
@@ -30,6 +30,41 @@ interface ProjectsProps {
 export default function Projects({ appear, projects }: ProjectsProps) {
     const { _navigateToPage } = useLandingContext();
     const __ = useTrans();
+
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const [canScrollTop, setCanScrollTop] = React.useState(false);
+    const [canScrollBottom, setCanScrollBottom] = React.useState(false);
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            const el = containerRef.current;
+            if (!el) return;
+
+            const rect = el.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            // Top blur: actif dès que le haut de la liste dépasse le haut de l'écran,
+            // tant que la liste est visible.
+            const isScrolledPastTop = rect.top < 0;
+            const isStillInViewFromTop = rect.bottom > 80;
+            setCanScrollTop(isScrolledPastTop && isStillInViewFromTop);
+
+            // Bottom blur: actif lorsque le conteneur entre dans le viewport par le bas,
+            // et qu'il reste des projets sous le pli.
+            const isContainerVisible = rect.top < windowHeight - 60;
+            const hasMoreProjectsBelow = rect.bottom > windowHeight + 10;
+            setCanScrollBottom(isContainerVisible && hasMoreProjectsBelow);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('resize', handleScroll, { passive: true });
+        handleScroll();
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleScroll);
+        };
+    }, []);
 
     function handleProjectClick(
         e: React.MouseEvent<HTMLAnchorElement>,
@@ -56,7 +91,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
         <section
             className={cn(
                 // Default styles
-                'flex flex-col',
+                'flex scroll-mt-24 flex-col',
 
                 // Before pseudo-element styles
                 'mb-0 lg:mb-48',
@@ -110,12 +145,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                             'flex sm:hidden',
                         )}
                     >
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={250}
-                            className="w-full"
-                        >
+                        <FadeIn show={appear} delay={250} className="w-full">
                             <p>
                                 {__(
                                     'landing.landing.projects.p_1',
@@ -134,12 +164,8 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                                     'impactful ones.',
                                 )}
                             </p>
-                        </Curtain>
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={250}
-                        >
+                        </FadeIn>
+                        <FadeIn className="w-auto" show={appear} delay={250}>
                             <UnderlineLink
                                 aria_label={__(
                                     'landing.seo.scroll_to_section',
@@ -163,7 +189,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                                     className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
                                 />
                             </UnderlineLink>
-                        </Curtain>
+                        </FadeIn>
                     </div>
                 </Delimiter>
             </div>
@@ -196,12 +222,7 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                         'border-r border-l border-dashed sm:border-0',
                     )}
                 >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={250}
-                        className="w-full"
-                    >
+                    <FadeIn show={appear} delay={250} className="w-full">
                         <p>
                             {__(
                                 'landing.landing.projects.p_1',
@@ -220,12 +241,8 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                                 'impactful ones.',
                             )}
                         </p>
-                    </Curtain>
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={250}
-                    >
+                    </FadeIn>
+                    <FadeIn className="w-auto" show={appear} delay={250}>
                         <UnderlineLink
                             aria_label={__(
                                 'landing.seo.scroll_to_section',
@@ -249,16 +266,18 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                                 className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
                             />
                         </UnderlineLink>
-                    </Curtain>
+                    </FadeIn>
                 </div>
             </div>
 
             <div
+                ref={containerRef}
+                id="projects-list"
                 className={cn(
                     // Responsive styles
                     'px-6 sm:px-0',
 
-                    'border-b border-dashed',
+                    'border-b border-dashed border-border',
                 )}
             >
                 {/* Content */}
@@ -270,6 +289,17 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                         'relative flex flex-col transition-all duration-1000',
                     )}
                 >
+                    {/* Sticky Top Progressive Blur */}
+                    <div
+                        className={cn(
+                            'pointer-events-none sticky top-0 z-20 -mb-24 h-24 w-full sm:-mb-32 sm:h-32 lg:-mb-36 lg:h-36',
+                            'bg-gradient-to-b from-card via-card/75 to-transparent backdrop-blur-md',
+                            '[mask-image:linear-gradient(to_bottom,black_30%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,black_30%,transparent)]',
+                            'transition-opacity duration-500 ease-out',
+                            canScrollTop ? 'opacity-100' : 'opacity-0',
+                        )}
+                    />
+
                     <FlowingMenu
                         items={items}
                         speed={5}
@@ -282,6 +312,17 @@ export default function Projects({ appear, projects }: ProjectsProps) {
                             'py-8 sm:py-10 md:py-12 lg:py-14',
                             'text-xl sm:text-5xl',
                             'font-light',
+                        )}
+                    />
+
+                    {/* Sticky Bottom Progressive Blur */}
+                    <div
+                        className={cn(
+                            'pointer-events-none sticky bottom-0 z-20 -mt-24 h-24 w-full sm:-mt-32 sm:h-32 lg:-mt-36 lg:h-36',
+                            'bg-gradient-to-t from-card via-card/75 to-transparent backdrop-blur-md',
+                            '[mask-image:linear-gradient(to_top,black_30%,transparent)] [-webkit-mask-image:linear-gradient(to_top,black_30%,transparent)]',
+                            'transition-opacity duration-500 ease-out',
+                            canScrollBottom ? 'opacity-100' : 'opacity-0',
                         )}
                     />
                 </Delimiter>

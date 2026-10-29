@@ -57,7 +57,7 @@ export interface SharedData {
 
     avatar_url: string | null;
     resume_url: string | null;
-    
+
     [key: string]: unknown;
 }
 
@@ -78,7 +78,7 @@ export interface PaginationProps {
         active: boolean;
         label: string;
         page: number | null;
-    }
+    };
 }
 
 // --------------------------------

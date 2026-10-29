@@ -15,8 +15,6 @@ const LandingTransitionsContext = createContext<
 export function LandingTransitionsProvider({
     children,
 }: LandingTransitionsProviderProps) {
-
-
     const transitions = useLandingTransitions();
 
     const contextValue = useMemo(() => transitions, [transitions]);

@@ -78,16 +78,19 @@ export default function Create() {
             <Head title="Create Tool" />
 
             <Card>
-                <CardHeader className="flex flex-col md:items-center justify-between md:flex-row">
+                <CardHeader className="flex flex-col justify-between md:flex-row md:items-center">
                     <div className="flex flex-col">
                         <CardTitle>Create a tool</CardTitle>
                         <CardDescription>
                             Fill in the form below to create a new tool.
                         </CardDescription>
                     </div>
-                    <CardAction className="flex flex-col md:items-center justify-between md:flex-row gap-2 w-full md:w-auto">
+                    <CardAction className="flex w-full flex-col justify-between gap-2 md:w-auto md:flex-row md:items-center">
                         <Link href={route('backoffice.tools.index')}>
-                            <Button variant={'outline'} className="w-full md:w-auto">
+                            <Button
+                                variant={'outline'}
+                                className="w-full md:w-auto"
+                            >
                                 <ArrowLeft />
                                 Go back
                             </Button>
@@ -183,11 +186,21 @@ export function Items({ data, setData }: ItemsProps) {
         return (
             <>
                 <TableCell>{item.name}</TableCell>
-                <TableCell className='space-x-2'>
-                    <Button variant={'secondary'} size={"icon"} onClick={(e) => handleEdit(e, item)} type='button'>
+                <TableCell className="space-x-2">
+                    <Button
+                        variant={'secondary'}
+                        size={'icon'}
+                        onClick={(e) => handleEdit(e, item)}
+                        type="button"
+                    >
                         <Pen />
                     </Button>
-                    <Button variant={'outline'} size={"icon"} onClick={(e) => handleDelete(e, item)} type='button'>
+                    <Button
+                        variant={'outline'}
+                        size={'icon'}
+                        onClick={(e) => handleDelete(e, item)}
+                        type="button"
+                    >
                         <Trash2 />
                     </Button>
                 </TableCell>
@@ -267,7 +280,6 @@ export function Items({ data, setData }: ItemsProps) {
                                 <Input
                                     id="name"
                                     placeholder="Enter the item name"
-                                    autoFocus
                                     required
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}

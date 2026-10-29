@@ -1,55 +1,45 @@
 <?php
 
-// app/Http/Requests/Projects/Update.php
+declare(strict_types=1);
 
 namespace App\Http\Requests\Projects;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-/**
- * Class Update
- *
- * Handles the validation for updating an existing project.
- */
 class Update extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Détermine si l'utilisateur est autorisé à exécuter cette requête.
      */
     public function authorize(): bool
     {
-        // Only allow authenticated users to make this request
         return Auth::check();
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Règles de validation applicables à la mise à jour d'un projet.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
+        $projectId = $this->route('project')?->id ?? $this->project?->id;
+
         return [
             'title_fr' => ['required', 'string', 'max:255'],
             'title_en' => ['required', 'string', 'max:255'],
-
             'subtitle_fr' => ['required', 'string', 'max:255'],
             'subtitle_en' => ['required', 'string', 'max:255'],
-
-            'slug_fr' => ['required', 'string', 'max:255', Rule::unique('projects', 'slug_fr')->ignore($this->project->id)],
-            'slug_en' => ['required', 'string', 'max:255', Rule::unique('projects', 'slug_en')->ignore($this->project->id)],
-
+            'slug_fr' => ['required', 'string', 'max:255', Rule::unique('projects', 'slug_fr')->ignore($projectId)],
+            'slug_en' => ['required', 'string', 'max:255', Rule::unique('projects', 'slug_en')->ignore($projectId)],
             'description_fr' => ['nullable', 'string'],
             'description_en' => ['nullable', 'string'],
-
             'feedback_fr' => ['nullable', 'string'],
             'feedback_en' => ['nullable', 'string'],
-
             'what_i_learned_fr' => ['nullable', 'string'],
             'what_i_learned_en' => ['nullable', 'string'],
-
             'is_new' => ['boolean'],
             'type' => ['nullable', 'string', 'in:project,sandbox'],
             'end_date' => ['nullable', 'date'],
@@ -59,15 +49,11 @@ class Update extends FormRequest
             // Relations
             'tags' => ['nullable', 'array'],
             'tags.*.id' => ['required', 'integer', 'exists:tags,id'],
-
             'stackItems' => ['nullable', 'array'],
             'stackItems.*.id' => ['required', 'integer', 'exists:stack_items,id'],
 
-            // Attachments
+            // Pièces jointes
             'attachments' => ['nullable', 'array'],
-            // 'attachments.*.id' => ['nullable', 'string', 'exists:attachments,id'],
-            // 'attachments.*.title' => ['nullable', 'string', 'max:255'],
-            // 'attachments.*.file' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:5120'],
         ];
     }
 }

@@ -1,74 +1,187 @@
 import { router } from '@inertiajs/react';
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-// Définir le type de retour pour le Context
+export interface TransitionPanelsState {
+    active: boolean;
+    mode: 'instant' | 'staggered';
+}
+
 export type LandingTransitionsHook = ReturnType<typeof useLandingTransitions>;
 
 export function useLandingTransitions() {
     // -----------------------------------
     // States
     // -----------------------------------
-    // Loader initial state
+    // Contrôle d'affichage progressif du contenu (rideaux, fade-in)
     const [contentActive, setContentActive] = useState(false);
-    const [fetchingData, setFetchingData] = useState(true);
     const [loaderState, setLoaderState] = useState<
         'intro' | 'transition' | 'none'
     >('intro');
-    
-    // Main states
+
+    // Navigation plein écran
     const [navigationActive, setNavigationActive] = useState(false);
     const [navigationWrapperActive, setNavigationWrapperActive] =
         useState(false);
     const [navigationContentActive, setNavigationContentActive] =
         useState(false);
+
+    // Ancre cible post-navigation
     const [targetAnchor, setTargetAnchor] = useState<string | null>(null);
 
-    // Transition panels state
-    interface TransitionPanelsProps {
-        active: boolean;
-        mode: 'instant' | 'staggered';
-    }
+    // Panneaux de volets de transition
     const [transitionPanelsActive, setTransitionPanelsActive] =
-        useState<TransitionPanelsProps>({
-            active: loaderState === 'transition' ? true : false,
-            mode: loaderState === 'transition' ? 'instant' : 'staggered',
+        useState<TransitionPanelsState>({
+            active: false,
+            mode: 'staggered',
         });
 
-    // Loader states
-    const [introLoaderWrapperActive, setIntroLoaderWrapperActive] = useState(
-        loaderState === 'intro' ? true : false,
-    );
+    // Écran de chargement d'intro ("Salut, c'est Hakim")
+    const [introLoaderWrapperActive, setIntroLoaderWrapperActive] =
+        useState(true);
     const [introLoaderContentActive, setIntroLoaderContentActive] =
         useState(false);
 
-    const [transitionLoaderWrapperActive, setTransitionLoaderWrapperActive] =
-        useState(loaderState === 'transition' ? true : false);
-    const [transitionLoaderContentActive, setTransitionLoaderContentActive] =
-        useState(false);
+    // Écran de transition de chargement (CoverScreen)
+    const [transitionLoaderWrapperActive] = useState(false);
+    const [transitionLoaderContentActive] = useState(false);
 
-    // -----------------------------------
-    // Timeout Manager
-    // -----------------------------------
+    // Visibilité du header (défilement)
+    const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+
+    useEffect(() => {
+        let lastScrollY = window.scrollY;
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            // Quand le haut de la fenêtre est dans la liste des projets,
+            // le header ne peut plus apparaître et disparaît automatiquement
+            const projectsList = document.getElementById('projects-list');
+            if (projectsList) {
+                const rect = projectsList.getBoundingClientRect();
+                if (rect.top <= 0 && rect.bottom >= 0) {
+                    setIsHeaderVisible(false);
+                    lastScrollY = currentScrollY;
+                    return;
+                }
+            }
+
+            if (currentScrollY <= 10) {
+                setIsHeaderVisible(true);
+            } else if (currentScrollY > lastScrollY + 20) {
+                // Défilement vers le bas
+                setIsHeaderVisible(false);
+            } else if (currentScrollY < lastScrollY - 10) {
+                // Défilement vers le haut
+                setIsHeaderVisible(true);
+            }
+
+            lastScrollY = currentScrollY;
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('resize', handleScroll, { passive: true });
+        handleScroll();
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleScroll);
+        };
+    }, []);
+
+    // Gestionnaire de minuteries sécurisé
     const timeouts = useRef<ReturnType<typeof setTimeout>[]>([]);
+    const isFirstMount = useRef(true);
+    const isTransitioningRef = useRef(false);
 
-    const safeTimeout = (callback: () => void, delay: number) => {
+    const safeTimeout = useCallback((callback: () => void, delay: number) => {
         const id = setTimeout(callback, delay);
         timeouts.current.push(id);
         return id;
-    };
+    }, []);
 
     useEffect(() => {
         return () => {
             timeouts.current.forEach(clearTimeout);
+            timeouts.current = [];
         };
     }, []);
 
     // -----------------------------------
-    // Functions
+    // Défilement vers ancre
     // -----------------------------------
+    const scrollToAnchor = useCallback((anchor: string | null) => {
+        if (!anchor || anchor === 'top') {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth',
+            });
+            return;
+        }
 
-    // Navigation open sequence - DONE
-    function _openNavigationSequence() {
+        const cleanAnchor = anchor.replace('#', '');
+        const performScroll = () => {
+            const element = document.getElementById(cleanAnchor);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+                return true;
+            }
+            return false;
+        };
+
+        if (!performScroll()) {
+            const timeout1 = setTimeout(performScroll, 100);
+            const timeout2 = setTimeout(performScroll, 300);
+            const timeout3 = setTimeout(performScroll, 600);
+            return () => {
+                clearTimeout(timeout1);
+                clearTimeout(timeout2);
+                clearTimeout(timeout3);
+            };
+        }
+    }, []);
+
+    // -----------------------------------
+    // Séquence d'intro ("Salut, c'est Hakim")
+    // -----------------------------------
+    useEffect(() => {
+        if (loaderState === 'intro') {
+            window.scrollTo(0, 0);
+
+            // Ouvrir les rideaux du texte d'intro
+            const openId = safeTimeout(() => {
+                setIntroLoaderContentActive(true);
+            }, 100);
+
+            // Laisser l'intro visible puis refermer le texte
+            const closeId = safeTimeout(() => {
+                setIntroLoaderContentActive(false);
+
+                // Disparition progressive de l'arrière-plan du loader
+                safeTimeout(() => {
+                    setIntroLoaderWrapperActive(false);
+
+                    // Déclencher l'apparition progressive du contenu de la page
+                    safeTimeout(() => {
+                        setContentActive(true);
+                        setLoaderState('none');
+                    }, 500);
+                }, 500);
+            }, 1400);
+
+            return () => {
+                clearTimeout(openId);
+                clearTimeout(closeId);
+            };
+        }
+    }, [loaderState, safeTimeout]);
+
+    // -----------------------------------
+    // Séquences d'ouverture et fermeture du menu
+    // -----------------------------------
+    const _openNavigationSequence = useCallback(() => {
+        // Déployer les volets de transition pour servir de background
         setTransitionPanelsActive({ active: true, mode: 'staggered' });
         setContentActive(false);
 
@@ -76,238 +189,141 @@ export function useLandingTransitions() {
             setNavigationWrapperActive(true);
             safeTimeout(() => {
                 setNavigationContentActive(true);
-            }, 0);
+            }, 50);
         }, 500);
-    }
+    }, [safeTimeout]);
 
-    // Navigation close sequence - DONE
-    function _closeNavigationSequence() {
+    const _closeNavigationSequence = useCallback(() => {
         setNavigationContentActive(false);
+    }, []);
 
+    const completeNavigationClose = useCallback(() => {
+        setNavigationWrapperActive(false);
+        setTransitionPanelsActive({ active: false, mode: 'staggered' });
         safeTimeout(() => {
-            setNavigationWrapperActive(false);
-
-            safeTimeout(() => {
-                setTransitionPanelsActive({ active: false, mode: 'staggered' });
-
-                safeTimeout(() => {
-                    setContentActive(true);
-                }, 500);
-            }, 0);
-        }, 750);
-    }
-
-    // Loader show sequence - DONE
-    function _showIntroLoaderSequence() {
-        // Kill switch to avoid displaying the intro loader
-        if (loaderState !== 'intro') {
-            setIntroLoaderWrapperActive(false);
-            setIntroLoaderContentActive(false);
             setContentActive(true);
-            return;
-        }
-
-        setIntroLoaderWrapperActive(true);
-        setIntroLoaderContentActive(true);
-        window.scrollTo(0, 0);
-    }
-
-    // Loader close sequence - DONE
-    function _closeIntroLoaderSequence() {
-        // Kill switch to avoid displaying the intro loader
-        if (loaderState !== 'intro') {
-            setIntroLoaderWrapperActive(false);
-            setIntroLoaderContentActive(false);
-            setContentActive(true);
-            return;
-        }
-
-        setIntroLoaderContentActive(false);
-
-        safeTimeout(() => {
-            setIntroLoaderWrapperActive(false);
-
-            safeTimeout(() => {
-                setContentActive(true);
-            }, 500);
         }, 500);
-    }
+    }, [safeTimeout]);
 
-    // Transition loader show sequence - DONE
-    function _showTransitionLoaderSequence() {
-        // Kill switch to avoid displaying the intro loader
-        if (loaderState !== 'transition') {
-            setTransitionLoaderWrapperActive(false);
-            setTransitionLoaderContentActive(false);
-            setContentActive(true);
-            return;
-        }
-
-        setTransitionPanelsActive({ active: true, mode: 'instant' });
-        setTransitionLoaderWrapperActive(true);
-        setTransitionLoaderContentActive(true);
-        window.scrollTo(0, 0);
-    }
-
-    // Transition loader close sequence - DONE
-    function _closeTransitionLoaderSequence() {
-        // Kill switch to avoid displaying the intro loader
-        if (loaderState !== 'transition') {
-            setTransitionLoaderWrapperActive(false);
-            setTransitionLoaderContentActive(false);
-            setContentActive(true);
-            return;
-        }
-
-        setTransitionLoaderContentActive(false);
-
-        safeTimeout(() => {
-            setTransitionLoaderWrapperActive(false);
-            setTransitionPanelsActive({ active: false, mode: 'staggered' });
-
-            safeTimeout(() => {
-                setContentActive(true);
-            }, 500);
-        }, 750);
-    }
-
-    // Navigation to page sequence - DONE
-    function _navigateToPage(href: string, anchor: string | null) {
-        setTransitionPanelsActive({ active: true, mode: 'staggered' });
-        setContentActive(false);
-
-        if(navigationActive) {
-            setNavigationContentActive(false);
-        }
-
-        setTargetAnchor(anchor);
-        
-        safeTimeout(() => {
-            if(navigationActive) {
-                setNavigationWrapperActive(false);
-            }
-            setLoaderState('transition');
-            setFetchingData(true);
-            router.visit(href, {
-                preserveScroll: true,
-                preserveState: true,
-                
-                onFinish: () => {
-                    safeTimeout(() => {
-                        setNavigationActive(false);
-                    }, 0);
-                },
-            });
-        }, 1000);
-    }
-
-    // Navigate to anchor helper - DONE
-    function _navigateToAnchor(anchor: string) {
-        if (anchor === '' || !anchor) {
-            window.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: 'smooth',
-            });
-        } else {
-            if (anchor === 'top') {
-                window.scrollTo({
-                    top: 0,
-                    left: 0,
-                    behavior: 'smooth',
-                });
-            } else {
-                const element = document.getElementById(anchor);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        }
-    }
-
-    // -----------------------------------
-    // Use Effects
-    // -----------------------------------
-
-    // Control navigation open/close effect - DONE
     useEffect(() => {
-        if (fetchingData) return;
+        if (isFirstMount.current) {
+            isFirstMount.current = false;
+            return;
+        }
 
         if (navigationActive) {
             _openNavigationSequence();
         } else {
             _closeNavigationSequence();
         }
-    }, [navigationActive]);
+    }, [navigationActive, _openNavigationSequence, _closeNavigationSequence]);
 
-    // Control anchor navigation effect - DONE
+    // -----------------------------------
+    // Navigation inter-pages et changement de langue
+    // -----------------------------------
+    const _navigateToPage = useCallback(
+        (href: string, anchor: string | null = null) => {
+            if (isTransitioningRef.current) {
+                return;
+            }
+            isTransitioningRef.current = true;
+
+            // Refermer le contenu du menu si ouvert
+            if (navigationActive) {
+                setNavigationContentActive(false);
+            }
+
+            setTargetAnchor(anchor);
+
+            // Déployer les volets de transition
+            setTransitionPanelsActive({ active: true, mode: 'staggered' });
+            setContentActive(false);
+
+            // Attendre la fin complète de l'apparition des volets (1000ms) avant de lancer le rechargement
+            safeTimeout(() => {
+                if (navigationActive) {
+                    setNavigationWrapperActive(false);
+                    setNavigationActive(false);
+                }
+
+                router.visit(href, {
+                    preserveScroll: false,
+                    preserveState: false,
+                    onFinish: () => {
+                        // Si aucune ancre spécifique n'est ciblée, repositionner au sommet
+                        if (!anchor || anchor === 'top') {
+                            window.scrollTo(0, 0);
+                        }
+
+                        // Rétracter les volets une fois le nouveau contenu monté
+                        safeTimeout(() => {
+                            setTransitionPanelsActive({
+                                active: false,
+                                mode: 'staggered',
+                            });
+
+                            // Faire réapparaître le nouveau contenu progressivement
+                            safeTimeout(() => {
+                                setContentActive(true);
+                                isTransitioningRef.current = false;
+                            }, 500);
+                        }, 100);
+                    },
+                    onError: () => {
+                        setTransitionPanelsActive({
+                            active: false,
+                            mode: 'staggered',
+                        });
+                        setContentActive(true);
+                        setTargetAnchor(null);
+                        isTransitioningRef.current = false;
+                    },
+                });
+            }, 1000);
+        },
+        [navigationActive, safeTimeout],
+    );
+
+    // Défilement différé vers l'ancre lorsque le contenu de la nouvelle page est actif
     useEffect(() => {
         if (contentActive && targetAnchor) {
-            _navigateToAnchor(targetAnchor);
+            const cleanup = scrollToAnchor(targetAnchor);
             setTargetAnchor(null);
+            return typeof cleanup === 'function' ? cleanup : undefined;
         }
-    }, [contentActive, targetAnchor]);
+    }, [contentActive, targetAnchor, scrollToAnchor]);
 
-    // Control data fetching effect, show content when fetching is over - DONE
-    useEffect(() => {
-        if (fetchingData) {
-            switch (loaderState) {
-                case 'intro':
-                    _showIntroLoaderSequence();
-                    break;
-                case 'transition':
-                    _showTransitionLoaderSequence();
-                    break;
-                default:
-                    setContentActive(false);
-                    break;
-            }
-            return;
-        }
-
-        switch (loaderState) {
-            case 'intro':
-                _closeIntroLoaderSequence();
-                break;
-            case 'transition':
-                _closeTransitionLoaderSequence();
-                break;
-            default:
-                setContentActive(true);
-                break;
-        }
-    }, [fetchingData, loaderState]);
-
-    // -----------------------------------
-    // Return states and handlers
-    // -----------------------------------
     return {
-        // Params
+        // Paramètres de contenu
         contentActive,
-        fetchingData,
         setContentActive,
-        setFetchingData,
+        fetchingData: false,
+        setFetchingData: () => {},
 
-        // Loader params
+        // Loader intro & transition
         loaderState,
         setLoaderState,
-
-        // states
-        navigationActive,
-        navigationWrapperActive,
-        navigationContentActive,
-        transitionPanelsActive,
-
-        // Loader states
         introLoaderWrapperActive,
         introLoaderContentActive,
-
         transitionLoaderWrapperActive,
         transitionLoaderContentActive,
 
-        // handlers
+        // Navigation plein écran
+        navigationActive,
+        navigationWrapperActive,
+        navigationContentActive,
         setNavigationActive,
         setNavigationContentActive,
+        completeNavigationClose,
+
+        // Panneaux et volets
+        transitionPanelsActive,
+
+        // Header
+        isHeaderVisible,
+        setIsHeaderVisible,
+
+        // Actions
         _navigateToPage,
     };
 }

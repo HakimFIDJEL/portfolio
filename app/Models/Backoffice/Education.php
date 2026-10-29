@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Backoffice;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasLocalizedFields;
+use Illuminate\Database\Eloquent\Model;
 
 class Education extends Model
 {
@@ -11,21 +13,38 @@ class Education extends Model
 
     protected $table = 'educations';
 
+    /**
+     * Les attributs assignables en masse.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
-        'sort_order', 'institution', 'type_fr', 'type_en', 
-        'duration', 'description_fr', 'description_en'
+        'sort_order',
+        'institution',
+        'type_fr',
+        'type_en',
+        'duration',
+        'description_fr',
+        'description_en',
     ];
 
-    protected $appends = ['type', 'description'];
+    /**
+     * Attributs calculés inclus dans la sérialisation.
+     *
+     * @var list<string>
+     */
+    protected $appends = [
+        'type',
+        'description',
+    ];
 
-    // Accessor for localized 'type' field
-    public function getTypeAttribute() {
+    public function getTypeAttribute(): ?string
+    {
         return $this->getLocalizedField('type');
     }
 
-    // Accessor for localized 'description' field
-    public function getDescriptionAttribute() {
+    public function getDescriptionAttribute(): ?string
+    {
         return $this->getLocalizedField('description');
     }
-
 }

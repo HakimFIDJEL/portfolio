@@ -2,18 +2,22 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // Shadcn UI components
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
 
 interface RoundedButtonProps {
     children: React.ReactNode;
-    onClick?: () => void;
+    onClick?: (
+        e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
+    ) => void;
+    href?: string;
+    target?: string;
     className?: string;
     disabled?: boolean;
     tabIndex?: number;
@@ -25,78 +29,108 @@ export default function RoundedButton({
     children,
     className,
     onClick,
+    href,
+    target,
     disabled,
     tabIndex,
     aria_label,
     showTooltip = true,
 }: RoundedButtonProps) {
-    // const [isClicked, setIsClicked] = useState(false);
+    const [displayedChildren, setDisplayedChildren] = useState(children);
+    const [isShrunk, setIsShrunk] = useState(false);
+    const latestChildrenRef = useRef(children);
+    latestChildrenRef.current = children;
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // const handleClick = () => {
-    //     setIsClicked(true); // Réduire à l'activation
+    useEffect(() => {
+        if (!isShrunk) {
+            setDisplayedChildren(children);
+        }
+    }, [children, isShrunk]);
 
-    //     setTimeout(() => {
-    //         setIsClicked(false); // Agrandir après un court délai
-    //     }, 150); // Ajustez la durée de l'effet
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
 
-    //     if (onClick) {
-    //         onClick();
-    //     }
-    // };
+    const handleClick = (
+        e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
+    ) => {
+        if (disabled) {
+            e.preventDefault();
+            return;
+        }
 
-    if(!showTooltip) {
+        setIsShrunk(true);
+
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            setDisplayedChildren(latestChildrenRef.current);
+            setIsShrunk(false);
+        }, 100);
+
+        onClick?.(e);
+    };
+
+    if (!showTooltip) {
         return renderButton(aria_label);
     }
 
     return (
         <Tooltip>
-            <TooltipTrigger asChild>
-                {renderButton()}
-            </TooltipTrigger>
-            <TooltipContent>
-                {aria_label}
-            </TooltipContent>
+            <TooltipTrigger asChild>{renderButton()}</TooltipTrigger>
+            <TooltipContent>{aria_label}</TooltipContent>
         </Tooltip>
     );
 
     function renderButton(title?: string) {
-        return (
-            <button
-                aria-label={aria_label}
-                onClick={disabled ? undefined : onClick}
-                tabIndex={tabIndex}
-                title={title}
-                className={cn(
-                    // Default styles
-                    'cursor-pointer',
-                    'relative rounded-full p-3',
-                    'border border-primary ',
-                    'bg-transparent text-primary',
+        const commonClassName = cn(
+            // Default styles
+            'cursor-pointer',
+            'relative inline-flex items-center justify-center rounded-full p-3',
+            'border border-primary',
+            'bg-transparent text-primary',
 
-                    'group transition-all',
+            'group transition-all',
 
-                    // Hover & Focus styles
-                    'hover:text-primary-foreground',
-                    'focus-visible:text-primary-foreground focus-visible:outline-none',
+            // Hover & Focus styles
+            'hover:text-primary-foreground',
+            'focus-visible:text-primary-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none',
 
-                    // Disabled styles
-                    disabled &&
-                        'pointer-events-none opacity-50 hover:text-primary focus-visible:text-primary',
+            // Disabled styles
+            disabled &&
+                'pointer-events-none opacity-50 hover:text-primary focus-visible:text-primary',
 
-                    className,
-                )}
-            >
+            className,
+        );
+
+        const content = (
+            <>
                 <div
                     className={cn(
                         // Default styles
-                        'transition-all flex items-center justify-center duration-0',
+                        'flex items-center justify-center',
                         'h-max',
                         'relative z-1',
                         'w-[24px]',
-                        // isClicked && 'scale-75 opacity-75',
                     )}
                 >
-                    {children}
+                    <div
+                        className={cn(
+                            'flex origin-center transform items-center justify-center transition-all duration-100',
+                            isShrunk
+                                ? 'scale-75 opacity-0 ease-in'
+                                : 'scale-100 opacity-100 ease-out',
+                        )}
+                    >
+                        {displayedChildren}
+                    </div>
                 </div>
 
                 {!disabled && (
@@ -114,13 +148,39 @@ export default function RoundedButton({
                             'group-hover:inset-0',
                             'group-focus-visible:inset-0',
                         )}
-                    ></div>
+                    />
                 )}
+            </>
+        );
+
+        if (href) {
+            return (
+                <a
+                    href={disabled ? undefined : href}
+                    target={target}
+                    {...(target === '_blank' && { rel: 'noopener noreferrer' })}
+                    aria-label={aria_label}
+                    onClick={handleClick}
+                    tabIndex={tabIndex}
+                    title={title}
+                    className={commonClassName}
+                >
+                    {content}
+                </a>
+            );
+        }
+
+        return (
+            <button
+                type="button"
+                aria-label={aria_label}
+                onClick={handleClick}
+                tabIndex={tabIndex}
+                title={title}
+                className={commonClassName}
+            >
+                {content}
             </button>
-        )
+        );
     }
-
-
 }
-
-

@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 // Hooks
 import { useAppearance } from '@/hooks/use-appearance';
 import { useTrans } from '@/lib/translation';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 // Components
 import CircularText from '@/components/landing/circular-text';
@@ -14,7 +13,6 @@ import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import LanguageToggle from '@/components/landing/language-toggle';
 import RoundedButton from '@/components/landing/rounded-button';
-import CursorToggle from '@/components/landing/cursor-toggle';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
@@ -29,7 +27,6 @@ interface HeroProps {
 export default function Hero({ appear }: HeroProps) {
     const { appearance, updateAppearance } = useAppearance();
     const __ = useTrans();
-    const isMobile = useIsMobile();
 
     function handleSwitchAppearance() {
         const newAppearance =
@@ -111,7 +108,7 @@ export default function Hero({ appear }: HeroProps) {
                             className={cn(
                                 // Default styles
                                 '!leading-none font-medium',
-                                'text-[2.65rem] sm:text-7xl md:text-[clamp(2rem,10vw,8.5rem)]',
+                                'text-[clamp(1.75rem,8vw,2.65rem)] sm:text-7xl md:text-[clamp(2rem,10vw,8.5rem)]',
                                 'whitespace-nowrap',
                             )}
                         >
@@ -156,26 +153,36 @@ export default function Hero({ appear }: HeroProps) {
                         'py-4 sm:py-5 md:py-6 lg:py-8',
                     )}
                 >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={500}
-                    >
-                        <Magnet magnetStrength={3} padding={20}>
-                            <RoundedButton aria_label={__('landing.seo.discover_more_about_me', 'Discover more about me')}>
-                                <a href="#about" tabIndex={-1} aria-label={__('landing.seo.discover_more_about_me', 'Discover more about me')}>
-                                    <ArrowDown className="stroke-1" />
-                                </a>
+                    <Magnet magnetStrength={3} padding={20}>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={500}
+                        >
+                            <RoundedButton
+                                href="#about"
+                                aria_label={__(
+                                    'landing.seo.discover_more_about_me',
+                                    'Discover more about me',
+                                )}
+                            >
+                                <ArrowDown className="stroke-1" />
                             </RoundedButton>
-                        </Magnet>
-                    </Curtain>
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={750}
-                    >
-                        <Magnet magnetStrength={3} padding={20}>
-                            <RoundedButton onClick={handleSwitchAppearance} aria_label={__('landing.seo.toggle_appearance', 'Toggle appearance mode')}>
+                        </Curtain>
+                    </Magnet>
+                    <Magnet magnetStrength={3} padding={20}>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={750}
+                        >
+                            <RoundedButton
+                                onClick={handleSwitchAppearance}
+                                aria_label={__(
+                                    'landing.seo.toggle_appearance',
+                                    'Toggle appearance mode',
+                                )}
+                            >
                                 {appearance === 'dark' && (
                                     <Moon className="stroke-1" />
                                 )}
@@ -186,24 +193,17 @@ export default function Hero({ appear }: HeroProps) {
                                     <Monitor className="stroke-1" />
                                 )}
                             </RoundedButton>
-                        </Magnet>
-                    </Curtain>
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={1000}
-                    >
-                        <LanguageToggle />
-                    </Curtain>
-                    {!isMobile && (
+                        </Curtain>
+                    </Magnet>
+                    <Magnet magnetStrength={3} padding={20}>
                         <Curtain
                             showCurtain={!appear}
                             background="background"
-                            delay={1250}
+                            delay={1000}
                         >
-                            <CursorToggle />
+                            <LanguageToggle withMagnet={false} />
                         </Curtain>
-                    )}
+                    </Magnet>
                 </Delimiter>
             </div>
         </section>

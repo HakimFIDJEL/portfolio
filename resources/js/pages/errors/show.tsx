@@ -24,32 +24,36 @@ export default function ErrorPage({
     statusCode: number;
     title: string | null;
 }) {
-
     const __ = useTrans();
-    
-    const { auth } = usePage<SharedData>().props;
-    const { translations } = usePage<SharedData>().props;
-    const user = auth ? auth.user : null;
 
-    console.log(translations);
+    const { auth } = usePage<SharedData>().props;
+    const user = auth ? auth.user : null;
 
     return (
         <main className="flex h-[100vh] w-[100vw] items-center justify-center overflow-hidden">
-            <PlaceholderPattern className="absolute inset-0 size-full h-full w-full stroke-muted/50 z-0" />
-            <div className='flex items-center flex-col gap-4 relative z-1'>
-                <div className='flex items-center gap-4 text-4xl'>
-                    <h4>
-                        {statusCode}
-                    </h4>
-                    <Separator orientation='vertical' className='!h-8 !w-0.5 bg-foreground' />
+            <PlaceholderPattern className="absolute inset-0 z-0 size-full h-full w-full stroke-muted/50" />
+            <div className="relative z-1 flex flex-col items-center gap-4">
+                <div className="flex items-center gap-4 text-4xl">
+                    <h4>{statusCode}</h4>
+                    <Separator
+                        orientation="vertical"
+                        className="!h-8 !w-0.5 bg-foreground"
+                    />
                     <p>
-                        {__(`common.errors.${statusCode}.title`, __('common.errors.default.title'))}
+                        {__(
+                            `common.errors.${statusCode}.title`,
+                            __('common.errors.default.title'),
+                        )}
                     </p>
                 </div>
-                <p className='text-center max-w-lg text-muted-foreground'>
-                    {title || __(`common.errors.${statusCode}.message`, __('common.errors.default.message'))}
+                <p className="max-w-lg text-center text-muted-foreground">
+                    {title ||
+                        __(
+                            `common.errors.${statusCode}.message`,
+                            __('common.errors.default.message'),
+                        )}
                 </p>
-                <Button asChild variant='secondary' className='mt-4'>
+                <Button asChild variant="secondary" className="mt-4">
                     <Link href={user ? route('dashboard') : route('home')}>
                         <ArrowLeft />
                         {__('common.errors.button_back')}

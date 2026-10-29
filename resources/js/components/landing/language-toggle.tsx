@@ -2,6 +2,7 @@
 
 // Necessary imports
 import { usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 // Components
 import RoundedButton from '@/components/landing/rounded-button';
@@ -16,29 +17,51 @@ import { SharedData } from '@/types';
 // Translation
 import { useTrans } from '@/lib/translation';
 
-export default function LanguageToggle() {
-
-    const locale = usePage<SharedData>().props.locale;  
+export default function LanguageToggle({
+    withMagnet = true,
+}: {
+    withMagnet?: boolean;
+} = {}) {
+    const locale = usePage<SharedData>().props.locale;
+    const [currentLocale, setCurrentLocale] = useState(locale);
     const __ = useTrans();
+
+    useEffect(() => {
+        setCurrentLocale(locale);
+    }, [locale]);
 
     const { _navigateToPage } = useLandingContext();
 
-    function handleProjectClick(
-        e: React.MouseEvent<HTMLAnchorElement>,
-        href: string,
-        anchor?: string | null,
-    ) {
-        e.preventDefault();
-        _navigateToPage(href, anchor || null);
+    const targetLocale = currentLocale.toUpperCase() === 'EN' ? 'fr' : 'en';
+
+    const button = (
+        <RoundedButton
+            aria_label={__(
+                'landing.seo.switch_language',
+                'Switch language to :language',
+                {
+                    language:
+                        currentLocale.toUpperCase() === 'EN'
+                            ? 'Français'
+                            : 'English',
+                },
+            )}
+            onClick={() => {
+                setCurrentLocale(targetLocale);
+                _navigateToPage(route('toggle_language'), null);
+            }}
+        >
+            {currentLocale.toUpperCase()}
+        </RoundedButton>
+    );
+
+    if (!withMagnet) {
+        return button;
     }
 
     return (
         <Magnet magnetStrength={3} padding={20}>
-            <a onClick={(e) => handleProjectClick(e, route('toggle_language'))} tabIndex={-1} aria-label={__('landing.seo.switch_language', 'Switch language to :language', { language: locale.toUpperCase() })}>
-                <RoundedButton aria_label={__('landing.seo.switch_language', 'Switch language to :language', { language: (locale.toUpperCase() == 'EN' ? 'French' : 'Anglais') })}>
-                    {locale.toUpperCase()}
-                </RoundedButton>
-            </a>
+            {button}
         </Magnet>
     );
 }

@@ -1,6 +1,6 @@
 // Necessary imports
 import { cn } from '@/lib/utils';
-import { useInView } from 'framer-motion';
+import { useInView } from 'motion/react';
 import React from 'react';
 
 interface CurtainProps {
@@ -9,6 +9,9 @@ interface CurtainProps {
     className?: string;
     background?: string;
     delay?: number;
+    duration?: number;
+    closeDuration?: number;
+    onClosed?: () => void;
 }
 
 export default function Curtain({
@@ -17,36 +20,74 @@ export default function Curtain({
     className,
     background,
     delay = 0,
+    duration = 1500,
+    closeDuration,
+    onClosed,
 }: CurtainProps) {
     const ref = React.useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { amount: 0.1, once: true });
 
+    const contentRef = React.useRef<HTMLDivElement>(null);
+    const curtainRef = React.useRef<HTMLDivElement>(null);
     const show = !showCurtain;
+    const wasShown = React.useRef(show);
+
+    React.useEffect(() => {
+        const isClosing = wasShown.current && !show;
+        wasShown.current = show;
+        if (!isClosing || !onClosed || !isInView) return;
+
+        let frameId: number;
+        const checkCovered = () => {
+            const content = contentRef.current?.getBoundingClientRect();
+            const curtain = curtainRef.current?.getBoundingClientRect();
+            if (content && curtain && curtain.bottom >= content.bottom) {
+                onClosed();
+                return;
+            }
+            frameId = requestAnimationFrame(checkCovered);
+        };
+        frameId = requestAnimationFrame(checkCovered);
+        return () => cancelAnimationFrame(frameId);
+    }, [show, onClosed, isInView]);
+    const currentDuration =
+        !show && closeDuration !== undefined ? closeDuration : duration;
 
     return (
         <div
             ref={ref}
             className={cn('relative', className)}
+            style={{ clipPath: 'inset(0 -100vmax -100vmax -100vmax)' }}
         >
             <div
+                ref={contentRef}
                 className={cn(
-                    'relative transition-all duration-1500',
-                    isInView && show ? 'translate-y-0 opacity-100' : '-translate-y-1/2 opacity-0',
+                    'relative transition-all',
+                    isInView && show
+                        ? 'translate-y-0 opacity-100'
+                        : '-translate-y-1/2 opacity-0',
                 )}
-                style={{ transitionDelay: isInView ? `${delay}ms` : '0ms' }}
+                style={{
+                    transitionDuration: `${currentDuration}ms`,
+                    transitionDelay: isInView ? `${delay}ms` : '0ms',
+                }}
             >
                 {children}
             </div>
 
             <div
+                ref={curtainRef}
                 className={cn(
-                    'absolute inset-x-[-1px] transition-all duration-1500',
+                    'absolute inset-x-[-1px] transition-all',
                     isInView && show
                         ? 'top-0 bottom-full'
                         : 'top-[-55%] bottom-0',
                     background ? `bg-${background}` : 'bg-card',
                 )}
-                style={{ transitionDelay: isInView ? `${delay}ms` : '0ms' }}
+                style={{
+                    transitionDuration: `${currentDuration}ms`,
+                    transitionDelay: isInView ? `${delay}ms` : '0ms',
+                }}
             />
         </div>
     );

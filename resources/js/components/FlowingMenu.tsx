@@ -159,7 +159,11 @@ const MenuItem: React.FC<MenuItemProps> = ({
         isMarqueeActive.current = true;
 
         gsap.timeline({ defaults: animationDefaults })
-            .set(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
+            .set(
+                marqueeRef.current,
+                { y: edge === 'top' ? '-101%' : '101%' },
+                0,
+            )
             .set(
                 marqueeInnerRef.current,
                 { y: edge === 'top' ? '101%' : '-101%' },

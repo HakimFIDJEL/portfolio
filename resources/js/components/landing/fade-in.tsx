@@ -2,12 +2,13 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView } from 'motion/react';
 import React from 'react';
 
 interface FadeInProps {
     children: React.ReactNode;
     className?: string;
+    motionClassName?: string;
     delay?: number;
     show: boolean;
 }
@@ -15,6 +16,7 @@ interface FadeInProps {
 export default function FadeIn({
     children,
     className,
+    motionClassName,
     delay = 0,
     show,
 }: FadeInProps) {
@@ -34,7 +36,11 @@ export default function FadeIn({
                     duration: 0.8,
                     delay: isInView && show ? delay / 1000 : 0,
                 }}
-                className="relative"
+                className={cn(
+                    'relative',
+                    className?.includes('h-full') && 'h-full',
+                    motionClassName,
+                )}
             >
                 {children}
             </motion.div>

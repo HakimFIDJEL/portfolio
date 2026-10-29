@@ -1,117 +1,43 @@
-# Portfolio
+# Portfolio — Hakim Fidjel
 
-## Description
+Vitrine technique et professionnelle d'Hakim Fidjel, Ingénieur Logiciel & Développeur Full-Stack Indépendant (EI).
 
-Portfolio personnel développé comme un support de présentation technique. Il a pour objectif de montrer mon approche du développement web moderne, mes choix d’architecture et mon attention portée à la qualité globale d’un produit, sans chercher à aller au-delà de ce cadre.
+Ce projet illustre une architecture web moderne orientée performance, typage strict et Server-Side Rendering (SSR).
 
-Le projet sert avant tout de base concrète pour illustrer mes compétences en front-end, back-end et déploiement.
+## Stack Technique
 
-## Stack technique
+- **Backend** : Laravel 12 (PHP 8.4), architecture en services métier, typage strict et transactions atomiques.
+- **Frontend** : React 19, TypeScript, Tailwind CSS v4, transitions d'interface déclaratives.
+- **Rendu & Navigation** : Inertia.js v2 avec SSR direct Node.js.
+- **Conteneurisation** : Docker multi-stage (Apache/PHP 8.4), SQLite en dev local et MySQL en production.
+- **Qualité & Sécurité** : Pest PHP, Laravel Pint, ESLint (`jsx-a11y`), Prettier, politique HTTP durcie (CSP, HSTS, masquage d'empreinte).
 
-- React / TypeScript
-- Laravel (PHP 8.3)
-- Inertia.js
-- Tailwind CSS
-- Node.js >= 20
-- Composer >= 2.6
-- Docker
-- GitHub Actions (CI/CD)
+## Environnement & Commandes
 
-## Performance et accessibilité
-
-- Bon niveau de performance mesuré via Google Lighthouse
-- Attention particulière portée à l’accessibilité et à la conformité WCAG
-- Utilisation de bonnes pratiques HTML, CSS et JavaScript pour garantir une expérience cohérente sur différents supports
-
-Les audits Lighthouse sont utilisés comme indicateurs de qualité, sans être une finalité en soi.
-
-## Architecture et déploiement
-
-- Application SPA
-- Organisation claire entre front-end et back-end
-- Pipeline CI/CD simple pour automatiser les vérifications courantes
-- Conteneurisation via Docker pour faciliter le déploiement et la reproductibilité
-
-## Prérequis
-
-- PHP >= 8.3
-- Node.js >= 20
-- Composer >= 2.6
-
-## Installation
-
-### Clonage du dépôt
+L'ensemble des opérations de développement, de test et de conteneurisation est orchestré via le `Makefile` :
 
 ```bash
-git clone https://github.com/HakimFIDJEL/portfolio.git
-cd portfolio
+# Afficher l'ensemble des commandes disponibles
+make help
+
+# Démarrer en développement local avec Vite HMR
+make dev-hmr
+
+# Démarrer en développement local avec le moteur SSR direct
+make dev-ssr
+
+# Exécuter la suite complète de vérifications (Pint, ESLint, TypeScript, Tests Pest)
+make check
 ```
 
-### Dépendances
+## Propriété Intellectuelle & Licence
 
-```bash
-composer install
-npm install
-```
-
-### Configuration
-
-```bash
-cp .env.example .env
-php artisan key:generate
-php artisan migrate
-```
-
-## Développement
-
-```bash
-php artisan serve
-```
-
-```bash
-npm run dev
-```
-
-```bash
-php artisan queue:work
-```
-
-## Production
-
-```bash
-php artisan inertia:start-ssr
-```
-
-```bash
-npm run build:ssr
-```
-
-```bash
-php artisan serve
-```
-
-```bash
-php artisan queue:work
-```
-
-## Docker
-
-```bash
-docker build -t hakimfidjel/portfolio:latest .
-docker run -d -p 3000:3000 hakimfidjel/portfolio:latest
-```
-
-## CI/CD
-
-Le déploiement est automatisé via GitHub Actions à chaque mise à jour de la branche de production.
-
-## Propriété intellectuelle
-
-Le contenu de ce portfolio est la propriété de Hakim Fidjel, sauf mention contraire.
-
-Le code source est mis à disposition à titre d’exemple et de support technique. Toute réutilisation commerciale ou redistribution nécessite une autorisation préalable.
+- **Code source** : Distribué sous licence [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](LICENSE.md) à des fins de consultation technique et d'apprentissage. Toute réutilisation commerciale ou redistribution nécessite une autorisation préalable.
+- **Contenus personnels & Identité** : Textes, photographies, réalisations et marque personnelle restent la propriété exclusive d'Hakim Fidjel (Tous droits réservés).
+- **Mentions légales & Conditions d'utilisation** : Consultables sur [hakimfidjel.fr/terms](https://hakimfidjel.fr/terms).
 
 ## Liens
 
-- Site en ligne : https://hakimfidjel.fr
-- Dépôt GitHub : https://github.com/HakimFIDJEL/portfolio
+- **Site en ligne** : [hakimfidjel.fr](https://hakimfidjel.fr)
+- **LinkedIn** : [linkedin.com/in/hakim-fidjel](https://www.linkedin.com/in/hakim-fidjel/)
+- **Contact** : hakimfidjel.pro@gmail.com

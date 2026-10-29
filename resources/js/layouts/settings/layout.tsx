@@ -1,9 +1,9 @@
 // layouts/settings/layout.tsx
 
 // Necessary imports
-import { type PropsWithChildren } from 'react';
-import { Link } from '@inertiajs/react';
 import { cn } from '@/lib/utils';
+import { Link } from '@inertiajs/react';
+import { type PropsWithChildren } from 'react';
 
 // Translation Hook
 import { useTrans } from '@/lib/translation';
@@ -19,7 +19,6 @@ import { Separator } from '@/components/ui/separator';
 import { type NavItem } from '@/types';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
-
     const __ = useTrans();
 
     const sidebarNavItems: NavItem[] = [

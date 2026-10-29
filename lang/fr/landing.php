@@ -14,14 +14,15 @@ return [
             'loading' => 'Chargement...',
             'intro' => "Salut, c'est Hakim",
         ],
-    
+
         'header' => [
             'contact' => 'Contact',
         ],
-    
+
         'navigation' => [
             'home' => 'Accueil',
             'about' => 'À propos',
+            'services' => 'Services',
             'projects' => 'Projets',
             'sandbox' => 'Bac à sable',
             'contact' => 'Contact',
@@ -33,6 +34,7 @@ return [
                     'items' => [
                         'home' => 'Accueil',
                         'about' => 'À propos',
+                        'services' => 'Services',
                         'projects' => 'Projets',
                         'sandbox' => 'Bac à sable',
                         'contact' => 'Contact',
@@ -59,43 +61,67 @@ return [
             'copyright' => 'Tous droits réservés.',
         ],
     ],
-    
+
     'landing' => [
 
-        'meta_description' => "Portfolio de Hakim Fidjel. Découvrez mes projets, compétences et ambitions en tant qu'apprenti ingénieur FullStack dans le domaine de l'ingénierie informatique.",
+        'meta_title' => 'Hakim Fidjel — Ingénieur Logiciel',
+        'meta_description' => "Portfolio de Hakim Fidjel, ingénieur logiciel et développeur indépendant. Conception d'architectures applicatives robustes, systèmes agentiques, ingénierie web moderne et solutions logicielles évolutives.",
 
         'hero' => [
-            'h2' => 'Ingénieur Fullstack',
+            'h2' => 'Ingénieur Logiciel',
             'circularText' => 'Bienvenue sur mon portfolio ~ ',
         ],
-    
+
         'about' => [
             'h2' => 'À propos de moi',
             'skip' => 'Passer',
-    
+
             'p_1' => "Salut, c'est Hakim",
-            'p_2' => "Je suis un ingénieur fullstack français",
-            'p_3' => "avec une forte expertise en développement, infrastructure et automatisation. Je construis et gère des projets évolutifs, assurant des déploiements fluides et des flux de travail efficaces.",
-            'p_4' => "Avec une approche pratique, je m'occupe de tout, de la logique backend à l'administration serveur, en accordant toujours une attention particulière au design et à l'utilisabilité. Je m'efforce de créer des solutions à la fois",
-            'p_5' => "fonctionnelles et visuellement raffinées.",  
-            
+            'p_2' => 'Je suis ingénieur logiciel,',
+            'p_3' => "spécialisé dans la conception d'architectures applicatives robustes, l'automatisation et l'ingénierie backend. Je conçois des systèmes résilients, performants et pensés pour évoluer dans la durée.",
+            'p_4' => "De la modélisation métier jusqu'à l'infrastructure conteneurisée, j'accorde une exigence constante à la rigueur du code, à la clarté des interfaces et à l'ergonomie utilisateur. Mon objectif est de bâtir des solutions logicielles",
+            'p_5' => 'hautement fiables et visuellement soignées.',
+
             'tabs' => [
                 'about' => [
                     'title' => 'À propos de moi',
-                    'my_philosophy' => 'Ma philosophie',
-                    'quote_1' => "“Viser à construire l'avenir une ligne de code à la fois.”",
-                    'quote_2' => "“Ce n'est jamais un bug, c'est une fonctionnalité.”",
-                    'quote_3' => "“Mon parcours équilibre expertise dans les outils que je connais et enthousiasme pour ceux que je n'ai pas encore explorés.”",
-                    'quote_4' => "“Si ce n'est pas cassé, ne le réparez pas.”",
-                    'button' => "Télécharger mon CV",
+                    'photo_alt' => 'Photo de Hakim Fidjel',
+                    'status_badge' => 'Disponible',
+                    'tag' => 'Manifeste & Démarche',
+                    'statement' => 'Bâtir des architectures logicielles pérennes, où la clarté et la rigueur priment sur la complexité inutile.',
+                    'bio_1' => "Ingénieur logiciel en poste et développeur indépendant, je conçois des systèmes web complets avec une vision de bout en bout. De la modélisation des données et la conteneurisation jusqu'au raffinement ergonomique de l'interface, chaque décision technique répond à un impératif de fiabilité et d'efficacité mesurable.",
+                    'bio_2' => "Mon travail s'articule autour du pragmatisme : rejeter la sur-ingénierie, privilégier un code typé, testé et documenté, et livrer des applications immédiatement maintenables par n'importe quelle équipe technique sans accumuler de dette invisible.",
+                    'principles' => [
+                        'label' => 'Principes d\'ingénierie',
+                        'p1_num' => '01',
+                        'p1_title' => 'Rigueur de conception',
+                        'p1_desc' => 'Typage strict de bout en bout, suites de tests automatisées et architecture modulaire.',
+                        'p2_num' => '02',
+                        'p2_title' => 'Sobriété & Vitesse',
+                        'p2_desc' => 'Dépendances maîtrisées, bundles optimisés et conformité stricte aux standards web.',
+                        'p3_num' => '03',
+                        'p3_title' => 'Transparence totale',
+                        'p3_desc' => 'Communication directe, cadrage réaliste des engagements et suivi continu sans promesses creuses.',
+                    ],
+                    'specs' => [
+                        'status_label' => 'Statut',
+                        'status_val' => 'Ingénieur Logiciel & Indépendant',
+                        'location_label' => 'Localisation',
+                        'location_val' => 'Lille',
+                        'availability_label' => 'Disponibilité',
+                        'availability_val' => 'Missions & Collaborations',
+                        'stack_label' => 'Écosystème',
+                        'stack_val' => 'Laravel · React · TypeScript · Docker',
+                    ],
+                    'button' => 'Consulter mon CV complet',
                 ],
                 'experience' => [
                     'title' => 'Expérience professionnelle',
-                    'description' => "Ces rôles ont affiné ma capacité à fournir des solutions efficaces et innovantes tout en m'adaptant à divers environnements professionnels.",
+                    'description' => "Des environnements variés allant de l'ingénierie logicielle avancée aux projets web sur mesure, forgeant rigueur opérationnelle et sens du produit.",
                 ],
                 'education' => [
-                    'title' => 'Éducation & Diplômes',
-                    'description' => "Ces expériences ont façonné mon esprit technique et analytique, me préparant aux défis futurs dans le monde de la technologie.",
+                    'title' => 'Formation & Diplômes',
+                    'description' => "Un cursus d'ingénieur rigoureux complété par des certifications internationales, forgeant une approche analytique et pragmatique de la résolution de problèmes.",
                 ],
                 'tech_stack' => [
                     'title' => 'Stack Technologique',
@@ -105,27 +131,64 @@ return [
                 ],
             ],
         ],
-    
+
+        'services' => [
+            'h2' => 'Services',
+            'skip' => 'Passer',
+            'items' => [
+                'fullstack' => [
+                    'title' => 'Applications & Plateformes Web',
+                    'description' => "Conception et développement d'applications web complètes, rapides et sur-mesure. Des interfaces utilisateur soignées et réactives, soutenues par une architecture technique robuste, sécurisée et évolutive.",
+                    'actions_label' => 'Réalisations & livrables',
+                    'action_1' => 'Applications web métiers, portails clients et dashboards interactifs',
+                    'action_2' => 'Conception d\'architectures backend sécurisées et intégration d\'APIs',
+                    'action_3' => 'Expérience utilisateur fluide, responsive sans compromis et accessible',
+                ],
+                'devops' => [
+                    'title' => 'Automatisation, CI/CD & Déploiement',
+                    'description' => 'Fiabilisation de vos cycles de livraison et industrialisation de vos flux techniques. Mise en place de pipelines modernes pour livrer fréquemment, tester systématiquement et éliminer les erreurs manuelles en production.',
+                    'actions_label' => 'Réalisations & livrables',
+                    'action_1' => 'Déploiements continus fiabilisés et environnements prêts pour la production',
+                    'action_2' => 'Automatisation des suites de tests et des contrôles de qualité logicielle',
+                    'action_3' => 'Conception de scripts d\'automatisation sur-mesure et optimisation des workflows',
+                ],
+                'audit' => [
+                    'title' => 'Audit, Résolution & Conseil Technique',
+                    'description' => 'Diagnostic ciblé, remise à niveau et optimisation de projets existants. Intervention réactive sur des blocages critiques, refactorisation de code complexe et accompagnement pragmatique sur vos choix d\'architecture.',
+                    'actions_label' => 'Réalisations & livrables',
+                    'action_1' => 'Diagnostic rapide et correction d\'anomalies critiques en production',
+                    'action_2' => 'Réduction de dette technique, modernisation de code et refactoring',
+                    'action_3' => 'Optimisation des temps de chargement, audits de conformité et cadrage technique',
+                ],
+            ],
+            'cta' => [
+                'title' => 'Un projet à concrétiser ou un défi technique à relever ?',
+                'description' => "Échangeons sur vos objectifs pour définir ensemble le périmètre d'intervention le plus adapté à vos besoins et à vos délais.",
+                'button' => 'Démarrer un projet',
+            ],
+        ],
+
         'projects' => [
             'h2' => 'Mes Projets',
-            'p_1' => "Jetez un œil à mes projets.",
-            'p_2' => "J'ai actuellement travaillé sur",
-            'p_3' => "projets impactants.",
+            'p_1' => 'Découvrez une sélection de mes réalisations logicielles.',
+            'p_2' => 'Conception et mise en production de',
+            'p_3' => 'projets applicatifs majeurs.',
             'skip' => 'Passer',
         ],
-    
+
         'sandbox' => [
             'h2' => 'Le Bac à Sable',
-            'p_1' => 'Mes travaux moins impactants mais tout de même instructifs, j’ai actuellement travaillé sur',
-            'p_2' => 'petits projets ici.',
+            'p_1' => "Espace d'expérimentation technique, de prototypes et d'explorations conceptuelles :",
+            'p_2' => "projets et bancs d'essai documentés.",
             'skip' => 'Passer',
         ],
 
         'contact' => [
             'h2' => 'Contact',
-            'p_1' => "Faisons connaissance, non ?",
-            'p_2' => "Contactez-moi pour parler de projets, d'offres d'emploi, ou même d'une bonne partie de jeu. Je réponds rapidement !",
+            'p_1' => 'Un projet ou un échange technique en perspective ?',
+            'p_2' => "Disponible pour échanger autour d'architectures logicielles, d'opportunités d'ingénierie ou de collaborations techniques. Réponse assurée sous 24h.",
             'top' => 'Retour en haut',
+            'mail_subject' => 'Prise de contact — Projet / Mission',
         ],
     ],
 
@@ -153,12 +216,19 @@ return [
 
         'meta_description' => 'Lisez les conditions générales d\'utilisation du site portfolio de Hakim Fidjel, qui décrivent les règles et directives pour accéder et utiliser le site.',
 
-        'last_updated' => 'Dernière mise à jour : 14 Décembre 2025',
+        'last_updated' => 'Dernière mise à jour : 25 Octobre 2026',
         'sections' => [
             'introduction' => [
                 'h2' => 'Introduction',
                 'p_1' => 'Bienvenue sur le portfolio de Hakim Fidjel. En accédant à ce site web, vous acceptez d\'être lié par les présentes Conditions Générales d\'Utilisation. Si vous n\'êtes pas d\'accord avec une partie de ces termes, veuillez ne pas utiliser ce site.',
-                'p_2' => 'Ce site est une vitrine de mon travail et de mes compétences en tant qu\'ingénieur Fullstack.',
+                'p_2' => 'Ce site est une vitrine de mon travail et de mes compétences en tant qu\'ingénieur logiciel.',
+            ],
+            'legal_mentions' => [
+                'h2' => 'Mentions Légales',
+                'p_1' => 'Éditeur du site : Hakim Fidjel EI (Entrepreneur Individuel), immatriculé au RNE sous le numéro SIREN 131 784 266 (SIRET : 131 784 266 00010 — Code APE : 6201Z, Programmation informatique).',
+                'p_2' => 'Siège social : 8 Rue Alfred Nobel, 59240 Dunkerque, France — Contact : hakimfidjel.pro@gmail.com / +33 (0)6 95 07 44 17.',
+                'p_3' => 'Régime fiscal : Franchise en base de TVA (Article 293 B du Code Général des Impôts). TVA non applicable.',
+                'p_4' => 'Hébergement : Site hébergé via architecture conteneurisée Docker sur infrastructure dédiée.',
             ],
             'intellectual_property' => [
                 'h2' => 'Propriété Intellectuelle',
@@ -192,6 +262,7 @@ return [
         'switch_language' => 'Changer la langue vers :language',
         'scroll_to_top' => 'Remonter en haut de la page',
         'scroll_to_content' => 'Aller au contenu',
+        'skip_to_content' => 'Passer au contenu principal',
         'scroll_to_section' => 'Aller à la section :section',
         'go_to_link' => 'Aller au lien :link',
         'go_to_dashboard' => 'Aller au tableau de bord',

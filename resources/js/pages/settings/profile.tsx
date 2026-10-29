@@ -1,4 +1,3 @@
-
 // Necessary imports
 import { Head, useForm, usePage } from '@inertiajs/react';
 
@@ -57,7 +56,6 @@ export default function Profile() {
 
                     <InformationForm auth={auth} />
                 </div>
-
             </SettingsLayout>
         </AppLayout>
     );
@@ -87,23 +85,31 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
             onSuccess: () => {
                 setData((current) => {
                     const { ...rest } = current;
-                    return { ...rest, avatar: undefined, resume: undefined } as typeof current;
+                    return {
+                        ...rest,
+                        avatar: undefined,
+                        resume: undefined,
+                    } as typeof current;
                 });
             },
         });
     };
 
     const MAX_RESUME_SIZE_MB = 5;
-    const ALLOWED_RESUME_TYPES = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    const ALLOWED_RESUME_TYPES = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ];
 
     return (
         <form
             onSubmit={handleSubmit}
             encType="multipart/form-data"
-            className="grid md:grid-cols-3 gap-x-8 gap-y-4"
+            className="grid gap-x-8 gap-y-4 md:grid-cols-3"
         >
             {/* Colonnes 1 & 2 : Nom et Email */}
-            <div className="md:col-span-2 flex flex-col gap-2">
+            <div className="flex flex-col gap-2 md:col-span-2">
                 <Label htmlFor="name">
                     {__('settings.pages.profile.info_form.fields.name.label')}
                 </Label>
@@ -124,13 +130,17 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
                     value={data.name}
                     onChange={(e) => setData('name', e.target.value)}
                     required
-                    placeholder={__('settings.pages.profile.info_form.fields.name.placeholder')}
+                    placeholder={__(
+                        'settings.pages.profile.info_form.fields.name.placeholder',
+                    )}
                     aria-invalid={errors.name ? 'true' : 'false'}
                 />
 
                 <div className="grid gap-2">
                     <Label htmlFor="email">
-                        {__('settings.pages.profile.info_form.fields.email.label')}
+                        {__(
+                            'settings.pages.profile.info_form.fields.email.label',
+                        )}
                     </Label>
                     <Input
                         id="email"
@@ -139,7 +149,9 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         required
-                        placeholder={__('settings.pages.profile.info_form.fields.email.placeholder')}
+                        placeholder={__(
+                            'settings.pages.profile.info_form.fields.email.placeholder',
+                        )}
                         aria-invalid={errors.email ? 'true' : 'false'}
                     />
                 </div>
@@ -156,31 +168,35 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
             </div>
 
             {/* Séparateur pour le CV */}
-            <div className="md:col-span-3 h-px bg-border my-2" />
-            
+            <div className="my-2 h-px bg-border md:col-span-3" />
+
             {/* Colonnes 1 & 2 : Label CV */}
-            <div className="md:col-span-2 flex flex-col gap-2">
+            <div className="flex flex-col gap-2 md:col-span-2">
                 <Label htmlFor="resume">
                     {__('settings.pages.profile.info_form.fields.resume.label')}
                 </Label>
             </div>
-            
+
             {/* Colonnes 1, 2, 3 : Champ CV */}
-            <div className="md:col-span-3 space-y-2">
+            <div className="space-y-2 md:col-span-3">
                 <FileUpload
                     defaultAttachment={auth.user?.resume ?? null}
                     onFileChange={(file) => {
                         setData('resume', file);
                     }}
-                    labelKey={__("settings.pages.profile.info_form.fields.resume.label")}
-                    descriptionKey={__("settings.pages.profile.info_form.fields.resume.description")}
+                    labelKey={__(
+                        'settings.pages.profile.info_form.fields.resume.label',
+                    )}
+                    descriptionKey={__(
+                        'settings.pages.profile.info_form.fields.resume.description',
+                    )}
                     maxSizeMB={MAX_RESUME_SIZE_MB}
                     allowedTypes={ALLOWED_RESUME_TYPES}
                 />
             </div>
 
             {/* Bouton de Soumission */}
-            <div className="md:col-span-3 flex pt-2">
+            <div className="flex pt-2 md:col-span-3">
                 <Button disabled={processing} type="submit">
                     {processing ? <Spinner /> : <Save />}
                     {__('settings.pages.profile.info_form.buttons.submit')}
@@ -189,4 +205,3 @@ function InformationForm({ auth }: { auth: SharedData['auth'] }) {
         </form>
     );
 }
-

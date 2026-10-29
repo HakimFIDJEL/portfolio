@@ -1,57 +1,111 @@
-FROM php:8.3.4-apache
+# ==============================================================================
+# Stage 1: Frontend Builder (Compilation Vite & SSR)
+# ==============================================================================
+FROM node:22-bookworm-slim AS frontend-builder
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY tsconfig.json vite.config.ts components.json ./
+COPY resources ./resources
+COPY public ./public
+
+RUN npm run build:ssr
+
+# ==============================================================================
+# Stage 2: Composer Builder (Dépendances PHP de production)
+# ==============================================================================
+FROM composer:2 AS composer-builder
+
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+RUN composer install \
+    --no-dev \
+    --prefer-dist \
+    --no-interaction \
+    --no-scripts \
+    --ignore-platform-req=php \
+    --optimize-autoloader
+
+COPY . .
+RUN composer dump-autoload --optimize --no-dev
+
+# ==============================================================================
+# Stage 3: Runtime Final (Apache + PHP 8.4 Minimal + Node.js pour Inertia SSR)
+# ==============================================================================
+FROM php:8.4-apache AS runtime
 
 WORKDIR /var/www/html
 
-# Apache mod
-RUN a2enmod rewrite
+# Activer les modules Apache mod_rewrite et mod_headers, et durcir la sécurité Apache & PHP
+RUN a2enmod rewrite headers \
+    && sed -i 's/^ServerTokens .*/ServerTokens Prod/' /etc/apache2/conf-available/security.conf \
+    && sed -i 's/^ServerSignature .*/ServerSignature Off/' /etc/apache2/conf-available/security.conf \
+    && a2enconf security \
+    && echo "expose_php = Off" > /usr/local/etc/php/conf.d/security.ini
 
-# Dépendances système
-RUN apt-get update -y && apt-get install -y \
+# Installer les dépendances système requises et le runtime Node.js 22 pour SSR
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
     git \
-    libicu-dev libmariadb-dev unzip zip zlib1g-dev \
-    libpng-dev libjpeg-dev libfreetype6-dev curl libzip-dev \
+    unzip \
+    libicu-dev \
+    libmariadb-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libzip-dev \
+    libsqlite3-dev \
     default-mysql-client \
- && rm -rf /var/lib/apt/lists/*
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# PHP Extensions
+# Configurer et compiler les extensions PHP
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
- && docker-php-ext-install -j$(nproc) intl gettext pdo_mysql gd zip pcntl
+    && docker-php-ext-install -j$(nproc) \
+        intl \
+        pdo_mysql \
+        pdo_sqlite \
+        gd \
+        zip \
+        pcntl \
+        opcache
 
-# Node.js 20
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
- && apt-get install -y nodejs \
- && rm -rf /var/lib/apt/lists/*
-
-# Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Apache root
+# Configuration du VirtualHost Apache pointant vers public/
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
- && sed -ri 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+    && sed -ri 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Copier code projet
+# Copie du code applicatif
 COPY . .
 
-# Rendre entrypoint.sh exécutable
+# Copie des dépendances PHP compilées
+COPY --from=composer-builder /app/vendor ./vendor
+
+# Copie du binaire Composer pour l'outillage et les commandes en conteneur
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+
+# Copie des dépendances frontend (runtime SSR et outillage de dev en conteneur)
+COPY --from=frontend-builder /app/node_modules ./node_modules
+
+# Copie des artefacts frontend compilés (assets publics et bundle SSR)
+COPY --from=frontend-builder /app/public/build ./public/build
+COPY --from=frontend-builder /app/bootstrap/ssr ./bootstrap/ssr
+
+# Script de démarrage
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Permissions storage/bootstrap
+# Permissions de sécurité
 RUN chown -R www-data:www-data storage bootstrap/cache \
- && chmod -R 775 storage bootstrap/cache
+    && chmod -R 775 storage bootstrap/cache
 
-# Installer dépendances PHP & JS (sans artisan commands)
-RUN composer install \
-  --no-interaction \
-  --prefer-dist \
-  --optimize-autoloader \
-  --no-scripts \
- && npm install \
- && npm run build:ssr
-
-
-# Expose Apache
-# EXPOSE 80
+EXPOSE 80
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

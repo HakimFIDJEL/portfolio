@@ -39,9 +39,7 @@ export default function Login({
     return (
         <AuthLayout
             title={__('auth.pages.login.title')}
-            description={__(
-                'auth.pages.login.description',
-            )}
+            description={__('auth.pages.login.description')}
         >
             <Head title={__('auth.pages.login.header')} />
 
@@ -62,13 +60,11 @@ export default function Login({
                                     type="email"
                                     name="email"
                                     required
-                                    autoFocus
                                     placeholder="email@example.com"
                                     defaultValue={old.email ?? ''}
                                     aria-invalid={
                                         errors.email ? 'true' : 'false'
                                     }
-                                    tabIndex={1}
                                 />
                                 <InputGroupAddon>
                                     <User />
@@ -79,9 +75,7 @@ export default function Login({
                         <div className="grid gap-2">
                             <div className="flex items-center">
                                 <Label htmlFor="password">
-                                    {__(
-                                        'auth.pages.login.password_label',
-                                    )}
+                                    {__('auth.pages.login.password_label')}
                                 </Label>
                                 {canResetPassword && (
                                     <Button
@@ -90,7 +84,6 @@ export default function Login({
                                         size={'sm'}
                                         className="ml-auto p-0"
                                         type={'button'}
-                                        tabIndex={5}
                                     >
                                         <Link
                                             href={route(
@@ -114,7 +107,6 @@ export default function Login({
                                     aria-invalid={
                                         errors.password ? 'true' : 'false'
                                     }
-                                    tabIndex={2}
                                 />
                                 <InputGroupAddon>
                                     <Lock />
@@ -126,7 +118,6 @@ export default function Login({
                                             variant={'ghost'}
                                             size={'icon-sm'}
                                             onClick={() => setVisible(false)}
-                                            tabIndex={6}
                                         >
                                             <EyeOff />
                                         </Button>
@@ -136,7 +127,6 @@ export default function Login({
                                             variant={'ghost'}
                                             size={'icon-sm'}
                                             onClick={() => setVisible(true)}
-                                            tabIndex={6}
                                         >
                                             <Eye />
                                         </Button>
@@ -151,7 +141,6 @@ export default function Login({
                                 name="remember"
                                 value={'1'}
                                 defaultChecked={old.remember === '1'}
-                                tabIndex={3}
                             />
                             <Label htmlFor="remember">
                                 {__('auth.pages.login.remember_label')}
@@ -159,11 +148,7 @@ export default function Login({
                         </div>
 
                         <div className="grid gap-3">
-                            <Button
-                                type={'submit'}
-                                disabled={processing}
-                                tabIndex={4}
-                            >
+                            <Button type={'submit'} disabled={processing}>
                                 {processing ? <Spinner /> : <LogIn />}
                                 {__('auth.pages.login.submit_button')}
                             </Button>
@@ -173,12 +158,9 @@ export default function Login({
                                 variant={'secondary'}
                                 disabled={processing}
                                 asChild
-                                tabIndex={7}
                             >
                                 <Link href={route('home')}>
-                                    {__(
-                                        'auth.pages.login.home_link',
-                                    )}
+                                    {__('auth.pages.login.home_link')}
                                 </Link>
                             </Button>
                         </div>

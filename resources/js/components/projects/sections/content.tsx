@@ -27,14 +27,16 @@ interface ContentProps {
     next_project: Project | null;
 }
 
-export default function Content({ project, appear, previous_project, next_project }: ContentProps) {
-
+export default function Content({
+    project,
+    appear,
+    previous_project,
+    next_project,
+}: ContentProps) {
     const __ = useTrans();
     const { _navigateToPage } = useLandingContext();
 
-    function handleBackClick(
-        e: React.MouseEvent<HTMLAnchorElement>,
-    ) {
+    function handleBackClick(e: React.MouseEvent<HTMLAnchorElement>) {
         e.preventDefault();
         _navigateToPage(route('home'), 'projects');
     }
@@ -53,19 +55,21 @@ export default function Content({ project, appear, previous_project, next_projec
                 // Default styles
                 'flex flex-col',
             )}
-            id='content'
+            id="content"
         >
             {/* Tech Stack */}
             {project.stack_items && project.stack_items.length > 0 && (
                 <Delimiter
                     dashedBorders={
-                        project.attachments && project.attachments.length > 0 
-                        ? ['all'] 
-                        : ['top', 'left', 'right']
+                        project.attachments && project.attachments.length > 0
+                            ? ['all']
+                            : ['top', 'left', 'right']
                     }
-                    
-                    plusCorners={project.attachments && project.attachments.length > 0 ? ['all'] : ['top-left', 'top-right']}
-
+                    plusCorners={
+                        project.attachments && project.attachments.length > 0
+                            ? ['all']
+                            : ['top-left', 'top-right']
+                    }
                     className={cn(
                         // Default styles
                         'w-full bg-card',
@@ -85,7 +89,11 @@ export default function Content({ project, appear, previous_project, next_projec
                                 'flex-col gap-4 sm:flex-row sm:gap-0',
                                 'border-border pb-4 sm:border-0 sm:pb-0',
                                 'pt-4 sm:pt-0',
-                                (!project.attachments && (project.description || project.feedback || project.what_i_learned)) && 'border-b',
+                                !project.attachments &&
+                                    (project.description ||
+                                        project.feedback ||
+                                        project.what_i_learned) &&
+                                    'border-b',
                             )}
                         >
                             <div
@@ -103,7 +111,10 @@ export default function Content({ project, appear, previous_project, next_projec
                                         'text-lg',
                                     )}
                                 >
-                                    {__('landing.projects.sections.tech_stack', 'Tech Stack')}
+                                    {__(
+                                        'landing.projects.sections.tech_stack',
+                                        'Tech Stack',
+                                    )}
                                 </h4>
                             </div>
                             <div
@@ -162,7 +173,10 @@ export default function Content({ project, appear, previous_project, next_projec
                                 'text-lg',
                             )}
                         >
-                            {__('landing.projects.sections.attachments', 'Attachments')}
+                            {__(
+                                'landing.projects.sections.attachments',
+                                'Attachments',
+                            )}
                         </h4>
 
                         <Carousel
@@ -174,15 +188,20 @@ export default function Content({ project, appear, previous_project, next_projec
                 </FadeIn>
             )}
 
-            {(project.description || project.feedback || project.what_i_learned) && (
+            {(project.description ||
+                project.feedback ||
+                project.what_i_learned) && (
                 <Delimiter
                     dashedBorders={
-                        project.attachments && project.attachments.length > 0 
-                        ? ['all'] 
-                        : ['bottom', 'left', 'right']
+                        project.attachments && project.attachments.length > 0
+                            ? ['all']
+                            : ['bottom', 'left', 'right']
                     }
-                    
-                    plusCorners={project.attachments && project.attachments.length > 0 ? ['all'] : ['bottom-left', 'bottom-right']}
+                    plusCorners={
+                        project.attachments && project.attachments.length > 0
+                            ? ['all']
+                            : ['bottom-left', 'bottom-right']
+                    }
                     className={cn(
                         // Default styles
                         'w-full bg-card',
@@ -209,7 +228,9 @@ export default function Content({ project, appear, previous_project, next_projec
                                     'flex-col gap-4 sm:flex-row sm:gap-0',
                                     'border-border pb-4 sm:border-0 sm:pb-0',
                                     project.attachments && 'pt-4 sm:pt-0',
-                                    (project.feedback || project.what_i_learned) ? 'border-b' : 'pb-6',
+                                    project.feedback || project.what_i_learned
+                                        ? 'border-b'
+                                        : 'pb-6',
                                 )}
                             >
                                 <div
@@ -227,7 +248,10 @@ export default function Content({ project, appear, previous_project, next_projec
                                             'text-xl',
                                         )}
                                     >
-                                        {__('landing.projects.sections.description', 'Description')}
+                                        {__(
+                                            'landing.projects.sections.description',
+                                            'Description',
+                                        )}
                                     </h4>
                                 </div>
                                 <p
@@ -243,10 +267,10 @@ export default function Content({ project, appear, previous_project, next_projec
                                         '[&_strong]:font-medium [&_strong]:text-foreground',
                                         'text-foreground/70',
                                     )}
-
-                                    dangerouslySetInnerHTML={{ __html: project.description }}
-                                >
-                                </p>
+                                    dangerouslySetInnerHTML={{
+                                        __html: project.description,
+                                    }}
+                                ></p>
                             </div>
                         </FadeIn>
                     )}
@@ -262,7 +286,7 @@ export default function Content({ project, appear, previous_project, next_projec
                                     // Responsive styles
                                     'flex-col gap-4 sm:flex-row sm:gap-0',
                                     'border-border pb-4 sm:border-0 sm:pb-0',
-                                    (project.what_i_learned) && 'border-b',
+                                    project.what_i_learned && 'border-b',
                                     !project.description && 'pt-4 sm:pt-0',
                                 )}
                             >
@@ -281,7 +305,10 @@ export default function Content({ project, appear, previous_project, next_projec
                                             'text-xl',
                                         )}
                                     >
-                                        {__('landing.projects.sections.feedback', 'Feedback')}
+                                        {__(
+                                            'landing.projects.sections.feedback',
+                                            'Feedback',
+                                        )}
                                     </h4>
                                 </div>
                                 <p
@@ -297,10 +324,10 @@ export default function Content({ project, appear, previous_project, next_projec
                                         '[&_strong]:font-medium [&_strong]:text-foreground',
                                         'text-foreground/70',
                                     )}
-
-                                    dangerouslySetInnerHTML={{ __html: project.feedback }}
-                                >
-                                </p>
+                                    dangerouslySetInnerHTML={{
+                                        __html: project.feedback,
+                                    }}
+                                ></p>
                             </div>
                         </FadeIn>
                     )}
@@ -316,7 +343,9 @@ export default function Content({ project, appear, previous_project, next_projec
                                     // Responsive styles
                                     'flex-col gap-4 sm:flex-row sm:gap-0',
                                     'pb-4 sm:pb-0',
-                                    !project.feedback && !project.description && 'pt-4 sm:pt-0',
+                                    !project.feedback &&
+                                        !project.description &&
+                                        'pt-4 sm:pt-0',
                                 )}
                             >
                                 <div
@@ -334,7 +363,10 @@ export default function Content({ project, appear, previous_project, next_projec
                                             'text-xl',
                                         )}
                                     >
-                                        {__('landing.projects.sections.what_i_learned', 'What I Learned')}
+                                        {__(
+                                            'landing.projects.sections.what_i_learned',
+                                            'What I Learned',
+                                        )}
                                     </h4>
                                 </div>
                                 <p
@@ -350,9 +382,10 @@ export default function Content({ project, appear, previous_project, next_projec
                                         '[&_strong]:font-medium [&_strong]:text-foreground',
                                         'text-foreground/70',
                                     )}
-                                    dangerouslySetInnerHTML={{ __html: project.what_i_learned }}
-                                >
-                                </p>
+                                    dangerouslySetInnerHTML={{
+                                        __html: project.what_i_learned,
+                                    }}
+                                ></p>
                             </div>
                         </FadeIn>
                     )}
@@ -384,7 +417,7 @@ export default function Content({ project, appear, previous_project, next_projec
                         className={cn(
                             // Default styles
                             'w-full',
-                            'flex items-center justify-between ',
+                            'flex items-center justify-between',
 
                             // Responsive styles
                             'flex-col sm:flex-row',
@@ -392,19 +425,63 @@ export default function Content({ project, appear, previous_project, next_projec
                         )}
                     >
                         {/* Arrow Left - Previous project */}
-                        <NavCard 
-                            text={previous_project ? previous_project.title : __('landing.projects.go_back')} 
-                            href={previous_project ? route('project', { slug: previous_project.slug }) : route('home')} 
-                            onClick={!previous_project ? (e: React.MouseEvent<HTMLAnchorElement>) => handleBackClick(e) : (e: React.MouseEvent<HTMLAnchorElement>) => handleProjectClick(e, previous_project.slug)}
-                            arrow="left" 
+                        <NavCard
+                            text={
+                                previous_project
+                                    ? previous_project.title
+                                    : __('landing.projects.go_back')
+                            }
+                            href={
+                                previous_project
+                                    ? route('project', {
+                                          slug: previous_project.slug,
+                                      })
+                                    : route('home')
+                            }
+                            onClick={
+                                !previous_project
+                                    ? (
+                                          e: React.MouseEvent<HTMLAnchorElement>,
+                                      ) => handleBackClick(e)
+                                    : (
+                                          e: React.MouseEvent<HTMLAnchorElement>,
+                                      ) =>
+                                          handleProjectClick(
+                                              e,
+                                              previous_project.slug,
+                                          )
+                            }
+                            arrow="left"
                         />
 
                         {/* Arrow Right - Next project */}
-                        <NavCard 
-                            text={next_project ? next_project.title : __('landing.projects.go_back')} 
-                            href={next_project ? route('project', { slug: next_project.slug }) : route('home')} 
-                            onClick={!next_project ? (e: React.MouseEvent<HTMLAnchorElement>) => handleBackClick(e) : (e: React.MouseEvent<HTMLAnchorElement>) => handleProjectClick(e, next_project.slug)}
-                            arrow="right" 
+                        <NavCard
+                            text={
+                                next_project
+                                    ? next_project.title
+                                    : __('landing.projects.go_back')
+                            }
+                            href={
+                                next_project
+                                    ? route('project', {
+                                          slug: next_project.slug,
+                                      })
+                                    : route('home')
+                            }
+                            onClick={
+                                !next_project
+                                    ? (
+                                          e: React.MouseEvent<HTMLAnchorElement>,
+                                      ) => handleBackClick(e)
+                                    : (
+                                          e: React.MouseEvent<HTMLAnchorElement>,
+                                      ) =>
+                                          handleProjectClick(
+                                              e,
+                                              next_project.slug,
+                                          )
+                            }
+                            arrow="right"
                         />
                     </div>
                 </FadeIn>
@@ -412,7 +489,6 @@ export default function Content({ project, appear, previous_project, next_projec
         </section>
     );
 }
-
 
 interface NavCardProps {
     text: string;
@@ -423,14 +499,14 @@ interface NavCardProps {
 
 function NavCard({ text, href, onClick, arrow }: NavCardProps) {
     return (
-        <a 
+        <a
             href={href}
             onClick={onClick}
             className={cn(
                 // Default styles
-                'flex items-center justify-center gap-2 w-full self-stretch flex-wrap',
-                'bg-card transition-all cursor-pointer',
-                'font-thin group',
+                'flex w-full flex-wrap items-center justify-center gap-2 self-stretch',
+                'cursor-pointer bg-card transition-all',
+                'group font-thin',
 
                 // Hover styles
                 'hover:bg-primary hover:text-primary-foreground',
@@ -439,26 +515,24 @@ function NavCard({ text, href, onClick, arrow }: NavCardProps) {
                 'focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-none',
 
                 // Responsive styles
-                'py-6 sm:py-8 px-4 sm:px-6',
+                'px-4 py-6 sm:px-6 sm:py-8',
             )}
         >
-            
-            {arrow === 'left' ? 
-            (
+            {arrow === 'left' ? (
                 <>
-                    <ArrowLeft className='stroke-1 h-6 w-6'/> 
-                    <span className='text-center group-hover:ml-2 transition-all border-b border-transparent group-hover:border-primary-foreground group-focus-visible:border-primary-foreground group-focus-visible:ml-2'>
+                    <ArrowLeft className="h-6 w-6 stroke-1" />
+                    <span className="border-b border-transparent text-center transition-all group-hover:ml-2 group-hover:border-primary-foreground group-focus-visible:ml-2 group-focus-visible:border-primary-foreground">
                         {text}
                     </span>
                 </>
             ) : (
                 <>
-                    <span className='text-center group-hover:mr-2 transition-all border-b border-transparent group-hover:border-primary-foreground group-focus-visible:border-primary-foreground group-focus-visible:mr-2'>
+                    <span className="border-b border-transparent text-center transition-all group-hover:mr-2 group-hover:border-primary-foreground group-focus-visible:mr-2 group-focus-visible:border-primary-foreground">
                         {text}
                     </span>
-                    <ArrowRight className='stroke-1 h-6 w-6'/>
+                    <ArrowRight className="h-6 w-6 stroke-1" />
                 </>
             )}
         </a>
-    )
+    );
 }

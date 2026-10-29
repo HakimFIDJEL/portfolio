@@ -1,119 +1,130 @@
 #!/bin/bash
 set -e
 
-# -----------------------------------------------
-# DATABASE SETUP
-# -----------------------------------------------
+# Nettoyer les caches résiduels au boot pour éviter toute incohérence d'autoloading/packages
+rm -f bootstrap/cache/*.php
 
-# --- MYSQL SETUP ---
-if [ "$DB_CONNECTION" = "mysql" ]; then
+# ==============================================================================
+# 1. GESTION DU FICHIER D'ENVIRONNEMENT ET DE LA CLE D'APPLICATION
+# ==============================================================================
 
-    echo "Using MySQL database."
+if [ ! -f .env ]; then
+    echo "Fichier .env introuvable, creation a partir de .env.example..."
+    cp .env.example .env
+    chown www-data:www-data .env
+    chmod 664 .env
+fi
 
-    # Fetch environment variables or set defaults
+# Si APP_KEY est transmis vide par l'environnement conteneur, le retirer pour laisser le .env operer
+if [ -z "$APP_KEY" ]; then
+    unset APP_KEY
+fi
+
+# S'assurer que le .env possede une cle d'application valide
+if ! grep -q "^APP_KEY=base64:" .env; then
+    echo "Generation de la cle d'application Laravel (APP_KEY)..."
+    php artisan key:generate --force
+fi
+
+# Charger la cle depuis le .env si elle n'est pas encore definie dans l'environnement
+if [ -z "$APP_KEY" ]; then
+    export APP_KEY=$(grep '^APP_KEY=' .env | cut -d '=' -f 2-)
+fi
+
+# ==============================================================================
+# 2. CONFIGURATION DE LA BASE DE DONNEES
+# ==============================================================================
+
+DB_CONN=${DB_CONNECTION:-sqlite}
+
+if [ "$DB_CONN" = "mysql" ]; then
     DB_HOST=${DB_HOST:-portfolio-mysql}
     DB_DATABASE=${DB_DATABASE:-portfolio}
     DB_USERNAME=${DB_USERNAME:-root}
     DB_PASSWORD=${DB_PASSWORD:-root}
-    DB_CONNECTION=${DB_CONNECTION:-mysql}
 
-    echo "Waiting for database '$DB_DATABASE' on host '$DB_HOST' to be ready..."
-
-    # Wait for MySQL to be ready
-    until echo "SELECT 1" | mysql -h "$DB_HOST" -u "root" -p"$DB_PASSWORD" "$DB_DATABASE"; do
-    echo "MySQL is unavailable - sleeping"
-    sleep 3
+    echo "Attente de la base de donnees MySQL sur l'hote '$DB_HOST'..."
+    until echo "SELECT 1" | mysql -h "$DB_HOST" -u "$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE" > /dev/null 2>&1; do
+        echo "MySQL indisponible, nouvelle tentative dans 2 secondes..."
+        sleep 2
     done
+    echo "Base de donnees MySQL joignable."
 
-    echo "MySQL database is up and reachable! Continuing startup."
-
-# --- SQLITE SETUP ---
-elif [ "$DB_CONNECTION" = "sqlite" ]; then
-
-    echo "Using SQLite database."
-
-    # Ensure the database directory exists
+elif [ "$DB_CONN" = "sqlite" ]; then
     mkdir -p database
-
-    # Create the SQLite database file if it doesn't exist
-    if [ ! -f database/database.sqlite ]; then
-        echo "Creating SQLite database file..."
-        touch database/database.sqlite
-        chown www-data:www-data database/database.sqlite
-        chmod 664 database/database.sqlite
-    else
-        echo "SQLite database already exists."
+    SQLITE_PATH="database/database.sqlite"
+    if [ ! -f "$SQLITE_PATH" ]; then
+        echo "Creation du fichier SQLite ($SQLITE_PATH)..."
+        touch "$SQLITE_PATH"
     fi
+    chown www-data:www-data "$SQLITE_PATH" database
+    chmod 664 "$SQLITE_PATH"
 fi
 
+# ==============================================================================
+# 3. DÉCOUVERTE DES PACKAGES, DÉPENDANCES DEV, MIGRATIONS ET SEEDING
+# ==============================================================================
 
-# -----------------------------------------------
-# LARAVEL SETUP
-# -----------------------------------------------
-
-# --- ENV SETUP ---
-if [ ! -f .env ]; then
-    echo ".env not found, creating from .env.example"
-    cp .env.example .env
-    chown www-data:www-data .env
-    chmod 664 .env
-else
-    echo ".env already exists, skipping creation"
+if [ "${APP_ENV:-production}" = "local" ] && [ ! -f "vendor/bin/pest" ]; then
+    echo "Environnement local : installation des dépendances de dev via Composer..."
+    composer install --prefer-dist --no-interaction
 fi
 
-# --- KEY SETUP ---
-if ! grep -q "APP_KEY=base64" .env; then
-    echo "Generating Application Key..."
-    php artisan key:generate
-else
-    echo "Application Key already exists. Skipping generation."
+if [ "${APP_ENV:-production}" = "local" ] && [ ! -d "node_modules/vite" ]; then
+    echo "Environnement local : installation des dépendances frontend via npm..."
+    npm ci
 fi
 
-# --- MIGRATIONS ---
-php artisan config:clear
+echo "Découverte des packages Laravel..."
+php artisan package:discover --ansi
 
-echo "Running migrations..."
+echo "Application des migrations..."
 php artisan migrate --force
-php artisan db:seed --force
 
-# --- STORAGE LINK ---
-if [ ! -L public/storage ] || [ ! -e public/storage ]; then
-    echo "Creating storage symlink..."
-    php artisan storage:link
+if [ "${RUN_SEEDERS:-false}" = "true" ]; then
+    echo "Execution des seeders applicatifs (RUN_SEEDERS=true)..."
+    php artisan db:seed --force
 else
-    echo "Storage symlink already exists and is valid."
+    echo "Seeders ignores (RUN_SEEDERS != true)."
 fi
 
-# --- CACHE ---
-echo "Clearing and caching configuration..."
-php artisan cache:clear
-php artisan route:clear
-php artisan view:clear
+# ==============================================================================
+# 4. LIEN DE STOCKAGE ET OPTIMISATIONS DES CACHES
+# ==============================================================================
 
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-
-# --- SITEMAP ---
-if php artisan list | grep -q sitemap:generate; then
-    php artisan sitemap:generate
+if [ ! -L public/storage ] || [ ! -e public/storage ]; then
+    echo "Creation du lien symbolique public/storage..."
+    php artisan storage:link || true
 fi
 
-# --- PERMISSIONS ---
-echo "Fixing permissions..."
+if [ "${APP_ENV:-production}" = "production" ]; then
+    echo "Mise en cache de la configuration, des routes et des vues (production)..."
+    php artisan config:cache
+    php artisan route:cache
+    php artisan view:cache
+else
+    echo "Environnement de développement (${APP_ENV:-local}) : optimisation des caches désactivée."
+    php artisan optimize:clear
+fi
+
+if php artisan list | grep -q "sitemap:generate"; then
+    echo "Generation du sitemap..."
+    php artisan sitemap:generate || true
+fi
+
+# ==============================================================================
+# 5. AJUSTEMENT DES PERMISSIONS
+# ==============================================================================
+
 chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache
 
-if [ -f .env ]; then
-    echo "Fixing .env permissions..."
-    chown www-data:www-data .env
-    chmod 664 .env
-fi
+# ==============================================================================
+# 6. DEMARRAGE DU SERVEUR SSR ET D'APACHE
+# ==============================================================================
 
-# --- START SSR ---
-echo "Starting Inertia SSR server..."
+echo "Demarrage du serveur SSR Inertia..."
 php artisan inertia:start-ssr &
 
-# --- START APACHE ---
-echo "Starting Apache..."
+echo "Demarrage du serveur web Apache..."
 exec apache2-foreground

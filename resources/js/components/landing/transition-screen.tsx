@@ -12,7 +12,10 @@ interface TransitionScreenProps {
     mode: 'instant' | 'staggered';
 }
 
-export default function TransitionScreen({ active, mode = 'staggered' }: TransitionScreenProps) {
+export default function TransitionScreen({
+    active,
+    mode = 'staggered',
+}: TransitionScreenProps) {
     const panelIndices = useMemo(() => PANEL_INDICES, []);
     const [visiblePanels, setVisiblePanels] = useState<number[]>([]);
 
@@ -39,20 +42,33 @@ export default function TransitionScreen({ active, mode = 'staggered' }: Transit
     }, [active, panelIndices, mode]);
 
     return (
-        <div
-            className={cn(
-                'pointer-events-none fixed inset-0 z-1000 flex flex-col items-end bg-transparent',
-                active && 'items-start',
-            )}
-        >
-            {panelIndices.map((index) => (
-                <TransitionPanel
-                    key={index}
-                    active={visiblePanels.includes(index)}
-                    mode={mode}
-                />
-            ))}
-        </div>
+        <>
+            <div
+                className={cn(
+                    'pointer-events-none fixed inset-0 z-50 bg-muted/20 backdrop-blur-sm transition-all dark:bg-background/30',
+                    active ? 'opacity-100' : 'opacity-0',
+                    mode === 'instant'
+                        ? 'delay-0 duration-0'
+                        : active
+                          ? 'delay-0 duration-500'
+                          : 'delay-1000 duration-1000',
+                )}
+            />
+            <div
+                className={cn(
+                    'pointer-events-none fixed inset-0 z-1000 flex flex-col items-end bg-transparent',
+                    active && 'items-start',
+                )}
+            >
+                {panelIndices.map((index) => (
+                    <TransitionPanel
+                        key={index}
+                        active={visiblePanels.includes(index)}
+                        mode={mode}
+                    />
+                ))}
+            </div>
+        </>
     );
 }
 

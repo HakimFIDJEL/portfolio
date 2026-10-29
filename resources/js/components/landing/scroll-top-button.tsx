@@ -2,7 +2,8 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
-import React from 'react';
+import { usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 // Components
 import RoundedButton from '@/components/landing/rounded-button';
@@ -19,34 +20,31 @@ interface ScrollTopButtonProps {
 }
 
 export default function ScrollTopButton({ appear }: ScrollTopButtonProps) {
-    const [isVisible, setIsVisible] = React.useState(false);
-
-    const [scrollY, setScrollY] = React.useState(0);
+    const [isVisible, setIsVisible] = useState(false);
+    const { url } = usePage();
     const __ = useTrans();
 
-    React.useEffect(() => {
-        const handleScroll = () => {
-            setScrollY(window.scrollY);
-
-            if (scrollY > 300) {
-                setIsVisible(true);
-            } else {
-                setIsVisible(false);
+    useEffect(() => {
+        const checkVisibility = () => {
+            if (typeof window !== 'undefined') {
+                setIsVisible(window.scrollY > 300);
             }
         };
 
-        window.addEventListener('scroll', handleScroll);
+        checkVisibility();
+
+        window.addEventListener('scroll', checkVisibility, { passive: true });
 
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', checkVisibility);
         };
-    }, [scrollY]);
+    }, [url]);
 
     return (
         <div
             className={cn(
                 // Default styles
-                'pointer-events-none fixed bottom-8 z-10 mx-auto flex w-[90%] max-w-7xl justify-end',
+                'pointer-events-none fixed bottom-8 z-10 mx-auto flex w-full max-w-7xl justify-end sm:w-[90%]',
             )}
         >
             <Magnet
@@ -67,11 +65,19 @@ export default function ScrollTopButton({ appear }: ScrollTopButtonProps) {
                     'translate-x-[-25%] sm:translate-x-[50%] xl:translate-x-[125%] 2xl:translate-x-[200%]',
                 )}
             >
-                <a href="#top" tabIndex={-1} aria-label={__('landing.seo.scroll_to_top', 'Scroll to top')}>
-                    <RoundedButton className='bg-background' aria_label={__('landing.seo.scroll_to_top', 'Scroll to top')}>
-                        <ArrowUp className="stroke-1" />
-                    </RoundedButton>
-                </a>
+                <RoundedButton
+                    className="bg-background"
+                    tabIndex={isVisible && appear ? 0 : -1}
+                    aria_label={__(
+                        'landing.seo.scroll_to_top',
+                        'Scroll to top',
+                    )}
+                    onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                >
+                    <ArrowUp className="stroke-1" />
+                </RoundedButton>
             </Magnet>
         </div>
     );

@@ -1,6 +1,6 @@
 <?php
 
-// app/Http/Middleware/HandleInertiaRequests.php
+declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
@@ -8,29 +8,24 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Lang;
-use Inertia\Middleware;
 use Illuminate\Support\Facades\Session;
+use Inertia\Middleware;
+use Tighten\Ziggy\Ziggy;
 
-/**
- * Middleware to handle Inertia requests and share common data.
- */
 class HandleInertiaRequests extends Middleware
 {
     /**
-     * The root template that's loaded on the first page visit.
-     *
-     * @see https://inertiajs.com/server-side-setup#root-template
+     * Modèle racine chargé lors de la première requête.
      *
      * @var string
      */
     protected $rootView = 'app';
 
     /**
-     * Determines the current asset version.
-     *
-     * @see https://inertiajs.com/asset-versioning
+     * Détermine la version courante des assets.
      */
     public function version(Request $request): ?string
     {
@@ -38,19 +33,21 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * Define the props that are shared by default.
-     *
-     * @see https://inertiajs.com/shared-data
+     * Données partagées par défaut avec toutes les pages Inertia.
      *
      * @return array<string, mixed>
      */
     public function share(Request $request): array
     {
-        $user = $request->user()?->load([
-            'avatar',
-            'resume',
-        ]);
+        $user = $request->user()?->load(['avatar', 'resume']);
 
+        $locale = (string) Session::get('locale', App::getLocale());
+        $fallbackLocale = (string) config('app.fallback_locale', 'en');
+
+        // Récupération de l'utilisateur public avec mise en cache applicative
+        $publicUser = Cache::remember('public_user_profile', 3600, function (): ?User {
+            return User::with(['avatar', 'resume'])->first();
+        });
 
         return array_merge(parent::share($request), [
             'name' => config('app.name'),
@@ -73,35 +70,45 @@ class HandleInertiaRequests extends Middleware
                 ? $request->session()->get('errors')->getBag('default')->getMessages()
                 : (object) [],
 
-            'locale' => Session::get('locale', App::getLocale()),
-            'fallback_locale' => config('app.fallback_locale'),
+            'locale' => $locale,
+            'fallback_locale' => $fallbackLocale,
 
-            'translations' => fn () => collect(File::files(lang_path(Session::get('locale', App::getLocale()))))
-                ->mapWithKeys(function ($file) {
-                    $name = pathinfo($file, PATHINFO_FILENAME);
-                    $lines = Lang::get($name);
+            'translations' => fn () => Cache::rememberForever('translations_'.$locale, fn (): array => $this->loadTranslations($locale)),
 
-                    return [$name => Arr::undot($lines)];
-                })
-                ->toArray(),
-
-            'translations_fallback' => fn () => collect(File::files(lang_path(config('app.fallback_locale'))))
-                ->mapWithKeys(function ($file) {
-                    $name = pathinfo($file, PATHINFO_FILENAME);
-                    $lines = Lang::get($name, [], config('app.fallback_locale'));
-
-                    return [$name => Arr::undot($lines)];
-                })
-                ->toArray(),
+            'translations_fallback' => fn () => $locale === $fallbackLocale
+                ? []
+                : Cache::rememberForever('translations_fallback_'.$fallbackLocale, fn (): array => $this->loadTranslations($fallbackLocale)),
 
             'timezone' => date_default_timezone_get(),
 
-            'avatar_url' => User::first()->avatar->url ?? null,
-            'resume_url' => User::first()->resume->url ?? null,
-            'ziggy' => fn () => [
-                ...(new \Tighten\Ziggy\Ziggy)->toArray(),
+            'avatar_url' => $publicUser?->avatar?->url,
+            'resume_url' => $publicUser?->resume?->url,
+            'ziggy' => fn (): array => [
+                ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
         ]);
+    }
+
+    /**
+     * Charger et structurer l'ensemble des dictionnaires d'une langue.
+     *
+     * @return array<string, mixed>
+     */
+    private function loadTranslations(string $locale): array
+    {
+        $path = lang_path($locale);
+        if (! File::isDirectory($path)) {
+            return [];
+        }
+
+        return collect(File::files($path))
+            ->mapWithKeys(function ($file) use ($locale) {
+                $name = pathinfo((string) $file, PATHINFO_FILENAME);
+                $lines = Lang::get($name, [], $locale);
+
+                return [$name => Arr::undot(is_array($lines) ? $lines : [])];
+            })
+            ->toArray();
     }
 }

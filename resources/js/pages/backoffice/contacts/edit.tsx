@@ -85,22 +85,28 @@ export default function Edit({ contact }: EditProps) {
             <Head title="Edit Contact" />
 
             <Card>
-                <CardHeader className='flex flex-col md:items-center justify-between md:flex-row'>
-                    <div className='flex flex-col'>
+                <CardHeader className="flex flex-col justify-between md:flex-row md:items-center">
+                    <div className="flex flex-col">
                         <CardTitle>Edit a contact</CardTitle>
                         <CardDescription>
                             Update the form below to edit the contact.
                         </CardDescription>
                     </div>
-                    <CardAction className="flex flex-col md:items-center justify-between md:flex-row gap-2 w-full md:w-auto">
+                    <CardAction className="flex w-full flex-col justify-between gap-2 md:w-auto md:flex-row md:items-center">
                         <Link href={route('backoffice.contacts.index')}>
-                            <Button variant={'outline'} className="w-full md:w-auto">
+                            <Button
+                                variant={'outline'}
+                                className="w-full md:w-auto"
+                            >
                                 <ArrowLeft />
                                 Go back
                             </Button>
                         </Link>
                         <DeleteContact contact={contact}>
-                            <Button variant="destructive" className="w-full md:w-auto">
+                            <Button
+                                variant="destructive"
+                                className="w-full md:w-auto"
+                            >
                                 <Trash2 />
                                 Delete contact
                             </Button>
@@ -230,7 +236,6 @@ interface DeleteContactProps {
 }
 
 function DeleteContact({ children, contact }: DeleteContactProps) {
-
     const [deleting, setDeleting] = React.useState(false);
 
     function handleDelete() {
@@ -239,7 +244,7 @@ function DeleteContact({ children, contact }: DeleteContactProps) {
         router.delete(route('backoffice.contacts.destroy', contact.id), {
             onFinish: () => {
                 setDeleting(false);
-            }
+            },
         });
     }
     return (
@@ -254,8 +259,14 @@ function DeleteContact({ children, contact }: DeleteContactProps) {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
-                    <Button variant="destructive" onClick={handleDelete} disabled={deleting}>
+                    <AlertDialogCancel disabled={deleting}>
+                        Cancel
+                    </AlertDialogCancel>
+                    <Button
+                        variant="destructive"
+                        onClick={handleDelete}
+                        disabled={deleting}
+                    >
                         {deleting ? <Spinner /> : <Trash2 />}
                         Delete
                     </Button>

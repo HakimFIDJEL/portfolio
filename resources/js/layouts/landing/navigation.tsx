@@ -27,8 +27,30 @@ export default function Navigation({
     showNavigationContent,
     handleMenuToggle,
 }: NavigationProps) {
+    const __ = useTrans();
+
+    useEffect(() => {
+        if (!showNavigation) {
+            return;
+        }
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                handleMenuToggle(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [showNavigation, handleMenuToggle]);
+
     return (
         <nav
+            id="navigation-menu"
+            aria-label={__(
+                'landing.layout.navigation.title',
+                'Menu de navigation',
+            )}
             className={cn(
                 'pointer-events-none fixed inset-0 z-2000 translate-y-[-100%] opacity-0',
                 'flex items-end justify-start',
@@ -52,16 +74,19 @@ export default function Navigation({
 interface NavigationHeaderProps {
     showNavigationContent: boolean;
     handleMenuToggle: (show: boolean) => void;
+    closeDuration?: number;
 }
 
 function NavigationHeader({
     showNavigationContent,
     handleMenuToggle,
+    closeDuration = 1000,
 }: NavigationHeaderProps) {
     return (
         <Curtain
             showCurtain={!showNavigationContent}
-            className="fixed top-0 right-0 left-0 z-10 mx-auto w-[90%] max-w-7xl"
+            closeDuration={closeDuration}
+            className="fixed top-0 right-0 left-0 z-10 mx-auto w-full max-w-7xl sm:w-[90%]"
         >
             <div
                 className={cn(
@@ -89,12 +114,12 @@ interface NavigationButtonProps {
 }
 
 function NavigationButton({ show, handleClick }: NavigationButtonProps) {
-
     const __ = useTrans();
 
     return (
         <button
-            aria-label={__('landing.seo.toggle_menu', 'Toggle menu')}
+            type="button"
+            aria-label={__('landing.seo.close_dialog', 'Fermer le menu')}
             tabIndex={show ? 0 : -1}
             onClick={() => handleClick(false)}
             className={cn(
@@ -119,21 +144,53 @@ function NavigationContent({
     showNavigationContent,
     handleMenuToggle,
 }: NavigationContentProps) {
-
     const __ = useTrans();
+    const { completeNavigationClose } = useLandingContext();
 
     const links: Link[] = useMemo(
         () => [
-            { index: '01', href: '#top', label: __('landing.layout.navigation.home', 'Home'), show: false },
-            { index: '02', href: '#about', label: __('landing.layout.navigation.about', 'About'), show: false },
-            { index: '03', href: '#projects', label: __('landing.layout.navigation.projects', 'Projects'), show: false },
-            { index: '04', href: '#sandbox', label: __('landing.layout.navigation.sandbox', 'Sandbox'), show: false },
-            { index: '05', href: '#contact', label: __('landing.layout.navigation.contact', 'Contact'), show: false },
+            {
+                index: '01',
+                href: '#top',
+                label: __('landing.layout.navigation.home', 'Home'),
+                show: false,
+            },
+            {
+                index: '02',
+                href: '#about',
+                label: __('landing.layout.navigation.about', 'About'),
+                show: false,
+            },
+            {
+                index: '03',
+                href: '#services',
+                label: __('landing.layout.navigation.services', 'Services'),
+                show: false,
+            },
+            {
+                index: '04',
+                href: '#projects',
+                label: __('landing.layout.navigation.projects', 'Projects'),
+                show: false,
+            },
+            {
+                index: '05',
+                href: '#sandbox',
+                label: __('landing.layout.navigation.sandbox', 'Sandbox'),
+                show: false,
+            },
+            {
+                index: '06',
+                href: '#contact',
+                label: __('landing.layout.navigation.contact', 'Contact'),
+                show: false,
+            },
         ],
         [__],
     );
 
-    const DELAY_INCREMENT = 125;
+    const itemCloseDuration = 1000;
+    const itemDelay = 100;
     const [visibleLinks, setVisibleLinks] = useState<Link[]>([]);
 
     useEffect(() => {
@@ -142,15 +199,21 @@ function NavigationContent({
     }, [links]);
 
     useEffect(() => {
+        const timeoutIds: ReturnType<typeof setTimeout>[] = [];
+
         function handleLinksVisibility(show: boolean) {
             links.forEach((link, index) => {
-                setTimeout(() => {
-                    setVisibleLinks((prev) =>
-                        prev.map((l) =>
-                            l.label === link.label ? { ...l, show } : l,
-                        ),
-                    );
-                }, index * DELAY_INCREMENT);
+                const id = setTimeout(
+                    () => {
+                        setVisibleLinks((prev) =>
+                            prev.map((l) =>
+                                l.label === link.label ? { ...l, show } : l,
+                            ),
+                        );
+                    },
+                    index * (show ? 125 : itemDelay),
+                );
+                timeoutIds.push(id);
             });
         }
 
@@ -159,14 +222,24 @@ function NavigationContent({
         } else {
             handleLinksVisibility(false);
         }
-    }, [showNavigationContent, links]);
+
+        return () => {
+            timeoutIds.forEach(clearTimeout);
+        };
+    }, [showNavigationContent, links, itemDelay]);
 
     return (
-        <div className="mx-auto flex w-[90%] max-w-7xl flex-col px-8 py-6 lg:px-12.5 lg:py-10">
+        <div className="mx-auto flex w-full max-w-7xl flex-col px-8 py-6 sm:w-[90%] lg:px-12.5 lg:py-10">
             {visibleLinks.map((link, index) => (
                 <NavigationLink
                     link={link}
                     key={index}
+                    closeDuration={itemCloseDuration}
+                    onClosed={
+                        index === visibleLinks.length - 1
+                            ? completeNavigationClose
+                            : undefined
+                    }
                     handleMenuToggle={handleMenuToggle}
                 />
             ))}
@@ -176,9 +249,16 @@ function NavigationContent({
 
 interface NavigationLinkProps {
     link: Link;
+    closeDuration?: number;
+    onClosed?: () => void;
     handleMenuToggle: (show: boolean) => void;
 }
-function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
+function NavigationLink({
+    link,
+    closeDuration,
+    onClosed,
+    handleMenuToggle,
+}: NavigationLinkProps) {
     const { href, index, label, show } = link;
 
     const currentUrl = usePage().url.split('#')[0];
@@ -201,12 +281,19 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
     }
 
     return (
-        <Curtain showCurtain={!show} className='w-max'>
+        <Curtain
+            showCurtain={!show}
+            closeDuration={closeDuration}
+            onClosed={onClosed}
+            className="w-max"
+        >
             <a
-                aria-label={__('landing.seo.scroll_to_section', 'Scroll to :section section', { section: label.toLowerCase() })}
-                {...(show
-                    ? { href: currentUrl === homePath ? href : route('home') }
-                    : {})}
+                aria-label={__(
+                    'landing.seo.scroll_to_section',
+                    'Scroll to :section section',
+                    { section: label.toLowerCase() },
+                )}
+                href={currentUrl === homePath ? href : route('home')}
                 tabIndex={show ? 0 : -1}
                 className={cn(
                     // Default styles
@@ -225,7 +312,7 @@ function NavigationLink({ link, handleMenuToggle }: NavigationLinkProps) {
                     handleProjectClick(
                         e,
                         currentUrl === homePath ? href : route('home'),
-                        href.replace('#', '')
+                        href.replace('#', ''),
                     )
                 }
             >

@@ -1,6 +1,7 @@
 // resources/js/pages/landing.terms.tsx
 
-import { Head, usePage } from '@inertiajs/react';
+// SEO
+import Seo from '@/components/seo';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
@@ -14,26 +15,11 @@ import { useTrans } from '@/lib/translation';
 
 // Context
 import { useLandingContext } from '@/contexts/use-landing-context';
-import { useEffect } from 'react';
-import { SharedData } from '@/types';
 
 export default function Terms() {
     const __ = useTrans();
 
-    const { locale } = usePage<SharedData>().props;
-
-    const { contentActive, fetchingData, setFetchingData } =
-        useLandingContext();
-
-    useEffect(() => {
-        if (!fetchingData) setFetchingData(true);
-
-        const timer = setTimeout(() => {
-            setFetchingData(false);
-        }, 1000);
-
-        return () => clearTimeout(timer);
-    }, [locale]);
+    const { contentActive } = useLandingContext();
 
     const sections = [
         {
@@ -45,7 +31,31 @@ export default function Terms() {
                 ),
                 __(
                     'landing.terms.sections.introduction.p_2',
-                    'This website is a showcase of my work and skills as a Fullstack Engineer.',
+                    'This website is a showcase of my work and skills as a Software Engineer.',
+                ),
+            ],
+        },
+        {
+            title: __(
+                'landing.terms.sections.legal_mentions.h2',
+                'Legal Mentions',
+            ),
+            content: [
+                __(
+                    'landing.terms.sections.legal_mentions.p_1',
+                    'Website Publisher: Hakim Fidjel EI (Sole Proprietorship), registered at the French RNE under SIREN 131 784 266 (SIRET: 131 784 266 00010 — APE Code: 6201Z, Computer programming).',
+                ),
+                __(
+                    'landing.terms.sections.legal_mentions.p_2',
+                    'Headquarters: 8 Rue Alfred Nobel, 59240 Dunkerque, France — Contact: hakimfidjel.pro@gmail.com / +33 (0)6 95 07 44 17.',
+                ),
+                __(
+                    'landing.terms.sections.legal_mentions.p_3',
+                    'Tax regime: VAT exemption under Article 293 B of the French General Tax Code (CGI). VAT not applicable.',
+                ),
+                __(
+                    'landing.terms.sections.legal_mentions.p_4',
+                    'Hosting: Hosted through Docker containerized architecture on dedicated production infrastructure.',
                 ),
             ],
         },
@@ -92,12 +102,27 @@ export default function Terms() {
         },
     ];
 
+    const termsTitle = __('landing.terms.h1', 'Terms of Use');
+    const termsDescription = __(
+        'landing.terms.meta_description',
+        "Read the terms of use for Hakim Fidjel's portfolio website, outlining the rules and guidelines for accessing and using the site.",
+    );
+
+    const termsJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: termsTitle,
+        description: termsDescription,
+    };
+
     return (
         <>
-            <Head title={__('landing.terms.h1', 'Terms of Use')}>
-                <meta name='description' content={__('landing.terms.meta_description', 'Read the terms of use for Hakim Fidjel\'s portfolio website, outlining the rules and guidelines for accessing and using the site.')} />
-            </Head>
-            <div className="min-h-screen bg-background">
+            <Seo
+                title={termsTitle}
+                description={termsDescription}
+                jsonLd={termsJsonLd}
+            />
+            <main id="main-content" className="min-h-screen bg-background">
                 <FadeIn show={contentActive} className="w-full">
                     <Delimiter plusCorners={['all']}>
                         <div className="px-6 py-12 sm:px-8 md:px-10 lg:px-12.5 lg:py-24">
@@ -107,7 +132,7 @@ export default function Terms() {
                             <p className="mt-2 text-muted-foreground">
                                 {__(
                                     'landing.terms.last_updated',
-                                    'Last Updated: December 14, 2025',
+                                    'Last updated: October 25, 2026',
                                 )}
                             </p>
 
@@ -130,7 +155,7 @@ export default function Terms() {
                         </div>
                     </Delimiter>
                 </FadeIn>
-            </div>
+            </main>
         </>
     );
 }

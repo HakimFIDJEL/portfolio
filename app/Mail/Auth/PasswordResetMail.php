@@ -1,48 +1,40 @@
 <?php
 
-// app\Mail\PasswordResetMail 
+declare(strict_types=1);
 
 namespace App\Mail\Auth;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Mail\Mailables\Address;
-
-// Models
-use App\Models\User;
 
 class PasswordResetMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user;
-    protected $token;
+    public function __construct(
+        protected User $user,
+        protected string $plainToken
+    ) {}
 
     /**
-     * Create a new message instance.
-     */
-    public function __construct(User $user, string $plain_token)
-    {
-        $this->user = $user;
-        $this->token = $plain_token;
-    }
-
-    /**
-     * Get the message envelope.
+     * Définir l'enveloppe du message (sujet et destinataire).
      */
     public function envelope(): Envelope
     {
         return new Envelope(
             subject: __('notifications.mail.password_reset.subject', ['app' => config('app.name')]),
-            to: [new Address($this->user->email, $this->user->name ?? null)],
+            to: [new Address($this->user->email, $this->user->name)],
         );
     }
 
     /**
-     * Get the message content definition.
+     * Définir le contenu markdown de l'email.
      */
     public function content(): Content
     {
@@ -51,16 +43,16 @@ class PasswordResetMail extends Mailable
             with: [
                 'user' => $this->user,
                 'url' => route('auth.password.reset', [
-                    'token' => $this->token,
+                    'token' => $this->plainToken,
                 ]),
             ],
         );
     }
 
     /**
-     * Get the attachments for the message.
+     * Pièces jointes de l'email.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

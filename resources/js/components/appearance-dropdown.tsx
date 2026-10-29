@@ -18,7 +18,7 @@ export default function AppearanceToggleDropdown({
 }: HTMLAttributes<HTMLDivElement>) {
     const { appearance, updateAppearance } = useAppearance();
 
-    const __  = useTrans();
+    const __ = useTrans();
 
     const getCurrentIcon = () => {
         switch (appearance) {
@@ -44,13 +44,19 @@ export default function AppearanceToggleDropdown({
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => updateAppearance('light')} disabled={appearance === 'light'}>
+                    <DropdownMenuItem
+                        onClick={() => updateAppearance('light')}
+                        disabled={appearance === 'light'}
+                    >
                         <span className="flex items-center gap-2">
                             <Sun className="h-5 w-5" />
                             {__('common.themes.light')}
                         </span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => updateAppearance('dark')} disabled={appearance === 'dark'}>
+                    <DropdownMenuItem
+                        onClick={() => updateAppearance('dark')}
+                        disabled={appearance === 'dark'}
+                    >
                         <span className="flex items-center gap-2">
                             <Moon className="h-5 w-5" />
                             {__('common.themes.dark')}

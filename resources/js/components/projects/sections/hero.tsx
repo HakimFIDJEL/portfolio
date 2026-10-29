@@ -7,12 +7,10 @@ import { cn } from '@/lib/utils';
 import { useAppearance } from '@/hooks/use-appearance';
 
 // Components
-import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
-import RoundedButton from '@/components/landing/rounded-button';
 import FadeIn from '@/components/landing/fade-in';
 import LanguageToggle from '@/components/landing/language-toggle';
-import CursorToggle from '@/components/landing/cursor-toggle';
+import RoundedButton from '@/components/landing/rounded-button';
 
 // UI Components
 import Magnet from '@/components/ui/magnet';
@@ -30,9 +28,6 @@ import {
 // Types
 import { Project } from '@/types';
 
-// Hooks
-import { useIsMobile } from '@/hooks/use-mobile';
-
 // Translation
 import { useTrans } from '@/lib/translation';
 
@@ -44,7 +39,6 @@ interface HeroProps {
 export default function Hero({ appear, project }: HeroProps) {
     const { appearance, updateAppearance } = useAppearance();
     const __ = useTrans();
-    const isMobile = useIsMobile();
 
     function handleSwitchAppearance() {
         const newAppearance =
@@ -93,12 +87,7 @@ export default function Hero({ appear, project }: HeroProps) {
                         'gap-4',
                     )}
                 >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={0}
-                        className="w-full"
-                    >
+                    <FadeIn show={appear} delay={0} className="w-full">
                         <h1
                             className={cn(
                                 // Default styles
@@ -108,7 +97,7 @@ export default function Hero({ appear, project }: HeroProps) {
                         >
                             {project.title}
                         </h1>
-                    </Curtain>
+                    </FadeIn>
 
                     <div
                         className={cn(
@@ -122,11 +111,7 @@ export default function Hero({ appear, project }: HeroProps) {
                             'gap-4 md:gap-4 lg:gap-0',
                         )}
                     >
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={0}
-                        >
+                        <FadeIn className="w-auto" show={appear} delay={0}>
                             <h2
                                 className={cn(
                                     // Default styles
@@ -141,12 +126,8 @@ export default function Hero({ appear, project }: HeroProps) {
                             >
                                 {__('landing.projects.hero.h2', 'Project')}
                             </h2>
-                        </Curtain>
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={0}
-                        >
+                        </FadeIn>
+                        <FadeIn className="w-auto" show={appear} delay={0}>
                             <div
                                 className={cn(
                                     // Default styles
@@ -159,7 +140,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                 {project.is_new == true && (
                                     <span
                                         className={cn(
-                                        // Default styles
+                                            // Default styles
                                             'border px-2.5 py-0.5 text-sm font-medium',
                                             'transition-all duration-1000',
 
@@ -170,7 +151,10 @@ export default function Hero({ appear, project }: HeroProps) {
                                             'whitespace-nowrap',
                                         )}
                                     >
-                                        {__('landing.projects.sections.new', 'New')}
+                                        {__(
+                                            'landing.projects.sections.new',
+                                            'New',
+                                        )}
                                     </span>
                                 )}
                                 {project.tags
@@ -216,7 +200,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                           )}
                                 </span>
                             </div>
-                        </Curtain>
+                        </FadeIn>
                     </div>
                 </Delimiter>
 
@@ -236,7 +220,7 @@ export default function Hero({ appear, project }: HeroProps) {
                         'gap-4 md:gap-5',
                     )}
                 >
-                    <FadeIn className='w-auto' show={appear} delay={250}>
+                    <FadeIn className="w-auto" show={appear} delay={250}>
                         <p
                             className={cn(
                                 // Default styles
@@ -250,7 +234,7 @@ export default function Hero({ appear, project }: HeroProps) {
                         className={cn(
                             // Default styles
                             'flex flex-wrap items-center gap-5',
-                            
+
                             'shrink-1 md:shrink-0',
                         )}
                     >
@@ -258,63 +242,57 @@ export default function Hero({ appear, project }: HeroProps) {
                             className={cn(
                                 // Default styles
                                 'flex flex-wrap items-center gap-5',
-
                             )}
                         >
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
+                            <FadeIn
+                                className="w-auto"
+                                show={appear}
                                 delay={500}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <a
-                                        {...(project?.source_code_url && {
-                                            href: project.source_code_url,
-                                        })}
+                                    <RoundedButton
+                                        href={
+                                            project?.source_code_url ||
+                                            undefined
+                                        }
                                         target="_blank"
-                                        tabIndex={-1}
-                                        aria-label={__('landing.seo.view_source_code', 'View source code')}
+                                        disabled={!project?.source_code_url}
+                                        tabIndex={
+                                            project?.source_code_url ? 0 : -1
+                                        }
+                                        aria_label={__(
+                                            'landing.seo.view_source_code',
+                                            'View source code',
+                                        )}
                                     >
-                                        <RoundedButton
-                                            disabled={!project?.source_code_url}
-                                            tabIndex={
-                                                project?.source_code_url
-                                                    ? 0
-                                                    : -1
-                                            }
-                                            aria_label={__('landing.seo.view_source_code', 'View source code')}
-                                        >
-                                            <Code2 className="stroke-1" />
-                                        </RoundedButton>
-                                    </a>
+                                        <Code2 className="stroke-1" />
+                                    </RoundedButton>
                                 </Magnet>
-                            </Curtain>
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
+                            </FadeIn>
+                            <FadeIn
+                                className="w-auto"
+                                show={appear}
                                 delay={750}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <a
-                                        {...(project?.live_demo_url && {
-                                            href: project.live_demo_url,
-                                        })}
+                                    <RoundedButton
+                                        href={
+                                            project?.live_demo_url || undefined
+                                        }
                                         target="_blank"
-                                        tabIndex={-1}
-                                        aria-label={__('landing.seo.view_live_demo', 'View live demo')}
+                                        disabled={!project?.live_demo_url}
+                                        tabIndex={
+                                            project?.live_demo_url ? 0 : -1
+                                        }
+                                        aria_label={__(
+                                            'landing.seo.view_live_demo',
+                                            'View live demo',
+                                        )}
                                     >
-                                        <RoundedButton
-                                            disabled={!project?.live_demo_url}
-                                            tabIndex={
-                                                project?.live_demo_url ? 0 : -1
-                                            }
-                                            aria_label={__('landing.seo.view_live_demo', 'View live demo')}
-                                        >
-                                            <SquareArrowOutUpRight className="stroke-1" />
-                                        </RoundedButton>
-                                    </a>
+                                        <SquareArrowOutUpRight className="stroke-1" />
+                                    </RoundedButton>
                                 </Magnet>
-                            </Curtain>
+                            </FadeIn>
                         </div>
                         <div
                             className={cn(
@@ -322,15 +300,18 @@ export default function Hero({ appear, project }: HeroProps) {
                                 'flex flex-wrap items-center gap-5',
                             )}
                         >
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
+                            <FadeIn
+                                className="w-auto"
+                                show={appear}
                                 delay={1000}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
                                     <RoundedButton
                                         onClick={handleSwitchAppearance}
-                                        aria_label={__('landing.seo.toggle_appearance', 'Toggle appearance mode')}
+                                        aria_label={__(
+                                            'landing.seo.toggle_appearance',
+                                            'Toggle appearance mode',
+                                        )}
                                     >
                                         {appearance === 'dark' && (
                                             <Moon className="stroke-1" />
@@ -343,36 +324,31 @@ export default function Hero({ appear, project }: HeroProps) {
                                         )}
                                     </RoundedButton>
                                 </Magnet>
-                            </Curtain>
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
+                            </FadeIn>
+                            <FadeIn
+                                className="w-auto"
+                                show={appear}
                                 delay={1250}
                             >
                                 <LanguageToggle />
-                            </Curtain>
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
+                            </FadeIn>
+                            <FadeIn
+                                className="w-auto"
+                                show={appear}
                                 delay={1500}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
-                                    <RoundedButton aria_label={__('landing.seo.scroll_to_content', 'Scroll to content')}>
-                                        <a href="#content" tabIndex={-1} aria-label={__('landing.seo.scroll_to_content', 'Scroll to content')}>
-                                            <ArrowDown className="stroke-1" />
-                                        </a>
+                                    <RoundedButton
+                                        href="#content"
+                                        aria_label={__(
+                                            'landing.seo.scroll_to_content',
+                                            'Scroll to content',
+                                        )}
+                                    >
+                                        <ArrowDown className="stroke-1" />
                                     </RoundedButton>
                                 </Magnet>
-                            </Curtain>
-                            {!isMobile && (
-                                <Curtain
-                                    showCurtain={!appear}
-                                    background="background"
-                                    delay={1750}
-                                >
-                                    <CursorToggle />
-                                </Curtain>
-                            )}
+                            </FadeIn>
                         </div>
                     </div>
                 </div>

@@ -1,38 +1,32 @@
 <?php
 
-// app/Http/Requests/Settings/Password.php
+declare(strict_types=1);
 
 namespace App\Http\Requests\Settings;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-/**
- * Class Password
- *
- * Handles the validation for user password update requests.
- */
 class Password extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Détermine si l'utilisateur est autorisé à exécuter cette requête.
      */
     public function authorize(): bool
     {
-        // Only allow authenticated users to make this request
         return Auth::check();
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Règles de validation pour la modification du mot de passe.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, array<int, string>>
      */
     public function rules(): array
     {
         return [
             'current_password' => ['required', 'string', 'current_password'],
-            'password'  => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
 }

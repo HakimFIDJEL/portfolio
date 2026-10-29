@@ -1,0 +1,19 @@
+services:
+  app:
+    container_name: portfolio_app_dev
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: sqlite
+      RUN_SEEDERS: "true"
+    volumes:
+      - .:/var/www/html
+      - ./storage:/var/www/html/storage
+      - ./database:/var/www/html/database
+      # Éviter d'écraser vendor, node_modules, public/build et bootstrap/cache avec l'hôte
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
+      - /var/www/html/public/build
+      - /var/www/html/bootstrap/cache
+    ports:
+      - "8000:80"

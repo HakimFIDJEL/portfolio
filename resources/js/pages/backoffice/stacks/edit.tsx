@@ -83,22 +83,28 @@ export default function Edit({ stack }: EditProps) {
             <Head title="Edit Stack" />
 
             <Card>
-                <CardHeader className='flex flex-col md:items-center justify-between md:flex-row'>
-                    <div className='flex flex-col'>
+                <CardHeader className="flex flex-col justify-between md:flex-row md:items-center">
+                    <div className="flex flex-col">
                         <CardTitle>Edit a stack</CardTitle>
                         <CardDescription>
                             Update the form below to edit the stack.
                         </CardDescription>
                     </div>
-                    <CardAction className="flex flex-col md:items-center justify-between md:flex-row gap-2 w-full md:w-auto">
+                    <CardAction className="flex w-full flex-col justify-between gap-2 md:w-auto md:flex-row md:items-center">
                         <Link href={route('backoffice.stacks.index')}>
-                            <Button variant={'outline'} className="w-full md:w-auto">
+                            <Button
+                                variant={'outline'}
+                                className="w-full md:w-auto"
+                            >
                                 <ArrowLeft />
                                 Go back
                             </Button>
                         </Link>
                         <DeleteStack stack={stack}>
-                            <Button variant="destructive" className="w-full md:w-auto">
+                            <Button
+                                variant="destructive"
+                                className="w-full md:w-auto"
+                            >
                                 <Trash2 />
                                 Delete stack
                             </Button>

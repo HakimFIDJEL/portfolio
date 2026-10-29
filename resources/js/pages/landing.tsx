@@ -1,8 +1,9 @@
 // resources/js/pages/landing.tsx
 
-// Necessary imports
-import { Head, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { usePage } from '@inertiajs/react';
+
+// SEO
+import Seo from '@/components/seo';
 
 // Layout
 import AppLanding from '@/layouts/landing/layout';
@@ -13,11 +14,12 @@ import Contact from '@/components/landing/sections/contact';
 import Hero from '@/components/landing/sections/hero';
 import Projects from '@/components/landing/sections/projects';
 import Sandbox from '@/components/landing/sections/sandbox';
+import Services from '@/components/landing/sections/services';
 
 // Context
 import { useLandingContext } from '@/contexts/use-landing-context';
 
-// Mocks
+// Types
 import {
     Contact as ContactType,
     Education as EducationType,
@@ -31,64 +33,116 @@ import {
 // Translation
 import { useTrans } from '@/lib/translation';
 
-interface LandingData {
-    contacts: ContactType[];
-    experiences: ExperienceType[];
-    educations: EducationType[];
-    stacks: Stack[];
-    tools: Tool[];
-    projects: Project[];
-    sandbox: Project[];
+export interface LandingProps {
+    contacts?: ContactType[];
+    experiences?: ExperienceType[];
+    educations?: EducationType[];
+    stacks?: Stack[];
+    tools?: Tool[];
+    projects?: Project[];
+    sandbox?: Project[];
 }
 
-export default function Landing() {
-    const { contentActive, fetchingData, setFetchingData } =
-        useLandingContext();
-
-    const [data, setData] = useState<LandingData | null>(null);
-
-    const { locale } = usePage<SharedData>().props;
-
+export default function Landing({
+    contacts = [],
+    experiences = [],
+    educations = [],
+    stacks = [],
+    tools = [],
+    projects = [],
+    sandbox = [],
+}: LandingProps) {
+    const { contentActive } = useLandingContext();
+    const { props } = usePage<SharedData>();
     const __ = useTrans();
 
-    useEffect(() => {
-        if (!fetchingData) setFetchingData(true);
-        let timer: ReturnType<typeof setTimeout>;
+    const locale = props.locale || 'fr';
+    const ziggyLocation =
+        typeof props.ziggy === 'object' &&
+        props.ziggy !== null &&
+        'location' in props.ziggy
+            ? String((props.ziggy as { location?: unknown }).location)
+            : '';
 
-        fetch(route('landing.data'))
-            .then((response) => response.json())
-            .then((data: LandingData) => {
-                setData(data);
-                timer = setTimeout(() => {
-                    setFetchingData(false);
-                }, 1000);
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
-                setFetchingData(false);
-            });
+    const siteUrl =
+        typeof window !== 'undefined'
+            ? window.location.origin
+            : ziggyLocation
+              ? new URL(ziggyLocation).origin
+              : 'https://hakimfidjel.fr';
 
-        return () => clearTimeout(timer);
-    }, [locale]);
+    const jsonLd = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'Hakim Fidjel — Portfolio',
+            url: siteUrl,
+            inLanguage: ['fr', 'en'],
+            author: {
+                '@type': 'Person',
+                name: 'Hakim Fidjel',
+            },
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: 'Hakim Fidjel',
+            url: siteUrl,
+            jobTitle:
+                locale === 'fr' ? 'Ingénieur Logiciel' : 'Software Engineer',
+            worksFor: {
+                '@type': 'Organization',
+                name: 'TenderCrunch',
+                url: 'https://tendercrunch.com',
+            },
+            alumniOf: {
+                '@type': 'EducationalOrganization',
+                name: 'IG2I — Centrale Lille Institut',
+            },
+            sameAs: [
+                'https://github.com/HakimFIDJEL',
+                'https://www.linkedin.com/in/hakim-fidjel',
+            ],
+            knowsAbout: [
+                'Laravel',
+                'PHP',
+                'React',
+                'TypeScript',
+                'Docker',
+                'Tailwind CSS',
+                'Inertia.js',
+                'Software Architecture',
+            ],
+        },
+    ];
 
     return (
         <>
-            <Head>
-                <meta name='description' content={__('landing.landing.meta_description', "Hakim Fidjel's portfolio. Discover my projects, skills, and ambitions as a FullStack engineering apprentice in the field of computer engineering.")} />
-            </Head>
+            <Seo
+                title={__(
+                    'landing.landing.meta_title',
+                    'Hakim Fidjel — Ingénieur Logiciel',
+                )}
+                description={__(
+                    'landing.landing.meta_description',
+                    "Portfolio de Hakim Fidjel, ingénieur logiciel et développeur indépendant. Conception d'architectures applicatives robustes, systèmes agentiques, ingénierie web moderne et solutions logicielles évolutives.",
+                )}
+                jsonLd={jsonLd}
+            />
 
-            <main>
+            <main id="main-content">
                 <Hero appear={contentActive} />
                 <About
                     appear={contentActive}
-                    stacks={(fetchingData || !data) ? [] : data.stacks}
-                    tools={(fetchingData || !data) ? [] : data.tools}
-                    educations={(fetchingData || !data) ? [] : data.educations}
-                    experiences={(fetchingData || !data) ? [] : data.experiences}
+                    stacks={stacks}
+                    tools={tools}
+                    educations={educations}
+                    experiences={experiences}
                 />
-                <Projects appear={contentActive} projects={(fetchingData || !data) ? [] : data.projects} />
-                <Sandbox appear={contentActive} projects={(fetchingData || !data) ? [] : data.sandbox} />
-                <Contact appear={contentActive} contacts={(fetchingData || !data) ? [] : data.contacts} />
+                <Services appear={contentActive} />
+                <Projects appear={contentActive} projects={projects} />
+                <Sandbox appear={contentActive} projects={sandbox} />
+                <Contact appear={contentActive} contacts={contacts} />
             </main>
         </>
     );
