@@ -1,0 +1,174 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - develop
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # --------------------------------------------------------------------------
+  # 1. Quality Gate (Pint, Prettier, ESLint, TypeScript, Tests Pest)
+  # --------------------------------------------------------------------------
+  quality-gate:
+    name: Quality Gate & Tests
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: testing
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, zip, gd
+          coverage: none
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Cache Composer Dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Dependencies
+        run: |
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+          npm ci
+
+      - name: Check PHP Code Style (Laravel Pint)
+        run: vendor/bin/pint --test
+
+      - name: Check Code Formatting (Prettier)
+        run: npm run format:check
+
+      - name: Lint Frontend (ESLint)
+        run: npm run lint
+
+      - name: TypeScript Strict Check
+        run: npm run types
+
+      - name: Build Frontend & SSR Assets
+        run: npm run build:ssr
+
+      - name: Prepare Test Environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run Pest Tests
+        run: vendor/bin/pest
+
+  # --------------------------------------------------------------------------
+  # 2. Build & Publish Docker Image (Only on official version tags: v*)
+  # --------------------------------------------------------------------------
+  build-and-publish:
+    name: Build & Publish GHCR
+    needs: quality-gate
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=sha,prefix=sha-
+            type=raw,value=latest
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # --------------------------------------------------------------------------
+  # 3. Trigger Production Deployment via HMAC Webhook
+  # --------------------------------------------------------------------------
+  deploy:
+    name: Trigger VPS Deployment
+    needs: build-and-publish
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dispatch HMAC Webhook to VPS
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL || 'https://hakimfidjel.fr/hooks/deploy-portfolio' }}
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          if [ -z "$WEBHOOK_SECRET" ]; then
+            echo "::error::Secret WEBHOOK_SECRET non configuré dans les secrets du dépôt."
+            exit 1
+          fi
+
+          PAYLOAD="{\"tag\":\"${TAG_NAME}\"}"
+          SIGNATURE="sha256=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" | sed 's/^.* //')"
+
+          echo "Envoi du webhook vers $WEBHOOK_URL pour le tag $TAG_NAME..."
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            -H "Content-Type: application/json" \
+            -H "X-Hub-Signature-256: ${SIGNATURE}" \
+            -d "$PAYLOAD" \
+            "$WEBHOOK_URL")
+
+          HTTP_STATUS=$(echo "$RESPONSE" | tail -n 1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+
+          echo "Réponse HTTP : $HTTP_STATUS"
+          echo "Corps : $BODY"
+
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "::error::Le déploiement par webhook a échoué (HTTP $HTTP_STATUS)"
+            exit 1
+          fi
+
+          echo "Signal de déploiement validé avec succès par le VPS."
