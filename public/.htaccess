@@ -27,4 +27,9 @@
 <IfModule mod_headers.c>
     Header always unset X-Powered-By
     Header unset X-Powered-By
+
+    # Mise en cache agressive (1 an) des assets compiles et polices (noms haches par Vite)
+    <FilesMatch "\.(ico|pdf|jpg|jpeg|png|gif|webp|js|css|woff2|woff|ttf|svg)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
 </IfModule>

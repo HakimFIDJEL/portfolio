@@ -43,8 +43,11 @@ if [ "$DB_CONN" = "mysql" ]; then
     DB_USERNAME=${DB_USERNAME:-root}
     DB_PASSWORD=${DB_PASSWORD:-root}
 
+    mkdir -p /etc/mysql/conf.d
+    echo -e "[client]\nssl = 0" > /etc/mysql/conf.d/client-ssl.cnf 2>/dev/null || true
+
     echo "Attente de la base de donnees MySQL sur l'hote '$DB_HOST'..."
-    until echo "SELECT 1" | mysql -h "$DB_HOST" -u "$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE" > /dev/null 2>&1; do
+    until echo "SELECT 1" | mysql --ssl=0 -h "$DB_HOST" -u "$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE" > /dev/null 2>&1; do
         echo "MySQL indisponible, nouvelle tentative dans 2 secondes..."
         sleep 2
     done

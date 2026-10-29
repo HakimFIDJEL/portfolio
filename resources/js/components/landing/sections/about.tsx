@@ -12,6 +12,7 @@ import UnderlineLink from '@/components/landing/underline-link';
 
 // UI Components
 import FadeIn from '@/components/landing/fade-in';
+import Magnet from '@/components/ui/magnet';
 import { TextReveal } from '@/components/ui/text-reveal';
 
 // Icons
@@ -565,25 +566,50 @@ function TabAboutContent() {
 
                     {resume_url && (
                         <div className="pt-2">
-                            <a
-                                href={resume_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label={__(
-                                    'landing.seo.download_resume',
-                                    'Télécharger mon CV',
-                                )}
-                                className="group relative inline-flex items-center gap-3 overflow-hidden border border-border bg-card px-5 py-3 text-xs font-medium tracking-wide text-foreground transition-all duration-300 hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none sm:text-sm"
+                            <Magnet
+                                magnetStrength={3}
+                                padding={20}
+                                wrapperClassName="inline-block"
                             >
-                                <span className="relative z-10">
-                                    {__(
-                                        'landing.landing.about.tabs.about.button',
-                                        'Consulter mon CV complet',
+                                <a
+                                    href={resume_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={__(
+                                        'landing.seo.download_resume',
+                                        'Télécharger mon CV',
                                     )}
-                                </span>
-                                <Download className="relative z-10 h-4 w-4 stroke-[1.5] transition-transform duration-300 group-hover:translate-y-0.5" />
-                                <div className="absolute inset-0 z-0 h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-700 group-focus-visible:w-[120%]" />
-                            </a>
+                                    className="group relative inline-flex items-center gap-3 overflow-hidden border border-border bg-card px-5 py-3 text-xs font-medium tracking-wide text-foreground transition-all duration-300 hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none sm:text-sm"
+                                >
+                                    <span className="relative z-10">
+                                        {__(
+                                            'landing.landing.about.tabs.about.button',
+                                            'Consulter mon CV complet',
+                                        )}
+                                    </span>
+                                    <div className="relative z-10 size-4 shrink-0 overflow-hidden">
+                                        <Download
+                                            className={cn(
+                                                'size-4 shrink-0 stroke-[1.5]',
+                                                'transition-all duration-300 ease-out',
+                                                'group-hover:-translate-y-full group-hover:opacity-0',
+                                                'group-focus-visible:-translate-y-full group-focus-visible:opacity-0',
+                                            )}
+                                        />
+                                        <Download
+                                            aria-hidden="true"
+                                            className={cn(
+                                                'absolute inset-0 size-4 shrink-0 stroke-[1.5] text-primary-foreground',
+                                                'translate-y-full opacity-0',
+                                                'transition-all duration-300 ease-out',
+                                                'group-hover:translate-y-0 group-hover:opacity-100',
+                                                'group-focus-visible:translate-y-0 group-focus-visible:opacity-100',
+                                            )}
+                                        />
+                                    </div>
+                                    <div className="absolute inset-0 z-0 h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-700 group-focus-visible:w-[120%]" />
+                                </a>
+                            </Magnet>
                         </div>
                     )}
                 </div>
