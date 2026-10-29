@@ -153,12 +153,12 @@ export default function Hero({ appear }: HeroProps) {
                         'py-4 sm:py-5 md:py-6 lg:py-8',
                     )}
                 >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={500}
-                    >
-                        <Magnet magnetStrength={3} padding={20}>
+                    <Magnet magnetStrength={3} padding={20}>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={500}
+                        >
                             <RoundedButton
                                 href="#about"
                                 aria_label={__(
@@ -168,14 +168,14 @@ export default function Hero({ appear }: HeroProps) {
                             >
                                 <ArrowDown className="stroke-1" />
                             </RoundedButton>
-                        </Magnet>
-                    </Curtain>
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={750}
-                    >
-                        <Magnet magnetStrength={3} padding={20}>
+                        </Curtain>
+                    </Magnet>
+                    <Magnet magnetStrength={3} padding={20}>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={750}
+                        >
                             <RoundedButton
                                 onClick={handleSwitchAppearance}
                                 aria_label={__(
@@ -193,15 +193,17 @@ export default function Hero({ appear }: HeroProps) {
                                     <Monitor className="stroke-1" />
                                 )}
                             </RoundedButton>
-                        </Magnet>
-                    </Curtain>
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={1000}
-                    >
-                        <LanguageToggle />
-                    </Curtain>
+                        </Curtain>
+                    </Magnet>
+                    <Magnet magnetStrength={3} padding={20}>
+                        <Curtain
+                            showCurtain={!appear}
+                            background="background"
+                            delay={1000}
+                        >
+                            <LanguageToggle withMagnet={false} />
+                        </Curtain>
+                    </Magnet>
                 </Delimiter>
             </div>
         </section>
