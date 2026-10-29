@@ -291,7 +291,6 @@ export default function AvatarUploader({
                                 className="-my-1"
                                 onClick={handleApply}
                                 disabled={!previewUrl}
-                                autoFocus
                             >
                                 {__(
                                     'settings.pages.profile.info_form.crop_confirm',

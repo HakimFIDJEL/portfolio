@@ -63,7 +63,6 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                         errors.email ? 'true' : 'false'
                                     }
                                     value={email}
-                                    tabIndex={1}
                                 />
                                 <InputGroupAddon>
                                     <User />
@@ -81,14 +80,12 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                     type={visible ? 'text' : 'password'}
                                     name="password"
                                     required
-                                    autoFocus
                                     placeholder={__(
                                         'auth.pages.reset_password.password_placeholder',
                                     )}
                                     aria-invalid={
                                         errors.password ? 'true' : 'false'
                                     }
-                                    tabIndex={2}
                                 />
                                 <InputGroupAddon>
                                     <Lock />
@@ -100,7 +97,6 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                             variant={'ghost'}
                                             size={'icon-sm'}
                                             onClick={() => setVisible(false)}
-                                            tabIndex={5}
                                         >
                                             <EyeOff />
                                         </Button>
@@ -110,7 +106,6 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                             variant={'ghost'}
                                             size={'icon-sm'}
                                             onClick={() => setVisible(true)}
-                                            tabIndex={5}
                                         >
                                             <Eye />
                                         </Button>
@@ -139,7 +134,6 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                             ? 'true'
                                             : 'false'
                                     }
-                                    tabIndex={3}
                                 />
                                 <InputGroupAddon>
                                     <Lock />
@@ -148,11 +142,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                         </div>
 
                         <div className="grid gap-3">
-                            <Button
-                                type="submit"
-                                disabled={processing}
-                                tabIndex={4}
-                            >
+                            <Button type="submit" disabled={processing}>
                                 {processing ? <Spinner /> : <RefreshCcw />}
                                 {__('auth.pages.reset_password.submit_button')}
                             </Button>
@@ -167,7 +157,6 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                     variant={'link'}
                                     size={'sm'}
                                     className="p-0"
-                                    tabIndex={6}
                                 >
                                     <Link href={route('auth.login')}>
                                         {__(

@@ -48,12 +48,10 @@ export default function ForgotPassword() {
                                     type="email"
                                     name="email"
                                     required
-                                    autoFocus
                                     placeholder="email@example.com"
                                     aria-invalid={
                                         errors.email ? 'true' : 'false'
                                     }
-                                    tabIndex={1}
                                 />
                                 <InputGroupAddon>
                                     <User />
@@ -62,11 +60,7 @@ export default function ForgotPassword() {
                         </div>
 
                         <div className="grid gap-3">
-                            <Button
-                                type={'submit'}
-                                disabled={processing}
-                                tabIndex={2}
-                            >
+                            <Button type={'submit'} disabled={processing}>
                                 {processing ? (
                                     <LoaderCircle className="h-4 w-4 animate-spin" />
                                 ) : (
@@ -86,7 +80,6 @@ export default function ForgotPassword() {
                                     size={'sm'}
                                     className="p-0"
                                     type={'button'}
-                                    tabIndex={3}
                                 >
                                     <Link href={route('auth.login')}>
                                         {__(

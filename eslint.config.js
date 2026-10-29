@@ -1,5 +1,6 @@
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier/flat';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
@@ -9,6 +10,7 @@ import typescript from 'typescript-eslint';
 export default [
     js.configs.recommended,
     ...typescript.configs.recommended,
+    jsxA11y.flatConfigs.recommended,
     {
         ...react.configs.flat.recommended,
         ...react.configs.flat['jsx-runtime'], // Required for React 17+

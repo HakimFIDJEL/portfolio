@@ -2,7 +2,9 @@
 
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -31,6 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
 
         $middleware->web(append: [
+            SecurityHeaders::class,
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
@@ -89,7 +92,7 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             // Intercepte les exceptions d'autorisation qui ne sont pas des HttpExceptionInterface
-            if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {
+            if ($exception instanceof AuthorizationException) {
                 return Inertia::render('errors/show', [
                     'statusCode' => 403,
                     'title' => $exception->getMessage() ?: 'Forbidden',

@@ -26,13 +26,13 @@ export default function EmailVerified() {
             <Head title={__('auth.pages.email_verified.header')} />
 
             <div className="grid gap-3 text-center">
-                <Button variant={'default'} asChild tabIndex={1}>
+                <Button variant={'default'} asChild>
                     <Link href={route('auth.login')}>
                         <LogIn className="h-4 w-4" />
                         {__('auth.pages.email_verified.login_button')}
                     </Link>
                 </Button>
-                <Button asChild variant={'secondary'} tabIndex={2}>
+                <Button asChild variant={'secondary'}>
                     <Link href={route('home')}>
                         {__('auth.pages.email_verified.home_button')}
                     </Link>

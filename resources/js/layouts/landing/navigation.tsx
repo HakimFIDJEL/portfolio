@@ -293,9 +293,7 @@ function NavigationLink({
                     'Scroll to :section section',
                     { section: label.toLowerCase() },
                 )}
-                {...(show
-                    ? { href: currentUrl === homePath ? href : route('home') }
-                    : {})}
+                href={currentUrl === homePath ? href : route('home')}
                 tabIndex={show ? 0 : -1}
                 className={cn(
                     // Default styles

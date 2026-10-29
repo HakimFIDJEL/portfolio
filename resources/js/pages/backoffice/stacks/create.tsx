@@ -284,7 +284,6 @@ export function Items({ data, setData }: ItemsProps) {
                                 <Input
                                     id="name"
                                     placeholder="Enter the item name"
-                                    autoFocus
                                     required
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}

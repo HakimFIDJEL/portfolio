@@ -59,18 +59,13 @@ export default function VerifyEmail() {
                         </div>
 
                         <div className="grid gap-3">
-                            <Button
-                                disabled={processing}
-                                variant="default"
-                                tabIndex={1}
-                            >
+                            <Button disabled={processing} variant="default">
                                 {processing ? <Spinner /> : <Send />}
                                 {__('auth.pages.verify_email.submit_button')}
                             </Button>
                             <Button
                                 disabled={processing}
                                 variant="secondary"
-                                tabIndex={2}
                                 asChild
                             >
                                 <Link
@@ -83,12 +78,7 @@ export default function VerifyEmail() {
                                 </Link>
                             </Button>
                             <div className="text-center">
-                                <Button
-                                    asChild
-                                    variant={'link'}
-                                    size={'sm'}
-                                    tabIndex={3}
-                                >
+                                <Button asChild variant={'link'} size={'sm'}>
                                     <Link href={route('auth.logout')}>
                                         {__(
                                             'auth.pages.verify_email.logout_link',

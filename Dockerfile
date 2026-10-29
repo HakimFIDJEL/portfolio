@@ -40,8 +40,12 @@ FROM php:8.4-apache AS runtime
 
 WORKDIR /var/www/html
 
-# Activer le module Apache mod_rewrite
-RUN a2enmod rewrite
+# Activer les modules Apache mod_rewrite et mod_headers, et durcir la sécurité Apache & PHP
+RUN a2enmod rewrite headers \
+    && sed -i 's/^ServerTokens .*/ServerTokens Prod/' /etc/apache2/conf-available/security.conf \
+    && sed -i 's/^ServerSignature .*/ServerSignature Off/' /etc/apache2/conf-available/security.conf \
+    && a2enconf security \
+    && echo "expose_php = Off" > /usr/local/etc/php/conf.d/security.ini
 
 # Installer les dépendances système requises et le runtime Node.js 22 pour SSR
 RUN apt-get update && apt-get install -y --no-install-recommends \
