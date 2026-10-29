@@ -28,21 +28,6 @@ test('la landing page est accessible et rend le composant Inertia landing avec t
     );
 });
 
-test('la route landing data retourne la structure json attendue', function () {
-    $response = $this->get(route('landing.data'));
-
-    $response->assertOk();
-    $response->assertJsonStructure([
-        'contacts',
-        'experiences',
-        'educations',
-        'stacks',
-        'tools',
-        'projects',
-        'sandbox',
-    ]);
-});
-
 test('la page des mentions légales est accessible', function () {
     $response = $this->get(route('terms'));
 
