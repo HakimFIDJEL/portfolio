@@ -579,7 +579,7 @@ function TabAboutContent() {
                                         'landing.seo.download_resume',
                                         'Télécharger mon CV',
                                     )}
-                                    className="group relative inline-flex items-center gap-3 overflow-hidden border border-border bg-card px-5 py-3 text-xs font-medium tracking-wide text-foreground transition-all duration-300 hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none sm:text-sm"
+                                    className="group relative inline-flex items-center gap-3 overflow-hidden border border-border bg-card px-5 py-3 text-xs font-medium tracking-wide text-foreground transition-all duration-300 hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:text-sm"
                                 >
                                     <span className="relative z-10">
                                         {__(
@@ -591,7 +591,7 @@ function TabAboutContent() {
                                         <Download
                                             className={cn(
                                                 'size-4 shrink-0 stroke-[1.5]',
-                                                'transition-all duration-300 ease-out',
+                                                'transition-all duration-600 ease-out',
                                                 'group-hover:-translate-y-full group-hover:opacity-0',
                                                 'group-focus-visible:-translate-y-full group-focus-visible:opacity-0',
                                             )}
@@ -601,7 +601,7 @@ function TabAboutContent() {
                                             className={cn(
                                                 'absolute inset-0 size-4 shrink-0 stroke-[1.5] text-primary-foreground',
                                                 'translate-y-full opacity-0',
-                                                'transition-all duration-300 ease-out',
+                                                'transition-all duration-600 ease-out',
                                                 'group-hover:translate-y-0 group-hover:opacity-100',
                                                 'group-focus-visible:translate-y-0 group-focus-visible:opacity-100',
                                             )}
