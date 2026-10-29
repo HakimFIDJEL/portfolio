@@ -773,14 +773,20 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                 {/* Attachments */}
                                 {displayItem.attachments &&
                                     displayItem.attachments.length > 0 && (
-                                        <div className="w-full">
+                                        <div className="flex flex-col gap-3">
+                                            <h4 className="text-lg font-medium text-foreground">
+                                                {__(
+                                                    'landing.projects.sections.attachments',
+                                                    'Attachments',
+                                                )}
+                                            </h4>
                                             <Carousel
                                                 attachments={
                                                     displayItem.attachments
                                                 }
                                                 show_navigation={false}
                                                 show_pagination={true}
-                                                className="w-full overflow-hidden border border-border"
+                                                className="w-full overflow-hidden"
                                             />
                                         </div>
                                     )}
