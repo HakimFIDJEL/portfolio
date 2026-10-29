@@ -17,7 +17,11 @@ import { SharedData } from '@/types';
 // Translation
 import { useTrans } from '@/lib/translation';
 
-export default function LanguageToggle() {
+export default function LanguageToggle({
+    withMagnet = true,
+}: {
+    withMagnet?: boolean;
+} = {}) {
     const locale = usePage<SharedData>().props.locale;
     const [currentLocale, setCurrentLocale] = useState(locale);
     const __ = useTrans();
@@ -30,26 +34,34 @@ export default function LanguageToggle() {
 
     const targetLocale = currentLocale.toUpperCase() === 'EN' ? 'fr' : 'en';
 
+    const button = (
+        <RoundedButton
+            aria_label={__(
+                'landing.seo.switch_language',
+                'Switch language to :language',
+                {
+                    language:
+                        currentLocale.toUpperCase() === 'EN'
+                            ? 'Français'
+                            : 'English',
+                },
+            )}
+            onClick={() => {
+                setCurrentLocale(targetLocale);
+                _navigateToPage(route('toggle_language'), null);
+            }}
+        >
+            {currentLocale.toUpperCase()}
+        </RoundedButton>
+    );
+
+    if (!withMagnet) {
+        return button;
+    }
+
     return (
         <Magnet magnetStrength={3} padding={20}>
-            <RoundedButton
-                aria_label={__(
-                    'landing.seo.switch_language',
-                    'Switch language to :language',
-                    {
-                        language:
-                            currentLocale.toUpperCase() === 'EN'
-                                ? 'Français'
-                                : 'English',
-                    },
-                )}
-                onClick={() => {
-                    setCurrentLocale(targetLocale);
-                    _navigateToPage(route('toggle_language'), null);
-                }}
-            >
-                {currentLocale.toUpperCase()}
-            </RoundedButton>
+            {button}
         </Magnet>
     );
 }
