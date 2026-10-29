@@ -650,27 +650,32 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                             }}
                                             className="overflow-hidden"
                                         >
-                                            <div className="flex flex-wrap items-center gap-2 pb-1.5">
+                                            <div className="flex flex-wrap items-center gap-1.5 pb-1.5 sm:gap-2">
                                                 {Boolean(
                                                     displayItem.is_new,
                                                 ) && (
-                                                    <span className="border border-primary bg-primary px-3.5 py-1.5 text-xs font-light tracking-wide text-primary-foreground uppercase sm:text-sm">
+                                                    <span className="border border-primary bg-primary px-2 py-0.5 text-xs font-light text-primary-foreground sm:text-xs">
                                                         {__(
-                                                            'landing.projects.new',
+                                                            'landing.projects.sections.new',
                                                             'New',
                                                         )}
                                                     </span>
                                                 )}
-                                                {displayItem.tags?.map(
-                                                    (tag) => (
+                                                {displayItem.tags
+                                                    ?.slice()
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a.sort_order -
+                                                            b.sort_order,
+                                                    )
+                                                    .map((tag) => (
                                                         <span
                                                             key={tag.id}
-                                                            className="border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light text-foreground sm:text-sm"
+                                                            className="border border-border bg-card/60 px-2 py-0.5 text-xs font-light text-foreground sm:text-xs"
                                                         >
                                                             {tag.name}
                                                         </span>
-                                                    ),
-                                                )}
+                                                    ))}
                                             </div>
                                         </motion.div>
                                     )}

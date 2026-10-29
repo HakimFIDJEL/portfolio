@@ -193,6 +193,7 @@ return [
     ],
 
     'projects' => [
+        'new' => 'New',
 
         'hero' => [
             'h2' => 'Project',
