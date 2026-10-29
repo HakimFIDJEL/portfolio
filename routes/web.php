@@ -9,7 +9,6 @@ use Inertia\Inertia;
 
 Route::middleware(['web'])->group(function (): void {
     Route::get('/', [LandingController::class, 'landing'])->name('home');
-    Route::get('/data', [LandingController::class, 'data'])->name('landing.data');
     Route::get('/toggle-language', [LandingController::class, 'toggle_language'])->name('toggle_language');
     Route::get('/terms', [LandingController::class, 'terms'])->name('terms');
 });

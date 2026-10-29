@@ -119,9 +119,13 @@ export default function Landing({
     return (
         <>
             <Seo
+                title={__(
+                    'landing.landing.meta_title',
+                    'Hakim Fidjel — Ingénieur Logiciel',
+                )}
                 description={__(
                     'landing.landing.meta_description',
-                    "Hakim Fidjel's portfolio, Software Engineer. Designing robust software architectures, agentic systems, modern web engineering, and scalable platforms.",
+                    "Portfolio de Hakim Fidjel, ingénieur logiciel et développeur indépendant. Conception d'architectures applicatives robustes, systèmes agentiques, ingénierie web moderne et solutions logicielles évolutives.",
                 )}
                 jsonLd={jsonLd}
             />

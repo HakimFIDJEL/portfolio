@@ -64,7 +64,8 @@ return [
 
     'landing' => [
 
-        'meta_description' => "Hakim Fidjel's portfolio, Software Engineer. Designing robust software architectures, agentic systems, modern web engineering, and scalable platforms.",
+        'meta_title' => 'Hakim Fidjel — Software Engineer',
+        'meta_description' => 'Portfolio of Hakim Fidjel, Software Engineer and independent developer. Designing robust software architectures, agentic systems, modern web engineering, and scalable platforms.',
 
         'hero' => [
             'h2' => 'Software Engineer',

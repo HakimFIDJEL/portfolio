@@ -10,7 +10,13 @@ createServer((page) =>
     createInertiaApp({
         page,
         render: ReactDOMServer.renderToString,
-        title: (title) => (title ? `${title} - ${appName}` : appName),
+        title: (title) => {
+            if (!title) {
+                return appName;
+            }
+
+            return title.includes(appName) ? title : `${title} — ${appName}`;
+        },
         resolve: (name) =>
             resolvePageComponent(
                 `./pages/${name}.tsx`,

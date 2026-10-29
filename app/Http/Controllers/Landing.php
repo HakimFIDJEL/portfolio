@@ -10,7 +10,6 @@ use App\Models\Backoffice\Experience;
 use App\Models\Backoffice\Project;
 use App\Models\Backoffice\Stack;
 use App\Models\Backoffice\Tool;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -37,33 +36,6 @@ class Landing extends Controller
             ->get();
 
         return Inertia::render('landing', [
-            'contacts' => $contacts,
-            'experiences' => $experiences,
-            'educations' => $educations,
-            'stacks' => $stacks,
-            'tools' => $tools,
-            'projects' => $projects,
-            'sandbox' => $sandbox,
-        ]);
-    }
-
-    /**
-     * Fournir l'ensemble des données publiques de la landing en JSON.
-     */
-    public function data(): JsonResponse
-    {
-        $contacts = Contact::orderBy('sort_order', 'asc')->get();
-        $experiences = Experience::orderBy('sort_order', 'asc')->get();
-        $educations = Education::orderBy('sort_order', 'asc')->get();
-        $stacks = Stack::orderBy('sort_order', 'asc')->with('items')->get();
-        $tools = Tool::orderBy('sort_order', 'asc')->with('items')->get();
-        $projects = Project::where('type', 'project')->orderBy('sort_order', 'asc')->get();
-        $sandbox = Project::where('type', 'sandbox')
-            ->orderBy('sort_order', 'asc')
-            ->with(['tags', 'stackItems', 'attachments'])
-            ->get();
-
-        return response()->json([
             'contacts' => $contacts,
             'experiences' => $experiences,
             'educations' => $educations,
