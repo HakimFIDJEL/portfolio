@@ -368,8 +368,7 @@ function SandboxItem({
             <div
                 className={cn(
                     'pointer-events-none absolute top-3 right-3 z-10 sm:top-4 sm:right-4',
-                    'flex size-10 items-center justify-center sm:size-11',
-                    'border border-primary-foreground/20 bg-primary-foreground/10 backdrop-blur-md',
+                    'flex size-8 items-center justify-center backdrop-blur-sm sm:size-9',
                     'text-primary-foreground opacity-0 transition-all duration-300',
                     'group-hover:opacity-100 group-focus-visible:opacity-100',
                     active && 'opacity-100',
@@ -389,14 +388,14 @@ function SandboxItem({
             <div
                 className={cn(
                     // Default styles
-                    'flex flex-wrap gap-2 pr-12',
+                    'flex flex-wrap gap-1.5 pr-10 sm:gap-2 sm:pr-12',
                 )}
             >
                 {project.is_new == true && (
                     <span
                         className={cn(
                             // Default styles
-                            'border border-primary bg-primary px-3.5 py-1.5 text-xs font-light text-primary-foreground sm:text-sm',
+                            'border border-primary bg-primary px-2 py-0.5 text-xs font-light text-primary-foreground sm:text-xs',
                             'transition-all duration-500',
 
                             // Hover & Focus styles
@@ -416,7 +415,7 @@ function SandboxItem({
                             key={`sandbox-${project.id}-tag-${index}`}
                             className={cn(
                                 // Default styles
-                                'border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light text-foreground sm:text-sm',
+                                'border border-border bg-card/60 px-2 py-0.5 text-xs font-light text-foreground sm:text-xs',
                                 'transition-all duration-500',
 
                                 // Hover & Focus styles
@@ -463,7 +462,7 @@ function SandboxItem({
                 <span
                     className={cn(
                         // Default styles
-                        'w-max border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light text-foreground sm:text-sm',
+                        'w-max border border-border bg-card/60 px-2 py-0.5 text-xs font-light text-foreground sm:text-xs',
                         'transition-all duration-500',
 
                         // Hover & Focus styles
