@@ -48,11 +48,20 @@ export default function Project({
         },
     };
 
+    const projectDescription =
+        project.subtitle ||
+        (project.description
+            ? project.description
+                  .replace(/<[^>]*>?/gm, '')
+                  .trim()
+                  .slice(0, 160)
+            : undefined);
+
     return (
         <>
             <Seo
                 title={project.title}
-                description={project.subtitle}
+                description={projectDescription}
                 image={firstImage}
                 type="article"
                 jsonLd={projectJsonLd}

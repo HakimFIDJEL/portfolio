@@ -64,7 +64,8 @@ return [
 
     'landing' => [
 
-        'meta_description' => "Portfolio de Hakim Fidjel, ingénieur logiciel. Conception d'architectures applicatives robustes, systèmes agentiques, ingénierie web moderne et solutions logicielles évolutives.",
+        'meta_title' => 'Hakim Fidjel — Ingénieur Logiciel',
+        'meta_description' => "Portfolio de Hakim Fidjel, ingénieur logiciel et développeur indépendant. Conception d'architectures applicatives robustes, systèmes agentiques, ingénierie web moderne et solutions logicielles évolutives.",
 
         'hero' => [
             'h2' => 'Ingénieur Logiciel',

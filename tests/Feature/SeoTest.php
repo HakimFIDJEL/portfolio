@@ -25,6 +25,11 @@ test('le code html de base contient les balises seo, opengraph et twitter cards'
     $response->assertSee('rel="preload"', false);
     $response->assertSee('as="font"', false);
     $response->assertSee('type="font/woff2"', false);
+
+    // Vérifier l'absence de duplication dans le titre
+    $content = $response->getContent();
+    expect($content)->not->toContain('Hakim Fidjel - Hakim Fidjel')
+        ->and($content)->not->toContain('Hakim Fidjel — Hakim Fidjel');
 });
 
 test('la page projet retourne un statut 200 avec le composant inertia project', function () {
@@ -38,4 +43,9 @@ test('la page projet retourne un statut 200 avec le composant inertia project', 
         ->component('project')
         ->has('project')
     );
+
+    // Vérifier l'absence de duplication dans le titre du projet
+    $content = $response->getContent();
+    expect($content)->not->toContain("{$project->title} | Hakim Fidjel - Hakim Fidjel")
+        ->and($content)->not->toContain('Hakim Fidjel - Hakim Fidjel');
 });
