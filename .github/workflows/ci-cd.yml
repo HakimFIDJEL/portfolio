@@ -173,3 +173,23 @@ jobs:
           fi
 
           echo "Signal de déploiement validé avec succès par le VPS."
+
+  # --------------------------------------------------------------------------
+  # 4. Cleanup Old GHCR Images (> 30 days & keep 5 most recent)
+  # --------------------------------------------------------------------------
+  cleanup:
+    name: Cleanup Old GHCR Images
+    needs: deploy
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    steps:
+      - name: Purge Old Image Versions
+        uses: dataaxiom/ghcr-cleanup-action@v1
+        with:
+          packages: ${{ github.event.repository.name }}
+          older-than: 30 days
+          keep-n-tagged: 5
+          delete-untagged: true
