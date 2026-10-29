@@ -141,7 +141,7 @@ jobs:
     steps:
       - name: Dispatch HMAC Webhook to VPS
         env:
-          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL || 'https://hakimfidjel.fr/hooks/deploy-portfolio' }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL || 'https://hooks.hakimfidjel.fr/deploy' }}
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
           TAG_NAME: ${{ github.ref_name }}
         run: |
@@ -150,10 +150,10 @@ jobs:
             exit 1
           fi
 
-          PAYLOAD="{\"tag\":\"${TAG_NAME}\"}"
+          PAYLOAD="{\"project\":\"portfolio\",\"tag\":\"${TAG_NAME}\"}"
           SIGNATURE="sha256=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" | sed 's/^.* //')"
 
-          echo "Envoi du webhook vers $WEBHOOK_URL pour le tag $TAG_NAME..."
+          echo "Envoi du webhook vers $WEBHOOK_URL pour le projet portfolio ($TAG_NAME)..."
           RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
             -H "Content-Type: application/json" \
             -H "X-Hub-Signature-256: ${SIGNATURE}" \
