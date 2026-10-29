@@ -359,5 +359,6 @@ class BackofficeSeeder extends Seeder
         // Projects & Sandbox
         // ---------------------------
         $this->call(ProjectSeeder::class);
+        $this->call(AttachmentSeeder::class);
     }
 }

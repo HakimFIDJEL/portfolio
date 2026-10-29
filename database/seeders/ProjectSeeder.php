@@ -80,7 +80,7 @@ class ProjectSeeder extends Seeder
             ],
             [
                 'sort_order' => 14,
-                'slug_fr' => 'vps-h-bergement-d-ploiement',
+                'slug_fr' => 'vps-hebergement-deploiement',
                 'slug_en' => 'bare-metal-vps-setup',
                 'title_fr' => 'VPS Hébergement & Déploiement',
                 'title_en' => 'Bare Metal VPS Setup',
@@ -548,7 +548,7 @@ class ProjectSeeder extends Seeder
             unset($item['tags'], $item['stack_items']);
 
             $project = Project::updateOrCreate(
-                ['slug_fr' => $item['slug_fr'], 'type' => $item['type']],
+                ['sort_order' => $item['sort_order'], 'type' => $item['type']],
                 $item
             );
 
