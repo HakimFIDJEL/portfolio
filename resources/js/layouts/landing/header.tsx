@@ -67,8 +67,8 @@ export default function Header({
             className={cn(
                 // Default styles
                 'sticky top-0 right-0 left-0 z-30 grid w-full',
-                'transition-transform duration-500 ease-out',
-                'border-b border-transparent',
+                'transition-all duration-500 ease-out',
+                'border-b border-border/0 bg-background/0 backdrop-blur-none',
 
                 // Responsive styles
                 'px-8 py-6 lg:px-12.5 lg:py-10',
@@ -79,8 +79,8 @@ export default function Header({
                 (!showContent || (showContent && !isHeaderVisible)) &&
                     '-translate-y-full',
 
-                scrollY > 50 &&
-                    'border-border bg-background/50 !backdrop-blur-lg',
+                scrollY > 10 &&
+                    'border-border bg-background/50 backdrop-blur-lg',
             )}
         >
             <div
