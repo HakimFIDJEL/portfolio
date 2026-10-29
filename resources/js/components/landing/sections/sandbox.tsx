@@ -343,10 +343,10 @@ function SandboxItem({
         <button
             className={cn(
                 // Default styles
-                'group relative h-max',
+                'group relative h-max overflow-hidden',
                 'flex flex-col',
                 'cursor-pointer transition-all duration-500',
-                'border bg-card text-foreground',
+                'border border-border bg-card text-foreground',
                 'text-start',
 
                 // Responsive styles
@@ -356,44 +356,31 @@ function SandboxItem({
                 'gap-4',
 
                 // Hover & Focus styles
-                'duration-1000 hover:border-primary hover:bg-primary hover:text-primary-foreground',
-                'duration-1000 focus-visible:border-primary focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-none',
+                'duration-500 hover:border-primary hover:bg-primary hover:text-primary-foreground',
+                'duration-500 focus-visible:border-primary focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-none',
                 active && 'border-primary bg-primary text-primary-foreground',
             )}
             tabIndex={dialog_open ? -1 : 0}
             onClick={handleClick}
             aria-label={__('landing.seo.open_dialog', 'Open dialog')}
         >
-            {/* Button */}
+            {/* Top-right corner arrow with localized backdrop-blur */}
             <div
                 className={cn(
-                    // Default styles
-                    'absolute top-0 right-0 bottom-0 left-0 z-1',
-
-                    'flex items-start justify-end pt-4 pr-4 pb-8',
-                    // 'bg-gradient-to-b from-primary via-primary/80 to-transparent',
-                    // 'bg-primary',
-                    'backdrop-blur-xs',
-
-                    'opacity-0',
-                    'transition-all',
-
-                    // Hover styles
-                    'group-hover:opacity-100',
-                    'group-focus-visible:opacity-100',
+                    'pointer-events-none absolute top-3 right-3 z-10 sm:top-4 sm:right-4',
+                    'flex size-10 items-center justify-center sm:size-11',
+                    'border border-primary-foreground/20 bg-primary-foreground/10 backdrop-blur-md',
+                    'text-primary-foreground opacity-0 transition-all duration-300',
+                    'group-hover:opacity-100 group-focus-visible:opacity-100',
+                    active && 'opacity-100',
                 )}
             >
                 <ArrowUpRight
                     className={cn(
-                        // Default styles
-                        'relative h-12 w-12 stroke-1 transition-all',
-                        'translate-x-0 translate-y-0 opacity-0',
-
-                        // Hover & Focus styles
-                        'group-hover:translate-x-[4px] group-hover:translate-y-[-4px] group-hover:opacity-100',
-                        'group-focus-visible:translate-x-[4px] group-focus-visible:translate-y-[-4px] group-focus-visible:opacity-100',
-                        active &&
-                            'translate-x-[4px] translate-y-[-4px] opacity-100',
+                        'size-5 stroke-[1.5] transition-transform duration-300 sm:size-6',
+                        'group-hover:translate-x-0.5 group-hover:-translate-y-0.5',
+                        'group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5',
+                        active && 'translate-x-0.5 -translate-y-0.5',
                     )}
                 />
             </div>
@@ -402,20 +389,21 @@ function SandboxItem({
             <div
                 className={cn(
                     // Default styles
-                    'flex flex-wrap gap-2',
+                    'flex flex-wrap gap-2 pr-12',
                 )}
             >
                 {project.is_new == true && (
                     <span
                         className={cn(
                             // Default styles
-                            'border px-1.5 py-0.5 text-sm font-light',
-                            'transition-all duration-1000',
+                            'border border-primary bg-primary px-3.5 py-1.5 text-xs font-light text-primary-foreground sm:text-sm',
+                            'transition-all duration-500',
 
                             // Hover & Focus styles
-                            'border-primary group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
-                            'text-primary-foreground group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
-                            'bg-primary group-hover:bg-transparent group-focus-visible:bg-transparent',
+                            'group-hover:border-primary-foreground group-hover:bg-primary-foreground group-hover:text-primary',
+                            'group-focus-visible:border-primary-foreground group-focus-visible:bg-primary-foreground group-focus-visible:text-primary',
+                            active &&
+                                'border-primary-foreground bg-primary-foreground text-primary',
                         )}
                     >
                         {__('landing.projects.sections.new', 'New')}
@@ -428,11 +416,14 @@ function SandboxItem({
                             key={`sandbox-${project.id}-tag-${index}`}
                             className={cn(
                                 // Default styles
-                                'border px-1.5 py-0.5 text-sm font-light',
-                                'transition-all duration-1000',
+                                'border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light text-foreground sm:text-sm',
+                                'transition-all duration-500',
 
                                 // Hover & Focus styles
-                                'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
+                                'group-hover:border-primary-foreground/30 group-hover:bg-primary-foreground/10 group-hover:text-primary-foreground',
+                                'group-focus-visible:border-primary-foreground/30 group-focus-visible:bg-primary-foreground/10 group-focus-visible:text-primary-foreground',
+                                active &&
+                                    'border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground',
                             )}
                         >
                             {tag.name}
@@ -444,22 +435,24 @@ function SandboxItem({
             <h3
                 className={cn(
                     // Default styles
-                    'font-medium',
-
+                    'font-medium tracking-tight transition-colors duration-500',
                     'text-lg',
+                    'group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
                 )}
             >
                 {project.title}
             </h3>
 
             {/* Description */}
-            <p>{project.subtitle}</p>
+            <p className="text-sm leading-relaxed font-light text-muted-foreground transition-colors duration-500 group-hover:text-primary-foreground/90 group-focus-visible:text-primary-foreground/90 sm:text-base">
+                {project.subtitle}
+            </p>
 
-            <Separator className="mt-2 bg-foreground transition-all duration-1000 group-hover:bg-primary-foreground group-focus-visible:bg-primary-foreground" />
+            <Separator className="mt-2 bg-muted-foreground transition-all duration-500 group-hover:bg-primary-foreground group-focus-visible:bg-primary-foreground" />
 
             {/* Date */}
             {project.end_date ? (
-                <time>
+                <time className="text-xs font-light text-muted-foreground transition-colors duration-500 group-hover:text-primary-foreground/80 group-focus-visible:text-primary-foreground/80 sm:text-sm">
                     {new Date(project.end_date).toLocaleDateString(undefined, {
                         year: 'numeric',
                         month: 'numeric',
@@ -470,11 +463,14 @@ function SandboxItem({
                 <span
                     className={cn(
                         // Default styles
-                        'w-max border px-1.5 py-0.5 text-sm font-light',
-                        'transition-all duration-1000',
+                        'w-max border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light text-foreground sm:text-sm',
+                        'transition-all duration-500',
 
                         // Hover & Focus styles
-                        'border-foreground group-hover:border-primary-foreground group-focus-visible:border-primary-foreground',
+                        'group-hover:border-primary-foreground/30 group-hover:bg-primary-foreground/10 group-hover:text-primary-foreground',
+                        'group-focus-visible:border-primary-foreground/30 group-focus-visible:bg-primary-foreground/10 group-focus-visible:text-primary-foreground',
+                        active &&
+                            'border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground',
                     )}
                 >
                     {__('landing.projects.sections.ongoing', 'Ongoing')}
@@ -663,7 +659,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                                 {Boolean(
                                                     displayItem.is_new,
                                                 ) && (
-                                                    <span className="border border-primary px-2 py-0.5 text-xs font-light tracking-wide text-primary uppercase">
+                                                    <span className="border border-primary bg-primary px-3.5 py-1.5 text-xs font-light tracking-wide text-primary-foreground uppercase sm:text-sm">
                                                         {__(
                                                             'landing.projects.new',
                                                             'New',
@@ -674,7 +670,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                                     (tag) => (
                                                         <span
                                                             key={tag.id}
-                                                            className="border border-border bg-background px-2.5 py-0.5 text-xs font-light text-muted-foreground"
+                                                            className="border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light text-foreground sm:text-sm"
                                                         >
                                                             {tag.name}
                                                         </span>
@@ -809,7 +805,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                                                     .map((tech, techIdx) => (
                                                         <span
                                                             key={`dialog-stack-${techIdx}`}
-                                                            className="border border-border bg-card px-3 py-1.5 text-xs font-light text-foreground sm:text-sm"
+                                                            className="border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light text-foreground sm:text-sm"
                                                         >
                                                             {tech.name}
                                                         </span>
