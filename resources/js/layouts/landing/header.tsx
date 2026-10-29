@@ -11,6 +11,9 @@ import UnderlineLink from '@/components/landing/underline-link';
 // Translation
 import { useTrans } from '@/lib/translation';
 
+// Contexts
+import { useLandingContext } from '@/contexts/use-landing-context';
+
 // Types
 import { SharedData } from '@/types';
 
@@ -27,8 +30,8 @@ export default function Header({
     handleMenuToggle,
     navigateToPage,
 }: HeaderProps) {
+    const { isHeaderVisible } = useLandingContext();
     const [scrollY, setScrollY] = useState(0);
-    const [showMenu, setShowMenu] = useState(true);
 
     const __ = useTrans();
 
@@ -42,29 +45,16 @@ export default function Header({
     }
 
     useEffect(() => {
-        let lastScrollY = 0;
-
         const handleScroll = () => {
-            const currentScrollY = window.scrollY;
-
-            if (currentScrollY > lastScrollY + 20) {
-                // Down
-                setShowMenu(false);
-            } else if (currentScrollY < lastScrollY - 10) {
-                // Up
-                setShowMenu(true);
-            }
-
-            setScrollY(currentScrollY);
-            lastScrollY = currentScrollY;
+            setScrollY(window.scrollY);
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [setShowMenu]);
+    }, []);
 
     const currentUrl = usePage().url.split('#')[0];
     const homePath = new URL(route('home')).pathname;
@@ -76,8 +66,8 @@ export default function Header({
         <header
             className={cn(
                 // Default styles
-                'sticky top-0 right-0 left-0 z-10 grid w-full',
-                'transition-all duration-1000',
+                'sticky top-0 right-0 left-0 z-30 grid w-full',
+                'transition-transform duration-500 ease-out',
                 'border-b border-transparent',
 
                 // Responsive styles
@@ -85,10 +75,9 @@ export default function Header({
                 'grid-cols-2 md:grid-cols-3',
                 'h-[73px] lg:h-[105px]',
 
-                // Conditional styles based on showContent & showMenu state
-
-                (!showContent || (showContent && !showMenu)) &&
-                    'translate-y-[-100%] duration-500',
+                // Conditional styles based on showContent & isHeaderVisible state
+                (!showContent || (showContent && !isHeaderVisible)) &&
+                    '-translate-y-full',
 
                 scrollY > 50 &&
                     'border-border bg-background/50 !backdrop-blur-lg',

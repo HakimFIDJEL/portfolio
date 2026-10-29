@@ -54,7 +54,11 @@ export default function Curtain({
         !show && closeDuration !== undefined ? closeDuration : duration;
 
     return (
-        <div ref={ref} className={cn('relative', className)}>
+        <div
+            ref={ref}
+            className={cn('relative', className)}
+            style={{ clipPath: 'inset(0 -100vmax -100vmax -100vmax)' }}
+        >
             <div
                 ref={contentRef}
                 className={cn(
@@ -67,7 +71,6 @@ export default function Curtain({
                     transitionDuration: `${currentDuration}ms`,
                     transitionDelay: isInView ? `${delay}ms` : '0ms',
                 }}
-
             >
                 {children}
             </div>

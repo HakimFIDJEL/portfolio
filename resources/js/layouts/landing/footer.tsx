@@ -55,6 +55,13 @@ export default function Footer({ appear }: FooterProps) {
                 },
                 {
                     label: __(
+                        'landing.layout.footer.links.sitemap.items.services',
+                        'Services',
+                    ),
+                    href: '#services',
+                },
+                {
+                    label: __(
                         'landing.layout.footer.links.sitemap.items.projects',
                         'Projects',
                     ),

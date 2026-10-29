@@ -14,6 +14,7 @@ import Contact from '@/components/landing/sections/contact';
 import Hero from '@/components/landing/sections/hero';
 import Projects from '@/components/landing/sections/projects';
 import Sandbox from '@/components/landing/sections/sandbox';
+import Services from '@/components/landing/sections/services';
 
 // Context
 import { useLandingContext } from '@/contexts/use-landing-context';
@@ -134,6 +135,7 @@ export default function Landing({
                     educations={educations}
                     experiences={experiences}
                 />
+                <Services appear={contentActive} />
                 <Projects appear={contentActive} projects={projects} />
                 <Sandbox appear={contentActive} projects={sandbox} />
                 <Contact appear={contentActive} contacts={contacts} />

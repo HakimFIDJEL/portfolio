@@ -43,7 +43,7 @@ function AppLandingContent({ children }: AppLandingProps) {
         <>
             <div
                 className={cn(
-                    'landing transition-default relative z-1 mx-auto min-h-screen w-[90%] max-w-7xl bg-background antialiased',
+                    'landing transition-default relative z-1 mx-auto min-h-screen w-full max-w-7xl overflow-x-hidden bg-background antialiased sm:w-[90%] sm:overflow-x-visible',
                 )}
             >
                 <Loader

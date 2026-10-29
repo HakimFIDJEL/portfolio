@@ -326,19 +326,13 @@ class BackofficeSeeder extends Seeder
                 'description_fr' => 'Obtention du Cambridge First Certificate en 2020, validant ma maîtrise de l\'anglais au niveau B2. Cette certification reflète ma capacité à communiquer efficacement dans des environnements professionnels et académiques.',
                 'description_en' => 'Earned the Cambridge First Certificate in 2020, validating my English proficiency at a B2 level. This certification reflects my ability to communicate effectively in professional and academic environments.',
             ],
-            [
-                'sort_order' => 5,
-                'institution' => 'Lycée Auguste Angellier',
-                'type_fr' => 'École',
-                'type_en' => 'School',
-                'duration' => '09/18 - 07/21',
-                'description_fr' => 'J\'ai effectué mes études secondaires au Lycée Auguste Angellier, obtenant un Baccalauréat Scientifique en 2021. Cette base solide en mathématiques et sciences a suscité ma passion pour la technologie et la résolution de problèmes.',
-                'description_en' => 'I completed my high school studies at Lycée Auguste Angellier, earning a Scientific Baccalaureate in 2021. This solid foundation in mathematics and sciences sparked my passion for technology and problem-solving.',
-            ],
         ];
 
+        $activeInstitutions = array_column($mockEducations, 'institution');
+        Education::whereNotIn('institution', $activeInstitutions)->delete();
+
         foreach ($mockEducations as $edu) {
-            Education::firstOrCreate(
+            Education::updateOrCreate(
                 ['institution' => $edu['institution'], 'type_fr' => $edu['type_fr']],
                 $edu
             );
