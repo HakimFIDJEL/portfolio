@@ -295,7 +295,7 @@ export default function Sandbox({
                                 className="w-full"
                                 delay={250}
                             >
-                                <Magnet magnetStrength={5} padding={10}>
+                                <Magnet magnetStrength={16} padding={10}>
                                     <SandboxItem
                                         project={item}
                                         active={selectedProject?.id === item.id}
@@ -364,23 +364,19 @@ function SandboxItem({
             onClick={handleClick}
             aria-label={__('landing.seo.open_dialog', 'Open dialog')}
         >
-            {/* Top-right corner arrow with localized backdrop-blur */}
+            {/* Top-right corner arrow with localized backdrop-blur and slide-up opacity transition */}
             <div
                 className={cn(
                     'pointer-events-none absolute top-3 right-3 z-10 sm:top-4 sm:right-4',
-                    'flex size-8 items-center justify-center backdrop-blur-sm sm:size-9',
-                    'text-primary-foreground opacity-0 transition-all duration-300',
-                    'group-hover:opacity-100 group-focus-visible:opacity-100',
-                    active && 'opacity-100',
+                    'flex size-10 items-center justify-center backdrop-blur-sm sm:size-11',
+                    'translate-y-2.5 text-primary-foreground opacity-0 transition-all duration-300 ease-out',
+                    'group-hover:translate-y-0 group-hover:opacity-100',
+                    'group-focus-visible:translate-y-0 group-focus-visible:opacity-100',
+                    active && 'translate-y-0 opacity-100',
                 )}
             >
                 <ArrowUpRight
-                    className={cn(
-                        'size-5 stroke-[1.5] transition-transform duration-300 sm:size-6',
-                        'group-hover:translate-x-0.5 group-hover:-translate-y-0.5',
-                        'group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5',
-                        active && 'translate-x-0.5 -translate-y-0.5',
-                    )}
+                    className={cn('size-7 stroke-[1.25] sm:size-8')}
                 />
             </div>
 
@@ -388,7 +384,7 @@ function SandboxItem({
             <div
                 className={cn(
                     // Default styles
-                    'flex flex-wrap gap-1.5 pr-10 sm:gap-2 sm:pr-12',
+                    'flex flex-wrap gap-1.5 pr-12 sm:gap-2 sm:pr-14',
                 )}
             >
                 {project.is_new == true && (
