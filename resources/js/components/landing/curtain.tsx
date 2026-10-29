@@ -53,11 +53,28 @@ export default function Curtain({
     const currentDuration =
         !show && closeDuration !== undefined ? closeDuration : duration;
 
+    const [isCompleted, setIsCompleted] = React.useState(false);
+
+    React.useEffect(() => {
+        if (isInView && show) {
+            const timer = setTimeout(() => {
+                setIsCompleted(true);
+            }, delay + currentDuration);
+            return () => clearTimeout(timer);
+        } else {
+            setIsCompleted(false);
+        }
+    }, [isInView, show, delay, currentDuration]);
+
     return (
         <div
             ref={ref}
             className={cn('relative', className)}
-            style={{ clipPath: 'inset(0 -100vmax -100vmax -100vmax)' }}
+            style={
+                isCompleted
+                    ? undefined
+                    : { clipPath: 'inset(0 -100vmax -100vmax -100vmax)' }
+            }
         >
             <div
                 ref={contentRef}
@@ -83,6 +100,7 @@ export default function Curtain({
                         ? 'top-0 bottom-full'
                         : 'top-[-55%] bottom-0',
                     background ? `bg-${background}` : 'bg-card',
+                    isCompleted && 'pointer-events-none hidden',
                 )}
                 style={{
                     transitionDuration: `${currentDuration}ms`,
