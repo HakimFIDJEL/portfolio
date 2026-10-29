@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { useAppearance } from '@/hooks/use-appearance';
 
 // Components
-import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import FadeIn from '@/components/landing/fade-in';
 import LanguageToggle from '@/components/landing/language-toggle';
@@ -88,12 +87,7 @@ export default function Hero({ appear, project }: HeroProps) {
                         'gap-4',
                     )}
                 >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={0}
-                        className="w-full"
-                    >
+                    <FadeIn show={appear} delay={0} className="w-full">
                         <h1
                             className={cn(
                                 // Default styles
@@ -103,7 +97,7 @@ export default function Hero({ appear, project }: HeroProps) {
                         >
                             {project.title}
                         </h1>
-                    </Curtain>
+                    </FadeIn>
 
                     <div
                         className={cn(
@@ -117,11 +111,7 @@ export default function Hero({ appear, project }: HeroProps) {
                             'gap-4 md:gap-4 lg:gap-0',
                         )}
                     >
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={0}
-                        >
+                        <FadeIn className="w-auto" show={appear} delay={0}>
                             <h2
                                 className={cn(
                                     // Default styles
@@ -136,12 +126,8 @@ export default function Hero({ appear, project }: HeroProps) {
                             >
                                 {__('landing.projects.hero.h2', 'Project')}
                             </h2>
-                        </Curtain>
-                        <Curtain
-                            showCurtain={!appear}
-                            background="background"
-                            delay={0}
-                        >
+                        </FadeIn>
+                        <FadeIn className="w-auto" show={appear} delay={0}>
                             <div
                                 className={cn(
                                     // Default styles
@@ -214,7 +200,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                           )}
                                 </span>
                             </div>
-                        </Curtain>
+                        </FadeIn>
                     </div>
                 </Delimiter>
 
@@ -258,9 +244,9 @@ export default function Hero({ appear, project }: HeroProps) {
                                 'flex flex-wrap items-center gap-5',
                             )}
                         >
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
+                            <FadeIn
+                                className="w-auto"
+                                show={appear}
                                 delay={500}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
@@ -282,10 +268,10 @@ export default function Hero({ appear, project }: HeroProps) {
                                         <Code2 className="stroke-1" />
                                     </RoundedButton>
                                 </Magnet>
-                            </Curtain>
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
+                            </FadeIn>
+                            <FadeIn
+                                className="w-auto"
+                                show={appear}
                                 delay={750}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
@@ -306,7 +292,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                         <SquareArrowOutUpRight className="stroke-1" />
                                     </RoundedButton>
                                 </Magnet>
-                            </Curtain>
+                            </FadeIn>
                         </div>
                         <div
                             className={cn(
@@ -314,9 +300,9 @@ export default function Hero({ appear, project }: HeroProps) {
                                 'flex flex-wrap items-center gap-5',
                             )}
                         >
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
+                            <FadeIn
+                                className="w-auto"
+                                show={appear}
                                 delay={1000}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
@@ -338,17 +324,17 @@ export default function Hero({ appear, project }: HeroProps) {
                                         )}
                                     </RoundedButton>
                                 </Magnet>
-                            </Curtain>
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
+                            </FadeIn>
+                            <FadeIn
+                                className="w-auto"
+                                show={appear}
                                 delay={1250}
                             >
                                 <LanguageToggle />
-                            </Curtain>
-                            <Curtain
-                                showCurtain={!appear}
-                                background="background"
+                            </FadeIn>
+                            <FadeIn
+                                className="w-auto"
+                                show={appear}
                                 delay={1500}
                             >
                                 <Magnet magnetStrength={3} padding={20}>
@@ -362,7 +348,7 @@ export default function Hero({ appear, project }: HeroProps) {
                                         <ArrowDown className="stroke-1" />
                                     </RoundedButton>
                                 </Magnet>
-                            </Curtain>
+                            </FadeIn>
                         </div>
                     </div>
                 </div>

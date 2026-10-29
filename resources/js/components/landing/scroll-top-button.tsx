@@ -44,7 +44,7 @@ export default function ScrollTopButton({ appear }: ScrollTopButtonProps) {
         <div
             className={cn(
                 // Default styles
-                'pointer-events-none fixed bottom-8 z-10 mx-auto flex w-[90%] max-w-7xl justify-end',
+                'pointer-events-none fixed bottom-8 z-10 mx-auto flex w-full max-w-7xl justify-end sm:w-[90%]',
             )}
         >
             <Magnet

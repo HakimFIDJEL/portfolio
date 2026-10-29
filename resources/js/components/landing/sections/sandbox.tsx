@@ -2,6 +2,7 @@
 
 // Necessary imports
 import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
 
 // UI Components
@@ -10,7 +11,6 @@ import { Separator } from '@/components/ui/separator';
 
 // Components
 import Carousel from '@/components/landing/carousel';
-import Curtain from '@/components/landing/curtain';
 import Delimiter from '@/components/landing/delimiter';
 import FadeIn from '@/components/landing/fade-in';
 import RoundedButton from '@/components/landing/rounded-button';
@@ -38,7 +38,8 @@ export default function Sandbox({
     appear: boolean;
     projects: Project[];
 }) {
-    const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+    const [selectedProject, setSelectedProject] =
+        React.useState<Project | null>(null);
     const __ = useTrans();
 
     const [cols, setCols] = React.useState(3);
@@ -68,15 +69,6 @@ export default function Sandbox({
             const columnIndex = index % cols;
             columns[columnIndex].push(item);
         });
-
-    function handleClick(index: number | null) {
-        if (activeIndex === index) {
-            setActiveIndex(null);
-            return;
-        }
-
-        setActiveIndex(index);
-    }
 
     return (
         <section
@@ -119,12 +111,7 @@ export default function Sandbox({
                         'gap-4 sm:gap-8',
                     )}
                 >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        className="w-full"
-                        delay={0}
-                    >
+                    <FadeIn show={appear} className="w-full" delay={0}>
                         <h2
                             className={cn(
                                 // Default styles
@@ -135,14 +122,9 @@ export default function Sandbox({
                         >
                             {__('landing.landing.sandbox.h2', 'The Sand Box')}
                         </h2>
-                    </Curtain>
+                    </FadeIn>
 
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        className="w-full"
-                        delay={250}
-                    >
+                    <FadeIn show={appear} className="w-full" delay={250}>
                         <p
                             className={cn(
                                 // Default styles
@@ -161,13 +143,9 @@ export default function Sandbox({
                                 'small projects here.',
                             )}
                         </p>
-                    </Curtain>
+                    </FadeIn>
 
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={500}
-                    >
+                    <FadeIn className="w-auto" show={appear} delay={500}>
                         <UnderlineLink
                             aria_label={__(
                                 'landing.seo.scroll_to_section',
@@ -191,7 +169,7 @@ export default function Sandbox({
                                 className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
                             />
                         </UnderlineLink>
-                    </Curtain>
+                    </FadeIn>
                 </div>
             </div>
 
@@ -223,12 +201,7 @@ export default function Sandbox({
                         'gap-4 sm:gap-8',
                     )}
                 >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        className="w-full"
-                        delay={0}
-                    >
+                    <FadeIn show={appear} className="w-full" delay={0}>
                         <h2
                             className={cn(
                                 // Default styles
@@ -239,14 +212,9 @@ export default function Sandbox({
                         >
                             {__('landing.landing.sandbox.h2', 'The Sand Box')}
                         </h2>
-                    </Curtain>
+                    </FadeIn>
 
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        className="w-full"
-                        delay={250}
-                    >
+                    <FadeIn show={appear} className="w-full" delay={250}>
                         <p
                             className={cn(
                                 // Default styles
@@ -265,13 +233,9 @@ export default function Sandbox({
                                 'small projects here.',
                             )}
                         </p>
-                    </Curtain>
+                    </FadeIn>
 
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={500}
-                    >
+                    <FadeIn className="w-auto" show={appear} delay={500}>
                         <UnderlineLink
                             aria_label={__(
                                 'landing.seo.scroll_to_section',
@@ -295,7 +259,7 @@ export default function Sandbox({
                                 className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
                             />
                         </UnderlineLink>
-                    </Curtain>
+                    </FadeIn>
                 </Delimiter>
             </div>
 
@@ -324,27 +288,25 @@ export default function Sandbox({
                         key={`column-${colIndex}`}
                         className={cn('flex flex-col gap-4 md:gap-8', 'w-full')}
                     >
-                        {columnItems.map((item: Project, itemIndex) => (
+                        {columnItems.map((item: Project) => (
                             <FadeIn
                                 show={appear}
                                 key={item.id}
                                 className="w-full"
-                                // Ajuster le délai pour la séquence dans la colonne
                                 delay={250}
                             >
                                 <Magnet magnetStrength={5} padding={10}>
                                     <SandboxItem
                                         project={item}
-                                        active={
-                                            activeIndex ===
-                                            colIndex + itemIndex * cols
-                                        }
+                                        active={selectedProject?.id === item.id}
                                         handleClick={() =>
-                                            handleClick(
-                                                colIndex + itemIndex * cols,
+                                            setSelectedProject((prev) =>
+                                                prev?.id === item.id
+                                                    ? null
+                                                    : item,
                                             )
                                         }
-                                        dialog_open={activeIndex !== null}
+                                        dialog_open={selectedProject !== null}
                                     />
                                 </Magnet>
                             </FadeIn>
@@ -355,8 +317,8 @@ export default function Sandbox({
 
             {/* Dialog */}
             <SandboxDialog
-                item={projects[activeIndex ?? -1] || null}
-                handleClose={() => handleClick(null)}
+                item={selectedProject}
+                handleClose={() => setSelectedProject(null)}
             />
         </section>
     );
@@ -527,454 +489,415 @@ interface SandboxDialogProps {
     handleClose: () => void;
 }
 
+function cleanHtml(html: string | null | undefined): string {
+    if (!html) return '';
+    return html
+        .replace(/<li>\s*(?:<p>(?:&nbsp;|\s|<br\s*\/?>)*<\/p>)?\s*<\/li>/gi, '')
+        .replace(/<p>(?:&nbsp;|\s|<br\s*\/?>)*<\/p>/gi, '')
+        .trim();
+}
+
+function hasContent(html: string | null | undefined): boolean {
+    if (!html) return false;
+    const textOnly = html
+        .replace(/<[^>]*>/g, '')
+        .replace(/&nbsp;/g, ' ')
+        .trim();
+    return textOnly.length > 0;
+}
+
 function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
-    const [open, setOpen] = React.useState<boolean>(false);
-    const [isFullyClosed, setIsFullyClosed] = React.useState<boolean>(true);
     const __ = useTrans();
+    const contentRef = React.useRef<HTMLDivElement>(null);
+    const [canScrollTop, setCanScrollTop] = React.useState(false);
+    const [canScrollBottom, setCanScrollBottom] = React.useState(false);
+    const [isScrolled, setIsScrolled] = React.useState(false);
+
+    const handleScroll = React.useCallback(() => {
+        const el = contentRef.current;
+        if (!el) return;
+
+        const scrollTop = el.scrollTop;
+        const scrollBottom = el.scrollHeight - scrollTop - el.clientHeight;
+
+        setCanScrollTop(scrollTop > 6);
+        setCanScrollBottom(scrollBottom > 6);
+        setIsScrolled(scrollTop > 10);
+    }, []);
 
     React.useEffect(() => {
-        if (item) {
-            setOpen(true);
-            setIsFullyClosed(false);
-        } else {
-            setOpen(false);
+        if (!item) return;
+
+        const originalOverflow = document.body.style.overflow;
+        const scrollbarWidth =
+            window.innerWidth - document.documentElement.clientWidth;
+        document.body.style.overflow = 'hidden';
+        if (scrollbarWidth > 0) {
+            document.body.style.paddingRight = `${scrollbarWidth}px`;
         }
-    }, [item]);
 
-    React.useEffect(() => {
-        let timeoutId: NodeJS.Timeout;
-
-        if (!open && !isFullyClosed) {
-            timeoutId = setTimeout(() => {
-                handleClose();
-                setIsFullyClosed(true);
-            }, 500);
-        }
-
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    }, [open, isFullyClosed, handleClose]);
-
-    React.useEffect(() => {
-        function handleKeyDown(event: KeyboardEvent) {
+        const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
-                setOpen(false);
+                handleClose();
             }
-        }
+        };
 
         window.addEventListener('keydown', handleKeyDown);
 
         return () => {
+            document.body.style.overflow = originalOverflow;
+            document.body.style.paddingRight = '';
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, []);
+    }, [item, handleClose]);
+
+    React.useEffect(() => {
+        if (!item) return;
+
+        handleScroll();
+        const timer = setTimeout(handleScroll, 100);
+        const resizeObserver = new ResizeObserver(() => handleScroll());
+        if (contentRef.current) {
+            resizeObserver.observe(contentRef.current);
+        }
+
+        return () => {
+            clearTimeout(timer);
+            resizeObserver.disconnect();
+        };
+    }, [item, handleScroll]);
+
+    const activeItemRef = React.useRef(item);
+    if (item) {
+        activeItemRef.current = item;
+    }
+    const displayItem = item || activeItemRef.current;
+
+    const cleanedDescription = cleanHtml(displayItem?.description);
+    const cleanedFeedback = cleanHtml(displayItem?.feedback);
+    const cleanedWhatILearned = cleanHtml(displayItem?.what_i_learned);
+
+    const hasDescription = hasContent(cleanedDescription);
+    const hasFeedback = hasContent(cleanedFeedback);
+    const hasWhatILearned = hasContent(cleanedWhatILearned);
+    const hasTags =
+        Boolean(displayItem?.is_new) ||
+        Boolean(displayItem?.tags && displayItem.tags.length > 0);
+
+    const portfolioEase = [0.25, 0.38, 0, 0.99] as const;
 
     return (
-        <div
-            className={cn(
-                // Default styles
-                'fixed inset-0 z-40 flex cursor-pointer items-center justify-center bg-background/50 backdrop-blur-md',
+        <AnimatePresence>
+            {item && displayItem && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-6 md:p-10">
+                    {/* Backdrop */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{
+                            opacity: 1,
+                            transition: {
+                                duration: 0.8,
+                                ease: portfolioEase,
+                            },
+                        }}
+                        exit={{
+                            opacity: 0,
+                            transition: {
+                                duration: 0.6,
+                                ease: portfolioEase,
+                            },
+                        }}
+                        className="fixed inset-0 cursor-pointer bg-background/80 backdrop-blur-xs"
+                        onClick={handleClose}
+                    />
 
-                // Transition
-                'transition-opacity duration-1000',
-
-                // Visibility
-                open
-                    ? 'pointer-events-auto opacity-100'
-                    : 'pointer-events-none opacity-0 delay-250',
-            )}
-            onClick={() => setOpen(false)}
-        >
-            <aside
-                className={cn(
-                    // Default styles
-                    'fixed inset-0 z-50 mx-auto my-auto border-4 bg-card',
-                    'cursor-auto overflow-auto',
-                    'transition-all focus-visible:outline-4 focus-visible:outline-primary',
-
-                    // Transition
-                    'translate-y-0 opacity-100 transition-all delay-250 duration-1000',
-                    !open &&
-                        'translate-y-[50%] opacity-0 delay-0 duration-1000',
-
-                    // Responsive styles
-                    'sm:h-[90vh] sm:max-h-[750px] sm:w-[90%] sm:max-w-6xl',
-                    'h-full w-full',
-                )}
-                onClick={(e) => e.stopPropagation()}
-                tabIndex={-1}
-            >
-                {/* Header */}
-                <div
-                    className={cn(
-                        // Default styles
-                        'sticky top-0 z-1',
-                        'flex',
-                        'border-b border-border bg-card',
-
-                        // Responsive styles
-                        'px-6 sm:px-8 md:px-16',
-                        'py-10 sm:py-6 md:py-6 lg:py-6',
-
-                        'sm:flex-row sm:items-start sm:justify-between sm:gap-6',
-                        'flex-col-reverse items-start justify-center gap-4',
-                    )}
-                >
-                    {/* Text */}
-                    <div
-                        className={cn(
-                            // Default styles
-                            'flex flex-col gap-1',
-                        )}
+                    {/* Dialog Window */}
+                    <motion.aside
+                        role="dialog"
+                        aria-modal="true"
+                        initial={{ opacity: 0, y: 60 }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                                duration: 0.9,
+                                ease: portfolioEase,
+                            },
+                        }}
+                        exit={{
+                            opacity: 0,
+                            y: 40,
+                            scale: 0.98,
+                            transition: {
+                                duration: 0.6,
+                                ease: portfolioEase,
+                            },
+                        }}
+                        className="relative z-10 flex h-full w-full max-w-5xl flex-col overflow-hidden border-0 bg-background sm:h-[88vh] sm:max-h-[820px] sm:border sm:border-border"
+                        onClick={(e: React.MouseEvent) => e.stopPropagation()}
                     >
-                        {/* Title */}
-                        <h3
+                        {/* Header */}
+                        <div
                             className={cn(
-                                // Default styles
-                                'text-xl font-medium',
+                                'flex shrink-0 flex-col-reverse gap-3 border-b border-border bg-card px-6 transition-all duration-200 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-8 md:px-12',
+                                isScrolled ? 'py-3 sm:py-3.5' : 'py-4 sm:py-5',
                             )}
                         >
-                            {item?.title}
-                        </h3>
-
-                        {/* Subtitle */}
-                        <p>{item?.subtitle}</p>
-                    </div>
-
-                    {/* Buttons */}
-                    <div
-                        className={cn(
-                            // Default styles
-                            'flex items-center gap-4',
-                        )}
-                    >
-                        {/* Code source */}
-                        <RoundedButton
-                            href={item?.source_code_url || undefined}
-                            target="_blank"
-                            disabled={!item?.source_code_url}
-                            aria_label={__(
-                                'landing.seo.view_source_code',
-                                'View source code',
-                            )}
-                            className="p-2.5"
-                            tabIndex={
-                                open && item && item.source_code_url ? 0 : -1
-                            }
-                        >
-                            <Code2 />
-                        </RoundedButton>
-
-                        {/* Live demo */}
-                        <RoundedButton
-                            href={item?.live_demo_url || undefined}
-                            target="_blank"
-                            disabled={!item?.live_demo_url}
-                            aria_label={__(
-                                'landing.seo.view_live_demo',
-                                'View live demo',
-                            )}
-                            className="p-2.5"
-                            tabIndex={
-                                open && item && item.live_demo_url ? 0 : -1
-                            }
-                        >
-                            <SquareArrowOutUpRight />
-                        </RoundedButton>
-
-                        {/* Code source */}
-                        <RoundedButton
-                            onClick={() => setOpen(false)}
-                            aria_label={__(
-                                'landing.seo.close_dialog',
-                                'Close dialog',
-                            )}
-                            className="p-2.5"
-                            tabIndex={open ? 0 : -1}
-                        >
-                            <X />
-                        </RoundedButton>
-                    </div>
-                </div>
-
-                {/* Content */}
-                <div
-                    className={cn(
-                        // Default styles
-                        'flex flex-col',
-
-                        // Responsive styles
-                        'px-6 sm:px-8 md:px-16',
-                        'py-4 sm:py-6 md:py-8 lg:py-10',
-
-                        // Responsive styles
-                        'gap-6 sm:gap-10',
-                    )}
-                >
-                    {/* Tech Stack */}
-                    {item?.stack_items && item?.stack_items.length > 0 && (
-                        <FadeIn show={open} className="w-full" delay={250}>
-                            <div
-                                className={cn(
-                                    // Default styles
-                                    'flex items-start justify-between',
-
-                                    // Responsive styles
-                                    'flex-col gap-4 sm:flex-row sm:gap-0',
-                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
-                                )}
-                            >
-                                <div
-                                    className={cn(
-                                        // Default styles
-                                        'flex shrink-0 flex-col',
-
-                                        'sm:w-[25%]',
-                                    )}
-                                >
-                                    <h4
-                                        className={cn(
-                                            // Default styles
-                                            'font-medium',
-                                            'text-xl',
-                                        )}
-                                    >
-                                        {__(
-                                            'landing.projects.sections.tech_stack',
-                                            'Tech Stack',
-                                        )}
-                                    </h4>
-                                </div>
-                                <div
-                                    className={cn(
-                                        // Default styles
-                                        'flex flex-wrap gap-2.5 sm:w-[65%]',
-                                    )}
-                                >
-                                    {item.stack_items
-                                        .sort(
-                                            (a, b) =>
-                                                a.sort_order - b.sort_order,
-                                        )
-                                        .map((tech, techIdx) => (
-                                            <span
-                                                key={`stack-${techIdx}`}
-                                                className={cn(
-                                                    // Default styles
-                                                    'border border-primary px-2.5 py-1 font-light',
+                            <div className="flex min-w-0 flex-col">
+                                <AnimatePresence initial={false}>
+                                    {!isScrolled && hasTags && (
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{
+                                                opacity: 1,
+                                                height: 'auto',
+                                            }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            transition={{
+                                                duration: 0.25,
+                                                ease: portfolioEase,
+                                            }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="flex flex-wrap items-center gap-2 pb-1.5">
+                                                {Boolean(
+                                                    displayItem.is_new,
+                                                ) && (
+                                                    <span className="border border-primary px-2 py-0.5 text-xs font-light tracking-wide text-primary uppercase">
+                                                        {__(
+                                                            'landing.projects.new',
+                                                            'New',
+                                                        )}
+                                                    </span>
                                                 )}
-                                            >
-                                                {tech.name}
-                                            </span>
-                                        ))}
-                                </div>
-                            </div>
-                        </FadeIn>
-                    )}
-
-                    {/* Description */}
-                    {item?.description && item?.description != '' && (
-                        <FadeIn show={open} className="w-full" delay={250}>
-                            <div
-                                className={cn(
-                                    // Default styles
-                                    'flex items-start justify-between',
-
-                                    // Responsive styles
-                                    'flex-col gap-4 sm:flex-row sm:gap-0',
-                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
-                                )}
-                            >
-                                <div
-                                    className={cn(
-                                        // Default styles
-                                        'flex shrink-0 flex-col',
-
-                                        'sm:w-[25%]',
+                                                {displayItem.tags?.map(
+                                                    (tag) => (
+                                                        <span
+                                                            key={tag.id}
+                                                            className="border border-border bg-background px-2.5 py-0.5 text-xs font-light text-muted-foreground"
+                                                        >
+                                                            {tag.name}
+                                                        </span>
+                                                    ),
+                                                )}
+                                            </div>
+                                        </motion.div>
                                     )}
-                                >
-                                    <h4
-                                        className={cn(
-                                            // Default styles
-                                            'font-medium',
-                                            'text-xl',
+                                </AnimatePresence>
+
+                                <h3 className="text-xl font-medium tracking-tight text-foreground transition-all duration-200 sm:text-2xl">
+                                    {displayItem.title}
+                                </h3>
+
+                                <AnimatePresence initial={false}>
+                                    {!isScrolled && displayItem.subtitle && (
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{
+                                                opacity: 1,
+                                                height: 'auto',
+                                            }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            transition={{
+                                                duration: 0.25,
+                                                ease: portfolioEase,
+                                            }}
+                                            className="overflow-hidden"
+                                        >
+                                            <p className="pt-1 text-sm font-light text-muted-foreground sm:text-base">
+                                                {displayItem.subtitle}
+                                            </p>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+
+                            {/* Magnetic Action Buttons */}
+                            <div className="flex shrink-0 items-center gap-3 self-start sm:self-center">
+                                {displayItem.source_code_url && (
+                                    <Magnet magnetStrength={3} padding={20}>
+                                        <RoundedButton
+                                            href={displayItem.source_code_url}
+                                            target="_blank"
+                                            aria_label={__(
+                                                'landing.seo.view_source_code',
+                                                'View source code',
+                                            )}
+                                        >
+                                            <Code2 className="stroke-1" />
+                                        </RoundedButton>
+                                    </Magnet>
+                                )}
+
+                                {displayItem.live_demo_url && (
+                                    <Magnet magnetStrength={3} padding={20}>
+                                        <RoundedButton
+                                            href={displayItem.live_demo_url}
+                                            target="_blank"
+                                            aria_label={__(
+                                                'landing.seo.view_live_demo',
+                                                'View live demo',
+                                            )}
+                                        >
+                                            <SquareArrowOutUpRight className="stroke-1" />
+                                        </RoundedButton>
+                                    </Magnet>
+                                )}
+
+                                <Magnet magnetStrength={3} padding={20}>
+                                    <RoundedButton
+                                        onClick={handleClose}
+                                        aria_label={__(
+                                            'landing.seo.close_dialog',
+                                            'Close dialog',
                                         )}
                                     >
-                                        {__(
-                                            'landing.projects.sections.description',
-                                            'Description',
-                                        )}
-                                    </h4>
-                                </div>
-                                <p
-                                    className={cn(
-                                        // Default styles
-                                        'font-light',
-                                        'text-base',
-                                        'shrink-0 sm:w-[65%]',
-
-                                        'flex flex-col gap-2',
-
-                                        '[&_ul]:space-y-4',
-                                        '[&_strong]:font-medium [&_strong]:text-foreground',
-                                        'text-foreground/70',
-                                    )}
-                                    dangerouslySetInnerHTML={{
-                                        __html: item.description,
-                                    }}
-                                ></p>
+                                        <X className="stroke-1" />
+                                    </RoundedButton>
+                                </Magnet>
                             </div>
-                        </FadeIn>
-                    )}
+                        </div>
 
-                    {/* Attachments */}
-                    {item?.attachments && item.attachments.length > 0 && (
-                        <FadeIn show={open} className="w-full" delay={250}>
+                        {/* Scrollable Area Wrapper with Floating Gradients */}
+                        <div className="relative flex min-h-0 flex-1 flex-col">
+                            {/* Top Gradient */}
                             <div
                                 className={cn(
-                                    // Default styles
-                                    'flex flex-col items-start',
-
-                                    // Responsive styles
-                                    'gap-4',
-                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
+                                    'pointer-events-none absolute top-0 right-0 left-0 z-10 h-8 bg-gradient-to-b from-background to-transparent transition-opacity duration-200',
+                                    canScrollTop ? 'opacity-100' : 'opacity-0',
                                 )}
+                            />
+
+                            {/* Scrollable Content Body */}
+                            <div
+                                ref={contentRef}
+                                onScroll={handleScroll}
+                                className="flex flex-1 flex-col gap-8 overflow-y-auto bg-background px-6 py-8 sm:gap-10 sm:px-8 md:px-12"
                             >
-                                <h4
-                                    className={cn(
-                                        // Default styles
-                                        'font-medium',
-                                        'text-xl',
+                                {/* Attachments */}
+                                {displayItem.attachments &&
+                                    displayItem.attachments.length > 0 && (
+                                        <div className="w-full">
+                                            <Carousel
+                                                attachments={
+                                                    displayItem.attachments
+                                                }
+                                                show_navigation={false}
+                                                show_pagination={true}
+                                                className="w-full overflow-hidden border border-border"
+                                            />
+                                        </div>
                                     )}
-                                >
-                                    {__(
-                                        'landing.projects.sections.attachments',
-                                        'Attachments',
-                                    )}
-                                </h4>
 
-                                <Carousel
-                                    attachments={item.attachments}
-                                    show_navigation={false}
-                                    show_pagination={true}
-                                    className="overflow-hidden"
-                                />
+                                {/* Tech Stack */}
+                                {displayItem.stack_items &&
+                                    displayItem.stack_items.length > 0 && (
+                                        <div className="flex flex-col gap-3">
+                                            <h4 className="text-lg font-medium text-foreground">
+                                                {__(
+                                                    'landing.projects.sections.tech_stack',
+                                                    'Tech Stack',
+                                                )}
+                                            </h4>
+                                            <div className="flex flex-wrap gap-2">
+                                                {displayItem.stack_items
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a.sort_order -
+                                                            b.sort_order,
+                                                    )
+                                                    .map((tech, techIdx) => (
+                                                        <span
+                                                            key={`dialog-stack-${techIdx}`}
+                                                            className="border border-border bg-card px-3 py-1.5 text-xs font-light text-foreground sm:text-sm"
+                                                        >
+                                                            {tech.name}
+                                                        </span>
+                                                    ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                {/* Description */}
+                                {hasDescription && (
+                                    <div className="flex flex-col gap-3">
+                                        <h4 className="text-lg font-medium text-foreground">
+                                            {__(
+                                                'landing.projects.sections.description',
+                                                'Description',
+                                            )}
+                                        </h4>
+                                        <div
+                                            className="flex flex-col gap-3 text-sm leading-relaxed font-light text-foreground/85 sm:text-base [&_a]:underline hover:[&_a]:text-primary [&_li:empty]:hidden [&_strong]:font-medium [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-1.5 [&_ul]:pl-5"
+                                            dangerouslySetInnerHTML={{
+                                                __html: cleanedDescription,
+                                            }}
+                                        />
+                                    </div>
+                                )}
+
+                                {/* Feedback & What I Learned */}
+                                {(hasFeedback || hasWhatILearned) && (
+                                    <div className="border-t border-border pt-8">
+                                        <div
+                                            className={cn(
+                                                'grid gap-8 lg:gap-12',
+                                                hasFeedback && hasWhatILearned
+                                                    ? 'grid-cols-1 md:grid-cols-2'
+                                                    : 'grid-cols-1',
+                                            )}
+                                        >
+                                            {hasFeedback && (
+                                                <div className="flex flex-col gap-3">
+                                                    <h4 className="text-lg font-medium text-foreground">
+                                                        {__(
+                                                            'landing.projects.sections.feedback',
+                                                            'Feedback',
+                                                        )}
+                                                    </h4>
+                                                    <div
+                                                        className="flex flex-col gap-3 text-sm leading-relaxed font-light text-foreground/80 sm:text-base [&_li:empty]:hidden [&_strong]:font-medium [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-1.5 [&_ul]:pl-5"
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: cleanedFeedback,
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
+
+                                            {hasWhatILearned && (
+                                                <div className="flex flex-col gap-3">
+                                                    <h4 className="text-lg font-medium text-foreground">
+                                                        {__(
+                                                            'landing.projects.sections.what_i_learned',
+                                                            'What I Learned',
+                                                        )}
+                                                    </h4>
+                                                    <div
+                                                        className="flex flex-col gap-3 text-sm leading-relaxed font-light text-foreground/80 sm:text-base [&_li:empty]:hidden [&_strong]:font-medium [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-1.5 [&_ul]:pl-5"
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: cleanedWhatILearned,
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                        </FadeIn>
-                    )}
 
-                    {/* Feedback */}
-                    {item?.feedback && item?.feedback != '' && (
-                        <FadeIn show={open} className="w-full">
+                            {/* Bottom Gradient */}
                             <div
                                 className={cn(
-                                    // Default styles
-                                    'flex items-start justify-between',
-
-                                    // Responsive styles
-                                    'flex-col gap-4 sm:flex-row sm:gap-0',
-                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
+                                    'pointer-events-none absolute right-0 bottom-0 left-0 z-10 h-8 bg-gradient-to-t from-background to-transparent transition-opacity duration-200',
+                                    canScrollBottom
+                                        ? 'opacity-100'
+                                        : 'opacity-0',
                                 )}
-                            >
-                                <div
-                                    className={cn(
-                                        // Default styles
-                                        'flex shrink-0 flex-col',
-
-                                        'sm:w-[25%]',
-                                    )}
-                                >
-                                    <h4
-                                        className={cn(
-                                            // Default styles
-                                            'font-medium',
-                                            'text-xl',
-                                        )}
-                                    >
-                                        {__(
-                                            'landing.projects.sections.feedback',
-                                            'Feedback',
-                                        )}
-                                    </h4>
-                                </div>
-                                <p
-                                    className={cn(
-                                        // Default styles
-                                        'font-light',
-                                        'text-base',
-                                        'shrink-0 sm:w-[65%]',
-
-                                        'flex flex-col gap-2',
-
-                                        '[&_ul]:space-y-4',
-                                        '[&_strong]:font-medium [&_strong]:text-foreground',
-                                        'text-foreground/70',
-                                    )}
-                                    dangerouslySetInnerHTML={{
-                                        __html: item.feedback,
-                                    }}
-                                ></p>
-                            </div>
-                        </FadeIn>
-                    )}
-
-                    {/* What I Learned */}
-                    {item?.what_i_learned && item?.what_i_learned != '' && (
-                        <FadeIn show={open} className="w-full">
-                            <div
-                                className={cn(
-                                    // Default styles
-                                    'flex items-start justify-between',
-
-                                    // Responsive styles
-                                    'flex-col gap-4 sm:flex-row sm:gap-0',
-                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
-                                )}
-                            >
-                                <div
-                                    className={cn(
-                                        // Default styles
-                                        'flex shrink-0 flex-col',
-
-                                        'sm:w-[25%]',
-                                    )}
-                                >
-                                    <h4
-                                        className={cn(
-                                            // Default styles
-                                            'font-medium',
-                                            'text-xl',
-                                        )}
-                                    >
-                                        {__(
-                                            'landing.projects.sections.what_i_learned',
-                                            'What I Learned',
-                                        )}
-                                    </h4>
-                                </div>
-                                <p
-                                    className={cn(
-                                        // Default styles
-                                        'font-light',
-                                        'text-base',
-                                        'shrink-0 sm:w-[65%]',
-
-                                        'flex flex-col gap-2',
-
-                                        '[&_ul]:space-y-4',
-                                        '[&_strong]:font-medium [&_strong]:text-foreground',
-                                        'text-foreground/70',
-                                    )}
-                                    dangerouslySetInnerHTML={{
-                                        __html: item.what_i_learned,
-                                    }}
-                                ></p>
-                            </div>
-                        </FadeIn>
-                    )}
+                            />
+                        </div>
+                    </motion.aside>
                 </div>
-            </aside>
-        </div>
+            )}
+        </AnimatePresence>
     );
 }

@@ -45,6 +45,50 @@ export function useLandingTransitions() {
     const [transitionLoaderWrapperActive] = useState(false);
     const [transitionLoaderContentActive] = useState(false);
 
+    // Visibilité du header (défilement)
+    const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+
+    useEffect(() => {
+        let lastScrollY = window.scrollY;
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            // Quand le haut de la fenêtre est dans la liste des projets,
+            // le header ne peut plus apparaître et disparaît automatiquement
+            const projectsList = document.getElementById('projects-list');
+            if (projectsList) {
+                const rect = projectsList.getBoundingClientRect();
+                if (rect.top <= 0 && rect.bottom >= 0) {
+                    setIsHeaderVisible(false);
+                    lastScrollY = currentScrollY;
+                    return;
+                }
+            }
+
+            if (currentScrollY <= 10) {
+                setIsHeaderVisible(true);
+            } else if (currentScrollY > lastScrollY + 20) {
+                // Défilement vers le bas
+                setIsHeaderVisible(false);
+            } else if (currentScrollY < lastScrollY - 10) {
+                // Défilement vers le haut
+                setIsHeaderVisible(true);
+            }
+
+            lastScrollY = currentScrollY;
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('resize', handleScroll, { passive: true });
+        handleScroll();
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleScroll);
+        };
+    }, []);
+
     // Gestionnaire de minuteries sécurisé
     const timeouts = useRef<ReturnType<typeof setTimeout>[]>([]);
     const isFirstMount = useRef(true);
@@ -274,6 +318,10 @@ export function useLandingTransitions() {
 
         // Panneaux et volets
         transitionPanelsActive,
+
+        // Header
+        isHeaderVisible,
+        setIsHeaderVisible,
 
         // Actions
         _navigateToPage,

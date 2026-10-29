@@ -37,6 +37,30 @@ export default function Terms() {
         },
         {
             title: __(
+                'landing.terms.sections.legal_mentions.h2',
+                'Legal Mentions',
+            ),
+            content: [
+                __(
+                    'landing.terms.sections.legal_mentions.p_1',
+                    'Website Publisher: Hakim Fidjel EI (Sole Proprietorship), registered at the French RNE under SIREN 131 784 266 (SIRET: 131 784 266 00010 — APE Code: 6201Z, Computer programming).',
+                ),
+                __(
+                    'landing.terms.sections.legal_mentions.p_2',
+                    'Headquarters: 8 Rue Alfred Nobel, 59240 Dunkerque, France — Contact: hakimfidjel.pro@gmail.com / +33 (0)6 95 07 44 17.',
+                ),
+                __(
+                    'landing.terms.sections.legal_mentions.p_3',
+                    'Tax regime: VAT exemption under Article 293 B of the French General Tax Code (CGI). VAT not applicable.',
+                ),
+                __(
+                    'landing.terms.sections.legal_mentions.p_4',
+                    'Hosting: Hosted through Docker containerized architecture on dedicated production infrastructure.',
+                ),
+            ],
+        },
+        {
+            title: __(
                 'landing.terms.sections.intellectual_property.h2',
                 'Intellectual Property',
             ),

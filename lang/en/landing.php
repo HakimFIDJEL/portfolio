@@ -22,6 +22,7 @@ return [
         'navigation' => [
             'home' => 'Home',
             'about' => 'About',
+            'services' => 'Services',
             'projects' => 'Projects',
             'sandbox' => 'Sandbox',
             'contact' => 'Contact',
@@ -33,6 +34,7 @@ return [
                     'items' => [
                         'home' => 'Home',
                         'about' => 'About',
+                        'services' => 'Services',
                         'projects' => 'Projects',
                         'sandbox' => 'Sandbox',
                         'contact' => 'Contact',
@@ -82,12 +84,35 @@ return [
             'tabs' => [
                 'about' => [
                     'title' => 'About me',
-                    'my_philosophy' => 'My Philosophy',
-                    'quote_1' => '“Aiming to build the future one line of code at a time.”',
-                    'quote_2' => "“It's never a bug, it's a feature.”",
-                    'quote_3' => '“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”',
-                    'quote_4' => '“If it’s not broken, do not fix it.”',
-                    'button' => 'Download my resume',
+                    'photo_alt' => 'Photo of Hakim Fidjel',
+                    'status_badge' => 'Available',
+                    'tag' => 'Manifesto & Approach',
+                    'statement' => 'Building resilient software architectures where clarity and craftsmanship prevail over unnecessary complexity.',
+                    'bio_1' => 'Software engineer and independent developer, I design end-to-end web systems with an exhaustive technical scope. From database modeling and containerization to refined UI engineering, every technical choice serves measurable reliability and efficiency.',
+                    'bio_2' => 'My approach is grounded in pragmatism: avoiding over-engineering, favoring typed, tested, and documented codebases, and delivering applications that remain instantly maintainable without latent technical debt.',
+                    'principles' => [
+                        'label' => 'Engineering Principles',
+                        'p1_num' => '01',
+                        'p1_title' => 'Design Rigor',
+                        'p1_desc' => 'Strict end-to-end typing, automated testing suites, and modular architecture.',
+                        'p2_num' => '02',
+                        'p2_title' => 'Performance & Restraint',
+                        'p2_desc' => 'Lean dependencies, optimized bundles, and strict adherence to web standards.',
+                        'p3_num' => '03',
+                        'p3_title' => 'Clear Transparency',
+                        'p3_desc' => 'Direct technical communication, realistic milestones, and continuous tracking.',
+                    ],
+                    'specs' => [
+                        'status_label' => 'Status',
+                        'status_val' => 'Software Engineer & Independent',
+                        'location_label' => 'Location',
+                        'location_val' => 'Lille, France',
+                        'availability_label' => 'Availability',
+                        'availability_val' => 'Select Projects & Advisory',
+                        'stack_label' => 'Core Ecosystem',
+                        'stack_val' => 'Laravel · React · TypeScript · Docker',
+                    ],
+                    'button' => 'View Full Resume',
                 ],
                 'experience' => [
                     'title' => 'Work Experience',
@@ -103,6 +128,42 @@ return [
                 'tools' => [
                     'title' => 'Tools & Software',
                 ],
+            ],
+        ],
+
+        'services' => [
+            'h2' => 'Services',
+            'skip' => 'Skip',
+            'items' => [
+                'fullstack' => [
+                    'title' => 'Web Applications & Platforms',
+                    'description' => 'Engineering comprehensive, fast, and custom web applications. Polished and responsive user interfaces backed by robust, secure, and scalable technical architecture.',
+                    'actions_label' => 'Deliverables & capabilities',
+                    'action_1' => 'Custom business web apps, client portals, and interactive dashboards',
+                    'action_2' => 'Secure backend architecture design and RESTful API integrations',
+                    'action_3' => 'Seamless, uncompromised responsive UX with accessibility standards',
+                ],
+                'devops' => [
+                    'title' => 'Automation, CI/CD & Deployment',
+                    'description' => 'Streamlining delivery lifecycles and standardizing technical workflows. Building modern deployment pipelines to release frequently, test systematically, and eliminate manual production errors.',
+                    'actions_label' => 'Deliverables & capabilities',
+                    'action_1' => 'Reliable continuous deployment and production-ready environments',
+                    'action_2' => 'Automated test suites and continuous software quality checks',
+                    'action_3' => 'Custom automation scripts and workflow optimization',
+                ],
+                'audit' => [
+                    'title' => 'Audit, Resolution & Technical Advisory',
+                    'description' => 'Targeted diagnosis, codebase upgrading, and performance tuning. Swift intervention on critical blockers, complex code refactoring, and pragmatic architecture consulting.',
+                    'actions_label' => 'Deliverables & capabilities',
+                    'action_1' => 'Rapid diagnosis and resolution of critical production defects',
+                    'action_2' => 'Technical debt reduction, code modernization, and refactoring',
+                    'action_3' => 'Load time optimization, compliance audits, and architectural scoping',
+                ],
+            ],
+            'cta' => [
+                'title' => 'A project to build or a technical challenge to solve?',
+                'description' => 'Let’s discuss your goals to define the optimal scope of work aligned with your needs and timeline.',
+                'button' => 'Start a project',
             ],
         ],
 
@@ -126,6 +187,7 @@ return [
             'p_1' => 'Have a project or a technical challenge to discuss?',
             'p_2' => 'Open to discussing software architectures, engineering opportunities, and technical collaborations. I typically respond within 24 hours.',
             'top' => 'Back to top',
+            'mail_subject' => 'Contact Inquiry — Project / Mission',
         ],
     ],
 
@@ -157,6 +219,13 @@ return [
                 'h2' => 'Introduction',
                 'p_1' => 'Welcome to Hakim Fidjel\'s portfolio. By accessing this website, you agree to be bound by these Terms of Use. If you disagree with any part of the terms, please do not use this website.',
                 'p_2' => 'This website is a showcase of my work and skills as a Software Engineer.',
+            ],
+            'legal_mentions' => [
+                'h2' => 'Legal Mentions',
+                'p_1' => 'Website Publisher: Hakim Fidjel EI (Sole Proprietorship), registered at the French RNE under SIREN 131 784 266 (SIRET: 131 784 266 00010 — APE Code: 6201Z, Computer programming).',
+                'p_2' => 'Headquarters: 8 Rue Alfred Nobel, 59240 Dunkerque, France — Contact: hakimfidjel.pro@gmail.com / +33 (0)6 95 07 44 17.',
+                'p_3' => 'Tax regime: VAT exemption under Article 293 B of the French General Tax Code (CGI). VAT not applicable.',
+                'p_4' => 'Hosting: Hosted through Docker containerized architecture on dedicated production infrastructure.',
             ],
             'intellectual_property' => [
                 'h2' => 'Intellectual Property',

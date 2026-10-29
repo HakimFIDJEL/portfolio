@@ -86,7 +86,7 @@ function NavigationHeader({
         <Curtain
             showCurtain={!showNavigationContent}
             closeDuration={closeDuration}
-            className="fixed top-0 right-0 left-0 z-10 mx-auto w-[90%] max-w-7xl"
+            className="fixed top-0 right-0 left-0 z-10 mx-auto w-full max-w-7xl sm:w-[90%]"
         >
             <div
                 className={cn(
@@ -163,18 +163,24 @@ function NavigationContent({
             },
             {
                 index: '03',
+                href: '#services',
+                label: __('landing.layout.navigation.services', 'Services'),
+                show: false,
+            },
+            {
+                index: '04',
                 href: '#projects',
                 label: __('landing.layout.navigation.projects', 'Projects'),
                 show: false,
             },
             {
-                index: '04',
+                index: '05',
                 href: '#sandbox',
                 label: __('landing.layout.navigation.sandbox', 'Sandbox'),
                 show: false,
             },
             {
-                index: '05',
+                index: '06',
                 href: '#contact',
                 label: __('landing.layout.navigation.contact', 'Contact'),
                 show: false,
@@ -197,13 +203,16 @@ function NavigationContent({
 
         function handleLinksVisibility(show: boolean) {
             links.forEach((link, index) => {
-                const id = setTimeout(() => {
-                    setVisibleLinks((prev) =>
-                        prev.map((l) =>
-                            l.label === link.label ? { ...l, show } : l,
-                        ),
-                    );
-                }, index * (show ? 125 : itemDelay));
+                const id = setTimeout(
+                    () => {
+                        setVisibleLinks((prev) =>
+                            prev.map((l) =>
+                                l.label === link.label ? { ...l, show } : l,
+                            ),
+                        );
+                    },
+                    index * (show ? 125 : itemDelay),
+                );
                 timeoutIds.push(id);
             });
         }
@@ -220,13 +229,17 @@ function NavigationContent({
     }, [showNavigationContent, links, itemDelay]);
 
     return (
-        <div className="mx-auto flex w-[90%] max-w-7xl flex-col px-8 py-6 lg:px-12.5 lg:py-10">
+        <div className="mx-auto flex w-full max-w-7xl flex-col px-8 py-6 sm:w-[90%] lg:px-12.5 lg:py-10">
             {visibleLinks.map((link, index) => (
                 <NavigationLink
                     link={link}
                     key={index}
                     closeDuration={itemCloseDuration}
-                    onClosed={index === visibleLinks.length - 1 ? completeNavigationClose : undefined}
+                    onClosed={
+                        index === visibleLinks.length - 1
+                            ? completeNavigationClose
+                            : undefined
+                    }
                     handleMenuToggle={handleMenuToggle}
                 />
             ))}

@@ -51,7 +51,7 @@ export default function TransitionScreen({
                         ? 'delay-0 duration-0'
                         : active
                           ? 'delay-0 duration-500'
-                          : 'delay-0 duration-1000',
+                          : 'delay-1000 duration-1000',
                 )}
             />
             <div

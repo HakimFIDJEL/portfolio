@@ -3,22 +3,19 @@
 // Necessary imports
 import { cn } from '@/lib/utils';
 import { usePage } from '@inertiajs/react';
-import React, { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import React from 'react';
 
 // Components
 import Delimiter from '@/components/landing/delimiter';
-import RoundedButton from '@/components/landing/rounded-button';
 import UnderlineLink from '@/components/landing/underline-link';
 
 // UI Components
-import Curtain from '@/components/landing/curtain';
 import FadeIn from '@/components/landing/fade-in';
-import Magnet from '@/components/ui/magnet';
-import { Separator } from '@/components/ui/separator';
 import { TextReveal } from '@/components/ui/text-reveal';
 
 // Icons
-import { ArrowDownRight, Download, Minus, Plus } from 'lucide-react';
+import { ArrowDownRight, Download } from 'lucide-react';
 
 // Types
 import {
@@ -132,12 +129,7 @@ function Panels({ appear }: PanelsProps) {
                         'gap-2 sm:gap-4 md:gap-6 lg:gap-8',
                     )}
                 >
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={0}
-                        className="w-full"
-                    >
+                    <FadeIn show={appear} delay={0} className="w-full">
                         <h2
                             className={cn(
                                 // Default styles
@@ -148,13 +140,9 @@ function Panels({ appear }: PanelsProps) {
                         >
                             {__('landing.landing.about.h2', 'About me')}
                         </h2>
-                    </Curtain>
+                    </FadeIn>
 
-                    <Curtain
-                        showCurtain={!appear}
-                        background="background"
-                        delay={250}
-                    >
+                    <FadeIn className="w-auto" show={appear} delay={250}>
                         <UnderlineLink
                             aria_label={__(
                                 'landing.seo.scroll_to_section',
@@ -178,7 +166,7 @@ function Panels({ appear }: PanelsProps) {
                                 className="stroke-1 transition-all group-hover:rotate-45 group-focus-visible:rotate-45"
                             />
                         </UnderlineLink>
-                    </Curtain>
+                    </FadeIn>
                 </div>
             </Delimiter>
 
@@ -285,878 +273,588 @@ function Accordions({
     educations,
     experiences,
 }: AboutProps) {
-    const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+    const [selectedTab, setSelectedTab] = React.useState<number>(1);
+    const masterDetailRef = React.useRef<HTMLDivElement>(null);
     const __ = useTrans();
 
-    return (
-        <div
-            className={cn(
-                // Default styles
-                'w-full border border-dashed border-border',
+    const handleSelectTab = (id: number) => {
+        if (id === selectedTab) return;
+        setSelectedTab(id);
+        masterDetailRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+        });
+    };
 
-                // Responsive styles
-                'px-6 sm:px-8 md:px-10 lg:px-12.5',
-            )}
-        >
-            <Delimiter
+    const tabs = [
+        {
+            id: 1,
+            number: '01',
+            title: __(
+                'landing.landing.about.tabs.about.title',
+                'À propos de moi',
+            ),
+        },
+        {
+            id: 2,
+            number: '02',
+            title: __(
+                'landing.landing.about.tabs.experience.title',
+                'Expérience professionnelle',
+            ),
+        },
+        {
+            id: 3,
+            number: '03',
+            title: __(
+                'landing.landing.about.tabs.education.title',
+                'Formation & Diplômes',
+            ),
+        },
+        {
+            id: 4,
+            number: '04',
+            title: __(
+                'landing.landing.about.tabs.tech_stack.title',
+                'Stack Technologique',
+            ),
+        },
+        {
+            id: 5,
+            number: '05',
+            title: __(
+                'landing.landing.about.tabs.tools.title',
+                'Outils & Logiciels',
+            ),
+        },
+    ];
+
+    const renderTabContent = (id: number) => {
+        switch (id) {
+            case 1:
+                return <TabAboutContent />;
+            case 2:
+                return <TabWorkContent experiences={experiences} />;
+            case 3:
+                return <TabSchoolContent educations={educations} />;
+            case 4:
+                return <TabTechStackContent stacks={stacks} />;
+            case 5:
+                return <TabToolsContent tools={tools} />;
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <FadeIn className="w-full" delay={150} show={appear ?? false}>
+            <div
                 className={cn(
                     // Default styles
-                    'w-full transition-all',
+                    'w-full border-t border-b border-dashed border-border',
 
                     // Responsive styles
-                    'max-w-full lg:max-w-[70%]',
-                    'before:h-36 lg:before:h-48',
-
-                    // Before styles
-                    'relative',
-                    'before:absolute before:right-0 before:bottom-0 before:left-0 before:-z-1',
-                    'before:translate-y-[100%]',
-                    'before:border-r before:border-l before:border-dashed before:border-border',
+                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
                 )}
-                dashedBorders={['right', 'left']}
-                plusCorners={['all']}
             >
-                <AccordionAbout
-                    index={1}
-                    title={__(
-                        'landing.landing.about.tabs.about.title',
-                        'About me',
-                    )}
-                    open={openIndex === 1}
-                    onChange={(index) =>
-                        setOpenIndex(openIndex === index ? null : index)
-                    }
-                    appear={appear}
-                />
-                <Separator />
-                <AccordionWork
-                    index={2}
-                    title={__(
-                        'landing.landing.about.tabs.experience.title',
-                        'Work Experience',
-                    )}
-                    open={openIndex === 2}
-                    onChange={(index) =>
-                        setOpenIndex(openIndex === index ? null : index)
-                    }
-                    appear={appear}
-                    experiences={experiences}
-                />
-                <Separator />
-                <AccordionSchool
-                    index={3}
-                    title={__(
-                        'landing.landing.about.tabs.education.title',
-                        'School & Diplomas',
-                    )}
-                    open={openIndex === 3}
-                    onChange={(index) =>
-                        setOpenIndex(openIndex === index ? null : index)
-                    }
-                    appear={appear}
-                    educations={educations}
-                />
-                <Separator />
-                <AccordionTechStack
-                    index={4}
-                    title={__(
-                        'landing.landing.about.tabs.tech_stack.title',
-                        'Tech Stack',
-                    )}
-                    open={openIndex === 4}
-                    onChange={(index) =>
-                        setOpenIndex(openIndex === index ? null : index)
-                    }
-                    appear={appear}
-                    stacks={stacks}
-                />
-                <Separator />
-                <AccordionTools
-                    index={5}
-                    title={__(
-                        'landing.landing.about.tabs.tools.title',
-                        'Tools & Software',
-                    )}
-                    open={openIndex === 5}
-                    onChange={(index) =>
-                        setOpenIndex(openIndex === index ? null : index)
-                    }
-                    appear={appear}
-                    tools={tools}
-                />
-            </Delimiter>
-        </div>
-    );
-}
-
-interface AccordionItemProps {
-    index: number;
-    title: string;
-    open?: boolean;
-    onChange?: (index: number) => void;
-    appear?: boolean;
-}
-
-interface AccordionLayoutProps extends AccordionItemProps {
-    children: React.ReactNode;
-}
-
-function AccordionItem({
-    index,
-    title,
-    children,
-    open,
-    onChange,
-    appear,
-}: AccordionLayoutProps) {
-    const contentRef = useRef<HTMLDivElement>(null);
-    const [height, setHeight] = useState('0px');
-
-    useEffect(() => {
-        if (contentRef.current) {
-            setHeight(open ? `${contentRef.current.scrollHeight}px` : '0px');
-        }
-    }, [open]);
-
-    const __ = useTrans();
-
-    return (
-        <FadeIn className="w-full" delay={index * 150} show={appear ?? false}>
-            <div className={cn('flex flex-col')}>
-                {/* Accordion Head */}
-                <div
-                    className={cn(
-                        // Default styles
-                        'flex items-center justify-between gap-4 border-b border-transparent transition-all duration-500',
-                        'bg-card',
-
-                        // Responsive styles
-                        'px-4 sm:px-6 md:px-8',
-                        'py-4 sm:py-5 md:py-6',
-
-                        // Open styles
-                        open &&
-                            'border-border bg-primary text-primary-foreground duration-1000',
-                    )}
+                <Delimiter
+                    className="w-full"
+                    dashedBorders={['right', 'left']}
+                    plusCorners={['all']}
                 >
+                    {/* Desktop Master-Detail (md:flex) */}
                     <div
-                        className={cn(
-                            'flex',
-                            'flex-col gap-0 sm:flex-row sm:items-center sm:gap-6',
-                        )}
+                        ref={masterDetailRef}
+                        className="hidden w-full scroll-mt-24 items-start bg-background md:flex lg:scroll-mt-28"
                     >
-                        <h3
-                            className={cn(
-                                // Default styles
-                                'font-semibold',
+                        {/* Left Column - Navigation List */}
+                        <div className="w-full shrink-0 self-stretch border-r border-border bg-background md:w-[320px] lg:w-[360px] xl:w-[380px]">
+                            <div className="sticky top-24 lg:top-28">
+                                <div className="flex flex-col divide-y divide-border border-t border-b border-border bg-card">
+                                    {tabs.map((tab) => {
+                                        const isSelected =
+                                            selectedTab === tab.id;
+                                        return (
+                                            <button
+                                                key={tab.id}
+                                                type="button"
+                                                onClick={() =>
+                                                    handleSelectTab(tab.id)
+                                                }
+                                                className={cn(
+                                                    'group relative flex w-full cursor-pointer items-center gap-4 px-6 py-5.5 text-left transition-colors duration-200',
+                                                    'outline-none focus-visible:z-20 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none',
+                                                    isSelected
+                                                        ? 'bg-primary text-primary-foreground focus-visible:bg-primary'
+                                                        : 'bg-card text-foreground hover:bg-muted/40 focus-visible:bg-muted/40',
+                                                )}
+                                            >
+                                                <span
+                                                    className={cn(
+                                                        'text-xl font-semibold tracking-tight transition-colors lg:text-2xl',
+                                                        isSelected
+                                                            ? 'text-primary-foreground'
+                                                            : 'text-muted-foreground group-hover:text-foreground',
+                                                    )}
+                                                >
+                                                    {tab.number}
+                                                </span>
+                                                <span className="truncate text-base font-light tracking-tight lg:text-lg">
+                                                    {tab.title}
+                                                </span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
 
-                                // Responsive styles
-                                'text-xl sm:text-3xl',
-                            )}
-                        >
-                            0{index}
-                        </h3>
-                        <p
-                            className={cn(
-                                // Default styles
-                                'font-light',
-
-                                // Responsive styles
-                                'text-lg sm:text-3xl',
-                            )}
-                        >
-                            {title}
-                        </p>
+                        {/* Right Column - Detail Wrapper */}
+                        <div className="flex min-w-0 flex-1 flex-col bg-background p-6 sm:p-8 lg:p-10 xl:p-12">
+                            <AnimatePresence mode="wait" initial={false}>
+                                <motion.div
+                                    key={selectedTab}
+                                    initial={{ opacity: 0, scale: 0.98, y: 8 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.98, y: -8 }}
+                                    transition={{
+                                        duration: 0.2,
+                                        ease: [0.22, 1, 0.36, 1],
+                                    }}
+                                    className="w-full flex-1"
+                                >
+                                    {renderTabContent(selectedTab)}
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
                     </div>
-                    <Magnet magnetStrength={3} padding={20}>
-                        <RoundedButton
-                            className={cn(
-                                // Default styles
-                                'z-1',
 
-                                // Responsive styles
-                                'scale-80 sm:scale-100',
-
-                                // Open styles
-                                open &&
-                                    'border-primary-foreground !text-primary-foreground',
-                            )}
-                            onClick={() => onChange && onChange(index)}
-                            showTooltip={false}
-                            aria_label={__(
-                                'landing.seo.toggle_accordion',
-                                'Toggle accordion for :section section',
-                                { section: title },
-                            )}
-                        >
-                            {open ? <Minus /> : <Plus />}
-                        </RoundedButton>
-                    </Magnet>
-                </div>
-
-                {/* Accordion Content */}
-                <div
-                    ref={contentRef}
-                    style={{ maxHeight: height }}
-                    className={cn(
-                        'overflow-hidden py-0 transition-all duration-500',
-                    )}
-                >
-                    <div
-                        className={cn(
-                            // Default styles
-                            'border-r border-l border-border',
-                            index === 5 && 'border-b',
-                        )}
-                    >
-                        {children}
+                    {/* Mobile Accordion (< md) */}
+                    <div className="flex flex-col divide-y divide-border md:hidden">
+                        {tabs.map((tab) => {
+                            const isSelected = selectedTab === tab.id;
+                            return (
+                                <div key={tab.id} className="flex flex-col">
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setSelectedTab(
+                                                isSelected ? 0 : tab.id,
+                                            )
+                                        }
+                                        className={cn(
+                                            'relative flex w-full cursor-pointer items-center justify-between px-6 py-5 text-left transition-colors duration-200',
+                                            'outline-none focus-visible:z-20 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none',
+                                            isSelected
+                                                ? 'bg-primary text-primary-foreground focus-visible:bg-primary'
+                                                : 'bg-card text-foreground hover:bg-muted/40 focus-visible:bg-muted/40',
+                                        )}
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <span
+                                                className={cn(
+                                                    'text-lg font-semibold',
+                                                    isSelected
+                                                        ? 'text-primary-foreground'
+                                                        : 'text-muted-foreground',
+                                                )}
+                                            >
+                                                {tab.number}
+                                            </span>
+                                            <span className="text-base font-light">
+                                                {tab.title}
+                                            </span>
+                                        </div>
+                                        <ArrowDownRight
+                                            className={cn(
+                                                'h-5 w-5 stroke-1 transition-transform duration-300',
+                                                isSelected
+                                                    ? 'rotate-90 text-primary-foreground'
+                                                    : 'text-muted-foreground',
+                                            )}
+                                        />
+                                    </button>
+                                    {isSelected && (
+                                        <div className="border-t border-border bg-background p-5 transition-all duration-300">
+                                            {renderTabContent(tab.id)}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
-                </div>
+                </Delimiter>
             </div>
         </FadeIn>
     );
 }
 
-function AccordionAbout({
-    index,
-    title,
-    open,
-    onChange,
-    appear,
-}: AccordionItemProps) {
+// -------------------------
+// Tab 1: About Content
+// -------------------------
+
+function TabAboutContent() {
     const __ = useTrans();
     const { avatar_url, resume_url } = usePage<SharedData>().props;
 
-    const quotes = [
-        __(
-            'landing.landing.about.tabs.about.quote_1',
-            '“Aiming to build the future one line of code at a time.”',
-        ),
-        __(
-            'landing.landing.about.tabs.about.quote_2',
-            "“It's never a bug, it's a feature.”",
-        ),
-        __(
-            'landing.landing.about.tabs.about.quote_3',
-            '“My journey balances expertise in tools I know and excitement for those I’ve yet to explore.”',
-        ),
-        __(
-            'landing.landing.about.tabs.about.quote_4',
-            '“If it’s not broken, do not fix it.”',
-        ),
+    const principles = [
+        {
+            num: __('landing.landing.about.tabs.about.principles.p1_num', '01'),
+            title: __(
+                'landing.landing.about.tabs.about.principles.p1_title',
+                'Rigueur de conception',
+            ),
+            desc: __(
+                'landing.landing.about.tabs.about.principles.p1_desc',
+                'Typage strict de bout en bout, suites de tests automatisées et architecture modulaire.',
+            ),
+        },
+        {
+            num: __('landing.landing.about.tabs.about.principles.p2_num', '02'),
+            title: __(
+                'landing.landing.about.tabs.about.principles.p2_title',
+                'Sobriété & Vitesse',
+            ),
+            desc: __(
+                'landing.landing.about.tabs.about.principles.p2_desc',
+                'Dépendances maîtrisées, bundles optimisés et conformité stricte aux standards web.',
+            ),
+        },
+        {
+            num: __('landing.landing.about.tabs.about.principles.p3_num', '03'),
+            title: __(
+                'landing.landing.about.tabs.about.principles.p3_title',
+                'Transparence totale',
+            ),
+            desc: __(
+                'landing.landing.about.tabs.about.principles.p3_desc',
+                'Communication directe, cadrage réaliste des engagements et suivi continu sans promesses creuses.',
+            ),
+        },
     ];
 
     return (
-        <AccordionItem
-            index={index}
-            title={title}
-            open={open}
-            onChange={onChange}
-            appear={appear}
-        >
-            <div
-                className={cn(
-                    // Default styles
-                    'flex justify-between bg-background',
+        <div className="flex flex-col gap-10 sm:gap-12">
+            {/* Header / Intro block: Statement & Photo */}
+            <div className="flex flex-col-reverse items-start justify-between gap-8 border-b border-border pb-8 sm:pb-10 lg:flex-row lg:gap-12">
+                {/* Statement & Action */}
+                <div className="flex flex-1 flex-col gap-6">
+                    {/* Profile Tags */}
+                    <div className="flex flex-wrap items-center gap-2.5">
+                        <span className="inline-flex items-center border border-border bg-card px-3 py-1.5 text-xs font-normal text-foreground">
+                            {__(
+                                'landing.landing.about.tabs.about.specs.location_val',
+                                'Lille',
+                            )}
+                        </span>
 
-                    // Apparition styles
-                    'scale-90 opacity-0 transition-all duration-1000',
-                    open && 'scale-100 opacity-100 delay-125',
+                        <span className="inline-flex items-center border border-border bg-card px-3 py-1.5 text-xs font-normal text-foreground">
+                            {__(
+                                'landing.landing.about.tabs.about.specs.status_val',
+                                'Ingénieur Logiciel & Indépendant',
+                            )}
+                        </span>
+                    </div>
 
-                    // Responsive styles
-                    'flex-col sm:flex-row',
-                )}
-            >
-                {/* Left Panel - Photo */}
-                {avatar_url && (
-                    <div
-                        className={cn(
-                            // Default styles
-                            'flex shrink-0 bg-card',
-
-                            'items-center justify-center',
-
-                            // Responsive styles
-                            'aspect-square w-full max-w-[300px] sm:aspect-[9/16] sm:w-1/3 sm:max-w-none',
+                    <h3 className="text-2xl leading-[1.25] font-light tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+                        {__(
+                            'landing.landing.about.tabs.about.statement',
+                            'Bâtir des architectures logicielles pérennes, où la clarté et la rigueur priment sur la complexité inutile.',
                         )}
-                    >
+                    </h3>
+
+                    {resume_url && (
+                        <div className="pt-2">
+                            <a
+                                href={resume_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={__(
+                                    'landing.seo.download_resume',
+                                    'Télécharger mon CV',
+                                )}
+                                className="group relative inline-flex items-center gap-3 overflow-hidden border border-border bg-card px-5 py-3 text-xs font-medium tracking-wide text-foreground transition-all duration-300 hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none sm:text-sm"
+                            >
+                                <span className="relative z-10">
+                                    {__(
+                                        'landing.landing.about.tabs.about.button',
+                                        'Consulter mon CV complet',
+                                    )}
+                                </span>
+                                <Download className="relative z-10 h-4 w-4 stroke-[1.5] transition-transform duration-300 group-hover:translate-y-0.5" />
+                                <div className="absolute inset-0 z-0 h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-700 group-focus-visible:w-[120%]" />
+                            </a>
+                        </div>
+                    )}
+                </div>
+
+                {/* Photo Portrait */}
+                {avatar_url && (
+                    <div className="aspect-4/5 w-36 shrink-0 overflow-hidden border border-border bg-card sm:w-44 lg:w-48">
                         <img
                             src={avatar_url}
                             alt={__(
                                 'landing.landing.about.tabs.about.photo_alt',
-                                "Hakim's Photo",
+                                'Photo de Hakim Fidjel',
                             )}
-                            className={cn(
-                                // Default styles
-                                'h-full w-full object-cover',
-                            )}
+                            className="h-full w-full object-cover contrast-105 grayscale transition-all duration-700 hover:grayscale-0"
                         />
                     </div>
                 )}
+            </div>
 
-                {/* Right Panel - Text + Button */}
-                <div
-                    className={cn(
-                        // Default styles
-                        'flex flex-col justify-between',
-                    )}
-                >
-                    {/* My philosophy */}
-                    <div
-                        className={cn(
-                            // Default styles
-                            'flex flex-col justify-between gap-6',
-
-                            // Responsive styles
-                            'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                            'py-10',
+            {/* Narrative Story (2 wide columns in full breathing room) */}
+            <div className="grid grid-cols-1 gap-8 border-b border-border pb-8 sm:pb-10 md:grid-cols-2 lg:gap-12">
+                <div className="flex flex-col gap-3">
+                    <h4 className="text-base font-medium tracking-tight text-foreground sm:text-lg">
+                        Approche de bout en bout
+                    </h4>
+                    <p className="text-sm leading-relaxed font-light text-foreground/80 sm:text-base">
+                        {__(
+                            'landing.landing.about.tabs.about.bio_1',
+                            "Ingénieur logiciel en poste et développeur indépendant, je conçois des systèmes web complets avec une vision de bout en bout. De la modélisation des données et la conteneurisation jusqu'au raffinement ergonomique de l'interface, chaque décision technique répond à un impératif de fiabilité et d'efficacité mesurable.",
                         )}
-                    >
-                        <h4
-                            className={cn(
-                                // Default styles
-                                'text-xl font-light',
-                            )}
-                        >
-                            {__(
-                                'landing.landing.about.tabs.about.my_philosophy',
-                                'My philosophy',
-                            )}
-                        </h4>
-                        <ul
-                            className={cn(
-                                // Default styles
-                                'flex flex-col gap-6',
-                                'text-base font-medium md:text-xl',
-                            )}
-                        >
-                            {quotes.map((quote, index) => (
-                                <li key={index}>{quote}</li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Temp Button */}
-                    {resume_url && (
-                        <a
-                            className={cn(
-                                'group relative w-full cursor-pointer bg-secondary text-xl',
-
-                                // Hover styles
-                                'border-t border-border',
-                                'focus-visible:outline-none',
-
-                                // Responsive styles
-                                'px-2 py-4 text-lg sm:p-4 sm:text-xl',
-                            )}
-                            href={resume_url}
-                            tabIndex={open ? 0 : -1}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={__(
-                                'landing.seo.download_resume',
-                                'Download my resume',
-                            )}
-                        >
-                            <div
-                                className={cn(
-                                    'flex items-center justify-center gap-4 transition-all',
-                                    'relative z-1',
-                                    'group-hover:text-primary-foreground group-focus-visible:text-primary-foreground',
-                                )}
-                            >
-                                {__(
-                                    'landing.landing.about.tabs.about.button',
-                                    'Download my resume',
-                                )}
-                                <Download className="stroke-1" />
-                            </div>
-
-                            <div
-                                className={cn(
-                                    'absolute inset-0 z-0 h-full w-0 bg-primary transition-all duration-500 [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)] group-hover:w-[120%] group-hover:duration-1000 group-focus-visible:w-[120%] group-focus-visible:duration-1000',
-                                )}
-                            ></div>
-                        </a>
-                    )}
+                    </p>
+                </div>
+                <div className="flex flex-col gap-3">
+                    <h4 className="text-base font-medium tracking-tight text-foreground sm:text-lg">
+                        Artisanat & pragmatisme
+                    </h4>
+                    <p className="text-sm leading-relaxed font-light text-foreground/80 sm:text-base">
+                        {__(
+                            'landing.landing.about.tabs.about.bio_2',
+                            "Mon travail s'articule autour du pragmatisme : rejeter la sur-ingénierie, privilégier un code typé, testé et documenté, et livrer des applications immédiatement maintenables par n'importe quelle équipe technique sans accumuler de dette invisible.",
+                        )}
+                    </p>
                 </div>
             </div>
-        </AccordionItem>
+
+            {/* Engineering Principles (Clean typographic 3-column layout) */}
+            <div className="flex flex-col gap-6 pt-2">
+                <h4 className="text-base font-medium tracking-tight text-foreground sm:text-lg">
+                    {__(
+                        'landing.landing.about.tabs.about.principles.label',
+                        "Principes d'ingénierie",
+                    )}
+                </h4>
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-3 lg:gap-10">
+                    {principles.map((principle, i) => (
+                        <div key={i} className="flex flex-col gap-3">
+                            <div className="flex items-center gap-3">
+                                <span className="text-xs font-semibold tracking-wider text-muted-foreground">
+                                    {principle.num}
+                                </span>
+                                <span className="h-px flex-1 bg-border/60" />
+                            </div>
+                            <h5 className="text-base font-medium tracking-tight text-foreground">
+                                {principle.title}
+                            </h5>
+                            <p className="text-sm leading-relaxed font-light text-muted-foreground">
+                                {principle.desc}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     );
 }
 
-interface AccordionWorkProps extends AccordionItemProps {
-    experiences: ExperienceType[];
-}
+// -------------------------
+// Tab 2: Work Content
+// -------------------------
 
-function AccordionWork({
-    index,
-    title,
-    open,
-    onChange,
-    appear,
-    experiences,
-}: AccordionWorkProps) {
+function TabWorkContent({ experiences }: { experiences: ExperienceType[] }) {
     const __ = useTrans();
 
     return (
-        <AccordionItem
-            index={index}
-            title={title}
-            open={open}
-            onChange={onChange}
-            appear={appear}
-        >
-            {/* Content goes here */}
-            <div
-                className={cn(
-                    // Default styles
-                    'flex flex-col',
-
-                    // Responsive styles
-                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                    'py-4 sm:py-6 md:py-8 lg:py-10',
-                    'gap-6 sm:gap-12',
-
-                    // Apparition styles
-                    'scale-90 opacity-0 transition-all duration-1000',
-                    open && 'scale-100 opacity-100 delay-125',
-                )}
-            >
-                <ul
-                    className={cn(
-                        // Default styles
-                        'flex flex-col',
-
-                        // Responsive styles
-                        'gap-6 sm:gap-10',
+        <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-3 border-b border-border pb-8">
+                <h3 className="text-2xl font-medium tracking-tight text-foreground sm:text-3xl">
+                    {__(
+                        'landing.landing.about.tabs.experience.title',
+                        'Expérience professionnelle',
                     )}
-                >
-                    {experiences.map((exp, idx) => (
-                        <li
-                            key={`experience-${idx}`}
-                            className={cn(
-                                // Default styles
-                                'flex items-start justify-between',
-
-                                // Responsive styles
-                                'flex-col gap-4 sm:flex-row sm:gap-0',
-                                'border-b border-border pb-4 sm:border-0 sm:pb-0',
-                            )}
-                        >
-                            <div
-                                className={cn(
-                                    // Default styles
-                                    'flex shrink-0 flex-col',
-
-                                    'sm:w-[25%]',
-                                )}
-                            >
-                                <h4
-                                    className={cn(
-                                        // Default styles
-                                        'font-medium',
-                                        'text-lg',
-                                    )}
-                                >
-                                    {exp.company}
-                                </h4>
-                                <p
-                                    className={cn(
-                                        // Default styles
-                                        'font-light',
-                                        'text-base',
-                                    )}
-                                >
-                                    {exp.job}
-                                </p>
-                                <Separator className="my-1" />
-                                <p
-                                    className={cn(
-                                        // Default styles
-                                        'font-light',
-                                        'text-base',
-                                    )}
-                                >
-                                    {exp.status}
-                                </p>
-                                <p
-                                    className={cn(
-                                        // Default styles
-                                        'font-light',
-                                        'text-base',
-                                    )}
-                                >
-                                    {exp.duration}
-                                </p>
-                            </div>
-                            <p
-                                className={cn(
-                                    // Default styles
-                                    'font-light',
-                                    'text-base',
-                                    'shrink-0 sm:w-[65%]',
-                                )}
-                            >
-                                {exp.description}
-                            </p>
-                        </li>
-                    ))}
-                </ul>
-                <div
-                    className={cn(
-                        // Default styles
-                        'text-base font-medium md:text-lg',
-                    )}
-                >
+                </h3>
+                <p className="max-w-2xl text-sm leading-relaxed font-light text-muted-foreground sm:text-base">
                     {__(
                         'landing.landing.about.tabs.experience.description',
-                        'These roles have sharpened my ability to deliver efficient, innovative solutions while adapting to diverse professional environments.',
+                        "Des environnements variés allant de l'ingénierie logicielle avancée aux projets web sur mesure, forgeant rigueur opérationnelle et sens du produit.",
                     )}
-                </div>
+                </p>
             </div>
-        </AccordionItem>
+            <ul className="flex flex-col gap-10 pt-2 sm:gap-12">
+                {experiences.map((exp, idx) => (
+                    <li
+                        key={`experience-${idx}`}
+                        className="flex flex-col justify-between gap-6 sm:flex-row sm:items-start"
+                    >
+                        <div className="flex shrink-0 flex-col gap-1 sm:w-[30%]">
+                            <h4 className="text-lg font-medium text-foreground">
+                                {exp.company}
+                            </h4>
+                            <p className="text-sm font-normal text-foreground/90">
+                                {exp.job}
+                            </p>
+                            <div className="mt-2 flex flex-col gap-0.5 text-xs font-light text-muted-foreground">
+                                <span>{exp.status}</span>
+                                <span>{exp.duration}</span>
+                            </div>
+                        </div>
+                        <p className="text-sm leading-relaxed font-light text-foreground/80 sm:w-[65%] sm:text-base">
+                            {exp.description}
+                        </p>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 }
 
-interface AccordionSchoolProps extends AccordionItemProps {
-    educations: EducationType[];
-}
+// -------------------------
+// Tab 3: School Content
+// -------------------------
 
-function AccordionSchool({
-    index,
-    title,
-    open,
-    onChange,
-    appear,
-    educations,
-}: AccordionSchoolProps) {
+function TabSchoolContent({ educations }: { educations: EducationType[] }) {
     const __ = useTrans();
 
     return (
-        <AccordionItem
-            index={index}
-            title={title}
-            open={open}
-            onChange={onChange}
-            appear={appear}
-        >
-            {/* Content goes here */}
-            <div
-                className={cn(
-                    // Default styles
-                    'flex flex-col',
-
-                    // Responsive styles
-                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                    'py-4 sm:py-6 md:py-8 lg:py-10',
-                    'gap-6 sm:gap-12',
-
-                    // Apparition styles
-                    'scale-90 opacity-0 transition-all duration-1000',
-                    open && 'scale-100 opacity-100 delay-125',
-                )}
-            >
-                <ul
-                    className={cn(
-                        // Default styles
-                        'flex flex-col',
-
-                        // Responsive styles
-                        'gap-6 sm:gap-10',
+        <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-3 border-b border-border pb-8">
+                <h3 className="text-2xl font-medium tracking-tight text-foreground sm:text-3xl">
+                    {__(
+                        'landing.landing.about.tabs.education.title',
+                        'Formation & Diplômes',
                     )}
-                >
-                    {educations.map((exp, idx) => (
-                        <li
-                            key={`school-${idx}`}
-                            className={cn(
-                                // Default styles
-                                'flex items-start justify-between',
-
-                                // Responsive styles
-                                'flex-col gap-4 sm:flex-row sm:gap-0',
-                                'border-b border-border pb-4 sm:border-0 sm:pb-0',
-                            )}
-                        >
-                            <div
-                                className={cn(
-                                    // Default styles
-                                    'flex shrink-0 flex-col',
-
-                                    'sm:w-[25%]',
-                                )}
-                            >
-                                <h4
-                                    className={cn(
-                                        // Default styles
-                                        'font-medium',
-                                        'text-lg',
-                                    )}
-                                >
-                                    {exp.institution}
-                                </h4>
-                                <p
-                                    className={cn(
-                                        // Default styles
-                                        'font-light',
-                                        'text-base',
-                                    )}
-                                >
-                                    {exp.type}
-                                </p>
-                                <p
-                                    className={cn(
-                                        // Default styles
-                                        'font-light',
-                                        'text-base',
-                                    )}
-                                >
-                                    {exp.duration}
-                                </p>
-                            </div>
-                            <p
-                                className={cn(
-                                    // Default styles
-                                    'font-light',
-                                    'text-base',
-                                    'shrink-0 sm:w-[65%]',
-                                )}
-                            >
-                                {exp.description}
-                            </p>
-                        </li>
-                    ))}
-                </ul>
-                <div
-                    className={cn(
-                        // Default styles
-                        'text-base font-medium md:text-lg',
-                    )}
-                >
+                </h3>
+                <p className="max-w-2xl text-sm leading-relaxed font-light text-muted-foreground sm:text-base">
                     {__(
                         'landing.landing.about.tabs.education.description',
-                        'These experiences have shaped my technical and analytical mindset, preparing me for future challenges in the tech world.',
+                        "Un cursus d'ingénieur rigoureux complété par des certifications internationales, forgeant une approche analytique et pragmatique de la résolution de problèmes.",
                     )}
-                </div>
+                </p>
             </div>
-        </AccordionItem>
+            <ul className="flex flex-col gap-10 pt-2 sm:gap-12">
+                {educations.map((edu, idx) => (
+                    <li
+                        key={`school-${idx}`}
+                        className="flex flex-col justify-between gap-6 sm:flex-row sm:items-start"
+                    >
+                        <div className="flex shrink-0 flex-col gap-1 sm:w-[30%]">
+                            <h4 className="text-lg font-medium text-foreground">
+                                {edu.institution}
+                            </h4>
+                            <p className="text-sm font-normal text-foreground/90">
+                                {edu.type}
+                            </p>
+                            <span className="mt-2 text-xs font-light text-muted-foreground">
+                                {edu.duration}
+                            </span>
+                        </div>
+                        <p className="text-sm leading-relaxed font-light text-foreground/80 sm:w-[65%] sm:text-base">
+                            {edu.description}
+                        </p>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 }
 
-interface AccordionTechStackProps extends AccordionItemProps {
-    stacks: StacksType[];
-}
+// -------------------------
+// Tab 4: Tech Stack Content
+// -------------------------
 
-function AccordionTechStack({
-    index,
-    title,
-    open,
-    onChange,
-    appear,
-    stacks,
-}: AccordionTechStackProps) {
+function TabTechStackContent({ stacks }: { stacks: StacksType[] }) {
+    const __ = useTrans();
+
     return (
-        <AccordionItem
-            index={index}
-            title={title}
-            open={open}
-            onChange={onChange}
-            appear={appear}
-        >
-            {/* Content goes here */}
-            <div
-                className={cn(
-                    // Default styles
-                    'flex flex-col',
-
-                    // Responsive styles
-                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                    'py-4 sm:py-6 md:py-8 lg:py-10',
-                    'gap-6 sm:gap-12',
-
-                    // Apparition styles
-                    'scale-90 opacity-0 transition-all duration-1000',
-                    open && 'scale-100 opacity-100 delay-125',
-                )}
-            >
-                <ul
-                    className={cn(
-                        // Default styles
-                        'flex flex-col',
-
-                        // Responsive styles
-                        'gap-6 sm:gap-10',
+        <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-3 border-b border-border pb-8">
+                <h3 className="text-2xl font-medium tracking-tight text-foreground sm:text-3xl">
+                    {__(
+                        'landing.landing.about.tabs.tech_stack.title',
+                        'Stack Technologique',
                     )}
-                >
-                    {stacks
-                        .sort((a, b) => a.sort_order - b.sort_order)
-                        .map((s, idx) => (
-                            <li
-                                key={`techstack-${idx}`}
-                                className={cn(
-                                    // Default styles
-                                    'flex items-start justify-between',
-
-                                    // Responsive styles
-                                    'flex-col gap-4 sm:flex-row sm:gap-0',
-                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
-                                    idx === stacks.length - 1 && 'border-0',
-                                )}
-                            >
-                                <div
-                                    className={cn(
-                                        // Default styles
-                                        'flex shrink-0 flex-col',
-
-                                        'sm:w-[25%]',
-                                    )}
-                                >
-                                    <h4
-                                        className={cn(
-                                            // Default styles
-                                            'font-medium',
-                                            'text-lg',
-                                        )}
-                                    >
-                                        {s.name}
-                                    </h4>
-                                </div>
-                                <div
-                                    className={cn(
-                                        // Default styles
-                                        'flex flex-wrap gap-2.5 sm:w-[65%]',
-                                    )}
-                                >
-                                    {s.items
-                                        .sort(
-                                            (a, b) =>
-                                                a.sort_order - b.sort_order,
-                                        )
-                                        .map((item, itemIdx) => (
-                                            <span
-                                                key={`stack-${itemIdx}`}
-                                                className={cn(
-                                                    // Default styles
-                                                    'border border-primary px-2.5 py-1 font-light',
-                                                )}
-                                            >
-                                                {item.name}
-                                            </span>
-                                        ))}
-                                </div>
-                            </li>
-                        ))}
-                </ul>
+                </h3>
             </div>
-        </AccordionItem>
+            <ul className="flex flex-col gap-8 pt-2 sm:gap-9">
+                {stacks
+                    .sort((a, b) => a.sort_order - b.sort_order)
+                    .map((s, idx) => (
+                        <li
+                            key={`stack-${idx}`}
+                            className="flex flex-col items-start justify-between gap-6 sm:flex-row"
+                        >
+                            <div className="shrink-0 pt-1 sm:w-[28%]">
+                                <h4 className="text-base font-medium text-foreground sm:text-lg">
+                                    {s.name}
+                                </h4>
+                            </div>
+                            <div className="flex flex-wrap gap-2.5 sm:w-[68%]">
+                                {s.items
+                                    .sort((a, b) => a.sort_order - b.sort_order)
+                                    .map((item, itemIdx) => (
+                                        <span
+                                            key={`item-${itemIdx}`}
+                                            className="border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light text-foreground sm:text-sm"
+                                        >
+                                            {item.name}
+                                        </span>
+                                    ))}
+                            </div>
+                        </li>
+                    ))}
+            </ul>
+        </div>
     );
 }
 
-interface AccordionToolsProps extends AccordionItemProps {
-    tools: ToolsType[];
-}
+// -------------------------
+// Tab 5: Tools Content
+// -------------------------
 
-function AccordionTools({
-    index,
-    title,
-    open,
-    onChange,
-    appear,
-    tools,
-}: AccordionToolsProps) {
+function TabToolsContent({ tools }: { tools: ToolsType[] }) {
+    const __ = useTrans();
+
     return (
-        <AccordionItem
-            index={index}
-            title={title}
-            open={open}
-            onChange={onChange}
-            appear={appear}
-        >
-            {/* Content goes here */}
-            <div
-                className={cn(
-                    // Default styles
-                    'flex flex-col',
-
-                    // Responsive styles
-                    'px-6 sm:px-8 md:px-10 lg:px-12.5',
-                    'py-4 sm:py-6 md:py-8 lg:py-10',
-                    'gap-6 sm:gap-12',
-
-                    // Apparition styles
-                    'scale-90 opacity-0 transition-all duration-1000',
-                    open && 'scale-100 opacity-100 delay-125',
-                )}
-            >
-                <ul
-                    className={cn(
-                        // Default styles
-                        'flex flex-col',
-
-                        // Responsive styles
-                        'gap-6 sm:gap-10',
+        <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-3 border-b border-border pb-8">
+                <h3 className="text-2xl font-medium tracking-tight text-foreground sm:text-3xl">
+                    {__(
+                        'landing.landing.about.tabs.tools.title',
+                        'Outils & Logiciels',
                     )}
-                >
-                    {tools
-                        .sort((a, b) => a.sort_order - b.sort_order)
-                        .map((t, idx) => (
-                            <li
-                                key={`tools-${idx}`}
-                                className={cn(
-                                    // Default styles
-                                    'flex items-start justify-between',
-
-                                    // Responsive styles
-                                    'flex-col gap-4 sm:flex-row sm:gap-0',
-                                    'border-b border-border pb-4 sm:border-0 sm:pb-0',
-                                    idx === tools.length - 1 && 'border-0',
-                                )}
-                            >
-                                <div
-                                    className={cn(
-                                        // Default styles
-                                        'flex shrink-0 flex-col',
-
-                                        'sm:w-[25%]',
-                                    )}
-                                >
-                                    <h4
-                                        className={cn(
-                                            // Default styles
-                                            'font-medium',
-                                            'text-lg',
-                                        )}
-                                    >
-                                        {t.name}
-                                    </h4>
-                                </div>
-                                <div
-                                    className={cn(
-                                        // Default styles
-                                        'flex flex-wrap gap-2.5 sm:w-[65%]',
-                                    )}
-                                >
-                                    {t.items
-                                        .sort(
-                                            (a, b) =>
-                                                a.sort_order - b.sort_order,
-                                        )
-                                        .map((item, itemIdx) => (
-                                            <span
-                                                key={`tool-${itemIdx}`}
-                                                className={cn(
-                                                    // Default styles
-                                                    'border border-primary px-2.5 py-1 font-light',
-                                                )}
-                                            >
-                                                {item.name}
-                                            </span>
-                                        ))}
-                                </div>
-                            </li>
-                        ))}
-                </ul>
+                </h3>
             </div>
-        </AccordionItem>
+            <ul className="flex flex-col gap-8 pt-2 sm:gap-9">
+                {tools
+                    .sort((a, b) => a.sort_order - b.sort_order)
+                    .map((t, idx) => (
+                        <li
+                            key={`tool-${idx}`}
+                            className="flex flex-col items-start justify-between gap-6 sm:flex-row"
+                        >
+                            <div className="shrink-0 pt-1 sm:w-[28%]">
+                                <h4 className="text-base font-medium text-foreground sm:text-lg">
+                                    {t.name}
+                                </h4>
+                            </div>
+                            <div className="flex flex-wrap gap-2.5 sm:w-[68%]">
+                                {t.items
+                                    .sort((a, b) => a.sort_order - b.sort_order)
+                                    .map((item, itemIdx) => (
+                                        <span
+                                            key={`tool-item-${itemIdx}`}
+                                            className="border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light text-foreground sm:text-sm"
+                                        >
+                                            {item.name}
+                                        </span>
+                                    ))}
+                            </div>
+                        </li>
+                    ))}
+            </ul>
+        </div>
     );
 }
