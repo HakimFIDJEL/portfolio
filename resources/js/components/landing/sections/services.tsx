@@ -282,7 +282,7 @@ export default function Services({ appear }: ServicesProps) {
                                             <ArrowUpRight
                                                 className={cn(
                                                     'size-5 shrink-0 stroke-[1.5] text-primary-foreground',
-                                                    'transition-all duration-300 ease-out',
+                                                    'transition-all duration-600 ease-out',
                                                     'group-hover:-translate-y-full group-hover:opacity-0',
                                                     'group-focus-visible:-translate-y-full group-focus-visible:opacity-0',
                                                 )}
@@ -292,7 +292,7 @@ export default function Services({ appear }: ServicesProps) {
                                                 className={cn(
                                                     'absolute inset-0 size-5 shrink-0 stroke-[1.5] text-primary-foreground',
                                                     'translate-y-full opacity-0',
-                                                    'transition-all duration-300 ease-out',
+                                                    'transition-all duration-600 ease-out',
                                                     'group-hover:translate-y-0 group-hover:opacity-100',
                                                     'group-focus-visible:translate-y-0 group-focus-visible:opacity-100',
                                                 )}
