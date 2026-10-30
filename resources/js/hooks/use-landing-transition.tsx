@@ -1,3 +1,4 @@
+import { NAVIGATION_CLOSE_DURATION } from '@/lib/navigation';
 import { router } from '@inertiajs/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -97,7 +98,7 @@ export function useLandingTransitions() {
 
     // Gestionnaire de minuteries sécurisé
     const timeouts = useRef<ReturnType<typeof setTimeout>[]>([]);
-    const isFirstMount = useRef(true);
+    const hasOpenedNavigation = useRef(false);
     const isTransitioningRef = useRef(false);
 
     const safeTimeout = useCallback((callback: () => void, delay: number) => {
@@ -186,43 +187,42 @@ export function useLandingTransitions() {
     // -----------------------------------
     // Séquences d'ouverture et fermeture du menu
     // -----------------------------------
-    const _openNavigationSequence = useCallback(() => {
-        // Déployer les volets de transition pour servir de background
-        setTransitionPanelsActive({ active: true, mode: 'staggered' });
-        setContentActive(false);
-
-        safeTimeout(() => {
-            setNavigationWrapperActive(true);
-            safeTimeout(() => {
-                setNavigationContentActive(true);
-            }, 50);
-        }, 500);
-    }, [safeTimeout]);
-
-    const _closeNavigationSequence = useCallback(() => {
-        setNavigationContentActive(false);
-    }, []);
-
-    const completeNavigationClose = useCallback(() => {
-        setNavigationWrapperActive(false);
-        setTransitionPanelsActive({ active: false, mode: 'staggered' });
-        safeTimeout(() => {
-            setContentActive(true);
-        }, 500);
-    }, [safeTimeout]);
-
     useEffect(() => {
-        if (isFirstMount.current) {
-            isFirstMount.current = false;
+        // Les changements de page pilotent leur propre séquence de volets.
+        if (isTransitioningRef.current) {
             return;
         }
 
+        const timeoutIds: ReturnType<typeof setTimeout>[] = [];
+
         if (navigationActive) {
-            _openNavigationSequence();
-        } else {
-            _closeNavigationSequence();
+            hasOpenedNavigation.current = true;
+            setTransitionPanelsActive({ active: true, mode: 'staggered' });
+            setContentActive(false);
+
+            timeoutIds.push(
+                setTimeout(() => setNavigationWrapperActive(true), 500),
+                setTimeout(() => setNavigationContentActive(true), 550),
+            );
+        } else if (hasOpenedNavigation.current) {
+            setNavigationContentActive(false);
+            timeoutIds.push(
+                setTimeout(() => {
+                    setNavigationWrapperActive(false);
+                    setTransitionPanelsActive({
+                        active: false,
+                        mode: 'staggered',
+                    });
+                }, NAVIGATION_CLOSE_DURATION),
+                setTimeout(
+                    () => setContentActive(true),
+                    NAVIGATION_CLOSE_DURATION + 500,
+                ),
+            );
         }
-    }, [navigationActive, _openNavigationSequence, _closeNavigationSequence]);
+
+        return () => timeoutIds.forEach(clearTimeout);
+    }, [navigationActive]);
 
     // -----------------------------------
     // Navigation inter-pages et changement de langue
@@ -341,7 +341,6 @@ export function useLandingTransitions() {
         navigationContentActive,
         setNavigationActive,
         setNavigationContentActive,
-        completeNavigationClose,
 
         // Panneaux et volets
         transitionPanelsActive,

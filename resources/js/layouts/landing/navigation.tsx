@@ -1,5 +1,10 @@
 // resources/js/layouts/landing/navigation.tsx
 
+import {
+    NAVIGATION_ITEM_CLOSE_DELAY,
+    NAVIGATION_ITEM_CLOSE_DURATION,
+    NAVIGATION_SECTIONS,
+} from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import { usePage } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
@@ -28,9 +33,10 @@ export default function Navigation({
     handleMenuToggle,
 }: NavigationProps) {
     const __ = useTrans();
+    const { navigationActive } = useLandingContext();
 
     useEffect(() => {
-        if (!showNavigation) {
+        if (!navigationActive) {
             return;
         }
 
@@ -42,7 +48,7 @@ export default function Navigation({
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [showNavigation, handleMenuToggle]);
+    }, [navigationActive, handleMenuToggle]);
 
     return (
         <nav
@@ -80,7 +86,7 @@ interface NavigationHeaderProps {
 function NavigationHeader({
     showNavigationContent,
     handleMenuToggle,
-    closeDuration = 1000,
+    closeDuration = NAVIGATION_ITEM_CLOSE_DURATION,
 }: NavigationHeaderProps) {
     return (
         <Curtain
@@ -145,52 +151,21 @@ function NavigationContent({
     handleMenuToggle,
 }: NavigationContentProps) {
     const __ = useTrans();
-    const { completeNavigationClose } = useLandingContext();
 
     const links: Link[] = useMemo(
-        () => [
-            {
-                index: '01',
-                href: '#top',
-                label: __('landing.layout.navigation.home', 'Home'),
+        () =>
+            NAVIGATION_SECTIONS.map((section, index) => ({
+                index: String(index + 1).padStart(2, '0'),
+                href: `#${section.anchor}`,
+                label: __(
+                    `landing.layout.navigation.${section.key}`,
+                    section.label,
+                ),
                 show: false,
-            },
-            {
-                index: '02',
-                href: '#about',
-                label: __('landing.layout.navigation.about', 'About'),
-                show: false,
-            },
-            {
-                index: '03',
-                href: '#services',
-                label: __('landing.layout.navigation.services', 'Services'),
-                show: false,
-            },
-            {
-                index: '04',
-                href: '#projects',
-                label: __('landing.layout.navigation.projects', 'Projects'),
-                show: false,
-            },
-            {
-                index: '05',
-                href: '#sandbox',
-                label: __('landing.layout.navigation.sandbox', 'Sandbox'),
-                show: false,
-            },
-            {
-                index: '06',
-                href: '#contact',
-                label: __('landing.layout.navigation.contact', 'Contact'),
-                show: false,
-            },
-        ],
+            })),
         [__],
     );
 
-    const itemCloseDuration = 1000;
-    const itemDelay = 100;
     const [visibleLinks, setVisibleLinks] = useState<Link[]>([]);
 
     useEffect(() => {
@@ -211,7 +186,7 @@ function NavigationContent({
                             ),
                         );
                     },
-                    index * (show ? 125 : itemDelay),
+                    index * (show ? 125 : NAVIGATION_ITEM_CLOSE_DELAY),
                 );
                 timeoutIds.push(id);
             });
@@ -226,7 +201,7 @@ function NavigationContent({
         return () => {
             timeoutIds.forEach(clearTimeout);
         };
-    }, [showNavigationContent, links, itemDelay]);
+    }, [showNavigationContent, links]);
 
     return (
         <div className="mx-auto flex w-full max-w-7xl flex-col px-6 py-4 sm:w-[90%] sm:px-8 sm:py-6 lg:px-12.5 lg:py-10">
@@ -234,12 +209,7 @@ function NavigationContent({
                 <NavigationLink
                     link={link}
                     key={index}
-                    closeDuration={itemCloseDuration}
-                    onClosed={
-                        index === visibleLinks.length - 1
-                            ? completeNavigationClose
-                            : undefined
-                    }
+                    closeDuration={NAVIGATION_ITEM_CLOSE_DURATION}
                     handleMenuToggle={handleMenuToggle}
                 />
             ))}
@@ -250,13 +220,11 @@ function NavigationContent({
 interface NavigationLinkProps {
     link: Link;
     closeDuration?: number;
-    onClosed?: () => void;
     handleMenuToggle: (show: boolean) => void;
 }
 function NavigationLink({
     link,
     closeDuration,
-    onClosed,
     handleMenuToggle,
 }: NavigationLinkProps) {
     const { href, index, label, show } = link;
@@ -284,7 +252,6 @@ function NavigationLink({
         <Curtain
             showCurtain={!show}
             closeDuration={closeDuration}
-            onClosed={onClosed}
             className="w-max"
         >
             <a
