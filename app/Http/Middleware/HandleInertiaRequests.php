@@ -83,10 +83,10 @@ class HandleInertiaRequests extends Middleware
 
             'avatar_url' => $publicUser?->avatar?->url,
             'resume_url' => $publicUser?->resume?->url,
-            'ziggy' => fn (): array => [
-                ...(new Ziggy)->toArray(),
+            'ziggy' => fn (): array => array_merge((new Ziggy)->toArray(), [
+                'url' => $request->schemeAndHttpHost(),
                 'location' => $request->url(),
-            ],
+            ]),
         ]);
     }
 

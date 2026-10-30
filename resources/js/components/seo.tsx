@@ -56,8 +56,8 @@ export default function Seo({
     const metaDescription =
         description ||
         (currentLocale === 'fr'
-            ? "Portfolio de Hakim Fidjel, ingénieur logiciel et développeur full-stack indépendant. Conception d'architectures applicatives robustes, systèmes agentiques et solutions web modernes."
-            : 'Portfolio of Hakim Fidjel, Software Engineer and independent full-stack developer. Designing robust software architectures, agentic systems, and modern web applications.');
+            ? "Portfolio de Hakim Fidjel, ingénieur logiciel et ingénieur fullstack indépendant. Conception d'architectures applicatives robustes, systèmes agentiques et solutions web modernes."
+            : 'Portfolio of Hakim Fidjel, Software Engineer and independent fullstack engineer. Designing robust software architectures, agentic systems, and modern web applications.');
 
     const ogLocale = currentLocale === 'fr' ? 'fr_FR' : 'en_US';
     const alternateOgLocale = currentLocale === 'fr' ? 'en_US' : 'fr_FR';
@@ -78,7 +78,7 @@ export default function Seo({
             <meta name="author" content="Hakim Fidjel" head-key="author" />
             <meta
                 name="keywords"
-                content="Hakim Fidjel, Portfolio, Ingénieur Logiciel, Software Engineer, Développeur Freelance, Laravel 12, React 19, TypeScript, Inertia.js, Tailwind CSS, Docker, Architecture Logicielle"
+                content="Hakim Fidjel, Portfolio, Ingénieur Logiciel, Software Engineer, Ingénieur Fullstack, Ingénieur Freelance, Laravel 12, React 19, TypeScript, Inertia.js, Tailwind CSS, Docker, Architecture Logicielle"
                 head-key="keywords"
             />
 

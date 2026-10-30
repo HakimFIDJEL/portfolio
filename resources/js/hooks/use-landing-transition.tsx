@@ -1,3 +1,4 @@
+import { NAVIGATION_CLOSE_DURATION } from '@/lib/navigation';
 import { router } from '@inertiajs/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -13,10 +14,16 @@ export function useLandingTransitions() {
     // States
     // -----------------------------------
     // Contrôle d'affichage progressif du contenu (rideaux, fade-in)
-    const [contentActive, setContentActive] = useState(false);
+    const isHome =
+        typeof window !== 'undefined'
+            ? window.location.pathname === '/' ||
+              window.location.pathname === ''
+            : true;
+
+    const [contentActive, setContentActive] = useState(!isHome);
     const [loaderState, setLoaderState] = useState<
         'intro' | 'transition' | 'none'
-    >('intro');
+    >(isHome ? 'intro' : 'none');
 
     // Navigation plein écran
     const [navigationActive, setNavigationActive] = useState(false);
@@ -37,7 +44,7 @@ export function useLandingTransitions() {
 
     // Écran de chargement d'intro ("Salut, c'est Hakim")
     const [introLoaderWrapperActive, setIntroLoaderWrapperActive] =
-        useState(true);
+        useState(isHome);
     const [introLoaderContentActive, setIntroLoaderContentActive] =
         useState(false);
 
@@ -91,7 +98,7 @@ export function useLandingTransitions() {
 
     // Gestionnaire de minuteries sécurisé
     const timeouts = useRef<ReturnType<typeof setTimeout>[]>([]);
-    const isFirstMount = useRef(true);
+    const hasOpenedNavigation = useRef(false);
     const isTransitioningRef = useRef(false);
 
     const safeTimeout = useCallback((callback: () => void, delay: number) => {
@@ -180,43 +187,42 @@ export function useLandingTransitions() {
     // -----------------------------------
     // Séquences d'ouverture et fermeture du menu
     // -----------------------------------
-    const _openNavigationSequence = useCallback(() => {
-        // Déployer les volets de transition pour servir de background
-        setTransitionPanelsActive({ active: true, mode: 'staggered' });
-        setContentActive(false);
-
-        safeTimeout(() => {
-            setNavigationWrapperActive(true);
-            safeTimeout(() => {
-                setNavigationContentActive(true);
-            }, 50);
-        }, 500);
-    }, [safeTimeout]);
-
-    const _closeNavigationSequence = useCallback(() => {
-        setNavigationContentActive(false);
-    }, []);
-
-    const completeNavigationClose = useCallback(() => {
-        setNavigationWrapperActive(false);
-        setTransitionPanelsActive({ active: false, mode: 'staggered' });
-        safeTimeout(() => {
-            setContentActive(true);
-        }, 500);
-    }, [safeTimeout]);
-
     useEffect(() => {
-        if (isFirstMount.current) {
-            isFirstMount.current = false;
+        // Les changements de page pilotent leur propre séquence de volets.
+        if (isTransitioningRef.current) {
             return;
         }
 
+        const timeoutIds: ReturnType<typeof setTimeout>[] = [];
+
         if (navigationActive) {
-            _openNavigationSequence();
-        } else {
-            _closeNavigationSequence();
+            hasOpenedNavigation.current = true;
+            setTransitionPanelsActive({ active: true, mode: 'staggered' });
+            setContentActive(false);
+
+            timeoutIds.push(
+                setTimeout(() => setNavigationWrapperActive(true), 500),
+                setTimeout(() => setNavigationContentActive(true), 550),
+            );
+        } else if (hasOpenedNavigation.current) {
+            setNavigationContentActive(false);
+            timeoutIds.push(
+                setTimeout(() => {
+                    setNavigationWrapperActive(false);
+                    setTransitionPanelsActive({
+                        active: false,
+                        mode: 'staggered',
+                    });
+                }, NAVIGATION_CLOSE_DURATION),
+                setTimeout(
+                    () => setContentActive(true),
+                    NAVIGATION_CLOSE_DURATION + 500,
+                ),
+            );
         }
-    }, [navigationActive, _openNavigationSequence, _closeNavigationSequence]);
+
+        return () => timeoutIds.forEach(clearTimeout);
+    }, [navigationActive]);
 
     // -----------------------------------
     // Navigation inter-pages et changement de langue
@@ -239,6 +245,27 @@ export function useLandingTransitions() {
             setTransitionPanelsActive({ active: true, mode: 'staggered' });
             setContentActive(false);
 
+            // Normaliser l'URL en chemin relatif (pathname + search + hash) si elle cible le même site
+            // afin d'empêcher Inertia de déclencher un rechargement dur du navigateur en cas de divergence d'hôte (ex: localhost vs 127.0.0.1)
+            let targetUrl = href;
+            try {
+                const parsed = new URL(href, window.location.origin);
+                const isSameHost = parsed.origin === window.location.origin;
+                const isLocalMismatch =
+                    ['localhost', '127.0.0.1'].includes(parsed.hostname) &&
+                    ['localhost', '127.0.0.1'].includes(
+                        window.location.hostname,
+                    ) &&
+                    (parsed.port === window.location.port ||
+                        (!parsed.port && !window.location.port));
+
+                if (isSameHost || isLocalMismatch) {
+                    targetUrl = parsed.pathname + parsed.search + parsed.hash;
+                }
+            } catch {
+                // Déjà un chemin relatif
+            }
+
             // Attendre la fin complète de l'apparition des volets (1000ms) avant de lancer le rechargement
             safeTimeout(() => {
                 if (navigationActive) {
@@ -246,7 +273,7 @@ export function useLandingTransitions() {
                     setNavigationActive(false);
                 }
 
-                router.visit(href, {
+                router.visit(targetUrl, {
                     preserveScroll: false,
                     preserveState: false,
                     onFinish: () => {
@@ -314,7 +341,6 @@ export function useLandingTransitions() {
         navigationContentActive,
         setNavigationActive,
         setNavigationContentActive,
-        completeNavigationClose,
 
         // Panneaux et volets
         transitionPanelsActive,

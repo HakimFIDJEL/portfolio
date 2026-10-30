@@ -28,6 +28,8 @@ class BackofficeSeeder extends Seeder
             ['sort_order' => 6, 'name_fr' => 'Système Agentique', 'name_en' => 'Agentic System'],
             ['sort_order' => 7, 'name_fr' => 'Architecture Cloud', 'name_en' => 'Cloud Architecture'],
             ['sort_order' => 8, 'name_fr' => 'Apprentissage', 'name_en' => 'Learning'],
+            ['sort_order' => 9, 'name_fr' => 'DevOps', 'name_en' => 'DevOps'],
+            ['sort_order' => 10, 'name_fr' => 'Open Source', 'name_en' => 'Open Source'],
         ];
 
         foreach ($mockTags as $tag) {
@@ -243,6 +245,15 @@ class BackofficeSeeder extends Seeder
         $mockExperiences = [
             [
                 'sort_order' => 1,
+                'company' => 'Hakim Fidjel EI',
+                'job_fr' => 'Ingénieur Logiciel & Consultant IT', 'job_en' => 'Software Engineer & IT Consultant',
+                'status_fr' => 'Micro-entrepreneur', 'status_en' => 'Self-employed',
+                'duration' => '10/26 - Present',
+                'description_fr' => 'Conseil en architecture logicielle et développement d\'applications web sur mesure. Automatisation des déploiements et des processus DevOps, audit technique et intégration de systèmes intelligents adaptés aux besoins des clients.',
+                'description_en' => 'Software architecture consulting and custom web application development. Deployment and DevOps process automation, technical audits, and integration of intelligent systems tailored to client needs.',
+            ],
+            [
+                'sort_order' => 2,
                 'company' => 'TenderCrunch',
                 'job_fr' => 'Ingénieur Logiciel', 'job_en' => 'Software Engineer',
                 'status_fr' => 'CDI', 'status_en' => 'Full-time',
@@ -251,7 +262,7 @@ class BackofficeSeeder extends Seeder
                 'description_en' => 'Software engineering and agentic systems design, advanced automation architectures, and fullstack development of high-impact applications.',
             ],
             [
-                'sort_order' => 2,
+                'sort_order' => 3,
                 'company' => 'Réservoir Digital',
                 'job_fr' => 'Ingénieur Fullstack', 'job_en' => 'Fullstack Engineer',
                 'status_fr' => 'Apprentissage', 'status_en' => 'Apprenticeship',
@@ -260,16 +271,16 @@ class BackofficeSeeder extends Seeder
                 'description_en' => 'Led end-to-end web project development from requirements analysis to production deployment. Ensured alignment with business goals, streamlined workflows, and modernized internal processes.',
             ],
             [
-                'sort_order' => 3,
+                'sort_order' => 4,
                 'company' => 'Réservoir Digital',
-                'job_fr' => 'Développeur Fullstack', 'job_en' => 'Fullstack Developer',
+                'job_fr' => 'Ingénieur Fullstack', 'job_en' => 'Fullstack Engineer',
                 'status_fr' => 'Stage', 'status_en' => 'Internship',
                 'duration' => '05/23 - 08/23',
                 'description_fr' => 'Développement d\'applications web et de solutions numériques sur mesure. Montée en compétences sur l\'écosystème web moderne et collaboration au sein d\'une équipe agile.',
                 'description_en' => 'Developed custom web applications and tailored digital solutions. Rapid onboarding on modern software stacks within an agile team environment.',
             ],
             [
-                'sort_order' => 4,
+                'sort_order' => 5,
                 'company' => 'Hôpital Maritime de Zuydcoote',
                 'job_fr' => 'Développeur Web & Technicien Informatique', 'job_en' => 'Web Developer & IT Technician',
                 'status_fr' => 'Stage', 'status_en' => 'Internship',
@@ -280,8 +291,8 @@ class BackofficeSeeder extends Seeder
         ];
 
         foreach ($mockExperiences as $exp) {
-            Experience::firstOrCreate(
-                ['company' => $exp['company'], 'job_fr' => $exp['job_fr']],
+            Experience::updateOrCreate(
+                ['company' => $exp['company'], 'duration' => $exp['duration']],
                 $exp
             );
         }

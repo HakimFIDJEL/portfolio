@@ -68,8 +68,17 @@ class ProjectSeeder extends Seeder
                 'is_new' => 0,
                 'type' => 'project',
                 'end_date' => '2026-01-30 00:00:00',
-                'tags' => [],
-                'stack_items' => [],
+                'tags' => ['Application Web', 'Système Agentique', 'Architecture Cloud', 'Open Source'],
+                'stack_items' => [
+                    'Laravel',
+                    'React',
+                    'Inertia.js',
+                    'TypeScript',
+                    'WebSockets',
+                    'REST APIs',
+                    'RAG Multi-Agents',
+                    'Inférence LLM',
+                ],
             ],
             [
                 'sort_order' => 4,
@@ -90,8 +99,15 @@ class ProjectSeeder extends Seeder
                 'is_new' => 0,
                 'type' => 'project',
                 'end_date' => '2025-12-17 00:00:00',
-                'tags' => [],
-                'stack_items' => [],
+                'tags' => ['Application Web', 'Site Web', 'Architecture Cloud', 'DevOps'],
+                'stack_items' => [
+                    'Laravel',
+                    'React',
+                    'TypeScript',
+                    'Inertia.js',
+                    'Tailwind CSS',
+                    'SQLite',
+                ],
             ],
             [
                 'sort_order' => 6,
@@ -112,8 +128,15 @@ class ProjectSeeder extends Seeder
                 'is_new' => 0,
                 'type' => 'project',
                 'end_date' => null,
-                'tags' => [],
-                'stack_items' => [],
+                'tags' => ['Application Web', 'Architecture Cloud', 'DevOps', 'Script'],
+                'stack_items' => [
+                    'Laravel',
+                    'React',
+                    'TypeScript',
+                    'Inertia.js',
+                    'Python',
+                    'REST APIs',
+                ],
             ],
             [
                 'sort_order' => 14,
@@ -134,8 +157,10 @@ class ProjectSeeder extends Seeder
                 'is_new' => 0,
                 'type' => 'project',
                 'end_date' => '2024-10-30 00:00:00',
-                'tags' => [],
-                'stack_items' => [],
+                'tags' => ['Architecture Cloud', 'DevOps', 'Script'],
+                'stack_items' => [
+                    'Bash',
+                ],
             ],
             [
                 'sort_order' => 15,
@@ -156,8 +181,13 @@ class ProjectSeeder extends Seeder
                 'is_new' => 0,
                 'type' => 'project',
                 'end_date' => '2024-10-23 00:00:00',
-                'tags' => [],
-                'stack_items' => [],
+                'tags' => ['Application Web', 'Site Web', 'API', 'Architecture Cloud'],
+                'stack_items' => [
+                    'Laravel',
+                    'WebSockets',
+                    'REST APIs',
+                    'MySQL',
+                ],
             ],
             [
                 'sort_order' => 16,
@@ -178,8 +208,15 @@ class ProjectSeeder extends Seeder
                 'is_new' => 0,
                 'type' => 'project',
                 'end_date' => '2024-08-19 00:00:00',
-                'tags' => [],
-                'stack_items' => [],
+                'tags' => ['Application Web', 'Site Web', 'API', 'Architecture Cloud'],
+                'stack_items' => [
+                    'NestJS',
+                    'Next.js',
+                    'React',
+                    'TypeScript',
+                    'Tailwind CSS',
+                    'REST APIs',
+                ],
             ],
             [
                 'sort_order' => 22,
@@ -200,8 +237,12 @@ class ProjectSeeder extends Seeder
                 'is_new' => 0,
                 'type' => 'project',
                 'end_date' => '2024-02-05 00:00:00',
-                'tags' => [],
-                'stack_items' => [],
+                'tags' => ['Application Web', 'API', 'Architecture Cloud'],
+                'stack_items' => [
+                    'JavaScript',
+                    'MySQL',
+                    'REST APIs',
+                ],
             ],
             [
                 'sort_order' => 0,
@@ -597,7 +638,7 @@ class ProjectSeeder extends Seeder
 
             // Synchroniser les stack items
             if (! empty($stackItems)) {
-                $stackItemIds = StackItem::whereIn('name', $stackItems)->pluck('id')->toArray();
+                $stackItemIds = StackItem::whereIn('name', $stackItems)->get()->unique('name')->pluck('id')->toArray();
                 $project->stackItems()->sync($stackItemIds);
             }
         }

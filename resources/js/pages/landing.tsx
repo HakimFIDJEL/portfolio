@@ -125,7 +125,7 @@ export default function Landing({
                 )}
                 description={__(
                     'landing.landing.meta_description',
-                    "Portfolio de Hakim Fidjel, ingénieur logiciel et développeur indépendant. Conception d'architectures applicatives robustes, systèmes agentiques, ingénierie web moderne et solutions logicielles évolutives.",
+                    "Portfolio de Hakim Fidjel, ingénieur logiciel et ingénieur fullstack indépendant. Conception d'architectures applicatives robustes, systèmes agentiques, ingénierie web moderne et solutions logicielles évolutives.",
                 )}
                 jsonLd={jsonLd}
             />

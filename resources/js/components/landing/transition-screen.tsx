@@ -20,6 +20,8 @@ export default function TransitionScreen({
     const [visiblePanels, setVisiblePanels] = useState<number[]>([]);
 
     useEffect(() => {
+        const timeoutIds: ReturnType<typeof setTimeout>[] = [];
+
         if (mode === 'instant') {
             setVisiblePanels(active ? panelIndices : []);
             return;
@@ -28,17 +30,25 @@ export default function TransitionScreen({
         if (active) {
             setVisiblePanels([]);
             panelIndices.forEach((index) => {
-                setTimeout(() => {
-                    setVisiblePanels((prev) => [...prev, index]);
-                }, index * DELAY_INCREMENT);
+                timeoutIds.push(
+                    setTimeout(() => {
+                        setVisiblePanels((prev) => [...prev, index]);
+                    }, index * DELAY_INCREMENT),
+                );
             });
         } else {
             panelIndices.forEach((index) => {
-                setTimeout(() => {
-                    setVisiblePanels((prev) => prev.filter((i) => i !== index));
-                }, index * DELAY_INCREMENT);
+                timeoutIds.push(
+                    setTimeout(() => {
+                        setVisiblePanels((prev) =>
+                            prev.filter((i) => i !== index),
+                        );
+                    }, index * DELAY_INCREMENT),
+                );
             });
         }
+
+        return () => timeoutIds.forEach(clearTimeout);
     }, [active, panelIndices, mode]);
 
     return (

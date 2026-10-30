@@ -587,14 +587,14 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                         animate={{
                             opacity: 1,
                             transition: {
-                                duration: 0.8,
+                                duration: 1.1,
                                 ease: portfolioEase,
                             },
                         }}
                         exit={{
                             opacity: 0,
                             transition: {
-                                duration: 0.6,
+                                duration: 0.8,
                                 ease: portfolioEase,
                             },
                         }}
@@ -611,7 +611,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                             opacity: 1,
                             y: 0,
                             transition: {
-                                duration: 0.9,
+                                duration: 1.2,
                                 ease: portfolioEase,
                             },
                         }}
@@ -620,7 +620,7 @@ function SandboxDialog({ item, handleClose }: SandboxDialogProps) {
                             y: 40,
                             scale: 0.98,
                             transition: {
-                                duration: 0.6,
+                                duration: 0.8,
                                 ease: portfolioEase,
                             },
                         }}
