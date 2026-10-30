@@ -1,6 +1,7 @@
 // resources/js/components/landing/sections/about.tsx
 
 // Necessary imports
+import { useLandingContext } from '@/contexts/use-landing-context';
 import { cn } from '@/lib/utils';
 import { usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -275,14 +276,57 @@ function Accordions({
     experiences,
 }: AboutProps) {
     const [selectedTab, setSelectedTab] = React.useState<number>(1);
-    const masterDetailRef = React.useRef<HTMLDivElement>(null);
+    const [selectedMobileTab, setSelectedMobileTab] = React.useState<number>(1);
+    const desktopRef = React.useRef<HTMLDivElement>(null);
+    const mobileRef = React.useRef<HTMLDivElement>(null);
+    const desktopScrollActive = React.useRef(false);
     const pendingScrollTab = React.useRef<number | null>(null);
+    const { isHeaderVisible } = useLandingContext();
     const __ = useTrans();
+
+    const scrollDesktopToTop = React.useCallback(() => {
+        const container = desktopRef.current;
+        if (!container) return;
+
+        const header = document.getElementById('landing-header');
+        const headerOffset = isHeaderVisible ? (header?.offsetHeight ?? 0) : 0;
+        const top = Math.max(
+            0,
+            window.scrollY +
+                container.getBoundingClientRect().top -
+                headerOffset,
+        );
+
+        desktopScrollActive.current = Math.abs(window.scrollY - top) > 1;
+        window.scrollTo({ top, behavior: 'smooth' });
+    }, [isHeaderVisible]);
+
+    React.useEffect(() => {
+        if (desktopScrollActive.current) scrollDesktopToTop();
+    }, [scrollDesktopToTop]);
+
+    React.useEffect(() => {
+        const stopTrackingScroll = () => {
+            desktopScrollActive.current = false;
+        };
+        window.addEventListener('scrollend', stopTrackingScroll);
+        window.addEventListener('wheel', stopTrackingScroll, { passive: true });
+        window.addEventListener('touchstart', stopTrackingScroll, {
+            passive: true,
+        });
+        window.addEventListener('keydown', stopTrackingScroll);
+        return () => {
+            window.removeEventListener('scrollend', stopTrackingScroll);
+            window.removeEventListener('wheel', stopTrackingScroll);
+            window.removeEventListener('touchstart', stopTrackingScroll);
+            window.removeEventListener('keydown', stopTrackingScroll);
+        };
+    }, []);
 
     const scrollToSelectedTab = (id: number) => {
         if (pendingScrollTab.current !== id) return;
         pendingScrollTab.current = null;
-        masterDetailRef.current?.scrollIntoView({
+        mobileRef.current?.scrollIntoView({
             behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
                 .matches
                 ? 'instant'
@@ -292,15 +336,13 @@ function Accordions({
     };
 
     const handleSelectTab = (id: number) => {
-        pendingScrollTab.current = id === 0 ? null : id;
-        if (window.matchMedia('(min-width: 768px)').matches) {
-            scrollToSelectedTab(id);
-        }
-        if (id === selectedTab) {
-            scrollToSelectedTab(id);
-            return;
-        }
+        scrollDesktopToTop();
         setSelectedTab(id);
+    };
+
+    const handleSelectMobileTab = (id: number) => {
+        pendingScrollTab.current = id === 0 ? null : id;
+        setSelectedMobileTab(id);
     };
 
     const tabs = [
@@ -366,10 +408,9 @@ function Accordions({
     return (
         <FadeIn className="w-full" delay={150} show={appear ?? false}>
             <div
-                ref={masterDetailRef}
                 className={cn(
                     // Default styles
-                    'w-full scroll-mt-24 border-t border-b border-dashed border-border lg:scroll-mt-28',
+                    'w-full border-t border-b border-dashed border-border',
 
                     // Responsive styles
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
@@ -381,7 +422,10 @@ function Accordions({
                     plusCorners={['all']}
                 >
                     {/* Desktop Master-Detail (md:flex) */}
-                    <div className="hidden w-full scroll-mt-24 items-start bg-background md:flex lg:scroll-mt-28">
+                    <div
+                        ref={desktopRef}
+                        className="hidden w-full items-start bg-background md:flex"
+                    >
                         {/* Left Column - Navigation List */}
                         <div className="w-full shrink-0 self-stretch border-r border-border bg-background md:w-[320px] lg:w-[360px] xl:w-[380px]">
                             <div className="sticky top-24 lg:top-28">
@@ -458,15 +502,18 @@ function Accordions({
                     </div>
 
                     {/* Mobile Accordion (< md) */}
-                    <div className="flex flex-col divide-y divide-border md:hidden">
+                    <div
+                        ref={mobileRef}
+                        className="flex scroll-mt-24 flex-col divide-y divide-border md:hidden"
+                    >
                         {tabs.map((tab) => {
-                            const isSelected = selectedTab === tab.id;
+                            const isSelected = selectedMobileTab === tab.id;
                             return (
                                 <div key={tab.id} className="flex flex-col">
                                     <button
                                         type="button"
                                         onClick={() =>
-                                            handleSelectTab(
+                                            handleSelectMobileTab(
                                                 isSelected ? 0 : tab.id,
                                             )
                                         }
