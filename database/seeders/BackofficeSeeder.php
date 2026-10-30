@@ -28,6 +28,8 @@ class BackofficeSeeder extends Seeder
             ['sort_order' => 6, 'name_fr' => 'Système Agentique', 'name_en' => 'Agentic System'],
             ['sort_order' => 7, 'name_fr' => 'Architecture Cloud', 'name_en' => 'Cloud Architecture'],
             ['sort_order' => 8, 'name_fr' => 'Apprentissage', 'name_en' => 'Learning'],
+            ['sort_order' => 9, 'name_fr' => 'DevOps', 'name_en' => 'DevOps'],
+            ['sort_order' => 10, 'name_fr' => 'Open Source', 'name_en' => 'Open Source'],
         ];
 
         foreach ($mockTags as $tag) {
@@ -262,7 +264,7 @@ class BackofficeSeeder extends Seeder
             [
                 'sort_order' => 3,
                 'company' => 'Réservoir Digital',
-                'job_fr' => 'Développeur Fullstack', 'job_en' => 'Fullstack Developer',
+                'job_fr' => 'Ingénieur Fullstack', 'job_en' => 'Fullstack Engineer',
                 'status_fr' => 'Stage', 'status_en' => 'Internship',
                 'duration' => '05/23 - 08/23',
                 'description_fr' => 'Développement d\'applications web et de solutions numériques sur mesure. Montée en compétences sur l\'écosystème web moderne et collaboration au sein d\'une équipe agile.',
@@ -280,8 +282,8 @@ class BackofficeSeeder extends Seeder
         ];
 
         foreach ($mockExperiences as $exp) {
-            Experience::firstOrCreate(
-                ['company' => $exp['company'], 'job_fr' => $exp['job_fr']],
+            Experience::updateOrCreate(
+                ['company' => $exp['company'], 'duration' => $exp['duration']],
                 $exp
             );
         }

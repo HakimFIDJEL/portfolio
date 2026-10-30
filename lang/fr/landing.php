@@ -65,7 +65,7 @@ return [
     'landing' => [
 
         'meta_title' => 'Hakim Fidjel — Ingénieur Logiciel',
-        'meta_description' => "Portfolio de Hakim Fidjel, ingénieur logiciel et développeur indépendant. Conception d'architectures applicatives robustes, systèmes agentiques, ingénierie web moderne et solutions logicielles évolutives.",
+        'meta_description' => "Portfolio de Hakim Fidjel, ingénieur logiciel et ingénieur fullstack indépendant. Conception d'architectures applicatives robustes, systèmes agentiques, ingénierie web moderne et solutions logicielles évolutives.",
 
         'hero' => [
             'h2' => 'Ingénieur Logiciel',
@@ -89,7 +89,7 @@ return [
                     'status_badge' => 'Disponible',
                     'tag' => 'Manifeste & Démarche',
                     'statement' => 'Bâtir des architectures logicielles pérennes, où la clarté et la rigueur priment sur la complexité inutile.',
-                    'bio_1' => "Ingénieur logiciel en poste et développeur indépendant, je conçois des systèmes web complets avec une vision de bout en bout. De la modélisation des données et la conteneurisation jusqu'au raffinement ergonomique de l'interface, chaque décision technique répond à un impératif de fiabilité et d'efficacité mesurable.",
+                    'bio_1' => "Ingénieur logiciel en poste et ingénieur fullstack indépendant, je conçois des systèmes web complets avec une vision de bout en bout. De la modélisation des données et la conteneurisation jusqu'au raffinement ergonomique de l'interface, chaque décision technique répond à un impératif de fiabilité et d'efficacité mesurable.",
                     'bio_2' => "Mon travail s'articule autour du pragmatisme : rejeter la sur-ingénierie, privilégier un code typé, testé et documenté, et livrer des applications immédiatement maintenables par n'importe quelle équipe technique sans accumuler de dette invisible.",
                     'principles' => [
                         'label' => 'Principes d\'ingénierie',

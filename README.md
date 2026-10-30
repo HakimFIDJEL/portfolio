@@ -1,6 +1,6 @@
 # Portfolio — Hakim Fidjel
 
-Vitrine technique et professionnelle d'Hakim Fidjel, Ingénieur Logiciel & Développeur Full-Stack Indépendant (EI).
+Vitrine technique et professionnelle d'Hakim Fidjel, Ingénieur Logiciel & Ingénieur Fullstack Indépendant (EI).
 
 Ce projet illustre une architecture web moderne orientée performance, typage strict et Server-Side Rendering (SSR).
 

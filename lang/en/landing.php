@@ -65,7 +65,7 @@ return [
     'landing' => [
 
         'meta_title' => 'Hakim Fidjel — Software Engineer',
-        'meta_description' => 'Portfolio of Hakim Fidjel, Software Engineer and independent developer. Designing robust software architectures, agentic systems, modern web engineering, and scalable platforms.',
+        'meta_description' => 'Portfolio of Hakim Fidjel, Software Engineer and independent fullstack engineer. Designing robust software architectures, agentic systems, modern web engineering, and scalable platforms.',
 
         'hero' => [
             'h2' => 'Software Engineer',
@@ -89,7 +89,7 @@ return [
                     'status_badge' => 'Available',
                     'tag' => 'Manifesto & Approach',
                     'statement' => 'Building resilient software architectures where clarity and craftsmanship prevail over unnecessary complexity.',
-                    'bio_1' => 'Software engineer and independent developer, I design end-to-end web systems with an exhaustive technical scope. From database modeling and containerization to refined UI engineering, every technical choice serves measurable reliability and efficiency.',
+                    'bio_1' => 'Software engineer and independent fullstack engineer, I design end-to-end web systems with an exhaustive technical scope. From database modeling and containerization to refined UI engineering, every technical choice serves measurable reliability and efficiency.',
                     'bio_2' => 'My approach is grounded in pragmatism: avoiding over-engineering, favoring typed, tested, and documented codebases, and delivering applications that remain instantly maintainable without latent technical debt.',
                     'principles' => [
                         'label' => 'Engineering Principles',
