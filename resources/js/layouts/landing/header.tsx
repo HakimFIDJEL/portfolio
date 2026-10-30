@@ -64,6 +64,7 @@ export default function Header({
 
     return (
         <header
+            id="landing-header"
             className={cn(
                 // Default styles
                 'sticky top-0 right-0 left-0 z-30 grid w-full',

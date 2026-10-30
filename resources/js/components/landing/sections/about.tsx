@@ -1,6 +1,7 @@
 // resources/js/components/landing/sections/about.tsx
 
 // Necessary imports
+import { useLandingContext } from '@/contexts/use-landing-context';
 import { cn } from '@/lib/utils';
 import { usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -275,16 +276,73 @@ function Accordions({
     experiences,
 }: AboutProps) {
     const [selectedTab, setSelectedTab] = React.useState<number>(1);
-    const masterDetailRef = React.useRef<HTMLDivElement>(null);
+    const [selectedMobileTab, setSelectedMobileTab] = React.useState<number>(1);
+    const desktopRef = React.useRef<HTMLDivElement>(null);
+    const mobileRef = React.useRef<HTMLDivElement>(null);
+    const desktopScrollActive = React.useRef(false);
+    const pendingScrollTab = React.useRef<number | null>(null);
+    const { isHeaderVisible } = useLandingContext();
     const __ = useTrans();
 
-    const handleSelectTab = (id: number) => {
-        if (id === selectedTab) return;
-        setSelectedTab(id);
-        masterDetailRef.current?.scrollIntoView({
-            behavior: 'smooth',
+    const scrollDesktopToTop = React.useCallback(() => {
+        const container = desktopRef.current;
+        if (!container) return;
+
+        const header = document.getElementById('landing-header');
+        const headerOffset = isHeaderVisible ? (header?.offsetHeight ?? 0) : 0;
+        const top = Math.max(
+            0,
+            window.scrollY +
+                container.getBoundingClientRect().top -
+                headerOffset,
+        );
+
+        desktopScrollActive.current = Math.abs(window.scrollY - top) > 1;
+        window.scrollTo({ top, behavior: 'smooth' });
+    }, [isHeaderVisible]);
+
+    React.useEffect(() => {
+        if (desktopScrollActive.current) scrollDesktopToTop();
+    }, [scrollDesktopToTop]);
+
+    React.useEffect(() => {
+        const stopTrackingScroll = () => {
+            desktopScrollActive.current = false;
+        };
+        window.addEventListener('scrollend', stopTrackingScroll);
+        window.addEventListener('wheel', stopTrackingScroll, { passive: true });
+        window.addEventListener('touchstart', stopTrackingScroll, {
+            passive: true,
+        });
+        window.addEventListener('keydown', stopTrackingScroll);
+        return () => {
+            window.removeEventListener('scrollend', stopTrackingScroll);
+            window.removeEventListener('wheel', stopTrackingScroll);
+            window.removeEventListener('touchstart', stopTrackingScroll);
+            window.removeEventListener('keydown', stopTrackingScroll);
+        };
+    }, []);
+
+    const scrollToSelectedTab = (id: number) => {
+        if (pendingScrollTab.current !== id) return;
+        pendingScrollTab.current = null;
+        mobileRef.current?.scrollIntoView({
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
+                .matches
+                ? 'instant'
+                : 'smooth',
             block: 'start',
         });
+    };
+
+    const handleSelectTab = (id: number) => {
+        scrollDesktopToTop();
+        setSelectedTab(id);
+    };
+
+    const handleSelectMobileTab = (id: number) => {
+        pendingScrollTab.current = id === 0 ? null : id;
+        setSelectedMobileTab(id);
     };
 
     const tabs = [
@@ -365,8 +423,8 @@ function Accordions({
                 >
                     {/* Desktop Master-Detail (md:flex) */}
                     <div
-                        ref={masterDetailRef}
-                        className="hidden w-full scroll-mt-24 items-start bg-background md:flex lg:scroll-mt-28"
+                        ref={desktopRef}
+                        className="hidden w-full items-start bg-background md:flex"
                     >
                         {/* Left Column - Navigation List */}
                         <div className="w-full shrink-0 self-stretch border-r border-border bg-background md:w-[320px] lg:w-[360px] xl:w-[380px]">
@@ -415,9 +473,22 @@ function Accordions({
                             <AnimatePresence mode="wait" initial={false}>
                                 <motion.div
                                     key={selectedTab}
-                                    initial={{ opacity: 0, scale: 0.98, y: 8 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.98, y: -8 }}
+                                    variants={{
+                                        initial: {
+                                            opacity: 0,
+                                            scale: 0.98,
+                                            y: 8,
+                                        },
+                                        visible: { opacity: 1, scale: 1, y: 0 },
+                                        exit: {
+                                            opacity: 0,
+                                            scale: 0.98,
+                                            y: -8,
+                                        },
+                                    }}
+                                    initial="initial"
+                                    animate="visible"
+                                    exit="exit"
                                     transition={{
                                         duration: 0.3,
                                         ease: [0.22, 1, 0.36, 1],
@@ -431,15 +502,18 @@ function Accordions({
                     </div>
 
                     {/* Mobile Accordion (< md) */}
-                    <div className="flex flex-col divide-y divide-border md:hidden">
+                    <div
+                        ref={mobileRef}
+                        className="flex scroll-mt-24 flex-col divide-y divide-border md:hidden"
+                    >
                         {tabs.map((tab) => {
-                            const isSelected = selectedTab === tab.id;
+                            const isSelected = selectedMobileTab === tab.id;
                             return (
                                 <div key={tab.id} className="flex flex-col">
                                     <button
                                         type="button"
                                         onClick={() =>
-                                            setSelectedTab(
+                                            handleSelectMobileTab(
                                                 isSelected ? 0 : tab.id,
                                             )
                                         }
@@ -479,17 +553,37 @@ function Accordions({
                                         {isSelected && (
                                             <motion.div
                                                 key={`mobile-tab-${tab.id}`}
-                                                initial={{
-                                                    height: 0,
-                                                    opacity: 0,
+                                                variants={{
+                                                    initial: {
+                                                        height: 0,
+                                                        opacity: 0,
+                                                    },
+                                                    visible: {
+                                                        height: 'auto',
+                                                        opacity: 1,
+                                                    },
+                                                    exit: {
+                                                        height: 0,
+                                                        opacity: 0,
+                                                    },
                                                 }}
-                                                animate={{
-                                                    height: 'auto',
-                                                    opacity: 1,
-                                                }}
-                                                exit={{
-                                                    height: 0,
-                                                    opacity: 0,
+                                                initial="initial"
+                                                animate="visible"
+                                                exit="exit"
+                                                onAnimationComplete={(
+                                                    definition,
+                                                ) => {
+                                                    if (
+                                                        definition ===
+                                                            'visible' &&
+                                                        !window.matchMedia(
+                                                            '(min-width: 768px)',
+                                                        ).matches
+                                                    ) {
+                                                        scrollToSelectedTab(
+                                                            tab.id,
+                                                        );
+                                                    }
                                                 }}
                                                 transition={{
                                                     duration: 0.35,

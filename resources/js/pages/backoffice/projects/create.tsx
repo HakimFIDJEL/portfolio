@@ -3,6 +3,7 @@
 // Necessary imports
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
+import { toast } from 'sonner';
 
 // Layout
 import AppLayout from '@/layouts/app/layout';
@@ -113,7 +114,11 @@ export default function Create({ tags, stacks }: CreateProps) {
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        post(route('backoffice.projects.store'));
+        post(route('backoffice.projects.store'), {
+            onError: (validationErrors) => {
+                toast.error(Object.values(validationErrors)[0]);
+            },
+        });
     }
 
     function generateSlug(title: string) {
@@ -705,6 +710,7 @@ export default function Create({ tags, stacks }: CreateProps) {
                                 </div>
 
                                 <FileUpload
+                                    accept=".jpg,.jpeg,.png"
                                     value={data.attachments}
                                     onValueChange={handleAttachmentsChange}
                                 />

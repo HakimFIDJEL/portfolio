@@ -8,7 +8,6 @@ use App\Models\Attachment;
 use App\Models\Backoffice\Project;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class ProjectService
@@ -165,15 +164,6 @@ class ProjectService
 
             // Nouveau fichier téléversé
             if ($attachment['file'] instanceof UploadedFile) {
-                $validation = Validator::make(
-                    ['file' => $attachment['file']],
-                    ['file' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:5120']]
-                );
-
-                if ($validation->fails()) {
-                    continue;
-                }
-
                 $newAttachment = $this->attachmentService->store(
                     file: $attachment['file'],
                     title: $attachment['title'] ?? null
