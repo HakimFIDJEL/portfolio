@@ -54,6 +54,11 @@ class Update extends FormRequest
 
             // Pièces jointes
             'attachments' => ['nullable', 'array'],
+            'attachments.*.id' => ['nullable', 'string'],
+            'attachments.*.title' => ['nullable', 'string', 'max:255'],
+            'attachments.*.file' => Rule::forEach(static fn (mixed $value): array => is_array($value)
+                ? ['array']
+                : ['required', 'file', 'mimes:jpg,jpeg,png', 'max:5120']),
         ];
     }
 }
