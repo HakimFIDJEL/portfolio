@@ -245,6 +245,15 @@ class BackofficeSeeder extends Seeder
         $mockExperiences = [
             [
                 'sort_order' => 1,
+                'company' => 'Hakim Fidjel EI',
+                'job_fr' => 'Ingénieur Logiciel & Consultant IT', 'job_en' => 'Software Engineer & IT Consultant',
+                'status_fr' => 'Micro-entrepreneur', 'status_en' => 'Self-employed',
+                'duration' => '10/26 - Present',
+                'description_fr' => 'Conseil en architecture logicielle et développement d\'applications web sur mesure. Automatisation des déploiements et des processus DevOps, audit technique et intégration de systèmes intelligents adaptés aux besoins des clients.',
+                'description_en' => 'Software architecture consulting and custom web application development. Deployment and DevOps process automation, technical audits, and integration of intelligent systems tailored to client needs.',
+            ],
+            [
+                'sort_order' => 2,
                 'company' => 'TenderCrunch',
                 'job_fr' => 'Ingénieur Logiciel', 'job_en' => 'Software Engineer',
                 'status_fr' => 'CDI', 'status_en' => 'Full-time',
@@ -253,7 +262,7 @@ class BackofficeSeeder extends Seeder
                 'description_en' => 'Software engineering and agentic systems design, advanced automation architectures, and fullstack development of high-impact applications.',
             ],
             [
-                'sort_order' => 2,
+                'sort_order' => 3,
                 'company' => 'Réservoir Digital',
                 'job_fr' => 'Ingénieur Fullstack', 'job_en' => 'Fullstack Engineer',
                 'status_fr' => 'Apprentissage', 'status_en' => 'Apprenticeship',
@@ -262,7 +271,7 @@ class BackofficeSeeder extends Seeder
                 'description_en' => 'Led end-to-end web project development from requirements analysis to production deployment. Ensured alignment with business goals, streamlined workflows, and modernized internal processes.',
             ],
             [
-                'sort_order' => 3,
+                'sort_order' => 4,
                 'company' => 'Réservoir Digital',
                 'job_fr' => 'Ingénieur Fullstack', 'job_en' => 'Fullstack Engineer',
                 'status_fr' => 'Stage', 'status_en' => 'Internship',
@@ -271,7 +280,7 @@ class BackofficeSeeder extends Seeder
                 'description_en' => 'Developed custom web applications and tailored digital solutions. Rapid onboarding on modern software stacks within an agile team environment.',
             ],
             [
-                'sort_order' => 4,
+                'sort_order' => 5,
                 'company' => 'Hôpital Maritime de Zuydcoote',
                 'job_fr' => 'Développeur Web & Technicien Informatique', 'job_en' => 'Web Developer & IT Technician',
                 'status_fr' => 'Stage', 'status_en' => 'Internship',
