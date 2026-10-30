@@ -131,7 +131,11 @@ export default function Edit({ project, tags, stacks }: EditProps) {
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        post(route('backoffice.projects.update', project.id));
+        post(route('backoffice.projects.update', project.id), {
+            onError: (validationErrors) => {
+                toast.error(Object.values(validationErrors)[0]);
+            },
+        });
     }
 
     function generateSlug(title: string) {
@@ -732,6 +736,7 @@ export default function Edit({ project, tags, stacks }: EditProps) {
                                 </div>
 
                                 <FileUpload
+                                    accept=".jpg,.jpeg,.png"
                                     value={data.attachments}
                                     onValueChange={handleAttachmentsChange}
                                 />

@@ -98,6 +98,9 @@ COPY --from=frontend-builder /app/node_modules ./node_modules
 COPY --from=frontend-builder /app/public/build ./public/build
 COPY --from=frontend-builder /app/bootstrap/ssr ./bootstrap/ssr
 
+# Limites PHP alignées sur les pièces jointes du formulaire (6 fichiers de 5 Mo).
+COPY docker/php/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+
 # Script de démarrage
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

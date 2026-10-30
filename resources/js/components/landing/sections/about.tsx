@@ -276,15 +276,28 @@ function Accordions({
 }: AboutProps) {
     const [selectedTab, setSelectedTab] = React.useState<number>(1);
     const masterDetailRef = React.useRef<HTMLDivElement>(null);
+    const pendingScrollTab = React.useRef<number | null>(null);
     const __ = useTrans();
 
-    const handleSelectTab = (id: number) => {
-        if (id === selectedTab) return;
-        setSelectedTab(id);
+    const scrollToSelectedTab = (id: number) => {
+        if (pendingScrollTab.current !== id) return;
+        pendingScrollTab.current = null;
         masterDetailRef.current?.scrollIntoView({
-            behavior: 'smooth',
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
+                .matches
+                ? 'instant'
+                : 'smooth',
             block: 'start',
         });
+    };
+
+    const handleSelectTab = (id: number) => {
+        pendingScrollTab.current = id === 0 ? null : id;
+        if (id === selectedTab) {
+            scrollToSelectedTab(id);
+            return;
+        }
+        setSelectedTab(id);
     };
 
     const tabs = [
@@ -350,9 +363,10 @@ function Accordions({
     return (
         <FadeIn className="w-full" delay={150} show={appear ?? false}>
             <div
+                ref={masterDetailRef}
                 className={cn(
                     // Default styles
-                    'w-full border-t border-b border-dashed border-border',
+                    'w-full scroll-mt-24 border-t border-b border-dashed border-border lg:scroll-mt-28',
 
                     // Responsive styles
                     'px-6 sm:px-8 md:px-10 lg:px-12.5',
@@ -364,10 +378,7 @@ function Accordions({
                     plusCorners={['all']}
                 >
                     {/* Desktop Master-Detail (md:flex) */}
-                    <div
-                        ref={masterDetailRef}
-                        className="hidden w-full scroll-mt-24 items-start bg-background md:flex lg:scroll-mt-28"
-                    >
+                    <div className="hidden w-full scroll-mt-24 items-start bg-background md:flex lg:scroll-mt-28">
                         {/* Left Column - Navigation List */}
                         <div className="w-full shrink-0 self-stretch border-r border-border bg-background md:w-[320px] lg:w-[360px] xl:w-[380px]">
                             <div className="sticky top-24 lg:top-28">
@@ -415,9 +426,32 @@ function Accordions({
                             <AnimatePresence mode="wait" initial={false}>
                                 <motion.div
                                     key={selectedTab}
-                                    initial={{ opacity: 0, scale: 0.98, y: 8 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.98, y: -8 }}
+                                    variants={{
+                                        initial: {
+                                            opacity: 0,
+                                            scale: 0.98,
+                                            y: 8,
+                                        },
+                                        visible: { opacity: 1, scale: 1, y: 0 },
+                                        exit: {
+                                            opacity: 0,
+                                            scale: 0.98,
+                                            y: -8,
+                                        },
+                                    }}
+                                    initial="initial"
+                                    animate="visible"
+                                    exit="exit"
+                                    onAnimationComplete={(definition) => {
+                                        if (
+                                            definition === 'visible' &&
+                                            window.matchMedia(
+                                                '(min-width: 768px)',
+                                            ).matches
+                                        ) {
+                                            scrollToSelectedTab(selectedTab);
+                                        }
+                                    }}
                                     transition={{
                                         duration: 0.3,
                                         ease: [0.22, 1, 0.36, 1],
@@ -439,7 +473,7 @@ function Accordions({
                                     <button
                                         type="button"
                                         onClick={() =>
-                                            setSelectedTab(
+                                            handleSelectTab(
                                                 isSelected ? 0 : tab.id,
                                             )
                                         }
@@ -479,17 +513,37 @@ function Accordions({
                                         {isSelected && (
                                             <motion.div
                                                 key={`mobile-tab-${tab.id}`}
-                                                initial={{
-                                                    height: 0,
-                                                    opacity: 0,
+                                                variants={{
+                                                    initial: {
+                                                        height: 0,
+                                                        opacity: 0,
+                                                    },
+                                                    visible: {
+                                                        height: 'auto',
+                                                        opacity: 1,
+                                                    },
+                                                    exit: {
+                                                        height: 0,
+                                                        opacity: 0,
+                                                    },
                                                 }}
-                                                animate={{
-                                                    height: 'auto',
-                                                    opacity: 1,
-                                                }}
-                                                exit={{
-                                                    height: 0,
-                                                    opacity: 0,
+                                                initial="initial"
+                                                animate="visible"
+                                                exit="exit"
+                                                onAnimationComplete={(
+                                                    definition,
+                                                ) => {
+                                                    if (
+                                                        definition ===
+                                                            'visible' &&
+                                                        !window.matchMedia(
+                                                            '(min-width: 768px)',
+                                                        ).matches
+                                                    ) {
+                                                        scrollToSelectedTab(
+                                                            tab.id,
+                                                        );
+                                                    }
                                                 }}
                                                 transition={{
                                                     duration: 0.35,
