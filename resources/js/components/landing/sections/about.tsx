@@ -293,6 +293,9 @@ function Accordions({
 
     const handleSelectTab = (id: number) => {
         pendingScrollTab.current = id === 0 ? null : id;
+        if (window.matchMedia('(min-width: 768px)').matches) {
+            scrollToSelectedTab(id);
+        }
         if (id === selectedTab) {
             scrollToSelectedTab(id);
             return;
@@ -442,16 +445,6 @@ function Accordions({
                                     initial="initial"
                                     animate="visible"
                                     exit="exit"
-                                    onAnimationComplete={(definition) => {
-                                        if (
-                                            definition === 'visible' &&
-                                            window.matchMedia(
-                                                '(min-width: 768px)',
-                                            ).matches
-                                        ) {
-                                            scrollToSelectedTab(selectedTab);
-                                        }
-                                    }}
                                     transition={{
                                         duration: 0.3,
                                         ease: [0.22, 1, 0.36, 1],
