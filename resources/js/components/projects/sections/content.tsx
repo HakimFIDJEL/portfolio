@@ -128,10 +128,7 @@ export default function Content({
                                     .map((tech, techIdx) => (
                                         <span
                                             key={`stack-${techIdx}`}
-                                            className={cn(
-                                                // Default styles
-                                                'border border-primary px-2.5 py-1 font-light',
-                                            )}
+                                            className="border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light text-foreground sm:text-sm"
                                         >
                                             {tech.name}
                                         </span>

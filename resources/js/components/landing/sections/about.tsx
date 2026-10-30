@@ -383,7 +383,7 @@ function Accordions({
                                                     handleSelectTab(tab.id)
                                                 }
                                                 className={cn(
-                                                    'group relative flex w-full cursor-pointer items-center gap-4 px-6 py-5.5 text-left transition-colors duration-200',
+                                                    'group relative flex w-full cursor-pointer items-center gap-4 px-6 py-5.5 text-left transition-all duration-300 ease-out active:scale-[0.99]',
                                                     'outline-none focus-visible:z-20 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none',
                                                     isSelected
                                                         ? 'bg-primary text-primary-foreground focus-visible:bg-primary'
@@ -392,7 +392,7 @@ function Accordions({
                                             >
                                                 <span
                                                     className={cn(
-                                                        'text-xl font-semibold tracking-tight transition-colors lg:text-2xl',
+                                                        'text-xl font-semibold tracking-tight transition-colors duration-300 ease-out lg:text-2xl',
                                                         isSelected
                                                             ? 'text-primary-foreground'
                                                             : 'text-muted-foreground group-hover:text-foreground',
@@ -400,7 +400,7 @@ function Accordions({
                                                 >
                                                     {tab.number}
                                                 </span>
-                                                <span className="truncate text-base font-light tracking-tight lg:text-lg">
+                                                <span className="truncate text-base font-light tracking-tight transition-colors duration-300 ease-out lg:text-lg">
                                                     {tab.title}
                                                 </span>
                                             </button>
@@ -419,7 +419,7 @@ function Accordions({
                                     animate={{ opacity: 1, scale: 1, y: 0 }}
                                     exit={{ opacity: 0, scale: 0.98, y: -8 }}
                                     transition={{
-                                        duration: 0.2,
+                                        duration: 0.3,
                                         ease: [0.22, 1, 0.36, 1],
                                     }}
                                     className="w-full flex-1"
@@ -444,7 +444,7 @@ function Accordions({
                                             )
                                         }
                                         className={cn(
-                                            'relative flex w-full cursor-pointer items-center justify-between px-6 py-5 text-left transition-colors duration-200',
+                                            'relative flex w-full cursor-pointer items-center justify-between px-6 py-5 text-left transition-all duration-300 ease-out active:scale-[0.99]',
                                             'outline-none focus-visible:z-20 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none',
                                             isSelected
                                                 ? 'bg-primary text-primary-foreground focus-visible:bg-primary'
@@ -454,7 +454,7 @@ function Accordions({
                                         <div className="flex items-center gap-4">
                                             <span
                                                 className={cn(
-                                                    'text-lg font-semibold',
+                                                    'text-lg font-semibold transition-colors duration-300 ease-out',
                                                     isSelected
                                                         ? 'text-primary-foreground'
                                                         : 'text-muted-foreground',
@@ -462,24 +462,47 @@ function Accordions({
                                             >
                                                 {tab.number}
                                             </span>
-                                            <span className="text-base font-light">
+                                            <span className="text-base font-light transition-colors duration-300 ease-out">
                                                 {tab.title}
                                             </span>
                                         </div>
                                         <ArrowDownRight
                                             className={cn(
-                                                'h-5 w-5 stroke-1 transition-transform duration-300',
+                                                'h-5 w-5 stroke-1 transition-transform duration-300 ease-out',
                                                 isSelected
                                                     ? 'rotate-90 text-primary-foreground'
                                                     : 'text-muted-foreground',
                                             )}
                                         />
                                     </button>
-                                    {isSelected && (
-                                        <div className="border-t border-border bg-background p-5 transition-all duration-300">
-                                            {renderTabContent(tab.id)}
-                                        </div>
-                                    )}
+                                    <AnimatePresence initial={false}>
+                                        {isSelected && (
+                                            <motion.div
+                                                key={`mobile-tab-${tab.id}`}
+                                                initial={{
+                                                    height: 0,
+                                                    opacity: 0,
+                                                }}
+                                                animate={{
+                                                    height: 'auto',
+                                                    opacity: 1,
+                                                }}
+                                                exit={{
+                                                    height: 0,
+                                                    opacity: 0,
+                                                }}
+                                                transition={{
+                                                    duration: 0.35,
+                                                    ease: [0.22, 1, 0.36, 1],
+                                                }}
+                                                className="overflow-hidden border-t border-border bg-background"
+                                            >
+                                                <div className="p-5">
+                                                    {renderTabContent(tab.id)}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
                             );
                         })}
@@ -638,7 +661,7 @@ function TabAboutContent() {
                     <p className="text-sm leading-relaxed font-light text-foreground/80 sm:text-base">
                         {__(
                             'landing.landing.about.tabs.about.bio_1',
-                            "Ingénieur logiciel en poste et développeur indépendant, je conçois des systèmes web complets avec une vision de bout en bout. De la modélisation des données et la conteneurisation jusqu'au raffinement ergonomique de l'interface, chaque décision technique répond à un impératif de fiabilité et d'efficacité mesurable.",
+                            "Ingénieur logiciel en poste et ingénieur fullstack indépendant, je conçois des systèmes web complets avec une vision de bout en bout. De la modélisation des données et la conteneurisation jusqu'au raffinement ergonomique de l'interface, chaque décision technique répond à un impératif de fiabilité et d'efficacité mesurable.",
                         )}
                     </p>
                 </div>

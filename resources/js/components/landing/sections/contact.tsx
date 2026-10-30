@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import Delimiter from '@/components/landing/delimiter';
 import FadeIn from '@/components/landing/fade-in';
 import UnderlineLink from '@/components/landing/underline-link';
+import Magnet from '@/components/ui/magnet';
 
 // Icons
 import { ArrowUpRight } from 'lucide-react';
@@ -134,7 +135,7 @@ export default function Contact({ appear, contacts }: ContactProps) {
                 >
                     <div
                         className={cn(
-                            'flex h-32 w-full items-end justify-start border-r border-l border-dashed',
+                            'flex min-h-32 w-full items-end justify-start border-r border-l border-dashed',
                             'px-4 py-4 sm:px-4 sm:py-4 md:px-6 md:py-6 lg:px-6 lg:py-6',
                         )}
                     >
@@ -161,7 +162,7 @@ export default function Contact({ appear, contacts }: ContactProps) {
                         plusCorners={['all']}
                         className="w-full"
                     >
-                        <div className="flex w-full min-w-0 flex-col divide-y divide-border border border-border bg-card">
+                        <div className="flex w-full min-w-0 flex-col gap-3 py-4 sm:gap-4 sm:py-6">
                             {sortedContacts.map((item, index) => (
                                 <FadeIn
                                     key={item.id ?? index}
@@ -169,7 +170,18 @@ export default function Contact({ appear, contacts }: ContactProps) {
                                     delay={index * 50}
                                     className="w-full"
                                 >
-                                    <ContactRow item={item} />
+                                    <Magnet
+                                        magnetStrength={25}
+                                        padding={0}
+                                        wrapperClassName="w-full !block"
+                                        innerClassName="w-full"
+                                        style={{
+                                            width: '100%',
+                                            display: 'block',
+                                        }}
+                                    >
+                                        <ContactRow item={item} />
+                                    </Magnet>
                                 </FadeIn>
                             ))}
                         </div>
@@ -216,12 +228,12 @@ function ContactRow({ item }: ContactRowProps) {
             rel={isMail ? undefined : 'noopener noreferrer'}
             className={cn(
                 // Default styles
-                'group relative flex w-full items-center justify-between gap-4 overflow-hidden px-5 py-4.5 sm:px-8 sm:py-5.5',
-                'transition-all duration-1000',
+                'group relative flex w-full items-center justify-between gap-4 overflow-hidden border border-border bg-card px-5 py-4.5 sm:px-8 sm:py-5.5',
+                'transition-all duration-500',
 
                 // Focus & hover styles
-                'hover:!text-primary-foreground',
-                'focus-visible:!text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary',
+                'hover:border-primary hover:!text-primary-foreground',
+                'focus-visible:border-primary focus-visible:!text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary',
             )}
         >
             {/* Background animation like menu items */}

@@ -92,7 +92,7 @@ export default function Hero({ appear, project }: HeroProps) {
                             className={cn(
                                 // Default styles
                                 '!leading-none font-semibold',
-                                'text-[2.65rem] md:text-6xl lg:text-7xl xl:text-8xl',
+                                'text-[2.25rem] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl',
                             )}
                         >
                             {project.title}
@@ -106,48 +106,27 @@ export default function Hero({ appear, project }: HeroProps) {
 
                             // Responsive styles
                             'lg:translate-y-[15px]',
-                            'flex-col md:flex-row lg:flex-col',
+                            'w-full flex-col md:w-auto md:flex-row lg:flex-col',
                             'items-start md:items-center lg:items-end',
                             'gap-4 md:gap-4 lg:gap-0',
                         )}
                     >
-                        <FadeIn className="w-auto" show={appear} delay={0}>
-                            <h2
-                                className={cn(
-                                    // Default styles
-                                    '!leading-none font-medium uppercase',
-
-                                    // Responsive styles
-                                    'text-xl md:text-2xl lg:text-3xl',
-                                    'text-left md:text-right',
-                                    'ml-0 lg:ml-2',
-                                    'p-0 md:pb-1 lg:pb-2.5 xl:pb-3',
-                                )}
-                            >
-                                {__('landing.projects.hero.h2', 'Project')}
-                            </h2>
-                        </FadeIn>
-                        <FadeIn className="w-auto" show={appear} delay={0}>
+                        <FadeIn
+                            className="w-full md:w-auto"
+                            show={appear}
+                            delay={0}
+                        >
                             <div
                                 className={cn(
                                     // Default styles
-                                    'flex items-center justify-end gap-2',
-
-                                    // 'max-w-1/3',
-                                    'flex-wrap',
+                                    'flex w-full flex-wrap items-center justify-start gap-2 md:w-auto md:justify-end',
                                 )}
                             >
                                 {project.is_new == true && (
                                     <span
                                         className={cn(
                                             // Default styles
-                                            'border px-2.5 py-0.5 text-sm font-medium',
-                                            'transition-all duration-1000',
-
-                                            // Hover & Focus styles
-                                            'border-primary',
-                                            'bg-primary',
-                                            'text-primary-foreground',
+                                            'border border-primary bg-primary px-3.5 py-1.5 text-xs font-medium text-primary-foreground sm:text-sm',
                                             'whitespace-nowrap',
                                         )}
                                     >
@@ -162,30 +141,12 @@ export default function Hero({ appear, project }: HeroProps) {
                                     .map((tag, index) => (
                                         <span
                                             key={`project-${project.id}-tag-${index}`}
-                                            className={cn(
-                                                // Default styles
-                                                'border px-2.5 py-0.5 text-sm font-medium',
-                                                'transition-all duration-1000',
-
-                                                // Hover & Focus styles
-                                                'border-foreground',
-                                                'whitespace-nowrap',
-                                            )}
+                                            className="border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light whitespace-nowrap text-foreground sm:text-sm"
                                         >
                                             {tag.name}
                                         </span>
                                     ))}
-                                <span
-                                    className={cn(
-                                        // Default styles
-                                        'border px-2.5 py-0.5 text-sm font-medium',
-                                        'transition-all duration-1000',
-
-                                        // Hover & Focus styles
-                                        'border-foreground',
-                                        'whitespace-nowrap',
-                                    )}
-                                >
+                                <span className="border border-border bg-card/60 px-3.5 py-1.5 text-xs font-light whitespace-nowrap text-foreground sm:text-sm">
                                     {project.end_date
                                         ? new Date(
                                               project.end_date,

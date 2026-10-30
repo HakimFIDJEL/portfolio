@@ -91,7 +91,7 @@ function NavigationHeader({
             <div
                 className={cn(
                     'grid grid-cols-2',
-                    'px-8 py-6 lg:px-12.5 lg:py-10',
+                    'px-6 py-4 sm:px-8 sm:py-6 lg:px-12.5 lg:py-10',
                 )}
             >
                 <div className="col-span-1 text-left">
@@ -229,7 +229,7 @@ function NavigationContent({
     }, [showNavigationContent, links, itemDelay]);
 
     return (
-        <div className="mx-auto flex w-full max-w-7xl flex-col px-8 py-6 sm:w-[90%] lg:px-12.5 lg:py-10">
+        <div className="mx-auto flex w-full max-w-7xl flex-col px-6 py-4 sm:w-[90%] sm:px-8 sm:py-6 lg:px-12.5 lg:py-10">
             {visibleLinks.map((link, index) => (
                 <NavigationLink
                     link={link}
@@ -297,14 +297,14 @@ function NavigationLink({
                 tabIndex={show ? 0 : -1}
                 className={cn(
                     // Default styles
-                    'group relative flex overflow-hidden py-4 pr-12 transition-all duration-1000',
+                    'group relative flex overflow-hidden py-2.5 pr-8 transition-all duration-1000 sm:py-4 sm:pr-12',
 
                     // Focus & hover styles
                     'hover:!text-primary-foreground hover:md:gap-[80px] hover:md:pl-[30px]',
                     'focus-visible:!text-primary-foreground focus-visible:md:gap-[80px] focus-visible:md:pl-[30px] focus-visible:md:outline-none',
 
                     // Responsive styles
-                    'gap-[0px] sm:gap-[50px] md:gap-[120px]',
+                    'gap-0 sm:gap-[50px] md:gap-[120px]',
                     'flex-col sm:flex-row',
                     'items-start sm:items-center',
                 )}
@@ -346,13 +346,13 @@ function NavigationLink({
                     <span
                         className={cn(
                             // Default styles
-                            'col-span-1 w-[150px] font-semibold transition-all duration-1000',
+                            'col-span-1 w-auto font-semibold transition-all duration-1000 sm:w-[150px]',
 
                             // Focus & hover styles
                             'group-hover:md:pl-18 group-focus-visible:md:pl-18',
 
                             // Reponsive styles
-                            'text-2xl sm:text-6xl',
+                            'text-xl sm:text-6xl',
                         )}
                     >
                         {index}
@@ -366,7 +366,7 @@ function NavigationLink({
                         'col-span-1 font-normal uppercase',
 
                         // Reponsive styles
-                        'text-3xl sm:text-6xl',
+                        'text-2xl sm:text-6xl',
 
                         'transition-all duration-1000',
                     )}
