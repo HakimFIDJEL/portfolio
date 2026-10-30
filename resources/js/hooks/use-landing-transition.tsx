@@ -13,10 +13,16 @@ export function useLandingTransitions() {
     // States
     // -----------------------------------
     // Contrôle d'affichage progressif du contenu (rideaux, fade-in)
-    const [contentActive, setContentActive] = useState(false);
+    const isHome =
+        typeof window !== 'undefined'
+            ? window.location.pathname === '/' ||
+              window.location.pathname === ''
+            : true;
+
+    const [contentActive, setContentActive] = useState(!isHome);
     const [loaderState, setLoaderState] = useState<
         'intro' | 'transition' | 'none'
-    >('intro');
+    >(isHome ? 'intro' : 'none');
 
     // Navigation plein écran
     const [navigationActive, setNavigationActive] = useState(false);
@@ -37,7 +43,7 @@ export function useLandingTransitions() {
 
     // Écran de chargement d'intro ("Salut, c'est Hakim")
     const [introLoaderWrapperActive, setIntroLoaderWrapperActive] =
-        useState(true);
+        useState(isHome);
     const [introLoaderContentActive, setIntroLoaderContentActive] =
         useState(false);
 
@@ -239,6 +245,27 @@ export function useLandingTransitions() {
             setTransitionPanelsActive({ active: true, mode: 'staggered' });
             setContentActive(false);
 
+            // Normaliser l'URL en chemin relatif (pathname + search + hash) si elle cible le même site
+            // afin d'empêcher Inertia de déclencher un rechargement dur du navigateur en cas de divergence d'hôte (ex: localhost vs 127.0.0.1)
+            let targetUrl = href;
+            try {
+                const parsed = new URL(href, window.location.origin);
+                const isSameHost = parsed.origin === window.location.origin;
+                const isLocalMismatch =
+                    ['localhost', '127.0.0.1'].includes(parsed.hostname) &&
+                    ['localhost', '127.0.0.1'].includes(
+                        window.location.hostname,
+                    ) &&
+                    (parsed.port === window.location.port ||
+                        (!parsed.port && !window.location.port));
+
+                if (isSameHost || isLocalMismatch) {
+                    targetUrl = parsed.pathname + parsed.search + parsed.hash;
+                }
+            } catch {
+                // Déjà un chemin relatif
+            }
+
             // Attendre la fin complète de l'apparition des volets (1000ms) avant de lancer le rechargement
             safeTimeout(() => {
                 if (navigationActive) {
@@ -246,7 +273,7 @@ export function useLandingTransitions() {
                     setNavigationActive(false);
                 }
 
-                router.visit(href, {
+                router.visit(targetUrl, {
                     preserveScroll: false,
                     preserveState: false,
                     onFinish: () => {

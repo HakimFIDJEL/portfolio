@@ -25,14 +25,18 @@ class SecurityHeaders
         }
         $response->headers->remove('X-Powered-By');
 
+        // En environnement local (ex: Vite HMR), autoriser les origines du serveur de dev Vite
+        $isLocal = app()->environment('local');
+        $viteOrigins = $isLocal ? ' http://localhost:5173 http://127.0.0.1:5173' : '';
+
         // En-têtes de sécurité HTTP (CentralCSP / OWASP / ANSSI)
         $csp = [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-            "style-src 'self' 'unsafe-inline'",
-            "img-src 'self' data: https:",
-            "font-src 'self' data:",
-            "connect-src 'self' ws: wss:",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval'{$viteOrigins}",
+            "style-src 'self' 'unsafe-inline'{$viteOrigins}",
+            "img-src 'self' data: https:{$viteOrigins}",
+            "font-src 'self' data:{$viteOrigins}",
+            "connect-src 'self' ws: wss:{$viteOrigins}",
             "frame-ancestors 'self'",
             "base-uri 'self'",
             "form-action 'self'",

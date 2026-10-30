@@ -275,32 +275,43 @@ export default function Footer({ appear }: FooterProps) {
                                         item.target === '_blank' ||
                                         item.href.startsWith('mailto:');
 
+                                    const itemPath = (() => {
+                                        try {
+                                            return new URL(
+                                                item.href,
+                                                window.location.origin,
+                                            ).pathname;
+                                        } catch {
+                                            return item.href;
+                                        }
+                                    })();
+
                                     // Anchor
                                     if (item.href.startsWith('#')) {
                                         if (onHomePage) {
                                             href = item.href;
                                         } else {
-                                            href = route('home');
+                                            href = homePath;
                                             onClick = (
                                                 e: React.MouseEvent<HTMLAnchorElement>,
                                             ) =>
                                                 handleLinkClick(
                                                     e,
-                                                    route('home'),
+                                                    homePath,
                                                     item.href.substring(1),
                                                 );
                                         }
-                                    } else if (item.href === route('terms')) {
+                                    } else if (itemPath === termsPath) {
                                         if (onTermsPage) {
                                             href = '#top';
                                         } else {
-                                            href = route('terms');
+                                            href = termsPath;
                                             onClick = (
                                                 e: React.MouseEvent<HTMLAnchorElement>,
                                             ) =>
                                                 handleLinkClick(
                                                     e,
-                                                    route('terms'),
+                                                    termsPath,
                                                     'top',
                                                 );
                                         }

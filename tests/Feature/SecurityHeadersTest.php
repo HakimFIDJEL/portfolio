@@ -24,3 +24,13 @@ test('les en-tetes http de securite sont presents sur les reponses applicatives'
     // Vérification de l'absence de divulgation de version PHP
     expect($response->headers->has('X-Powered-By'))->toBeFalse();
 });
+
+test('les origines vite dev sont autorisees dans le csp en environnement local', function () {
+    app()->detectEnvironment(fn () => 'local');
+
+    $response = $this->get('/');
+    $csp = $response->headers->get('Content-Security-Policy');
+
+    expect($csp)->toContain('http://localhost:5173')
+        ->and($csp)->toContain('http://127.0.0.1:5173');
+});
