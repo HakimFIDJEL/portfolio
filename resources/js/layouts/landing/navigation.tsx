@@ -204,7 +204,7 @@ function NavigationContent({
     }, [showNavigationContent, links]);
 
     return (
-        <div className="mx-auto flex w-full max-w-7xl flex-col px-6 py-4 sm:w-[90%] sm:px-8 sm:py-6 lg:px-12.5 lg:py-10">
+        <div className="mx-auto flex w-full max-w-7xl flex-col px-6 pt-4 pb-8 sm:w-[90%] sm:px-8 sm:py-6 lg:px-12.5 lg:py-10">
             {visibleLinks.map((link, index) => (
                 <NavigationLink
                     link={link}
