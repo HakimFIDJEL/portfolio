@@ -162,7 +162,7 @@ export default function Contact({ appear, contacts }: ContactProps) {
                         plusCorners={['all']}
                         className="w-full"
                     >
-                        <div className="flex w-full min-w-0 flex-col gap-3 py-4 sm:gap-4 sm:py-6">
+                        <div className="flex w-full min-w-0 flex-col gap-3 sm:gap-4">
                             {sortedContacts.map((item, index) => (
                                 <FadeIn
                                     key={item.id ?? index}

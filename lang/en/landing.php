@@ -89,7 +89,9 @@ return [
                     'status_badge' => 'Available',
                     'tag' => 'Manifesto & Approach',
                     'statement' => 'Building resilient software architectures where clarity and craftsmanship prevail over unnecessary complexity.',
+                    'bio_1_title' => 'End-to-End Approach',
                     'bio_1' => 'Software engineer and independent fullstack engineer, I design end-to-end web systems with an exhaustive technical scope. From database modeling and containerization to refined UI engineering, every technical choice serves measurable reliability and efficiency.',
+                    'bio_2_title' => 'Craftsmanship & Pragmatism',
                     'bio_2' => 'My approach is grounded in pragmatism: avoiding over-engineering, favoring typed, tested, and documented codebases, and delivering applications that remain instantly maintainable without latent technical debt.',
                     'principles' => [
                         'label' => 'Engineering Principles',

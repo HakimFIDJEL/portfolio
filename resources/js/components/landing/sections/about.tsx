@@ -750,7 +750,10 @@ function TabAboutContent() {
             <div className="grid grid-cols-1 gap-8 border-b border-border pb-8 sm:pb-10 md:grid-cols-2 lg:gap-12">
                 <div className="flex flex-col gap-3">
                     <h4 className="text-base font-medium tracking-tight text-foreground sm:text-lg">
-                        Approche de bout en bout
+                        {__(
+                            'landing.landing.about.tabs.about.bio_1_title',
+                            'Approche de bout en bout',
+                        )}
                     </h4>
                     <p className="text-sm leading-relaxed font-light text-foreground/80 sm:text-base">
                         {__(
@@ -761,7 +764,10 @@ function TabAboutContent() {
                 </div>
                 <div className="flex flex-col gap-3">
                     <h4 className="text-base font-medium tracking-tight text-foreground sm:text-lg">
-                        Artisanat & pragmatisme
+                        {__(
+                            'landing.landing.about.tabs.about.bio_2_title',
+                            'Artisanat & pragmatisme',
+                        )}
                     </h4>
                     <p className="text-sm leading-relaxed font-light text-foreground/80 sm:text-base">
                         {__(
