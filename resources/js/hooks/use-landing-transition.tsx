@@ -14,16 +14,12 @@ export function useLandingTransitions() {
     // States
     // -----------------------------------
     // Contrôle d'affichage progressif du contenu (rideaux, fade-in)
-    const isHome =
-        typeof window !== 'undefined'
-            ? window.location.pathname === '/' ||
-              window.location.pathname === ''
-            : true;
-
-    const [contentActive, setContentActive] = useState(!isHome);
+    // Le layout persiste pendant les visites Inertia : son montage déclenche
+    // l'intro sur toute arrivée directe, quelle que soit la page demandée.
+    const [contentActive, setContentActive] = useState(false);
     const [loaderState, setLoaderState] = useState<
         'intro' | 'transition' | 'none'
-    >(isHome ? 'intro' : 'none');
+    >('intro');
 
     // Navigation plein écran
     const [navigationActive, setNavigationActive] = useState(false);
@@ -44,7 +40,7 @@ export function useLandingTransitions() {
 
     // Écran de chargement d'intro ("Salut, c'est Hakim")
     const [introLoaderWrapperActive, setIntroLoaderWrapperActive] =
-        useState(isHome);
+        useState(true);
     const [introLoaderContentActive, setIntroLoaderContentActive] =
         useState(false);
 
