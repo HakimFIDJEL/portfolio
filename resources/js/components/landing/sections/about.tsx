@@ -4,7 +4,7 @@
 import { useLandingContext } from '@/contexts/use-landing-context';
 import { cn } from '@/lib/utils';
 import { usePage } from '@inertiajs/react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import React from 'react';
 
 // Components
@@ -268,6 +268,40 @@ function Panels({ appear }: PanelsProps) {
 // Accordions
 // -------------------------
 
+function AnimatedDetail({ children }: { children: React.ReactNode }) {
+    const contentRef = React.useRef<HTMLDivElement>(null);
+    const [height, setHeight] = React.useState<number>();
+    const reduceMotion = useReducedMotion();
+
+    React.useLayoutEffect(() => {
+        const content = contentRef.current;
+        if (!content) return;
+
+        const observer = new ResizeObserver(() => {
+            setHeight(content.getBoundingClientRect().height);
+        });
+        setHeight(content.getBoundingClientRect().height);
+        observer.observe(content);
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <motion.div
+            initial={false}
+            animate={{ height: height ?? 'auto' }}
+            transition={{
+                duration: reduceMotion ? 0 : 0.35,
+                ease: [0.22, 1, 0.36, 1],
+            }}
+            className="min-w-0 flex-1 overflow-hidden bg-background"
+        >
+            <div ref={contentRef} className="p-6 sm:p-8 lg:p-10 xl:p-12">
+                {children}
+            </div>
+        </motion.div>
+    );
+}
+
 function Accordions({
     appear,
     stacks,
@@ -281,6 +315,7 @@ function Accordions({
     const mobileRef = React.useRef<HTMLDivElement>(null);
     const desktopScrollActive = React.useRef(false);
     const pendingScrollTab = React.useRef<number | null>(null);
+    const reduceMotion = useReducedMotion();
     const { isHeaderVisible } = useLandingContext();
     const __ = useTrans();
 
@@ -290,16 +325,21 @@ function Accordions({
 
         const header = document.getElementById('landing-header');
         const headerOffset = isHeaderVisible ? (header?.offsetHeight ?? 0) : 0;
+        const scrollMargin = isHeaderVisible
+            ? 0
+            : 6 *
+              parseFloat(getComputedStyle(document.documentElement).fontSize);
         const top = Math.max(
             0,
             window.scrollY +
                 container.getBoundingClientRect().top -
-                headerOffset,
+                headerOffset -
+                scrollMargin,
         );
 
         desktopScrollActive.current = Math.abs(window.scrollY - top) > 1;
-        window.scrollTo({ top, behavior: 'smooth' });
-    }, [isHeaderVisible]);
+        window.scrollTo({ top, behavior: reduceMotion ? 'instant' : 'smooth' });
+    }, [isHeaderVisible, reduceMotion]);
 
     React.useEffect(() => {
         if (desktopScrollActive.current) scrollDesktopToTop();
@@ -428,7 +468,7 @@ function Accordions({
                     >
                         {/* Left Column - Navigation List */}
                         <div className="w-full shrink-0 self-stretch border-r border-border bg-background md:w-[320px] lg:w-[360px] xl:w-[380px]">
-                            <div className="sticky top-24 lg:top-28">
+                            <div className="sticky top-24">
                                 <div className="flex flex-col divide-y divide-border border-t border-b border-border bg-card">
                                     {tabs.map((tab) => {
                                         const isSelected =
@@ -469,7 +509,7 @@ function Accordions({
                         </div>
 
                         {/* Right Column - Detail Wrapper */}
-                        <div className="flex min-w-0 flex-1 flex-col bg-background p-6 sm:p-8 lg:p-10 xl:p-12">
+                        <AnimatedDetail>
                             <AnimatePresence mode="wait" initial={false}>
                                 <motion.div
                                     key={selectedTab}
@@ -498,7 +538,7 @@ function Accordions({
                                     {renderTabContent(selectedTab)}
                                 </motion.div>
                             </AnimatePresence>
-                        </div>
+                        </AnimatedDetail>
                     </div>
 
                     {/* Mobile Accordion (< md) */}
