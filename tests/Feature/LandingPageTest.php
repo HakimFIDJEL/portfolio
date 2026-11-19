@@ -32,6 +32,7 @@ test('la page des mentions légales est accessible', function () {
     $response = $this->get(route('terms'));
 
     $response->assertOk();
+    $response->assertHeader('X-Robots-Tag', 'noindex');
     $response->assertInertia(fn (Assert $page) => $page
         ->component('terms')
     );

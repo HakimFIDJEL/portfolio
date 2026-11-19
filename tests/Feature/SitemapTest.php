@@ -14,4 +14,8 @@ beforeEach(function () {
 test('la commande artisan sitemap generate s execute avec succes', function () {
     $this->artisan('sitemap:generate')
         ->assertSuccessful();
+
+    $sitemap = file_get_contents(public_path('sitemap.xml'));
+
+    expect($sitemap)->not->toContain('<loc>'.route('terms').'</loc>');
 });

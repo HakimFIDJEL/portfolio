@@ -41,13 +41,6 @@ class GenerateSitemap extends Command
                 ->setPriority(1.0)
         );
 
-        $sitemap->add(
-            Url::create(route('terms', [], absolute: true))
-                ->setLastModificationDate(now())
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
-                ->setPriority(0.5)
-        );
-
         $projects = Project::where('type', 'project')->orderBy('sort_order', 'asc')->get();
 
         foreach ($projects as $project) {
