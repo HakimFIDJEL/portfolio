@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class Landing extends Controller
 {
@@ -111,8 +112,11 @@ class Landing extends Controller
     /**
      * Rendu de la page des mentions légales.
      */
-    public function terms(): Response
+    public function terms(Request $request): HttpResponse
     {
-        return Inertia::render('terms');
+        $response = Inertia::render('terms')->toResponse($request);
+        $response->headers->set('X-Robots-Tag', 'noindex');
+
+        return $response;
     }
 }

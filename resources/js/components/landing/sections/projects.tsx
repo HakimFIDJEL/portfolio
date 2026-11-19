@@ -70,20 +70,29 @@ export default function Projects({ appear, projects }: ProjectsProps) {
         e: React.MouseEvent<HTMLAnchorElement>,
         href: string,
     ) {
+        if (
+            e.defaultPrevented ||
+            e.button !== 0 ||
+            e.metaKey ||
+            e.ctrlKey ||
+            e.shiftKey ||
+            e.altKey
+        ) {
+            return;
+        }
+
         e.preventDefault();
         _navigateToPage(href, 'top');
     }
 
     const items = projects.map((project) => {
+        const href = route('project', { slug: project.slug }, false);
+
         return {
-            link: appear
-                ? route('project', {
-                      slug: project.slug,
-                  })
-                : '#',
+            link: href,
             text: project.title,
             linkOnClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
-                handleProjectClick(e, project.slug),
+                handleProjectClick(e, href),
         };
     });
 
